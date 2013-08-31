@@ -7,8 +7,8 @@ MAC 0242  -  Laboratório  de  Programação II
 IME-USP   -  Segundo   Semestre    de   2013   
 Turma 45  -  Marcos Dimas Gubitoso           
                                            
-Quarto Exercício-Programa:                
-JOGO DAS CANOAS                            
+Projeto:                                  
+BATALHA DE ROBÔS                           
                                            
 Karina Suemi Awoki                   7572102    
 Renato Cordeiro Ferreira             7990933    
