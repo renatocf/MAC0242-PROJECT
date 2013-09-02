@@ -52,3 +52,5 @@ sub POP {
     my $value = pop @{$data};
     return $data;
 }
+
+1;
