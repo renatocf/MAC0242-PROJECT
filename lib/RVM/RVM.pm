@@ -6,6 +6,10 @@ use v5.14;
 use strict;
 use warnings;
 
+# Packages
+use Overload;
+use Instructions;
+
 #######################################################################
 #                           CONSTRUCTOR                               #
 #######################################################################
@@ -34,23 +38,6 @@ sub new {
         $obj->$key($value) if(defined $value and defined $key->{$value});
     }
     return $obj;
-}
-
-#######################################################################
-#                               METHODS                               #
-#######################################################################
-
-sub PUSH {
-    my $obj = shift;
-    my $data = shift;
-    return $obj->("DATA", $data);
-}
-
-sub POP {
-    my $obj = shift;
-    my $data = $obj->("DATA");
-    my $value = pop @{$data};
-    return $data;
 }
 
 1;
