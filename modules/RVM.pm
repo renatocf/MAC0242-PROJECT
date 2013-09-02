@@ -19,7 +19,7 @@ sub new {
     my $obj = {
         __PACKAGE__ . "::PROG"  => [], # (P) Robot's program
         __PACKAGE__ . "::DATA"  => [], # (P) Main data stack 
-        __PACKAGE__ . "::IR"    => 0,  # (R) Instruction Register
+        __PACKAGE__ . "::PC"    => 0,  # (R) Instruction Register
         __PACKAGE__ . "::RAM"   => [], # (R) Auxiliar data stack
         __PACKAGE__ . "::CTRL"  => [], # (R) Control of callbacks
         __PACKAGE__ . "::LABEL" => {}, # (R) Control of callbacks
