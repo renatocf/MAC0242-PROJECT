@@ -17,12 +17,12 @@ sub new {
     # Each robot virtual machine is composed of several
     # pieces, controlling the execution workflow
     my $obj = {
-        __PACKAGE__ . "::PROG"  => [], # (P) Robot's program
-        __PACKAGE__ . "::DATA"  => [], # (P) Main data stack 
-        __PACKAGE__ . "::PC"    => 0,  # (R) Instruction Register
-        __PACKAGE__ . "::RAM"   => [], # (R) Auxiliar data stack
-        __PACKAGE__ . "::CTRL"  => [], # (R) Control of callbacks
-        __PACKAGE__ . "::LABEL" => {}, # (R) Control of callbacks
+        "PROG"  => [], # (P) Robot's program
+        "DATA"  => [], # (P) Main data stack 
+        "PC"    => 0,  # (R) Instruction Register
+        "RAM"   => [], # (R) Auxiliar data stack
+        "CTRL"  => [], # (R) Control of callbacks
+        "LABEL" => {}, # (R) Control of callbacks
     };
     
     bless($obj, $class);
@@ -30,6 +30,7 @@ sub new {
     {
         # Initialize the robot data
         my ($key, $value) = (shift, shift);
+        $key = __PACKAGE__ . "::$key";
         $obj->$key($value) if(defined $value and defined $key->{$value});
     }
     return $obj;
