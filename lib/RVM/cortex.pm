@@ -2,9 +2,6 @@
 package cortex;
 use v5.14;
 
-# Pragmas
-use strict;
-use warnings;
 
 
 
@@ -30,12 +27,12 @@ open(FILE, '<', "teste.txt") or die('Falha ao abrir o ARQUIVO!');
 
 while (<FILE>)
 {
-   if( s/^[ ]*[\t]*([#].*)?$//)
+   if( s/^[\s]*([#].*)?$//)
    {
 print("-------------------------------\n");
    }
-   elsif( s/^[\s\t]*$//){}
-   elsif( s/^[ ]*[\t]*(?:([A-Za-z]*):)?[ ]*[\t]*(?:([A-Z]+)(?:[ ]+||[\t]+)([0-9]+||[A-Za-z]+))?[ ]*[\t]*([#].*)?$//)
+   elsif( s/^[\s]*$//){}
+   elsif( s/^[\s]*(?:([\w]*):)?[\s]*(?:([A-Z]+)[\s]+([\d]+||[\w]+))?[\s]*([#].*)?$//)
    { 
       $a  = $1;
       $b = $2;
@@ -64,7 +61,7 @@ print("$a, $b, $c");
             $true = 0;
          }
       }
-      if($c !~ m/[0-9]+/ && $true == 0)
+      if($c !~ m/[\d]+/ && $true == 0)
       {
          printf(" Saiiiiii \n");
          $aux = 1;
@@ -78,7 +75,7 @@ print("$a, $b, $c");
             $true2 = 0;
          }
       }
-      if($c !~ m/[A-Za-z]+/ && $true2 == 0)
+      if($c !~ m/[\w]+/ && $true2 == 0)
       {
          print("Eroooooo \n");
          $aux = 1;
@@ -89,13 +86,13 @@ print("$a, $b, $c");
          print("Errandooooooo $a $b $c   \n");
          $aux = 1;
       }
-      elsif(($c =~ m/[0-9]+/ && $true == 0) || ($c =~ m/[A-Za-z]+/ && $true2 == 0) || ($c eq "" && $true1 == 0) )
+      elsif(($c =~ m/[\d]+/ && $true == 0) || ($c =~ m/[\w]+/ && $true2 == 0) || ($c eq "" && $true1 == 0) )
       {
 print("***************\n");
          push(@pilha, [$b, $c, $a]);
       }
    }
-   elsif( s/^[ ]*[\t]*([A-Za-z]*):[ ]*[\t]*$//) 
+   elsif( s/^[ ]*[\t]*([\w]*):[ ]*[\t]*$//) 
    {
       print("Heey\n");
       push(@pilha, ['','',$1]);
