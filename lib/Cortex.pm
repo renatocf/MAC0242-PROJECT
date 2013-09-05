@@ -77,8 +77,7 @@ sub retorno
 				}
 			      	if($argumento !~ m/\w+/ && $true2 == 0)
 			      	{
-					print (" Erro na linha $linha!    O comando '$comando' precisa de 
-					       argumento em forma de PALAVRA (um label)! \n");
+					print(" Erro na linha $linha!    O comando '$comando' precisa de argumento em forma de PALAVRA (um label)! \n");
 				 	$aux = 1;
 			      	}
 
@@ -121,3 +120,4 @@ sub retorno
 
 if(defined retorno)
 { print("CERTINHO! ^^ \n"); }
+print("\n");
