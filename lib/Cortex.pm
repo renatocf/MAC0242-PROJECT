@@ -20,6 +20,7 @@ use warnings;
  my $comando;
  my $argumento;
  my $aux = 0;
+ my $linha = 0;
 
 sub retorno
 {
@@ -27,9 +28,10 @@ sub retorno
 
 	foreach (<FILE>)
 	{
-		when( /^[\s]*([#].*)?$/){}
-		when( /^[\s]*$/){}
-		when( /^[\s]*(?:([\w]*):)?[\s]*(?:([A-Z]+)[\s]+([\d]+||[\w]+))?[\s]*([#].*)?$/)
+		$linha ++;
+		when( /^\s*([#].*)?$/){}
+		when( /^\s*$/){}
+		when( /^\s*(?:(\w*):)?\s*(?:([A-Z]+)\s+(\d+||\w+))?\s*([#].*)?$/)
 		{ 
 			$label = $1;
 			$comando = $2;
@@ -47,7 +49,7 @@ sub retorno
 				}
 				if($argumento ne "" && $true1 == 0)
 				{
-					printf(" Saiiiiii daquiiii \n");
+					printf(" Erro na linha $linha!    O comando '$comando' NÃO precisa de argumento! \n");
 					$aux = 1;
 				}
 		      
@@ -59,9 +61,9 @@ sub retorno
 						$true = 0;
 					}
 				}
-				if($argumento !~ m/[\d]+/ && $true == 0)
+				if($argumento !~ m/\d+/ && $true == 0)
 				{
-					printf(" Saiiiiii \n");
+					printf(" Erro na linha $linha!    O comando '$comando' precisa de argumento NUMÉRICO! \n");
 					$aux = 1;
 				}
 
@@ -73,19 +75,20 @@ sub retorno
 						$true2 = 0;
 					}
 				}
-			      	if($argumento !~ m/[\w]+/ && $true2 == 0)
+			      	if($argumento !~ m/\w+/ && $true2 == 0)
 			      	{
-					print("Eroooooo \n");
+					print (" Erro na linha $linha!    O comando '$comando' precisa de 
+					       argumento em forma de PALAVRA (um label)! \n");
 				 	$aux = 1;
 			      	}
 
 			      	if($true == 1 && $true2 == 1 && $true1 == 1)
 			      	{
-				 	print("Errandooooooo  \n");
+				 	print(" Erro na linha $linha!    O comando '$comando' NÃO existe! \n");
 				 	$aux = 1;
 			      	}
-			      	elsif (($argumento =~ m/[\d]+/ && $true == 0) || 
-				      ($argumento =~ m/[\w]+/ && $true2 == 0) || 
+			      	elsif (($argumento =~ m/\d+/ && $true == 0) || 
+				      ($argumento =~ m/\w+/ && $true2 == 0) || 
 				      ($argumento eq "" && $true1 == 0) )
 			      	{
 				 	push(@pilha, [$comando, $argumento, $label]);
@@ -96,14 +99,9 @@ sub retorno
 			  push(@pilha, [$comando, $argumento, $label]);
 			}
 		}
-		when( /^[ ]*[\t]*([\w]*):[ ]*[\t]*$/) 
-		{
-			print("Heey\n");
-			push(@pilha, ['','',$1]);
-		}
 		default 
 		{
-			print("Código $_ inválido!\n");
+			print(" Erro na linha $linha! \n");
 			$aux = 1;
 		}
 	}
@@ -121,6 +119,5 @@ sub retorno
 
 
 
-
-my @lala = &retorno;
-
+if(defined retorno)
+{ print("CERTINHO! ^^ \n"); }
