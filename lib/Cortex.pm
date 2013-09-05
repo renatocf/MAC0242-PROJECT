@@ -12,11 +12,6 @@ use warnings;
  my @instrucoes2 = ('PUSH', 'STO', 'RCL'); # argumento numérico
  my @instrucoes3 = ('JMP', 'JIT', 'JIF'); # argumento string
 
-# boolenas
- my $true;
- my $true1;
- my $true2;
-
  my $label;
  my $comando;
  my $argumento;
@@ -34,7 +29,7 @@ sub retorno
 		$linha ++;
 		when( /^\s*([#].*)?$/){ }         # linha exclusiva de comentário
 		when( /^\s*$/){ }                 # linha em branco
-		when( /^\s*(?:(\w*):)?\s*(?:([A-Z]+)\s+(\d+||\w+))?\s*([#].*)?$/) 
+		when( /^\s*(?:([A-Za-z]+\w*):)?\s*(?:([A-Z]+)\s+(\w*))?\s*([#].*)?$/) 
 		{ 
 			$label = $1;
 			$comando = $2;
@@ -43,67 +38,47 @@ sub retorno
 		       	if(defined $comando)
 			{
 				# caso algum comando seja passado:
-				$true1 = 1;
-				for( @instrucoes1)
-				{
-					# verificando se o comando é do tipo que não precisa de argumento
-					if( $_ eq $comando)
+				given($comando)
+				{					
+					when( @instrucoes1)
 					{
-						$true1 = 0;
+						if($argumento ne "")
+						{
+							# caso haja um comando que não precisa de argumento, com argumento
+							printf(" Erro na linha $linha!    O comando '$comando' NÃO precisa de argumento! \n");
+							$aux = 1;
+						}
+						else { push(@pilha, [$comando, $argumento, $label]); }
 					}
-				}
-				if($argumento ne "" && $true1 == 0)
-				{
-					# caso haja um comando que não precisa de argumento, com argumento
-					printf(" Erro na linha $linha!    O comando '$comando' NÃO precisa de argumento! \n");
-					$aux = 1;
-				}
-		      
-				$true = 1;
-				for( @instrucoes2)
-				{
-					# verificando se o comando é do tipo que precisa de argumento numérico
-					if( $_ eq $comando)
+					when( @instrucoes2)
 					{
-						$true = 0;
+						if($argumento !~ m/^\d+$/)
+						{
+							# caso haja um comando que precise de argumento numérico e este não seja passado
+							printf(" Erro na linha $linha!    O comando '$comando' precisa de argumento NUMÉRICO! \n");
+							$aux = 1;
+						}
+						else { push(@pilha, [$comando, $argumento, $label]); }
 					}
-				}
-				if($argumento !~ m/\d+/ && $true == 0)
-				{
-					# caso haja um comando que precise de argumento numérico e este não seja passado
-					printf(" Erro na linha $linha!    O comando '$comando' precisa de argumento NUMÉRICO! \n");
-					$aux = 1;
-				}
+					when( @instrucoes3)
+					{
+						if($argumento !~ m/^[A-Za-z]+\w*$/)
+				      		{
+							# caso haja um comando que precise de argumento String e este não seja passado
+							print(" Erro na linha $linha!    O comando '$comando' precisa de argumento em forma de PALAVRA (um label)! \n");
+						 	$aux = 1;
+				      		}
+						else { push(@pilha, [$comando, $argumento, $label]); }
+					}
+				      	
 
-				$true2 = 1;
-				for( @instrucoes3)
-				{
-					# verificando se o comando é do tipo que precisa de argumento String
-					if( $_ eq $comando)
-					{
-						$true2 = 0;
-					}
+				      	default
+				      	{
+						# caso o comando não pertença a nenhum tipo de comando existente
+					 	print(" Erro na linha $linha!    O comando '$comando' NÃO existe! \n");
+					 	$aux = 1;
+				      	}
 				}
-			      	if($argumento !~ m/\w+/ && $true2 == 0)
-			      	{
-					# caso haja um comando que precise de argumento String e este não seja passado
-					print(" Erro na linha $linha!    O comando '$comando' precisa de argumento em forma de PALAVRA (um label)! \n");
-				 	$aux = 1;
-			      	}
-
-			      	if($true == 1 && $true2 == 1 && $true1 == 1)
-			      	{
-					# caso o comando não pertença a nenhum tipo de comando existente
-				 	print(" Erro na linha $linha!    O comando '$comando' NÃO existe! \n");
-				 	$aux = 1;
-			      	}
-			      	elsif (($argumento =~ m/\d+/ && $true == 0) || 
-				      ($argumento =~ m/\w+/ && $true2 == 0) || 
-				      ($argumento eq "" && $true1 == 0) )
-			      	{
-					# caso o comando exista e seja compatível com o seu tipo de argumento
-				 	push(@pilha, [$comando, $argumento, $label]);
-			      	}
 			}
 			else
 			{
