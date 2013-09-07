@@ -48,7 +48,7 @@ sub retorno
 							printf(" Erro na linha $linha!    O comando '$comando' NÃO precisa de argumento! \n");
 							$aux = 1;
 						}
-						else { push(@pilha, [$comando, $argumento, $label]); }
+						else { push(@pilha, [uc $comando, $argumento, $label]); }
 					}
 					when( @instrucoes2)
 					{
@@ -58,7 +58,7 @@ sub retorno
 							printf(" Erro na linha $linha!    O comando '$comando' precisa de argumento NUMÉRICO! \n");
 							$aux = 1;
 						}
-						else { push(@pilha, [$comando, $argumento, $label]); }
+						else { push(@pilha, [uc $comando, $argumento, $label]); }
 					}
 					when( @instrucoes3)
 					{
@@ -68,7 +68,7 @@ sub retorno
 							print(" Erro na linha $linha!    O comando '$comando' precisa de argumento em forma de PALAVRA (um label)! \n");
 						 	$aux = 1;
 				      		}
-						else { push(@pilha, [$comando, $argumento, $label]); }
+						else { push(@pilha, [uc $comando, $argumento, $label]); }
 					}
 				      	
 
@@ -83,7 +83,7 @@ sub retorno
 			else
 			{
 				# caso nenhum comando seja passado - apenas label
-				push(@pilha, [$comando, $argumento, $label]);
+				push(@pilha, [uc $comando, $argumento, $label]);
 			}
 		}
 		default 
