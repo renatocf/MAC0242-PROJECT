@@ -39,9 +39,9 @@ sub JIT
 	}
 	else 
 	{
-		if(defined($$lbl{$arg . ":"}))
+		if(defined($$lbl{$arg}))
 		{
-			$$i = $$lbl{$arg . ":"};
+			$$i = $$lbl{$arg};
 		}
 		else
 		{
@@ -72,9 +72,9 @@ sub JIF
 	}
 	else 
 	{
-		if(defined($$lbl{$arg . ":"}))
+		if(defined($$lbl{$arg}))
 		{
-			$$i = $$lbl{$arg . ":"};
+			$$i = $$lbl{$arg};
 		}
 		else
 		{
