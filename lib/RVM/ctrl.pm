@@ -34,8 +34,10 @@ sub ctrl
   my $arg = 0;
 	my $lbl = $obj->{'LABEL'};
 	my $stack = 0;
+	my $check = $$prog[$$i][0];
 	$$i = 0;
-	while($$prog[$$i][0] ne 'END')
+	$check = 0 unless defined($$prog[$$i][0]);
+	while($check ne 'END')
 	{
 		$f = $$prog[$$i][0];
 		$arg = $$prog[$$i][1];
@@ -63,6 +65,8 @@ sub ctrl
 			print "Não há label com este nome, chefe! Linha $$i\n";
 			last;
 		}
+		$check = $$prog[$$i][0];
+		$check = 0 unless defined($$prog[$$i][0]);
 	}
 
 }
