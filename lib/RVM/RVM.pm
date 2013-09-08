@@ -1,14 +1,11 @@
 #!/usr/bin/perl
 package RVM v1.0.0;
 use v5.14;
+use ctrl;
 
 # Pragmas
 use strict;
 use warnings;
-
-# Packages
-use Overload;
-use Instructions;
 
 #######################################################################
 #                           CONSTRUCTOR                               #
@@ -40,4 +37,8 @@ sub new {
     return $obj;
 }
 
-1;
+#######################################################################
+#                               METHODS                               #
+#######################################################################
+
+return 1;
