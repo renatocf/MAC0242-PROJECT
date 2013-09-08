@@ -6,110 +6,114 @@ use v5.14;
 use strict;
 use warnings;
 
+#######################################################################
+#                        VARIÁVEIS DE PACOTE                          #
+#######################################################################
 
- my @pilha;
- my @instrucoes1 = ('POP', 'DUP', 'ADD', 'SUB', 'MUL', 'DIV', 'EQ', 'GT', 'GE', 'LT', 'LE', 'NE', 'END', 'PRN'); # sem argumento
- my @instrucoes2 = ('PUSH', 'STO', 'RCL'); # argumento numérico
- my @instrucoes3 = ('JMP', 'JIT', 'JIF'); # argumento string
+my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 
+            'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB'); # sem arg
+my @ins2 = ('PUSH', 'RCL', 'STO'); # arg numérico
+my @ins3 = ('JIF', 'JIT', 'JMP'); # arg string
 
- my $label;
- my $comando;
- my $argumento;
+#######################################################################
+#                            CONSTRUTOR                               #
+#######################################################################
 
- my $aux = 0;
- my $linha = 0;
-
-sub retorno
+sub new 
 {
-	# abrindo arquivo
-	open(FILE, '<', "teste.txt") or die('Falha ao abrir o ARQUIVO!');
-
-	foreach (<FILE>)
-	{ 
-		$linha ++;
-		when( /^\s*([#].*)?$/){ }         # linha exclusiva de comentário
-		when( /^\s*$/){ }                 # linha em branco
-		when( /^\s*(?:([A-Za-z]+\w*):)?\s*(?:([A-Z]+)\s+(\w*))?\s*([#].*)?$/) 
-		{ 
-			$label = $1;
-			$comando = $2;
-			$argumento = $3;
-
-		       	if(defined $comando)
-			{
-				# caso algum comando seja passado:
-				given($comando)
-				{					
-					when( @instrucoes1)
-					{
-						if($argumento ne "")
-						{
-							# caso haja um comando que não precisa de argumento, com argumento
-							printf(" Erro na linha $linha!    O comando '$comando' NÃO precisa de argumento! \n");
-							$aux = 1;
-						}
-						else { push(@pilha, [uc $comando, $argumento, $label]); }
-					}
-					when( @instrucoes2)
-					{
-						if($argumento !~ m/^\d+$/)
-						{
-							# caso haja um comando que precise de argumento numérico e este não seja passado
-							printf(" Erro na linha $linha!    O comando '$comando' precisa de argumento NUMÉRICO! \n");
-							$aux = 1;
-						}
-						else { push(@pilha, [uc $comando, $argumento, $label]); }
-					}
-					when( @instrucoes3)
-					{
-						if($argumento !~ m/^[A-Za-z]+\w*$/)
-				      		{
-							# caso haja um comando que precise de argumento String e este não seja passado
-							print(" Erro na linha $linha!    O comando '$comando' precisa de argumento em forma de PALAVRA (um label)! \n");
-						 	$aux = 1;
-				      		}
-						else { push(@pilha, [uc $comando, $argumento, $label]); }
-					}
-				      	
-
-				      	default
-				      	{
-						# caso o comando não pertença a nenhum tipo de comando existente
-					 	print(" Erro na linha $linha!    O comando '$comando' NÃO existe! \n");
-					 	$aux = 1;
-				      	}
-				}
-			}
-			else
-			{
-				# caso nenhum comando seja passado - apenas label
-				push(@pilha, [uc $comando, $argumento, $label]);
-			}
-		}
-		default 
-		{
-			# caso a sintaxe não seja do formato necessário
-			print(" Erro na linha $linha! \n");
-			$aux = 1;
-		}
-	}
-	close(FILE);
-
-	if($aux == 1)
-	{
-		# caso haja erro de sintaxe
-		undef;
-	}
-	else
-	{
-		# caso a sintaxe esteja da forma correta
-		@pilha;
-	}
+    my $invocant = shift;
+    my $class = ref($invocant) || $invocant;
+    return bless {}, $class;
 }
 
+#######################################################################
+#                              MÉTODOS                                #
+#######################################################################
 
+sub parser
+{
+    my ($obj, $file) = @_;        # Objeto e arquivo
+    my (@stack, $line) = ((), 0); # stack e contador de linhas
+    
+    # Abrindo arquivo
+    open(FILE, '<', $file)
+    or die("Falha ao abrir o arquivo $file!");
+
+    foreach(<FILE>)
+    { 
+        chomp; $line++;
+        when(/^\s*#/)                  {} # Linha de comentário
+        when(/^\s*$/)                  {} # Linha em branco
+        when(/^\s*([A-Za-z]\w*):\s*$/) { push @stack, [undef,undef,$1] }
+        when(/^\s*             # Espaços
+                (?:            
+                    ([A-Za-z]  # LABEL: Começa com ao menos uma letra
+                    \w*):      # e pode terminar com dígitos|letras e :
+                )?             
+                \s*            # Espaços
+                (?:            
+                    ([A-Z]+)   # COMANDO
+                    \s+        # Espaço
+                    (\w+)      # ARGUMENTO
+                )?             
+                \s*            # Espaço
+                (?:\#.*)?      # Comentário
+            $/x)
+        { 
+            my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
+
+            # caso algum com seja passado:
+            given($com)
+            {                   
+                when(@ins1) { $err = 1 if($arg ne "");                }
+                when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
+                when(@ins3) { $err = 3 if($arg !~ m/^[A-Za-z]+\w*$/); }
+                default     { $err = 4;                               }
+            }
+            
+            if($err) { &err($line, $err, $com); return undef; } 
+            else     { push @stack, [uc $com, $arg, $lab];     }
+        }
+        
+        # Erro de sintaxe
+        default { &err($line); return undef; } 
+    }
+    close(FILE);
+    
+    # Sem erros, retorne a stack
+    return @stack;
+}
+
+#######################################################################
+#                           MÉTODOS AUXILIARES                        #
+#######################################################################
+
+sub err 
+{
+    my ($line, $err, $com) = @_;
+    
+    select STDERR;
+    print "Erro na linha $line! ";
+    
+    # Erro de sintaxe simples
+    die "Sintaxe: <LABEL:> COMANDO <ARGUMENTO>\n" unless defined $com;
+    
+    # Problema com comandos
+    print "Comando '$com' ";
+    given($err) 
+    {
+        when(1) { say("NÃO precisa de argumento!")          }
+        when(2) { say("precisa de argumento NUMÉRICO!")     }
+        when(3) { say("precisa de uma PALAVRA (um LABEL)!") }
+        when(4) { say("NÃO existe!")                        }
+    }
+} 
+
+__END__
 
 if(defined retorno)
 {   print("CERTINHO! ^^ \n");   }
 
 print("\n");
+
+when(/^\s*(?:([A-Za-z]+\w*):)?\s*(?:([A-Z]+)\s+(\w*))?\s*([#].*)?$/) 
