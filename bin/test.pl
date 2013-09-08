@@ -23,7 +23,7 @@ my $brain = new Cortex;
 my @prog = $brain->parser("$Bin/test.txt");
 
 my $robot = new RVM;
-$robot->{PROG} = \@prog;
+$robot->load_program(\@prog);
 
 say "$robot";   # Imprime para ver se carregou certo
 $robot->ctrl();
