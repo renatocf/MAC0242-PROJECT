@@ -4,7 +4,7 @@ use v5.14;
 
 # Adding modules in @INC
 use FindBin qw($Bin);
-use lib "$Bin/../lib/";
+use lib "$Bin/../lib";
 use lib "$Bin/../lib/RVM";
 
 # Pragmas
@@ -20,7 +20,7 @@ use RVM::RVM;
 #######################################################################
 
 my $brain = new Cortex;
-my @prog = $brain->gen_program("test.txt");
+my @prog = $brain->parser("$Bin/test.txt");
 
 $/ = "\n"; my $i = 1;
 print_prog(\@prog);
