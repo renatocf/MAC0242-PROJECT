@@ -13,7 +13,7 @@ sub PRN
 	my $stack = shift;
 	return $stack - 1 if $stack == 0; #devolve falha de segmentação se a pilha estiver vazia
 	my $data = $obj->{"DATA"};
-	my $txt = pop @$data;  #string a ser impressa
+	my $txt = pop @$data;
 	print $txt . "\n";
 	return $stack - 1;
 }

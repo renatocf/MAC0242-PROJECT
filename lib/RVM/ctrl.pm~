@@ -25,7 +25,7 @@ sub ctrl
 	
 	$f = $$prog[$$i][0];                   #carrega comando
 	$$i = 0;                               #inicia PC
-	$f = "0" unless defined($$prog[$$i][0]); #para evitar uma comparacao invalida no while 
+	$f = 0 unless defined($$prog[$$i][0]); #para evitar uma comparacao invalida no while 
 	
 	# Loop
 	
@@ -57,7 +57,7 @@ sub ctrl
 			last;
 		}
 		$f = $$prog[$$i][0]; #carrega próximo comando
-		$f = "0" unless defined($$prog[$$i][0]);
+		$f = 0 unless defined($$prog[$$i][0]);
 	}
 
 }
