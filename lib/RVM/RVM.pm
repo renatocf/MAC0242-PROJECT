@@ -44,7 +44,7 @@ sub new {
 #                          GETTERS AND SETTERS                        #
 #######################################################################
 
-sub load_program {
+sub upload {
     my $obj = shift;
     $obj->{PROG} = shift;
 } 

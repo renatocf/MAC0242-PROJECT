@@ -30,7 +30,7 @@ sub new
 #                              MÉTODOS                                #
 #######################################################################
 
-sub parser
+sub parse
 {
     my ($obj, $file) = @_;   # Objeto e arquivo
     my @stack; my $line = 0; # stack e contador de linhas
