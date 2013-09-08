@@ -32,8 +32,8 @@ sub new
 
 sub parser
 {
-    my ($obj, $file) = @_;        # Objeto e arquivo
-    my (@stack, $line) = ((), 0); # stack e contador de linhas
+    my ($obj, $file) = @_;   # Objeto e arquivo
+    my @stack; my $line = 0; # stack e contador de linhas
     
     # Abrindo arquivo
     open(FILE, '<', $file)
@@ -53,8 +53,10 @@ sub parser
                 \s*            # Espaços
                 (?:            
                     ([A-Z]+)   # COMANDO
-                    \s+        # Espaço
-                    (\w+)      # ARGUMENTO
+                    (?:
+                        \s+    # Espaço
+                        (\w+)  # ARGUMENTO
+                    )?
                 )?             
                 \s*            # Espaço
                 (?:\#.*)?      # Comentário
@@ -65,7 +67,7 @@ sub parser
             # caso algum com seja passado:
             given($com)
             {                   
-                when(@ins1) { $err = 1 if($arg ne "");                }
+                when(@ins1) { $err = 1 if(defined $arg);              }
                 when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
                 when(@ins3) { $err = 3 if($arg !~ m/^[A-Za-z]+\w*$/); }
                 default     { $err = 4;                               }
@@ -76,7 +78,7 @@ sub parser
         }
         
         # Erro de sintaxe
-        default { &err($line); return undef; } 
+        default { print "no default"; &err($line, $_); return undef; } 
     }
     close(FILE);
     

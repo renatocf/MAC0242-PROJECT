@@ -25,7 +25,27 @@ sub as_string
         $string = sprintf "%-*s => ", 5, $key;
         given(ref $value)
         {
-            when("ARRAY") { $string .= join ", ", @$value }
+            when("ARRAY") 
+            { 
+                my $i = 0;
+                # cada elemento do subarray:
+                for my $t (@$value) 
+                {
+                    # Se ele for um array, o imprimiremos de forma
+                    # especial (um abaixo do outro):
+                    if(ref $t eq "ARRAY") 
+                    { 
+                        # Números com dois dígitos, sempre!
+                        $string .= sprintf("\n\t%0.2d: ", $i++);
+                        for my $element (@$t) { 
+                            # Elementos não definidos não são impressos
+                            $string .= "$element " if defined $element; 
+                        }
+                    }
+                    # Elementos simples
+                    else { $string .= "$t, "; }
+                }
+            }
             when("HASH")  { $string .= print_hash($value) }
             default       { $string .= $value }
         }

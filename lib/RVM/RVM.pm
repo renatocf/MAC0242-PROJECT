@@ -2,6 +2,7 @@
 package RVM v1.0.0;
 use v5.14;
 use ctrl;
+use Overload;
 
 # Pragmas
 use strict;
