@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 package RVM v1.0.0;
 use v5.14;
-use funcoes; #Pacote com implementações das funções de assembly.
+use functions; #Pacote com implementações das funções de assembly.
 
 # Pragmas
 use strict;
