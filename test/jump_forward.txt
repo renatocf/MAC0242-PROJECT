@@ -1,0 +1,6 @@
+     JMP JMP
+END: 
+     PUSH 314159265
+     PRN
+     END
+JMP: JMP END
