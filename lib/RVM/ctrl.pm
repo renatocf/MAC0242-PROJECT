@@ -1,65 +1,69 @@
 #!/usr/bin/perl
 package RVM v1.0.0;
 use v5.14;
-use functions; #Pacote com implementações das funções de assembly.
 
 # Pragmas
 use strict;
 use warnings;
-use Scalar::Util qw(looks_like_number); #Funcao que avalia se um escalar e um numero, ou nao.
+
+# Função que avalia se um escalar e um número, ou não.
+use Scalar::Util qw(looks_like_number); 
+
+# Pacote com implementações das funções de assembly.
+use functions; 
 
 sub ctrl
 {
-        
-    # Variáveis
+    ## VARIÁVEIS ######################################################
+    my $obj = shift;             # Carrega objeto
     
-    my $obj = shift;
-    my $prog = $obj->{'PROG'}; 
-    my $i = \$obj->{'PC'};
-    my $f = 0;                      #escalar que guarda o nome do comando
-    my $arg = 0;                    #escalar que guarda o argumento do comando
-    my $lbl = $obj->{'LABEL'};
-    my $stack = 0;                  #controle da pilha
+    my $i    = \$obj->{'PC'};    # Alias para o registrador
+    my $lbl  =  $obj->{'LABEL'}; # Alias para os lABELs
+    my $prog =  $obj->{'PROG'};  # Alias para o vetor de programas
     
-    # Preparação para o loop
+    my $f = 0;                   # Escalar para o nome do comando
+    my $arg = 0;                 # Escalar para o argumento do comando
+    my $stack = 0;               # Controle da pilha
     
-    $f = $$prog[$$i][0];                     #carrega comando
-    $$i = 0;                                 #inicia PC
-    $f = "0" unless defined($$prog[$$i][0]); #para evitar uma comparacao invalida no while 
+    ## CARREGA LABELS #################################################
     
-    # Loop
-    
-    while($f ne 'END')
+    $$i = 0; # Zera contador de linhas
+    for my $code (@$prog) 
     {
-        $arg = $$prog[$$i][1];                                  #carrega argumento
-        $$lbl{$$prog[$$i][2]} = $$i if defined($$prog[$$i][2]); #carrega label
-        $$i++;                                                  #incrementa PC
-        if($f ne "0")
-        {
-            $stack = $obj->$f($arg, $stack);  #Chama funcao
-        }
-        
-        if($stack == -1)
-        {
-            print "Falha de segmentação, chefe! Linha $$i\n";
-            last;
-        }
-        
-        if($stack == -2)
-        {
-            print "Operacao invalida, chefe! Linha $$i\n";
-            last;
-        }
-        
-        if($stack == -3)
-        {
-            print "Não há label com este nome, chefe! Linha $$i\n";
-            last;
-        }
-        $f = $$prog[$$i][0]; #carrega próximo comando
-        $f = "0" unless defined($$prog[$$i][0]);
+        # Carrega labels e transforma linhas 
+        # só de labels em linhas com a string "0"
+        $code->[0] = "0" unless defined($code->[0]);
+        $$lbl{$code->[2]} = $$i if defined($code->[2]); $$i++;
     }
-
+    
+    ## EXECUTA CÓDIGOS ################################################
+    $f = $$prog[0][0]; # Carrega primeiro comando
+    $$i = 0; 
+    
+    while($f ne 'END') # Incrementa PC
+    {
+        $arg = $$prog[$$i][1];       # Carrega argumento
+        my $line = $$i+1; $$i++;     # Incrementa PC
+        
+        if($f ne "0")
+        { $stack = $obj->$f($arg, $stack); } # Chama função
+        
+        # Tratamento de erros com o retorno da função
+        given($stack) 
+        {        
+            when(-1) 
+            { die "Falha de segmentação, chefe! Linha $line\n";       }
+            
+            when(-2) 
+            { die "Operacao invalida, chefe! Linha $line\n";          }
+            
+            when(-3) 
+            { die "Não há label com este nome, chefe! Linha $line\n"; }
+            
+            default
+            { $f = $$prog[$$i][0]; } # Carrega próximo comando
+        }
+    } # while 
 }
 
 return 1;
