@@ -12,8 +12,8 @@ use warnings;
 
 my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB'); # sem arg
-my @ins2 = ('PUSH', 'RCL', 'STO'); # arg numérico
-my @ins3 = ('JIF', 'JIT', 'JMP'); # arg string
+my @ins2 = ('PUSH', 'RCL', 'STO', 'JMP', 'JIF', 'JIT'); # arg numérico
+my @ins3 = ('JIF', 'JIT'); # arg string
 
 #######################################################################
 #                            CONSTRUTOR                               #
