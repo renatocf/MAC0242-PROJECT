@@ -13,10 +13,10 @@ sub JMP
 	my $stack = shift;
 	my $i = \$obj->{'PC'};
 	my $prog = $obj->{'PROG'};
-	$$i += $arg;     #Acrescenta o argumento no PC
+	$$i = $arg;     #Atribui o argumento no PC
 	
 	#Devolve Falha de segmentacao, caso pule para um indice que nao existe
-	$$i -= $arg and return -1 unless defined($$prog[$$i]); 
+	return -1 unless defined($$prog[$$i]); 
 	
 	return $stack;	
 }
