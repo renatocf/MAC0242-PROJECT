@@ -12,8 +12,34 @@ sub JMP
 	my $arg = shift;
 	my $stack = shift;
 	my $i = \$obj->{'PC'};
+	my $j; #Variavel que lembra o PC se houver erro
+	my $data = $obj->{"DATA"};
+	my $lbl = $obj->{'LABEL'}; 
 	my $prog = $obj->{'PROG'};
-	$$i = $arg;     #Atribui o argumento no PC
+    
+	#Caso o usuario informe a linha numericamente
+	
+	if(looks_like_number($arg)) 
+	{
+		$j = $$i;
+		$$i = $arg;
+		#Devolve falha de segmentação caso pule para uma linha inexistente 
+		$$i = $j and return -1 unless defined($$prog[$$i]);  
+	}
+	
+	#Caso o usuário informe um label
+	
+	else 
+	{
+		if(defined($$lbl{$arg}))
+		{
+			$$i = $$lbl{$arg};
+		}
+		else
+		{
+			return -3; #Se não houver o label informado ele devolve um erro
+		}
+	}
 	
 	#Devolve Falha de segmentacao, caso pule para um indice que nao existe
 	return -1 unless defined($$prog[$$i]); 
