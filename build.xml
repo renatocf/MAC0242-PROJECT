@@ -98,6 +98,8 @@
         </jar>
         <echo>.jar Build Completed Successfully</echo>
     </target>
+
+    <target name="all" depends="dist" />
     
     <!-- 
     ===================================================================
