@@ -32,7 +32,7 @@
 \author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
 \date   {}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -40,9 +40,10 @@
 
 \section{Introdução} \label{sec:introdução}
 
-    Nesta fase inicial, o projeto consiste em criar um leitor e interpretador 
-    de comandos em linguegem de máquina. O principal objetivo destes é servir
-    como núcleo da futura classe responsável pelos robôs.
+    Nesta fase inicial, o projeto consiste em criar um leitor e 
+    interpretador de comandos em linguegem de máquina. O principal 
+    objetivo destes é servir como núcleo da futura classe responsável 
+    pelos robôs.
     
     \subsection{Projeto}
     
@@ -60,9 +61,9 @@
     
     \subsection{Estrutura}
       
-        Para informações sobre o uso de programa e os seus desenvolvedores,
-        consultar os arquivos \href{run:../README.md}{\texttt{README.md}} e
-        \href{run:../LICENSE}{\texttt{LICENSE}}.
+        Para informações sobre o uso de programa e os seus 
+        desenvolvedores, consultar os arquivos \href{run:../README.md}
+        {\texttt{README.md}} e \href{run:../LICENSE}{\texttt{LICENSE}}.
         
         O programa consiste de três partes principais:
         \begin{itemize}
@@ -73,45 +74,48 @@
     
     \subsection{Emulador}
     
-        O emulador é a parte mais simples do programa, e consiste de um 
-        arquivo do tipo \texttt{.pl} nomeado \href{run:../bin/robots.pl}
-        {\texttt{robots.pl}} na pasta \texttt{bin/}. Para executá-lo, 
-        basta rodar o programa passando como parâmetro na linha de comando 
-        um arquivo (de extensão qualquer) com o assembly válido. 
+        O emulador é a parte mais simples do programa, e consiste de 
+        um arquivo do tipo \texttt{.pl} nomeado 
+        \href{run:../bin/robots.pl}{\texttt{robots.pl}} na pasta
+        \texttt{bin/}. Para executá-lo, basta rodar o programa 
+        passando como parâmetro na linha de comando um arquivo (de 
+        extensão qualquer) com o assembly válido. 
         
-        Caso haja erro de compilação, o programa será encerrado antes da
-        execução de qualquer comando. Caso o erro seja lógido 
+        Caso haja erro de compilação, o programa será encerrado antes 
+        da execução de qualquer comando. Caso o erro seja lógido 
         (\emph{runtime}), os erros serão impressos na saída de erros 
         (STDERR) no próprio prompt de comando.
 
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Montador} \label{sec:montador}
 
-    O montador tem como função ler o programa em texto (que será passado pelo
-    usuário), ver se ele está formatado de maneira correta e em caso positivo,
-    é criada uma matriz 3 x n, sendo n o número de comandos, que será
-    passada para a Máquina Virtual.
+    O montador tem como função ler o programa em texto (que será 
+    passado pelo usuário), ver se ele está formatado de maneira 
+    correta e em caso positivo, é criada uma matriz 3 x n, sendo $n$ 
+    o número de comandos, que será passada para a Máquina Virtual.
     
-    O arquivo com o montador está no diretório de bibliotecas \texttt{lib/}
-    e é chamado \href{run:../lib/Cortex.pm}{\texttt{Cortex.pm}}
+    O arquivo com o montador está no diretório de bibliotecas 
+    \texttt{lib/} e é chamado \href{run:../lib/Cortex.pm}
+    {\texttt{Cortex.pm}}
     
     \bigskip\bigskip
     
-    No caso, as linhas do programa de entrada terão que seguir o seguinte
-    padrão:
+    No caso, as linhas do programa de entrada terão que seguir o 
+    seguinte padrão:
 
     \begin{center}
         \textbf{[ Comando, Argumento, Label ]}
     \end{center}
     
-    O montador devolverá erro em caso de comandos que não sejam compatíveis 
-    com seus respectivos tipos de argumentos. No caso da entrada ser: 
+    O montador devolverá erro em caso de comandos que não sejam 
+    compatíveis com seus respectivos tipos de argumentos. No caso da
+    entrada ser: 
     
     \begin{description}
     [leftmargin=!,labelwidth=\widthof{\bfseries The longest label}]
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         \item [\textbf{\textcolor{red}{x}} "ADD Olá"] 
         O comando ADD não deveria receber argumentos, e como não é o 
@@ -120,7 +124,7 @@
         \item [\textcolor{green}{\checkmark} "ADD"] 
         Este seria o correto.
         
-        \item[] %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \item[] %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         \item [\textbf{\textcolor{red}{x}} "PUSH Oie!"] 
         O comando PUSH deveria receber argumentos numéricos, e como não é 
@@ -129,7 +133,7 @@
         \item [\textcolor{green}{\checkmark} "PUSH 100"] 
         Este seria o correto.
         
-        \item[] %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \item[] %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         \item [\textbf{\textcolor{red}{x}} "JIF 5uvas"] 
         O comando JIF deveria receber argumentos em forma de texto (pode
@@ -139,30 +143,31 @@
         \item [\textcolor{green}{\checkmark} "JIF uvas5"] 
         Este seria o correto.
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     \end{description}
 
     \bigskip\bigskip
 
-    Segue a tabela com os argumentos necessários para cada tipo de comando:
+    Segue a tabela com os argumentos necessários para cada tipo de 
+    comando:
     
     \begin{center}
       \begin{tabular}{|c|l|rc|}
-          Vazio     &  ADD - DIV - DUP - END - EQ - GE - GT - LE - LT - 
-                       MUL - NE - POP - PRN - SUB             \\
+          Vazio     &  ADD - DIV - DUP - END - EQ - GE - GT - 
+                       LE - LT - MUL - NE - POP - PRN - SUB   \\
           Numérico  &  PUSH - RCL - STO - JMP - JIT - JIF     \\
           String    &  JIF - JIT                              \\
       \end{tabular}
     \end{center}  
     
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 \section{Máquina Virtual} \label{sec:maquina_virtual}
     
-    A máquina virtual (RVM, \emph{Robot Virtual Machine}, consiste em um 
-    conjunto de módulos localizados no diretório lib/RVM que integram o 
-    pacote/classe RVM. 
+    A máquina virtual (RVM, \emph{Robot Virtual Machine}, consiste em 
+    um conjunto de módulos localizados no diretório lib/RVM que integram 
+    o pacote/classe RVM. 
     
     Os arquivos do módulo são:
     \begin{itemize}
@@ -180,20 +185,20 @@
     
     \subsection{RVM.pm}
         
-        A \emph{Robot Virtual Machine} (\textbf{RVM}) é o pacote principal
-        que controla o 'cérebro' dos robôs, servindo como o interpretador
-        para o formato criado pelo montador. Cada instância da classe RVM
-        possui os seguintes atributos:
+        A \emph{Robot Virtual Machine} (\textbf{RVM}) é o pacote 
+        principal que controla o 'cérebro' dos robôs, servindo como o
+        interpretador para o formato criado pelo montador. Cada 
+        instância da classe RVM possui os seguintes atributos:
         
         \begin{itemize}
             
             \item PROG:  Vetor com os comandos do programa, conforme
                          o formato criado pelo montador;
-            \item DATA:  Vetor com a pilha principal de memória, no qual
-                         serão armazenados os dados colocados com comandos
-                         de manipulação da pilha;
-            \item PC:    Registrador para a posição atual de execução dos
-                         comandos dentro do vetor PROG;
+            \item DATA:  Vetor com a pilha principal de memória, no 
+                         qual serão armazenados os dados colocados 
+                         com comandos de manipulação da pilha;
+            \item PC:    Registrador para a posição atual de execução 
+                         dos comandos dentro do vetor PROG;
             \item RAM:   Memória auxiliar, a ser utilizada para funções;
             \item CTRL:  Vetor de controle dos retornos das funções 
                          (callbacks);
@@ -210,8 +215,8 @@
         
         Módulo auxiliar que faz parte da classe da RVM. Sua principal
         função é fornecer a sobrecarga do operador \emph{double quote}
-        (\textbf{qq//} ou \textbf{"}), de modo a possibilitar a impressão
-        dos valores armazenados dentro da RVM.
+        (\textbf{qq//} ou \textbf{"}), de modo a possibilitar a 
+        impressão dos valores armazenados dentro da RVM.
     
     \subsection{ctrl.pm}
     
@@ -219,11 +224,11 @@
         por realizar a execução do programa armazenado no atributo 
         \textbf{PROG} do objeto da classe RVM. 
         
-        Começando da posição 0, a cada posição de PROG realiza a chamada d
-        a função correspondente, usando os argumentos (se disponíveis ou
-        necessários). Nesse processo, atualiza o PC (registrador de posição)
-        para realizar a atualização necessária (avançar para o próximo 
-        comando ou fazer um desvio).
+        Começando da posição 0, a cada posição de PROG realiza a 
+        chamada da função correspondente, usando os argumentos (se 
+        disponíveis ou necessários). Nesse processo, atualiza o PC 
+        (registrador de posição) para realizar a atualização 
+        necessária (avançar para o próximo comando ou fazer um desvio).
         
         Quando a função retorna um erro, lança uma exceção (erro de 
         \emph{runtime}), que pode ser de 3 tipos:
@@ -242,7 +247,7 @@
                                         não foi definido.
                                         
         \end{itemize}
-    
+        
     \subsection{functions.pm}
         
         Módulo auxiliar que reúne as funções criadas em outros módulos 
@@ -263,11 +268,12 @@
         O f\_arit.pm contém as funções aritméticas que o programa deve
         executar, como a soma, subtração, multiplicação e divisão.
         
-        Ele desempilha o último e penúltimo valores a partir do topo da
-        pilha de dados. Caso não existam dois valores, a função lança
-        uma exceção.
+        Ele desempilha o último e penúltimo valores a partir do topo 
+        da pilha de dados. Caso não existam dois valores, a função 
+        lança uma exceção.
         
-        \textbf{Observação}: As 4 operações funcionam de maneira análoga.        
+        \textbf{Observação}: As 4 operações funcionam de maneira
+        análoga.        
         
     \subsection{f\_io.pm}
         
