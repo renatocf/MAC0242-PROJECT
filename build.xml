@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="MAC0242-Project" default="dist" basedir=".">
+    <description>
+        A Real Time Strategy game - with Robots
+    </description>
+
+    <!-- 
+    ===================================================================
+    ==                         PROJECT INFO                          ==
+    ===================================================================
+    -->
+    <property name  = "mf.created.by"   value = 
+        "Karina Suemi, Renato Cordeiro, Vinicius Silva"   />
+    <property name  = "mf.spec.title"   value = "Project" />
+    <property name  = "mf.spec.vendor"  value = "MAC0242" />
+    <property name  = "mf.impl.title"   value = "MAC0242" />
+    <property name  = "mf.impl.vertion" value = "MAC0242" />
+    
+    <!-- 
+    ===================================================================
+    ==                      DIRECTORY STRUCTURE                      ==
+    ===================================================================
+    -->
+    
+    <property name="bin.dir"           location="bin"    />
+    <property name="src.dir"           location="src"    />
+    <property name="dist.dir"          location="dist"   />
+    <property name="build.dir"         location="build"  />
+    <property name="build.classes.dir" location="${build.dir}/classes"/>
+
+    <!-- 
+    ===================================================================
+    ==                             USAGE                             ==
+    ===================================================================
+    -->
+    <target name="usage"> 
+        <echo>  Execute 'ant -projecthelp' for build file help.</echo> 
+        <echo>  Execute 'ant -help' for Ant help.</echo>
+    </target> 
+    
+    <!-- 
+    ===================================================================
+    ==                           MANIFEST                            ==
+    ===================================================================
+    -->
+
+    <!-- Create MANIFEST.MF file for .jar -->
+    <target name="manifest">
+        <echo>Creating MANIFEST.MF file</echo>
+        <manifest file="${build.dir}/MANIFEST.MF">
+            <attribute name="Built-By" value="${user.name}"/>
+            <attribute name="Created-By" value="${mf.created.by}"/>
+            <section name="common">
+                <attribute name  = "Specification-Title"
+                           value = "${mf.spec.title}"       />
+                <attribute name  = "Specification-Vendor"
+                           value = "${mf.spec.vendor}"      />
+                <attribute name  = "Implementation-Tytle"
+                           value = "${mf.impl.title}"       />
+                <attribute name  = "Implementation-Vertion"  
+                           value = "${mf.impl.vertion}"     />
+            </section>
+        </manifest>
+        <echo>MANIFEST.MF Created Successfully</echo>
+    </target>
+
+    <!-- 
+    ===================================================================
+    ==                            BUILD                              ==
+    ===================================================================
+    -->
+    <!-- Creating directories for build -->
+    <target name="init">
+        <tstamp>
+            <format property="DATE" pattern="yyyy.MM.dd" locale="pt,BR"/> 
+        </tstamp>
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${build.classes.dir}" />
+    </target>
+    
+    <!-- Compile messages and rules -->
+    <target name="compile" depends="init">
+        <echo>Starting the compilation process</echo>
+        <javac destdir = "${build.classes.dir}"
+               srcdir  = "${src.dir}"
+               includeAntRuntime = "no"
+        />
+        <echo>Compilation Completed Successfully</echo>
+    </target>
+    
+    <!-- Compressing files and saving .jar in dist bin -->
+    <target name="dist" depends="compile,manifest">
+        <echo>Building .jar file</echo>
+        <jar destfile="${dist.dir}/${ant.project.name}-${DATE}.jar" 
+             basedir="${build.classes.dir}" 
+             manifest="${build.dir}/MANIFEST.MF">
+        </jar>
+        <echo>.jar Build Completed Successfully</echo>
+    </target>
+    
+    <!-- 
+    ===================================================================
+    ==                            CLEAN                              ==
+    ===================================================================
+    -->
+    <target name="clean">
+        <delete dir="${dist.dir}" />
+        <delete dir="${build.dir}" />
+    </target>
+
+</project>
