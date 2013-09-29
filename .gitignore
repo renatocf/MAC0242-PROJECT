@@ -38,3 +38,10 @@ dist/
 .metadata/
 .project
 .settings/
+
+####################
+# LaTex .gitignore #
+####################
+*.log
+*.aux
+*.out
