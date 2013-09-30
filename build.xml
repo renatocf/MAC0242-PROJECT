@@ -15,6 +15,7 @@
     <property name  = "mf.spec.vendor"  value = "MAC0242" />
     <property name  = "mf.impl.title"   value = "MAC0242" />
     <property name  = "mf.impl.vertion" value = "MAC0242" />
+    <property name  = "mf.main.class"   value = "Main"    />
     
     <!-- 
     ===================================================================
@@ -50,6 +51,7 @@
         <manifest file="${build.dir}/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Created-By" value="${mf.created.by}"/>
+            <attribute name="Main-Class" value = "${mf.main.class}"/>
             <section name="common">
                 <attribute name  = "Specification-Title"
                            value = "${mf.spec.title}"       />
@@ -92,7 +94,7 @@
     <!-- Compressing files and saving .jar in dist bin -->
     <target name="dist" depends="compile,manifest">
         <echo>Building .jar file</echo>
-        <jar destfile="${dist.dir}/${ant.project.name}-${DATE}.jar" 
+        <jar destfile="${dist.dir}/${ant.project.name}.jar" 
              basedir="${build.classes.dir}" 
              manifest="${build.dir}/MANIFEST.MF">
         </jar>
