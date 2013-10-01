@@ -1,4 +1,6 @@
 package stackable;
+
+// Default packages
 import java.lang.Exception;
 
 public class Stack
@@ -6,7 +8,7 @@ public class Stack
     private int size = 20, top = 0;
     private Stackable[] vector = new Stackable[size];
     
-    void dobravector()
+    void doubleVector()
     {
         Stackable vectorAux[] = new Stackable[this.size];
         this.size *= 2;
@@ -33,7 +35,7 @@ public class Stack
 
         if(this.top > this.size/2)
         {
-            this.dobravector();
+            this.doubleVector();
         }
     }
 
@@ -44,7 +46,6 @@ public class Stack
             this.top--;
             return this.vector[this.top];
         }
-        /* return null; */
         throw new StackUnderflowException();
     }
 }
