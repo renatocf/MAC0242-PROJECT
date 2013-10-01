@@ -108,14 +108,16 @@
     
     <!-- 
     ===================================================================
-    ==                           JAVADOC                             ==
+    ==                         DOCUMENTATION                         ==
     ===================================================================
     -->
     <!-- Generate javadocs for current project into ${doc.dir} -->
-    <target name="doc" depends="init">
+    <target name="javadoc" depends="init">
         <description>generate documentation</description>
         <javadoc sourcepath="${src.dir}" destdir="${doc.javadoc.dir}"/>
     </target>
+
+    <target name="doc" depends="javadoc" />
     
     <!-- 
     ===================================================================
