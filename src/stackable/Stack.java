@@ -1,7 +1,7 @@
 package stackable;
 
-// Default packages
-import java.lang.Exception;
+// Libraries
+import exception.*;
 
 public class Stack
 {
