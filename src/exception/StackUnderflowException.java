@@ -1,4 +1,4 @@
-package stackable;
+package exception;
 
 /**
  * Exception used inside Stack for indicating Stack Underflow.
