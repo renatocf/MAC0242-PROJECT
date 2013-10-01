@@ -4,8 +4,10 @@ package robot;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.lang.reflect.Method;
 
 // Libraries
+import robot.*;
 import exception.*;
 import stackable.*;
 
@@ -16,11 +18,13 @@ import stackable.*;
 public class RVM 
 {
     Vector  <Command>   PROG;
-    Vector  <Stackable> DATA = new Vector <Stackable>();
+    Stack   DATA = new Stack();
     Vector  <Stackable> RAM  = new Vector <Stackable>();
     Vector  <Integer>   CTRL = new Vector <Integer>  ();
     HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
     int PC = 0;
+    
+    Function asm = new Function(DATA);
     
     /**
      * Class constructor specifying a 'program' (vector of
@@ -29,7 +33,10 @@ public class RVM
      * @param PROG    Vector of objects of the class Command
      * @see   Command 
      */
-    public RVM(Vector <Command> PROG) { this.PROG = PROG; }
+    public RVM(Vector <Command> PROG) 
+    { 
+        this.PROG = PROG; 
+    }
     
     /**
      * Setter method created to upload a new 'program' (vector
@@ -51,6 +58,7 @@ public class RVM
     public void ctrl() 
         throws SegmentationFaultException, 
                InvalidOperationException, 
+               StackUnderflowException,
                NoLabelFoundException
     {
         int stack = 0;
@@ -58,14 +66,15 @@ public class RVM
         //##############################################################
         //##                    CARREGA LABELS                        ##
         //##############################################################
-        /* this.PC = 0; // Zera contador */
-        // TODO: zerar os campos
-        //for(this.PC = 0)
-        //{
-        //    // Carrega labels e transforma linhas 
-        //    // só de labels em linhas com a string "0"
-        //}
-        /* (this.PROG) */
+        Command c = this.PROG.elementAt(0);
+        for(int i = 0; c != null; i++)
+        {
+            // Carrega labels e transforma linhas 
+            // só de labels em linhas com a string "0"
+            if(c.getLabel() != null) 
+                this.LABEL.put(c.getLabel(), i);
+            c = this.PROG.elementAt(i+1);
+        }
         
         //##############################################################
         //##                    EXECUTA CÓDIGOS                       ##
@@ -81,12 +90,8 @@ public class RVM
             Stackable arg = com.getAttribute(); // Carrega argumento
             int line = ++this.PC;
             
-            if(!function.equals("0"))
-            {
-                //TODO: chamar funções a partir 
-                //      da string
-                //stack = function()
-            }
+            // Call function
+            if(!function.equals("0")) { asm.call(function, arg); }
             
             switch(stack) // Exceptions
             {
@@ -99,4 +104,11 @@ public class RVM
             }
         }//while
     }
+    
+    
+    //##############################################################
+    //##                       ASSEMBLY                           ##
+    //##############################################################
+    
+    void ADD() { System.out.println("Adicionou"); }
 }
