@@ -25,8 +25,10 @@
     
     <property name="bin.dir"           location="bin"    />
     <property name="src.dir"           location="src"    />
+    <property name="doc.dir"           location="doc"    />
     <property name="dist.dir"          location="dist"   />
     <property name="build.dir"         location="build"  />
+    <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
 
     <!-- 
@@ -78,6 +80,7 @@
         </tstamp>
         <mkdir dir="${dist.dir}" />
         <mkdir dir="${build.dir}" />
+        <mkdir dir="${doc.javadoc.dir}" />
         <mkdir dir="${build.classes.dir}" />
     </target>
     
@@ -102,6 +105,17 @@
     </target>
 
     <target name="all" depends="dist" />
+    
+    <!-- 
+    ===================================================================
+    ==                           JAVADOC                             ==
+    ===================================================================
+    -->
+    <!-- Generate javadocs for current project into ${doc.dir} -->
+    <target name="doc" depends="init">
+        <description>generate documentation</description>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.javadoc.dir}"/>
+    </target>
     
     <!-- 
     ===================================================================
