@@ -28,7 +28,10 @@ build/
 dist/
 *.class
 
-# Package Files #
+# Javadoc
+doc/javadoc/
+
+# Package Files
 *.jar
 *.war
 *.ear
