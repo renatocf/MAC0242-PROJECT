@@ -51,21 +51,6 @@ public class Function
     }
     
     //##############################################################
-    //##                      IO FUNCTIONS                       ###
-    //##############################################################
-    void PRN()
-    {
-        try
-        {
-            System.out.println(DATA.pop());
-        }
-        catch (Exception e)
-        {
-            System.out.println("Empty stack!");
-        }
-    }
-    
-    //##############################################################
     //##                  ARITHMETIC FUNCTIONS                   ###
     //##############################################################
     void ADD() throws WrongTypeException,
