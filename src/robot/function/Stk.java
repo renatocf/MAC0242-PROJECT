@@ -5,7 +5,7 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions class Stk.
+ * Assembly functions - class Stk.
  * Provides the funcions for manipulating 
  * the main stack of the virtual machine.
  * 
