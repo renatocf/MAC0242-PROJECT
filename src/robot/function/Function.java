@@ -10,8 +10,9 @@ public class Function
     private Stack DATA;
     private Vector <Stackable> RAM;
     
-    private IO  io  = new IO (DATA);
-    private Stk stk = new Stk(DATA);
+    private IO   io   = new IO   (DATA);
+    private Stk  stk  = new Stk  (DATA);
+    private Arit arit = new Arit (DATA);
     
     Function(Stack stack, Vector <Stackable> ram)
     {
@@ -38,11 +39,11 @@ public class Function
         else if(met.equals("DUP" )) { stk.DUP ();    }
         
         // Arithmetic functions
-        else if(met.equals("ADD" )) { ADD ();    }
-        else if(met.equals("SUB" )) { SUB ();    }
-        else if(met.equals("MUL" )) { MUL ();    }
-        else if(met.equals("DIV" )) { DIV ();    }
-        else if(met.equals("MOD" )) { MOD ();    }
+        else if(met.equals("ADD" )) { arit.ADD ();    }
+        else if(met.equals("SUB" )) { arit.SUB ();    }
+        else if(met.equals("MUL" )) { arit.MUL ();    }
+        else if(met.equals("DIV" )) { arit.DIV ();    }
+        else if(met.equals("MOD" )) { arit.MOD ();    }
         
         // Memory functions
         else if(met.equals("STO" )) { STO (arg); }
