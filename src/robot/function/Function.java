@@ -63,26 +63,6 @@ public class Function
             System.out.println("Empty stack!");
         }
     }
-
-    //##############################################################
-    //##                     STACK FUNCTIONS                     ###
-    //##############################################################
-    void PUSH(Stackable st)
-    {
-        DATA.push(st);
-    }
-    
-    Stackable POP() throws StackUnderflowException
-    {
-        return DATA.pop();
-    }
-    
-    void DUP() throws StackUnderflowException
-    {
-      Stackable st = DATA.pop(); 
-      DATA.push(st);
-      DATA.push(st);
-    }
     
     //##############################################################
     //##                  ARITHMETIC FUNCTIONS                   ###
