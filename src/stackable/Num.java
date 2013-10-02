@@ -2,13 +2,26 @@ package stackable;
 
 public class Num implements Stackable
 {
-    private final Number num;
+    private final double num;
     
-    public Num(Number num)
+    public Num(double num)
     {
         this.num = num;
     }
+    
+    public boolean looksLikeInteger()
+    {
+      if(this.num % 1 == 0.0)
+        return true;
+        return false;
+    }
+       
+    public boolean looksLikeNumber()
+    {
+      
+      return true;
+    }
 
-    public Number getNumber() { return this.num; }
-    public String toString()  { return this.num.toString(); }
+    public double getNumber() { return this.num; }
+    public String toString()  { return String.valueOf(this.num); }
 }

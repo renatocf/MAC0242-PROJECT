@@ -24,7 +24,7 @@ public class RVM
     HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
     int PC = 0;
     
-    Function asm = new Function(DATA);
+    Function asm = new Function(DATA, RAM);
     
     /**
      * Class constructor specifying a 'program' (vector of
@@ -59,7 +59,9 @@ public class RVM
         throws SegmentationFaultException, 
                InvalidOperationException, 
                StackUnderflowException,
-               NoLabelFoundException
+               NoLabelFoundException,
+               OutOfBoundsException,
+               WrongTypeException
     {
         int stack = 0;
         
@@ -104,11 +106,4 @@ public class RVM
             }
         }//while
     }
-    
-    
-    //##############################################################
-    //##                       ASSEMBLY                           ##
-    //##############################################################
-    
-    void ADD() { System.out.println("Adicionou"); }
 }
