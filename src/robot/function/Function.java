@@ -1,4 +1,4 @@
-package robot;
+package robot.function;
 
 import java.util.Vector;
 import stackable.*;
@@ -6,15 +6,21 @@ import exception.*;
 
 public class Function
 {
-    private int PC;
+    private int PC = 0;
     private Stack DATA;
     private Vector <Stackable> RAM;
     
+    private Stk stk = new Stk(DATA);
+    
     Function(Stack stack, Vector <Stackable> ram)
     {
-        this.PC = pc;
         this.DATA = stack;
         this.RAM  = ram;
+    }
+    
+    Function(Stack stack, Vector <Stackable> ram, int pc)
+    {
+        this(stack, ram); this.PC = pc;
     }
     
     void call(String met, Stackable arg) 
@@ -26,9 +32,9 @@ public class Function
         if(met.equals("PRN" )) { PRN ();    }
         
         // Stack functions
-        else if(met.equals("POP" )) { POP ();    }
-        else if(met.equals("PUSH")) { PUSH(arg); }
-        else if(met.equals("DUP" )) { DUP ();    }
+        else if(met.equals("POP" )) { stk.POP ();    }
+        else if(met.equals("PUSH")) { stk.PUSH(arg); }
+        else if(met.equals("DUP" )) { stk.DUP ();    }
         
         // Arithmetic functions
         else if(met.equals("ADD" )) { ADD ();    }
@@ -38,8 +44,8 @@ public class Function
         else if(met.equals("MOD" )) { MOD ();    }
         
         // Memory functions
-        else if(met.equals("STO" )) { STO ();    }
-        else if(met.equals("RCL" )) { RCL ();    }
+        else if(met.equals("STO" )) { STO (arg); }
+        else if(met.equals("RCL" )) { RCL (arg); }
               // ???? Temos que passar o endereço como int, mas ele é do tipo Stackable
     }
     
@@ -166,18 +172,32 @@ public class Function
     //##                      MEMORY FUNCTIONS                   ###
     //##############################################################
     
-    void STO(int position)
+    void STO(Stackable position)
         throws OutOfBoundsException,
                StackUnderflowException
     {
-        RAM.set(position, DATA.pop());
+        int pos;
+        if(position.looksLikeNumber())
+        {
+            Num num = (Num) position;
+            pos = (int) num.getNumber();
+        }
+        else throw new StackUnderflowException();
+        RAM.set(pos, DATA.pop());
     }
     
-    void RCL(int position) 
+    void RCL(Stackable position) 
         throws OutOfBoundsException,
                StackUnderflowException
     {
-        DATA.push(RAM.get(position));
+        int pos;
+        if(position.looksLikeNumber()) 
+        {
+            Num num = (Num) position;
+            pos = (int) num.getNumber();
+        }
+        else throw new StackUnderflowException();
+        DATA.push(RAM.get(pos));
     }
     
     
@@ -195,8 +215,7 @@ public class Function
         Stackable arg2 = DATA.pop();
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() == num2.getNumber())
             {
                DATA.push(yes);
@@ -219,8 +238,7 @@ public class Function
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() < num2.getNumber())
             {
                 DATA.push(yes);
@@ -244,8 +262,7 @@ public class Function
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() <= num2.getNumber())
             {
                 DATA.push(yes);
@@ -269,8 +286,7 @@ public class Function
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() > num2.getNumber())
             {
                 DATA.push(yes);
@@ -294,8 +310,7 @@ public class Function
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() >= num2.getNumber())
             {
                 DATA.push(yes);
@@ -316,8 +331,7 @@ public class Function
         Stackable arg2 = DATA.pop();
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
-            Num num1 = new Num(arg1);
-            Num num2 = new Num(arg2);
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
             if(num1.getNumber() != num2.getNumber())
             {
                DATA.push(yes);
