@@ -10,6 +10,7 @@ public class Function
     private Stack DATA;
     private Vector <Stackable> RAM;
     
+    private IO  io  = new IO (DATA);
     private Stk stk = new Stk(DATA);
     
     Function(Stack stack, Vector <Stackable> ram)
@@ -29,7 +30,7 @@ public class Function
                WrongTypeException
     {
         // IO functions
-        if(met.equals("PRN" )) { PRN ();    }
+        if(met.equals("PRN" )) { io.PRN ();    }
         
         // Stack functions
         else if(met.equals("POP" )) { stk.POP ();    }
