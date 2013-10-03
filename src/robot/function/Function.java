@@ -11,6 +11,7 @@ public class Function
     private Vector <Stackable> RAM;
     
     private IO    io    = new IO    (DATA);
+    private Mem   mem   = new Mem   (DATA, RAM);
     private Stk   stk   = new Stk   (DATA);
     private Arit  arit  = new Arit  (DATA);
     private Tests tests = new Tests (DATA);
@@ -47,8 +48,8 @@ public class Function
         else if(met.equals("MOD" )) { arit.MOD ();    }
         
         // Memory functions
-        else if(met.equals("STO" )) { STO (arg); }
-        else if(met.equals("RCL" )) { RCL (arg); }
+        else if(met.equals("STO" )) { mem.STO (arg); }
+        else if(met.equals("RCL" )) { mem.RCL (arg); }
               // ???? Temos que passar o endereço como int, mas ele é do tipo Stackable
         
         // Tests functions
