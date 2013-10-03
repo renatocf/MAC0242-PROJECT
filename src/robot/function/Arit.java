@@ -100,7 +100,7 @@ public class Arit
                       StackUnderflowException
     {
         calculate(new Operation() { 
-            public double op(double a, double b) { return a/b; } }
+            public double op(double a, double b) { return a%b; } }
         );
     }
 }
