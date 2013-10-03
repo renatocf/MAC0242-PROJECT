@@ -60,36 +60,4 @@ public class Function
         else if(met.equals("LE" )) { tests.LE(); }
         else if(met.equals("NE" )) { tests.NE(); }
     }
-    
-    //##############################################################
-    //##                      MEMORY FUNCTIONS                   ###
-    //##############################################################
-    
-    void STO(Stackable position)
-        throws OutOfBoundsException,
-               StackUnderflowException
-    {
-        int pos;
-        if(position.looksLikeNumber())
-        {
-            Num num = (Num) position;
-            pos = (int) num.getNumber();
-        }
-        else throw new StackUnderflowException();
-        RAM.set(pos, DATA.pop());
-    }
-    
-    void RCL(Stackable position) 
-        throws OutOfBoundsException,
-               StackUnderflowException
-    {
-        int pos;
-        if(position.looksLikeNumber()) 
-        {
-            Num num = (Num) position;
-            pos = (int) num.getNumber();
-        }
-        else throw new StackUnderflowException();
-        DATA.push(RAM.get(pos));
-    }
 }
