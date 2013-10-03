@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 // Libraries
 import robot.*;
+import robot.function.*;
 import exception.*;
 import stackable.*;
 

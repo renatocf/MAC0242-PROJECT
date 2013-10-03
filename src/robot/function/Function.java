@@ -15,21 +15,27 @@ public class Function
     private Vector <Stackable> RAM;
     
     // Functions objects
-    private IO    io    = new IO    (DATA);
-    private Mem   mem   = new Mem   (DATA, RAM);
-    private Stk   stk   = new Stk   (DATA);
-    private Arit  arit  = new Arit  (DATA);
-    private Tests tests = new Tests (DATA);
+    private IO    io;
+    private Mem   mem;
+    private Stk   stk;
+    private Arit  arit;
+    private Tests tests;
     
     /** 
      * Class constructor (without PC)
      * @param Virtual Machine's Main stack
      * @param Virtual Machine's internal memory
      */
-    Function(Stack stack, Vector <Stackable> ram)
+    public Function(Stack stack, Vector<Stackable> ram)
     {
         this.DATA = stack;
         this.RAM  = ram;
+        
+        this.io    = new IO    (DATA);
+        this.mem   = new Mem   (DATA, RAM);
+        this.stk   = new Stk   (DATA);
+        this.arit  = new Arit  (DATA);
+        this.tests = new Tests (DATA);
     }
     
     /** 
@@ -38,9 +44,10 @@ public class Function
      * @param Virtual Machine's internal memory
      * @param Virtual Machine's program counter
      */
-    Function(Stack stack, Vector <Stackable> ram, int pc)
+    public Function(Stack stack, Vector<Stackable> ram, int pc)
     {
-        this(stack, ram); this.PC = pc;
+        this(stack, ram);
+        this.PC = pc;
     }
     
     /** 
@@ -48,7 +55,7 @@ public class Function
      * @param String with the name of the function
      * @param Argument of the assembly method
      */
-    void call(String met, Stackable arg) 
+    public void call(String met, Stackable arg) 
         throws StackUnderflowException, 
                OutOfBoundsException,
                WrongTypeException

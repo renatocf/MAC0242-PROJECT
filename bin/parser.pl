@@ -46,7 +46,7 @@ my $java_preamble = << "PREAMBLE";
 
 // Default libraries
 import stackable.*;
-import robot.Command;
+import robot.*;
 import java.util.Vector;
 PREAMBLE
 
@@ -62,8 +62,9 @@ public class Parser
     /** 
      * Method for uploading the program.
      */
-    final public Vector<Command> upload()
+    public Vector<Command> upload()
     {
+        Vector<Command> PROG = new Vector<Command>();
 PARSER_H
 
 # Preproc: generating textual and numeric variables
@@ -82,13 +83,12 @@ for my $line (@prog)
             $line->[1] = "n$arg";
             $numeric{$arg} = "Num n$arg = new Num($arg);";
         }
-        elsif( $arg =~ /^["'].*["']$/ ) { 
+        else { #elsif( $arg =~ /^["'].*["']$/ ) { 
             $n++; $line->[1] = "msg$n";
-            $textual{$arg} = "Text msg$n = new Text($arg);";
+            $textual{$arg} = "Text msg$n = new Text(\"$arg\");";
         }
     }
 }
-
 
 my $java_bottom = << "PARSER_B";
         PROG.add(null);
@@ -120,11 +120,11 @@ for my $line (@prog)
     print " " x 8; 
     print "PROG.add(new Command(";
     (defined $line->[0]) 
-        ? (printf "%-*s", 8, "\'$line->[0]\', ") : (print "null, ");
+        ? (printf "%-*s", 8, "\"$line->[0]\", ") : (print "null, ");
     (defined $line->[1]) 
         ? (printf "%-*s, ", 4,  $line->[1]) : (print "null, ");
     (defined $line->[2]) 
-        ? (print "$line->[2]") : (print "null");
+        ? (printf "%s", "\"$line->[2]\"") : (print "null");
     print "));";
     
     print "\n";
