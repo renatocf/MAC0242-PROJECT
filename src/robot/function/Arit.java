@@ -64,7 +64,7 @@ public class Arit
         else { throw new WrongTypeException("Num"); }
     }
 
-    public void ADD() throws WrongTypeException,
+    void ADD() throws WrongTypeException,
                       StackUnderflowException
     {
         calculate(new Operation() { 
@@ -72,7 +72,7 @@ public class Arit
         );
     }
     
-    public void SUB() throws WrongTypeException,
+    void SUB() throws WrongTypeException,
                       StackUnderflowException
     {
         calculate(new Operation() { 
@@ -80,7 +80,7 @@ public class Arit
         );
     }
     
-    public void MUL() throws WrongTypeException,
+    void MUL() throws WrongTypeException,
                       StackUnderflowException
     {
         calculate(new Operation() { 
@@ -88,7 +88,7 @@ public class Arit
         );
     }
     
-    public void DIV() throws WrongTypeException,
+    void DIV() throws WrongTypeException,
                       StackUnderflowException
     {
         calculate(new Operation() { 
@@ -96,7 +96,7 @@ public class Arit
         );
     }
     
-    public void MOD() throws WrongTypeException,
+    void MOD() throws WrongTypeException,
                       StackUnderflowException
     {
         calculate(new Operation() { 
