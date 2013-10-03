@@ -5,6 +5,6 @@ public final class OutOfBoundsException extends Exception
     /** 
      * Default constructor.
      */
-    public OutOfBoundsException (int line)
+    public OutOfBoundsException ()
     { super("Out of Bounds!\n"); }
 }

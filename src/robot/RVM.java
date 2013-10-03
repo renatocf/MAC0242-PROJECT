@@ -18,14 +18,21 @@ import stackable.*;
  */
 public class RVM 
 {
-    Vector  <Command>   PROG;
-    Stack   DATA = new Stack();
-    Vector  <Stackable> RAM  = new Vector <Stackable>();
-    Vector  <Integer>   CTRL = new Vector <Integer>  ();
-    HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
-    int PC = 0;
+    private Vector  <Command>   PROG;
+    private Stack   DATA = new Stack();
+    private Vector  <Stackable> RAM  = new Vector <Stackable>();
+    private Vector  <Integer>   CTRL = new Vector <Integer>  ();
+    private HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
+    private int PC = 0;
     
-    Function asm = new Function(DATA, RAM);
+    Function asm;
+    
+    // Getters and Setters
+    public Vector<Command> getPROG()          { return this.PROG; }
+    public void setPROG(Vector<Command> PROG) { this.PROG = PROG; }
+    
+    public Stack getDATA()          { return this.DATA; }
+    public void setDATA(Stack DATA) { this.DATA = DATA; }
     
     /**
      * Class constructor specifying a 'program' (vector of
@@ -37,6 +44,9 @@ public class RVM
     public RVM(Vector <Command> PROG) 
     { 
         this.PROG = PROG; 
+        asm = new Function(
+            this.DATA, this.RAM, this.PROG, this.PC, this.LABEL
+        );
     }
     
     /**
@@ -94,7 +104,14 @@ public class RVM
             int line = ++this.PC;
             
             // Call function
-            if(!function.equals("0")) { asm.call(function, arg); }
+            if(!function.equals("0")) 
+            {
+                try { asm.call(function, arg); }
+                catch (Exception e) {
+                    System.out.print(e);
+                    System.out.println("Error in line " + line);
+                }
+            }
             
             switch(stack) // Exceptions
             {
