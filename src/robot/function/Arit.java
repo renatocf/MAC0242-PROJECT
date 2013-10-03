@@ -35,7 +35,7 @@ public class Arit
      * Dummy interface with the aim of being a 
      * model for all the arithmetic operations.
      */
-    final private interface Operation 
+    private interface Operation 
     {
         double op(double a, double b);
     }
