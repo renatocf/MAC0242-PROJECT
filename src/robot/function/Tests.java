@@ -29,6 +29,11 @@ public class Tests
         this.DATA = DATA;
     }
     
+    /** 
+     * Interface for compartison operations,
+     * Dummy interface with the aim of being a 
+     * model for all the comparison operations.
+     */
     private interface Cmp
     {
         boolean cmp(double a, double b);
@@ -69,22 +74,6 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a == b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() == num2.getNumber())
-        //    {
-        //       DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //       DATA.push(no); 
-        //    }
-        //}
     }
     
     void GT() throws StackUnderflowException,
@@ -93,26 +82,7 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a > b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() < num2.getNumber())
-        //    {
-        //        DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //        DATA.push(no);
-        //    }
-        //}
     }
-    
     
     void GE() throws StackUnderflowException,
                      WrongTypeException
@@ -120,26 +90,7 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a >= b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() <= num2.getNumber())
-        //    {
-        //        DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //        DATA.push(no);
-        //    }
-        //}
     }
-    
     
     void LT() throws StackUnderflowException,
                      WrongTypeException
@@ -147,26 +98,7 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a < b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() > num2.getNumber())
-        //    {
-        //        DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //        DATA.push(no);
-        //    }
-        //}
     }
-    
     
     void LE() throws StackUnderflowException,
                      WrongTypeException
@@ -174,24 +106,6 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a <= b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() >= num2.getNumber())
-        //    {
-        //        DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //        DATA.push(no);
-        //    }
-        //}
     }
     
     void NE() throws WrongTypeException,
@@ -200,21 +114,5 @@ public class Tests
         compare(new Cmp() {
             public boolean cmp(double a, double b) { return a != b; } }
         );
-        //Num yes = new Num(1);
-        //Num no = new Num(0);
-        //Stackable arg1 = DATA.pop();
-        //Stackable arg2 = DATA.pop();
-        //if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
-        //{
-        //    Num num1 = (Num) arg1, num2 = (Num) arg2;
-        //    if(num1.getNumber() != num2.getNumber())
-        //    {
-        //       DATA.push(yes);
-        //    }
-        //    else
-        //    {
-        //       DATA.push(no); 
-        //    }
-        //}
     }
 }
