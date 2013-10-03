@@ -1,9 +1,12 @@
+// Default Libraries
+import java.util.Vector;
+import java.util.HashMap;
+
 // Libraries
 import robot.*;
 import exception.*;
 import stackable.*;
-import java.util.Vector;
-import java.util.HashMap;
+import parser.*;
 
 class Main
 {
@@ -15,33 +18,36 @@ class Main
         //
         //System.out.println("val: " + map.get("RESPOSTA"));
         
-        Vector<Command> PROG = new Vector<Command>();
-        Text msg = new Text("Eeeeva");
-        Num treze = new Num(13);
-        Num dez = new Num(10);
+        Parser user = new Parser();
+        Vector<Command> PROG = user.upload();
         
-        PROG.add(new Command("PUSH", treze,  null));
-        PROG.add(new Command("PUSH", dez,  null));
-        PROG.add(new Command("MOD", null,  null));
-        PROG.add(new Command("DUP", null,  null));
-        PROG.add(new Command("PUSH", treze,  null));
-        PROG.add(new Command("MUL", null,  null));
-        PROG.add(new Command("ADD", null,  null));
-        PROG.add(new Command("DUP", null,  null));
-        PROG.add(new Command("PRN", null,  null));
-        
-        PROG.add(new Command("PUSH", msg,  null));
-        PROG.add(new Command("PRN", null,  null));
-        
-        
-        
-        
-        
-        PROG.add(new Command("PUSH", dez,  null));
-        PROG.add(new Command("DIV", null,  null));
-        PROG.add(new Command("PRN",  null, null));
-        PROG.add(new Command("END",  null, null));
-        PROG.add(null);
+        //Vector<Command> PROG = new Vector<Command>();
+        //Text msg = new Text("Eeeeva");
+        //Num treze = new Num(13);
+        //Num dez = new Num(10);
+        //
+        //PROG.add(new Command("PUSH", treze,  null));
+        //PROG.add(new Command("PUSH", dez,  null));
+        //PROG.add(new Command("MOD", null,  null));
+        //PROG.add(new Command("DUP", null,  null));
+        //PROG.add(new Command("PUSH", treze,  null));
+        //PROG.add(new Command("MUL", null,  null));
+        //PROG.add(new Command("ADD", null,  null));
+        //PROG.add(new Command("DUP", null,  null));
+        //PROG.add(new Command("PRN", null,  null));
+        //
+        //PROG.add(new Command("PUSH", msg,  null));
+        //PROG.add(new Command("PRN", null,  null));
+        //
+        //
+        //
+        //
+        //
+        //PROG.add(new Command("PUSH", dez,  null));
+        //PROG.add(new Command("DIV", null,  null));
+        //PROG.add(new Command("PRN",  null, null));
+        //PROG.add(new Command("END",  null, null));
+        //PROG.add(null);
         
         RVM Walle = new RVM(PROG);
         try {
