@@ -41,7 +41,7 @@ final public class Tests
         // Stores the arguments to be tested
         Stackable arg1 = rvm.DATA.pop(), arg2 = rvm.DATA.pop();
         
-        if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
+        if(arg1 instanceof Num && arg2 instanceof Num)
         {
             // Downcasts to number if the type is correct
             Num num1 = (Num) arg1, num2 = (Num) arg2;

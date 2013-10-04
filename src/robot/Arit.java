@@ -41,7 +41,7 @@ final public class Arit
         Stackable arg1 = rvm.DATA.pop();
         Stackable arg2 = rvm.DATA.pop();
         
-        if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
+        if(arg1 instanceof Num && arg2 instanceof Num)
         {
             Num a = (Num) arg1, b = (Num) arg2;
             double ans = op.op(b.getNumber(), a.getNumber());

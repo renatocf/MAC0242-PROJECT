@@ -10,7 +10,7 @@ use warnings;
 #                        VARIÁVEIS DE PACOTE                          #
 #######################################################################
 
-my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 
+my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB'); # sem arg
 my @ins2 = ('PUSH', 'RCL', 'STO'); # arg numérico (apenas)
 my @ins3 = ('JMP', 'JIF', 'JIT');  # arg string/numérico
