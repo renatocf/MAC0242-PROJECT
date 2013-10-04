@@ -1,4 +1,4 @@
-package robot.function;
+package robot;
 
 // Libraries
 import stackable.*;
@@ -14,21 +14,8 @@ import exception.*;
  * @see Function
  * @see RMV
  */
-public class Tests
+final public class Tests
 {
-    final private Stack DATA;
-
-    /**
-     * Class constructor. 
-     * Receives a handle to the main stack.
-     * 
-     * @param Stack Data
-     */
-    Tests(Stack DATA)
-    {
-        this.DATA = DATA;
-    }
-    
     /** 
      * Interface for compartison operations,
      * Dummy interface with the aim of being a 
@@ -45,14 +32,14 @@ public class Tests
      * comparison between the two elements
      * int the top of the main stack.
      */
-    void compare(Cmp cmp) throws WrongTypeException,
-                          StackUnderflowException
+    static void compare(RVM rvm, Cmp cmp) 
+        throws WrongTypeException, StackUnderflowException
     {
         // Default answers
         Num no = new Num(0), yes = new Num(1);
            
         // Stores the arguments to be tested
-        Stackable arg1 = DATA.pop(), arg2 = DATA.pop();
+        Stackable arg1 = rvm.DATA.pop(), arg2 = rvm.DATA.pop();
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
@@ -64,54 +51,54 @@ public class Tests
             
             // Push true or false accordingly to the comparison
             /* TODO: res ? DATA.push(yes) : DATA.push(no); */
-            if(res) { DATA.push(yes); } else { DATA.push(no); }
+            if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
         }
     }
     
-    void EQ() throws WrongTypeException,
+    static void EQ(RVM rvm) throws WrongTypeException,
                      StackUnderflowException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a == b; } }
         );
     }
     
-    void GT() throws StackUnderflowException,
-                     WrongTypeException
+    static void GT(RVM rvm) 
+        throws StackUnderflowException, WrongTypeException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a > b; } }
         );
     }
     
-    void GE() throws StackUnderflowException,
-                     WrongTypeException
+    static void GE(RVM rvm) 
+        throws StackUnderflowException, WrongTypeException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a >= b; } }
         );
     }
     
-    void LT() throws StackUnderflowException,
-                     WrongTypeException
+    static void LT(RVM rvm)
+        throws StackUnderflowException, WrongTypeException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a < b; } }
         );
     }
     
-    void LE() throws StackUnderflowException,
-                     WrongTypeException
+    static void LE(RVM rvm)
+        throws StackUnderflowException, WrongTypeException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a <= b; } }
         );
     }
     
-    void NE() throws WrongTypeException,
-                     StackUnderflowException
+    static void NE(RVM rvm)
+        throws StackUnderflowException, WrongTypeException
     {
-        compare(new Cmp() {
+        compare(rvm, new Cmp() {
             public boolean cmp(double a, double b) { return a != b; } }
         );
     }

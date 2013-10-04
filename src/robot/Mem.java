@@ -1,4 +1,4 @@
-package robot.function;
+package robot;
 
 // Default libraries
 import java.util.Vector;
@@ -17,23 +17,8 @@ import exception.*;
  * @see Function
  * @see RMV
  */
-public class Mem
+final public class Mem
 {
-    final private Stack DATA;
-    final private Vector <Stackable> RAM;
-
-    /**
-     * Class constructor. 
-     * Receives a handle to the main stack.
-     * 
-     * @param Stack Data
-     * @param Vector Stackable RAM;
-     */
-    Mem(Stack DATA, Vector <Stackable> RAM)
-    {
-        this.DATA = DATA; this.RAM = RAM;
-    }
-    
     /**
      * Assembly funcion STO.
      * Takes out the top of the main stack
@@ -44,18 +29,18 @@ public class Mem
      * @throws OutOfBoundsException
      * @throws StackUnderflowException
      */
-    void STO(Stackable position)
+    static void STO(RVM rvm, Stackable position)
         throws OutOfBoundsException,
                StackUnderflowException
     {
         int pos;
-        if(position.looksLikeNumber())
+        if(position instanceof Num)
         {
             Num num = (Num) position;
             pos = (int) num.getNumber();
         }
         else throw new StackUnderflowException();
-        RAM.set(pos, DATA.pop());
+        rvm.RAM.add(pos, rvm.DATA.pop());
     }
     
     /**
@@ -68,17 +53,17 @@ public class Mem
      * @throws OutOfBoundsException
      * @throws StackUnderflowException
      */
-    void RCL(Stackable position) 
+    static void RCL(RVM rvm, Stackable position) 
         throws OutOfBoundsException,
                StackUnderflowException
     {
         int pos;
-        if(position.looksLikeNumber()) 
+        if(position instanceof Num)
         {
             Num num = (Num) position;
             pos = (int) num.getNumber();
         }
         else throw new StackUnderflowException();
-        DATA.push(RAM.get(pos));
+        rvm.DATA.push(rvm.RAM.remove(pos));
     }
 }

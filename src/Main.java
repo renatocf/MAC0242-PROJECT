@@ -18,13 +18,13 @@ class Main
         //
         //System.out.println("val: " + map.get("RESPOSTA"));
         
-        /* Parser user = new Parser(); */
-        /* Vector<Command> PROG = user.upload(); */
+        Parser user = new Parser();
+        Vector<Command> PROG = user.upload();
         
-        Vector<Command> PROG = new Vector<Command>();
-        Text msg = new Text("Eeeeva");
-        Num treze = new Num(1);
-        Num dez = new Num(10);
+        /* Vector<Command> PROG = new Vector<Command>(); */
+        /* Text msg = new Text("Eeeeva"); */
+        /* Num treze = new Num(3); */
+        /* Num dez = new Num(10); */
         
         //PROG.add(new Command("PUSH", treze,  null));
         //PROG.add(new Command("PUSH", dez,  null));
@@ -42,9 +42,9 @@ class Main
         //PROG.add(new Command("PUSH", dez,  null));
         //PROG.add(new Command("DIV", null,  null));
         //PROG.add(new Command("PRN",  null, null));
-        PROG.add(new Command("JMP",  treze, null));
-        PROG.add(new Command("END",  null, null));
-        PROG.add(null);
+        //PROG.add(new Command("JMP",  treze, null));
+        //PROG.add(new Command("END",  null, null));
+        //PROG.add(null);
         
         
         RVM Walle = new RVM(PROG);

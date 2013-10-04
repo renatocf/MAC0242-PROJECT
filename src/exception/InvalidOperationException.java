@@ -12,6 +12,6 @@ public final class InvalidOperationException extends Exception
     /** 
      * Default constructor.
      */
-    public InvalidOperationException (int line)
-    { super("Invalid Operation! Line " + line + "\n"); }
+    public InvalidOperationException (String op)
+    { super("Invalid Operation! Line " + op + "\n"); }
 }

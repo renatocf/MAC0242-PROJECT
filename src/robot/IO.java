@@ -1,4 +1,4 @@
-package robot.function;
+package robot;
 
 // Libraries
 import stackable.*;
@@ -14,31 +14,18 @@ import exception.*;
  * @see Function
  * @see RMV
  */
-public class IO
+final public class IO
 {
-    final private Stack DATA;
-
-    /**
-     * Class constructor. 
-     * Receives a handle to the main stack.
-     * 
-     * @param Stack Data
-     */
-    IO(Stack DATA)
-    {
-        this.DATA = DATA;
-    }
-    
     /**
      * Assembly funcion PRN. 
      * Takes out the top of the main stack
      * ant prints it in the stdout.
      */
-    void PRN()
+    static void PRN(RVM rvm)
     {
         try
         {
-            System.out.println(DATA.pop());
+            System.out.println(rvm.DATA.pop());
         }
         catch (Exception e)
         {

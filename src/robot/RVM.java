@@ -1,6 +1,7 @@
 package robot;
 
 // Default libraries
+import java.util.Stack;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +9,7 @@ import java.lang.reflect.Method;
 
 // Libraries
 import robot.*;
-import robot.function.*;
+/* import robot.function.*; */
 import exception.*;
 import stackable.*;
 
@@ -18,21 +19,12 @@ import stackable.*;
  */
 public class RVM 
 {
-    private Vector  <Command>   PROG;
-    private Stack   DATA = new Stack();
-    private Vector  <Stackable> RAM  = new Vector <Stackable>();
-    private Vector  <Integer>   CTRL = new Vector <Integer>  ();
-    private HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
-    private int PC = 0;
-    
-    Function asm;
-    
-    // Getters and Setters
-    public Vector<Command> getPROG()          { return this.PROG; }
-    public void setPROG(Vector<Command> PROG) { this.PROG = PROG; }
-    
-    public Stack getDATA()          { return this.DATA; }
-    public void setDATA(Stack DATA) { this.DATA = DATA; }
+    Vector  <Command>   PROG;
+    Stack   <Stackable> DATA = new Stack  <Stackable> ();
+    Vector  <Stackable> RAM  = new Vector <Stackable> ();
+    Vector  <Integer>   CTRL = new Vector <Integer>   ();
+    HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
+    int PC = 0;
     
     /**
      * Class constructor specifying a 'program' (vector of
@@ -44,9 +36,6 @@ public class RVM
     public RVM(Vector <Command> PROG) 
     { 
         this.PROG = PROG; 
-        asm = new Function(
-            this.DATA, this.RAM, this.PROG, this.PC, this.LABEL
-        );
     }
     
     /**
@@ -106,22 +95,15 @@ public class RVM
             // Call function
             if(!function.equals("0")) 
             {
-                try { asm.call(function, arg); }
+                try { Function.call(this, function, arg); }
                 catch (Exception e) {
                     System.out.print(e);
                     System.out.println("Error in line " + line);
                 }
             }
             
-            switch(stack) // Exceptions
-            {
-                case -1: throw new SegmentationFaultException(line);
-                case -2: throw new InvalidOperationException(line);
-                case -3: throw new NoLabelFoundException(line);
-                default: 
-                    com      = this.PROG.elementAt(this.PC);
-                    function = com.getCommand();
-            }
+            com      = this.PROG.elementAt(this.PC);
+            function = com.getCommand();
         }//while
     }
 }

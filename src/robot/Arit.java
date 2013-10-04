@@ -1,4 +1,4 @@
-package robot.function;
+package robot;
 
 // Libraries
 import stackable.*;
@@ -15,21 +15,8 @@ import exception.*;
  * @see Function
  * @see RMV
  */
-public class Arit
+final public class Arit
 {
-    final private Stack DATA;
-    
-    /**
-     * Class constructor. 
-     * Receives a handle to the main stack.
-     * 
-     * @param Stack Data
-     */
-    Arit(Stack DATA)
-    {
-        this.DATA = DATA;
-    }
-    
     /** 
      * Interface for arithmetic operations,
      * Dummy interface with the aim of being a 
@@ -47,59 +34,58 @@ public class Arit
      * of the operation made over them.
      * @param Anonymous inner class of type operation
      */
-    final private void calculate(Operation op) 
+    static final private void calculate(RVM rvm, Operation op) 
         throws WrongTypeException,
                StackUnderflowException
     {
-        
-        Stackable arg1 = DATA.pop();
-        Stackable arg2 = DATA.pop();
+        Stackable arg1 = rvm.DATA.pop();
+        Stackable arg2 = rvm.DATA.pop();
         
         if(arg1.looksLikeNumber() && arg2.looksLikeNumber())
         {
             Num a = (Num) arg1, b = (Num) arg2;
             double ans = op.op(b.getNumber(), a.getNumber());
-            DATA.push(new Num(ans));
+            rvm.DATA.push(new Num(ans));
         }
         else { throw new WrongTypeException("Num"); }
     }
 
-    void ADD() throws WrongTypeException,
-                      StackUnderflowException
+    static void ADD(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        calculate(new Operation() { 
+        calculate(rvm, new Operation() { 
             public double op(double a, double b) { return a+b; } }
         );
     }
     
-    void SUB() throws WrongTypeException,
-                      StackUnderflowException
+    static void SUB(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        calculate(new Operation() { 
+        calculate(rvm, new Operation() { 
             public double op(double a, double b) { return a-b; } }
         );
     }
     
-    void MUL() throws WrongTypeException,
-                      StackUnderflowException
+    static void MUL(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        calculate(new Operation() { 
+        calculate(rvm, new Operation() { 
             public double op(double a, double b) { return a*b; } }
         );
     }
     
-    void DIV() throws WrongTypeException,
-                      StackUnderflowException
+    static void DIV(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        calculate(new Operation() { 
+        calculate(rvm, new Operation() { 
             public double op(double a, double b) { return a/b; } }
         );
     }
     
-    void MOD() throws WrongTypeException,
-                      StackUnderflowException
+    static void MOD(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        calculate(new Operation() { 
+        calculate(rvm, new Operation() { 
             public double op(double a, double b) { return a%b; } }
         );
     }

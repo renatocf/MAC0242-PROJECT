@@ -1,4 +1,4 @@
-package robot.function;
+package robot;
 
 // Libraries
 import stackable.*;
@@ -13,30 +13,17 @@ import exception.*;
  * @see Function
  * @see RMV
  */
-public class Stk
+final public class Stk
 {
-    final private Stack DATA;
-
-    /**
-     * Class constructor. 
-     * Receives a handle to the main stack.
-     * 
-     * @param Stack Data
-     */
-    Stk(Stack DATA)
-    {
-        this.DATA = DATA;
-    }
-    
     /**
      * Assembly funcion PUSH. 
      * Puts an element in the top of the main stack.
      * @param Stackable element.
      * @see Stackable
      */
-    void PUSH(Stackable st)
+    static void PUSH(RVM rvm, Stackable st)
     {
-        this.DATA.push(st);
+        rvm.DATA.push(st);
     }
     
     /**
@@ -44,9 +31,9 @@ public class Stk
      * Takes out an element of the top of the main stack.
      * @see Stackable
      */
-    Stackable POP() throws StackUnderflowException
+    static Stackable POP(RVM rvm) throws StackUnderflowException
     {
-        return this.DATA.pop();
+        return rvm.DATA.pop();
     }
     
     /**
@@ -54,10 +41,10 @@ public class Stk
      * Duplicates the top of the main stack.
      * @see Stackable
      */
-    void DUP() throws StackUnderflowException
+    static void DUP(RVM rvm) throws StackUnderflowException
     {
-        Stackable st = this.DATA.pop(); 
-        this.DATA.push(st);
-        this.DATA.push(st);
+        Stackable st = rvm.DATA.pop(); 
+        rvm.DATA.push(st);
+        rvm.DATA.push(st);
     }
 }

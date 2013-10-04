@@ -19,7 +19,7 @@ public class Command
         return this.label + ": " + this.command + " " + this.attribute;
     }
 
-    public String    getCommand   () { return this.command;  }
+    public String    getCommand   () { return this.command;   }
     public Stackable getAttribute () { return this.attribute; }
-    public String    getLabel     () { return this.label;    }
+    public String    getLabel     () { return this.label;     }
 }
