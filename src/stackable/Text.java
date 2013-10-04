@@ -9,8 +9,6 @@ public class Text implements Stackable
         this.text = text;
     }
     
-    public boolean looksLikeNumber() { return false; }
-    
     public String getText()  { return this.text; }
     public String toString() { return this.text; }
 }
