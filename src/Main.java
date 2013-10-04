@@ -18,13 +18,17 @@ class Main
         //
         //System.out.println("val: " + map.get("RESPOSTA"));
         
-        Parser user = new Parser();
-        Vector<Command> PROG = user.upload();
+        //Parser user = new Parser();
+        //Vector<Command> PROG = user.upload();
         
-        /* Vector<Command> PROG = new Vector<Command>(); */
-        /* Text msg = new Text("Eeeeva"); */
-        /* Num treze = new Num(3); */
-        /* Num dez = new Num(10); */
+        Vector<Command> PROG = new Vector<Command>();
+        Text msg = new Text("Eeeeva"); 
+        Num um = new Num(1);
+        
+        Num c = new Num(5); 
+        Num q = new Num(4);
+        Num t7 = new Num(2);
+        Num t = new Num(3);
         
         //PROG.add(new Command("PUSH", treze,  null));
         //PROG.add(new Command("PUSH", dez,  null));
@@ -36,15 +40,18 @@ class Main
         //PROG.add(new Command("DUP", null,  null));
         //PROG.add(new Command("PRN", null,  null));
         //
-        //PROG.add(new Command("PUSH", msg,  null));
-        //PROG.add(new Command("PRN", null,  null));
+        PROG.add(new Command("PUSH", msg,  null));
+        PROG.add(new Command("RCL", um,  "Eeeeva"));
+        PROG.add(new Command("STO", um,  null));
+        PROG.add(new Command("PRN", null,  null));
+        
         //
         //PROG.add(new Command("PUSH", dez,  null));
         //PROG.add(new Command("DIV", null,  null));
         //PROG.add(new Command("PRN",  null, null));
         //PROG.add(new Command("JMP",  treze, null));
-        //PROG.add(new Command("END",  null, null));
-        //PROG.add(null);
+        PROG.add(new Command("END",  null, null));
+        PROG.add(null);
         
         
         RVM Walle = new RVM(PROG);
