@@ -34,7 +34,7 @@ public class RVM
      */
     public RVM(Vector <Command> PROG) 
     { 
-        this.PROG = PROG; upload_labels();
+        upload(PROG);
     }
     
     /**
