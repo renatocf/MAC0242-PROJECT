@@ -30,7 +30,7 @@ final public class Mem
      * @throws StackUnderflowException
      */
     static void STO(RVM rvm, Stackable position)
-        throws OutOfBoundsException,
+        throws SegmentationFaultException,
                StackUnderflowException
     {
         int pos;
@@ -40,7 +40,7 @@ final public class Mem
             pos = (int) num.getNumber();
         }
         else throw new StackUnderflowException();
-        rvm.RAM.add(pos, rvm.DATA.pop());
+        rvm.RAM.put(pos, rvm.DATA.pop());
     }
     
     /**
@@ -54,7 +54,7 @@ final public class Mem
      * @throws StackUnderflowException
      */
     static void RCL(RVM rvm, Stackable position) 
-        throws OutOfBoundsException,
+        throws SegmentationFaultException,
                StackUnderflowException
     {
         int pos;

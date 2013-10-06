@@ -20,9 +20,9 @@ public class RVM
 {
     Vector  <Command>   PROG;
     Stack   <Stackable> DATA = new Stack  <Stackable> ();
-    Vector  <Stackable> RAM  = new Vector <Stackable> ();
     Vector  <Integer>   CTRL = new Vector <Integer>   ();
     HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
+    HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
     int PC = 0;
     
     /**
@@ -65,7 +65,7 @@ public class RVM
         int stack = 0;
         
         //##############################################################
-        //##                    CARREGA LABELS                        ##
+        //##                     UPLOAD LABELS                        ##
         //##############################################################
         Command c = this.PROG.elementAt(0);
         for(int i = 0; c != null; i++)
@@ -78,7 +78,7 @@ public class RVM
         }
         
         //##############################################################
-        //##                    EXECUTA CÓDIGOS                       ##
+        //##                     EXECUTE CODE                         ##
         //##############################################################
         
         // Carrega primeiro comando e funções
@@ -92,7 +92,7 @@ public class RVM
             int line = ++this.PC;
             
             // Call function
-            if(!function.equals("0")) 
+            if(function != null)
             {
                 try { Function.call(this, function, arg); }
                 catch (Exception e) {
