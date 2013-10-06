@@ -85,13 +85,19 @@ for my $line (@prog)
     # Creating variables
     if(defined $arg)
     {
-        if( looks_like_number($arg) ) {
+        if( looks_like_number($arg) ) 
+        {
             $line->[1] = "n$arg";
             $numeric{$arg} = "Num n$arg = new Num($arg);";
         }
-        else { #elsif( $arg =~ /^["'].*["']$/ ) { 
-            $n++; $line->[1] = "msg$n";
-            $textual{$arg} = "Text msg$n = new Text(\"$arg\");";
+        else{ 
+            if(not exists $textual{$arg})
+            {
+                $n++; $line->[1] = "msg$n";
+                $textual{$arg} = 
+                    [ $n, "Text msg$n = new Text(\"$arg\");" ];
+            }
+            else { $line->[1] = "msg$textual{$arg}[0]"; }
         }
     }
 }
@@ -141,7 +147,7 @@ if(scalar keys %numeric)
 if(scalar keys %textual)
 {
     say " " x 8, "// Textual variables";
-    for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}; }
+    for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}[1]; }
     print "\n";
 }
 
