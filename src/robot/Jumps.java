@@ -52,7 +52,10 @@ final public class Jumps
             
             try {
                 if(rvm.PROG.elementAt(index) != null) 
-                    rvm.PC = index;
+                    rvm.PC = index-1;
+                    // Sets the counter to the index -1, 
+                    // to be able to increment in each 
+                    // iteration of a for loop.
             }
             catch (Exception e) {
                 throw new OutOfBoundsException();
@@ -64,7 +67,10 @@ final public class Jumps
             String label = (String) text.getText();
             
             if(rvm.LABEL.containsKey(label))
-                rvm.PC = rvm.LABEL.get(label);
+                rvm.PC = rvm.LABEL.get(label)-1;
+                // Sets the counter to the index -1, 
+                // to be able to increment in each 
+                // iteration of a for loop.
             else
                 throw new OutOfBoundsException();
         }

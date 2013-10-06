@@ -19,8 +19,8 @@ import stackable.*;
 public class RVM 
 {
     Vector  <Command>   PROG;
-    Stack   <Stackable> DATA = new Stack  <Stackable> ();
-    Vector  <Integer>   CTRL = new Vector <Integer>   ();
+    Stack   <Integer>   CTRL = new Stack <Integer>   ();
+    Stack   <Stackable> DATA = new Stack <Stackable> ();
     HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
     int PC = 0;
@@ -74,7 +74,7 @@ public class RVM
         // Call function
         if(function != null)
         {
-            try { Function.call(this, function, arg);  }
+            try { Ctrl.ctrl(this, function, arg); }
             catch (Exception e) { System.out.print(e); }
         }
     }
@@ -114,9 +114,7 @@ public class RVM
             if(c == null) break;
             
             // Upload labels to HashMap.
-            // The values are the position -1, to be able to
-            // increment in each iteration of a for loop.
-            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i-1);
+            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
         }
     }
 }
