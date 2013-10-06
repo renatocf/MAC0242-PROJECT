@@ -12,6 +12,6 @@ public final class SegmentationFaultException extends Exception
     /** 
      * Default constructor.
      */
-    public SegmentationFaultException (int line)
-    { super("Segmentation Fault! Line " + line + "\n"); }
+    public SegmentationFaultException ()
+    { super("Segmentation Fault! "); }
 }
