@@ -24,8 +24,10 @@ final public class Prog
     
     /**
      * Assembly funcion END. 
-     * Sets the couter to -1, indicating 
+     * Sets the counter to indicate
      * the END of the program.
      */
-    static void END(RVM rvm) { rvm.PC = -1; }
+    static void END(RVM rvm) { rvm.PC = -2; }
+    // Sets the counter to -2, to be able to
+    // increment in each iteration of a for loop.
 }

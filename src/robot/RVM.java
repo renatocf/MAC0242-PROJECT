@@ -69,7 +69,7 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        Command   com      = this.PROG.elementAt(this.PC++);
+        Command   com      = this.PROG.elementAt(this.PC);
         String    function = com.getFunction  ();
         Stackable arg      = com.getAttribute ();
         
@@ -103,8 +103,7 @@ public class RVM
                WrongTypeException
     {
         upload_labels();
-        this.PC = 0; 
-        while(this.PC != -1) exec();
+        for(this.PC = 0; this.PC != -1; this.PC++) exec();
     }
     
     /**
@@ -124,8 +123,10 @@ public class RVM
             Command c = this.PROG.elementAt(i);
             if(c == null) break;
             
-            // Upload labels to HashMap
-            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
+            // Upload labels to HashMap.
+            // The values are the position -1, to be able to
+            // increment in each iteration of a for loop.
+            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i-1);
         }
     }
 }
