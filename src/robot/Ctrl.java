@@ -9,14 +9,22 @@ import robot.*;
 import stackable.*;
 import exception.*;
 
-final public class Function
+final public class Ctrl
 {
     /** 
      * Selector for the function to be called
+     * @param Virtual Machine
      * @param String with the name of the function
      * @param Argument of the assembly method
+     * 
+     * @throws SegmentationFaultException
+     * @throws InvalidOperationException
+     * @throws StackUnderflowException
+     * @throws NoLabelFoundException
+     * @throws OutOfBoundsException
+     * @throws WrongTypeException
      */
-    static public void call(RVM rvm, String met, Stackable arg) 
+    static public void ctrl(RVM rvm, String met, Stackable arg) 
         throws SegmentationFaultException,
                InvalidOperationException,
                StackUnderflowException, 
