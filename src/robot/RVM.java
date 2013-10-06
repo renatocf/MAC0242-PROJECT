@@ -25,6 +25,8 @@ public class RVM
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
     int PC = 0;
     
+    private boolean newPROG;
+    
     /**
      * Class constructor specifying a 'program' (vector of
      * objects of the class Command) to the RVM.
@@ -34,7 +36,7 @@ public class RVM
      */
     public RVM(Vector <Command> PROG) 
     { 
-        this.PROG = PROG; 
+        this.PROG = PROG; this.newPROG = true;
     }
     
     /**
@@ -44,10 +46,13 @@ public class RVM
      * @param PROG    Vector of objects of the class Command
      * @see   Command
      */
-    public void upload(Vector <Command> PROG) { this.PROG = PROG; }
+    public void upload(Vector <Command> PROG) 
+    { 
+        this.PROG = PROG; this.newPROG = true; 
+    }
     
     /**
-     * Function responsable for executing the 'program', step by 
+     * Function responsible for executing the 'program', step by 
      * step, using the parameters f the object.
      * 
      * @throws SegmentationFaultException
@@ -65,14 +70,15 @@ public class RVM
         //##############################################################
         //##                     UPLOAD LABELS                        ##
         //##############################################################
-        for(int i = 0 ;; i++)
-        {
-            Command c = this.PROG.elementAt(i);
-            if(c == null) break;
-            
-            // Upload labels to HashMap
-            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
-        }
+        //for(int i = 0 ;; i++)
+        //{
+        //    Command c = this.PROG.elementAt(i);
+        //    if(c == null) break;
+        //    
+        //    // Upload labels to HashMap
+        //    if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
+        //}
+        upload_labels();
 
         //##############################################################
         //##                     EXECUTE CODE                         ##
@@ -93,5 +99,27 @@ public class RVM
                 }
             }
         } //while
+    }
+    
+    /**
+     * Function responsible for uploading the labels of PROG,
+     * doint it if and only if the program is new.
+     */ 
+    private void upload_labels()
+    {
+        // If it is the same program, do nothing
+        // In the other case, cleans and upload labels
+        if(!newPROG) return; 
+        else newPROG = false;
+        
+        this.LABEL.clear();
+        for(int i = 0 ;; i++)
+        {
+            Command c = this.PROG.elementAt(i);
+            if(c == null) break;
+            
+            // Upload labels to HashMap
+            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
+        }
     }
 }
