@@ -62,8 +62,6 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        int stack = 0;
-        
         //##############################################################
         //##                     UPLOAD LABELS                        ##
         //##############################################################
