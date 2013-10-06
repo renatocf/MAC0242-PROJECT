@@ -8,7 +8,19 @@ public class Num implements Stackable
     {
         this.num = num;
     }
-
-    public double getNumber() { return this.num; }
-    public String toString()  { return String.valueOf(this.num); }
+    
+    public double getNumber()
+    { 
+        return this.num;
+    }
+    
+    public String toString() 
+    {
+        // Is an integer
+        if ((num == Math.floor(num)) && !Double.isInfinite(num))
+            return String.valueOf( (int) this.num );
+        
+        // Is a floating point number
+        return String.valueOf(num);
+    }
 }
