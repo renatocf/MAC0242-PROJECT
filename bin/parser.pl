@@ -131,13 +131,19 @@ public class Parser
 PARSER_H
 
 # Print sorted numerical and textual variables
-say " " x 8, "// Numerical variables";
-for my $num (sort keys %numeric) { say " " x 8, $numeric{$num}; }
-print "\n";
+if(scalar keys %numeric) 
+{
+    say " " x 8, "// Numerical variables";
+    for my $num (sort keys %numeric) { say " " x 8, $numeric{$num}; }
+    print "\n";
+}
 
-say " " x 8, "// Textual variables";
-for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}; }
-print "\n";
+if(scalar keys %textual)
+{
+    say " " x 8, "// Textual variables";
+    for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}; }
+    print "\n";
+}
 
 # Printing program
 for my $line (@prog)
