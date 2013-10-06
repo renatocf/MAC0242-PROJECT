@@ -20,34 +20,38 @@ public class Parser
     {
         Vector<Command> PROG = new Vector<Command>();
 
+        // Numerical variables
         Num n0 = new Num(0);
         Num n1 = new Num(1);
         Num n10 = new Num(10);
         Num n2 = new Num(2);
+
+        // Textual variables
         Text msg1 = new Text("LOOP");
-        PROG.add(new Command("PUSH", n1  , null));
-        PROG.add(new Command("DUP",  null, null));
-        PROG.add(new Command("STO",  n0  , null));
-        PROG.add(new Command("STO",  n1  , null));
-        PROG.add(new Command("PUSH", n10 , null));
-        PROG.add(new Command("STO",  n2  , null));
-        PROG.add(new Command("RCL",  n0  , "LOOP"));
-        PROG.add(new Command("RCL",  n1  , null));
-        PROG.add(new Command("DUP",  null, null));
-        PROG.add(new Command("STO",  n0  , null));
-        PROG.add(new Command("ADD",  null, null));
-        PROG.add(new Command("DUP",  null, null));
-        PROG.add(new Command("STO",  n1  , null));
-        PROG.add(new Command("PRN",  null, null));
-        PROG.add(new Command("RCL",  n2  , null));
-        PROG.add(new Command("PUSH", n1  , null));
-        PROG.add(new Command("SUB",  null, null));
-        PROG.add(new Command("DUP",  null, null));
-        PROG.add(new Command("STO",  n2  , null));
-        PROG.add(new Command("PUSH", n0  , null));
-        PROG.add(new Command("EQ",   null, null));
-        PROG.add(new Command("JIF",  msg1, null));
-        PROG.add(new Command("END",  null, null));
+
+        PROG.add(new Command("PUSH" , n1   , null));
+        PROG.add(new Command("DUP"  , null , null));
+        PROG.add(new Command("STO"  , n0   , null));
+        PROG.add(new Command("STO"  , n1   , null));
+        PROG.add(new Command("PUSH" , n10  , null));
+        PROG.add(new Command("STO"  , n2   , null));
+        PROG.add(new Command("RCL"  , n0   , "LOOP"));
+        PROG.add(new Command("RCL"  , n1   , null));
+        PROG.add(new Command("DUP"  , null , null));
+        PROG.add(new Command("STO"  , n0   , null));
+        PROG.add(new Command("ADD"  , null , null));
+        PROG.add(new Command("DUP"  , null , null));
+        PROG.add(new Command("STO"  , n1   , null));
+        PROG.add(new Command("PRN"  , null , null));
+        PROG.add(new Command("RCL"  , n2   , null));
+        PROG.add(new Command("PUSH" , n1   , null));
+        PROG.add(new Command("SUB"  , null , null));
+        PROG.add(new Command("DUP"  , null , null));
+        PROG.add(new Command("STO"  , n2   , null));
+        PROG.add(new Command("PUSH" , n0   , null));
+        PROG.add(new Command("EQ"   , null , null));
+        PROG.add(new Command("JIF"  , msg1 , null));
+        PROG.add(new Command("END"  , null , null));
         PROG.add(null);
 
         return PROG;

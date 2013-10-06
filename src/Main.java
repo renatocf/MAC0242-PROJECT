@@ -10,49 +10,10 @@ import parser.*;
 
 class Main
 {
-    public static void main(String[] args) /* throws StackUnderflowException */
+    public static void main(String[] args)
     {
-        //HashMap <String, Integer> map = new HashMap <String, Integer>();
-        //map.put("RESPOSTA", 42);
-        //map.put("PRIMO", 73);
-        //
-        //System.out.println("val: " + map.get("RESPOSTA"));
-        
-        //Parser user = new Parser();
-        //Vector<Command> PROG = user.upload();
-        
-        Vector<Command> PROG = new Vector<Command>();
-        Text msg = new Text("Eeeeva"); 
-        Num um = new Num(1);
-        
-        Num c = new Num(5); 
-        Num q = new Num(4);
-        Num t7 = new Num(2);
-        Num t = new Num(3);
-        
-        //PROG.add(new Command("PUSH", treze,  null));
-        //PROG.add(new Command("PUSH", dez,  null));
-        //PROG.add(new Command("MOD", null,  null));
-        //PROG.add(new Command("DUP", null,  null));
-        //PROG.add(new Command("PUSH", treze,  null));
-        //PROG.add(new Command("MUL", null,  null));
-        //PROG.add(new Command("ADD", null,  null));
-        //PROG.add(new Command("DUP", null,  null));
-        //PROG.add(new Command("PRN", null,  null));
-        //
-        PROG.add(new Command("PUSH", msg,  null));
-        PROG.add(new Command("RCL", um,  "Eeeeva"));
-        PROG.add(new Command("STO", um,  null));
-        PROG.add(new Command("PRN", null,  null));
-        
-        //
-        //PROG.add(new Command("PUSH", dez,  null));
-        //PROG.add(new Command("DIV", null,  null));
-        //PROG.add(new Command("PRN",  null, null));
-        //PROG.add(new Command("JMP",  treze, null));
-        PROG.add(new Command("END",  null, null));
-        PROG.add(null);
-        
+        Parser user = new Parser();
+        Vector<Command> PROG = user.upload();
         
         RVM Walle = new RVM(PROG);
         try {
