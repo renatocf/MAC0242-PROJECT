@@ -18,6 +18,7 @@ final public class Ctrl
      * @param Argument of the assembly method
      * 
      * @throws SegmentationFaultException
+     * @throws UndefinedFunctionException
      * @throws InvalidOperationException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
@@ -26,6 +27,7 @@ final public class Ctrl
      */
     static public void ctrl(RVM rvm, String met, Stackable arg) 
         throws SegmentationFaultException,
+               UndefinedFunctionException,
                InvalidOperationException,
                StackUnderflowException, 
                OutOfBoundsException,
@@ -68,6 +70,10 @@ final public class Ctrl
             // Program workflow
             case "NOP" : Prog.NOP  (rvm);      break;
             case "END" : Prog.END  (rvm);      break;
+
+            // Functions
+            case "CALL": Func.CALL (rvm, arg); break;
+            case "RET" : Func.RET  (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);

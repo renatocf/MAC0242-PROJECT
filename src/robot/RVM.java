@@ -53,6 +53,7 @@ public class RVM
      * Execute 1 assembly instruction.
      * 
      * @throws SegmentationFaultException
+     * @throws UndefinedFunctionException
      * @throws InvalidOperationException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
@@ -61,6 +62,7 @@ public class RVM
      */ 
     public void exec() 
         throws SegmentationFaultException, 
+               UndefinedFunctionException,
                InvalidOperationException, 
                StackUnderflowException,
                NoLabelFoundException,
@@ -84,6 +86,7 @@ public class RVM
      * step, untill it ends.
      * 
      * @throws SegmentationFaultException
+     * @throws UndefinedFunctionException
      * @throws InvalidOperationException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
@@ -92,6 +95,7 @@ public class RVM
      */ 
     public void run() 
         throws SegmentationFaultException, 
+               UndefinedFunctionException,
                InvalidOperationException, 
                StackUnderflowException,
                NoLabelFoundException,
