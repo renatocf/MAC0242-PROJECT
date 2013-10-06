@@ -52,12 +52,48 @@ public class RVM
     }
     
     /**
-     * Function responsible for executing the 'program', step by 
-     * step, using the parameters f the object.
+     * Execute 1 assembly instruction.
      * 
      * @throws SegmentationFaultException
      * @throws InvalidOperationException
-     * @throws NoLabelFoundException
+     * @throws StackUnderflowException,
+     * @throws NoLabelFoundException,
+     * @throws OutOfBoundsException,
+     * @throws WrongTypeException
+     */ 
+    public void exec() 
+        throws SegmentationFaultException, 
+               InvalidOperationException, 
+               StackUnderflowException,
+               NoLabelFoundException,
+               OutOfBoundsException,
+               WrongTypeException
+    {
+        Command   com      = this.PROG.elementAt(this.PC++);
+        String    function = com.getFunction  ();
+        Stackable arg      = com.getAttribute ();
+        
+        // Call function
+        if(function != null)
+        {
+            if(function.equals("END")) this.PC = -1;
+            try { Function.call(this, function, arg); }
+            catch (Exception e) {
+                System.out.print(e);
+            }
+        }
+    }
+
+    /**
+     * Function responsible for executing the 'program', step by 
+     * step, untill it ends.
+     * 
+     * @throws SegmentationFaultException
+     * @throws InvalidOperationException
+     * @throws StackUnderflowException,
+     * @throws NoLabelFoundException,
+     * @throws OutOfBoundsException,
+     * @throws WrongTypeException
      */ 
     public void ctrl() 
         throws SegmentationFaultException, 
@@ -72,21 +108,22 @@ public class RVM
         //##############################################################
         //##                     EXECUTE CODE                         ##
         //##############################################################
-        for(this.PC = 0 ;;)
+        for(this.PC = 0 ; this.PC != -1;)
         {
-            Command   com      = this.PROG.elementAt(this.PC++);
-            String    function = com.getFunction  ();
-            Stackable arg      = com.getAttribute ();
-            
-            // Call function
-            if(function != null)
-            {
-                if(function.equals("END")) break;
-                try { Function.call(this, function, arg); }
-                catch (Exception e) {
-                    System.out.print(e);
-                }
-            }
+            exec();
+            //Command   com      = this.PROG.elementAt(this.PC++);
+            //String    function = com.getFunction  ();
+            //Stackable arg      = com.getAttribute ();
+            //
+            //// Call function
+            //if(function != null)
+            //{
+            //    if(function.equals("END")) this.PC = -1;
+            //    try { Function.call(this, function, arg); }
+            //    catch (Exception e) {
+            //        System.out.print(e);
+            //    }
+            //}
         } //while
     }
     
