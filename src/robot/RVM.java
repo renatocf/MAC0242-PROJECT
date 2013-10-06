@@ -25,8 +25,6 @@ public class RVM
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
     int PC = 0;
     
-    private boolean newPROG;
-    
     /**
      * Class constructor specifying a 'program' (vector of
      * objects of the class Command) to the RVM.
@@ -36,7 +34,7 @@ public class RVM
      */
     public RVM(Vector <Command> PROG) 
     { 
-        this.PROG = PROG; this.newPROG = true;
+        this.PROG = PROG; upload_labels();
     }
     
     /**
@@ -48,7 +46,7 @@ public class RVM
      */
     public void upload(Vector <Command> PROG) 
     { 
-        this.PROG = PROG; this.newPROG = true; 
+        this.PROG = PROG; upload_labels();
     }
     
     /**
@@ -102,7 +100,6 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        upload_labels();
         for(this.PC = 0; this.PC != -1; this.PC++) exec();
     }
     
@@ -112,11 +109,6 @@ public class RVM
      */ 
     private void upload_labels()
     {
-        // If it is the same program, do nothing
-        // In the other case, cleans and upload labels
-        if(!newPROG) return; 
-        else newPROG = false;
-        
         this.LABEL.clear();
         for(int i = 0 ;; i++)
         {
