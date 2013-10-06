@@ -75,26 +75,15 @@ public class RVM
                 this.LABEL.put(c.getLabel(), i);
             c = this.PROG.elementAt(i+1);
         }
-         
-        /* for(String label : LABEL.keySet()) */
-        /* { */
-            /* String value = String.valueOf(LABEL.get(label)); */
-            /* System.out.println("label: " + label + " value: " + value); */
-        /* } */
 
         //##############################################################
         //##                     EXECUTE CODE                         ##
         //##############################################################
-        
-        // Carrega primeiro comando e funções
-        Command com      = this.PROG.elementAt(0);
-        String  function = com.getCommand();
-        
-        this.PC = 0; // Zera contador
-        for(;;) // while(true)
+        for(this.PC = 0 ;;)
         {
-            Stackable arg = com.getAttribute(); // Upload argument
-            int line = ++this.PC;
+            Command   com      = this.PROG.elementAt(this.PC++);
+            String    function = com.getFunction  ();
+            Stackable arg      = com.getAttribute ();
             
             // Call function
             if(function != null)
@@ -105,9 +94,6 @@ public class RVM
                     System.out.print(e);
                 }
             }
-            
-            com      = this.PROG.elementAt(this.PC);
-            function = com.getCommand();
         } //while
     }
 }
