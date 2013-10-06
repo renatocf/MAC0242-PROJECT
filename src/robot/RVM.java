@@ -90,7 +90,7 @@ public class RVM
      * @throws OutOfBoundsException,
      * @throws WrongTypeException
      */ 
-    public void ctrl() 
+    public void run() 
         throws SegmentationFaultException, 
                InvalidOperationException, 
                StackUnderflowException,

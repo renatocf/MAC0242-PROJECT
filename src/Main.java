@@ -17,7 +17,7 @@ class Main
         
         RVM Walle = new RVM(PROG);
         try {
-            Walle.ctrl();
+            Walle.run();
         }
         catch(Exception e)
         {
