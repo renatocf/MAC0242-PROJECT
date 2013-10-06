@@ -76,7 +76,6 @@ public class RVM
         // Call function
         if(function != null)
         {
-            if(function.equals("END")) this.PC = -1;
             try { Function.call(this, function, arg); }
             catch (Exception e) {
                 System.out.print(e);
@@ -104,27 +103,8 @@ public class RVM
                WrongTypeException
     {
         upload_labels();
-
-        //##############################################################
-        //##                     EXECUTE CODE                         ##
-        //##############################################################
-        for(this.PC = 0 ; this.PC != -1;)
-        {
-            exec();
-            //Command   com      = this.PROG.elementAt(this.PC++);
-            //String    function = com.getFunction  ();
-            //Stackable arg      = com.getAttribute ();
-            //
-            //// Call function
-            //if(function != null)
-            //{
-            //    if(function.equals("END")) this.PC = -1;
-            //    try { Function.call(this, function, arg); }
-            //    catch (Exception e) {
-            //        System.out.print(e);
-            //    }
-            //}
-        } //while
+        this.PC = 0; 
+        while(this.PC != -1) exec();
     }
     
     /**

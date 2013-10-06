@@ -59,7 +59,7 @@ final public class Function
 
             // Program workflow
             case "NOP" : Prog.NOP  (rvm);      break;
-            case "END" : Prog.NOP  (rvm);      break;
+            case "END" : Prog.END  (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);

@@ -24,7 +24,8 @@ final public class Prog
     
     /**
      * Assembly funcion END. 
-     * Finishes the program.
+     * Sets the couter to -1, indicating 
+     * the END of the program.
      */
-    static void END(RVM rvm) {}
+    static void END(RVM rvm) { rvm.PC = -1; }
 }
