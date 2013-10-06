@@ -145,7 +145,7 @@ for my $line (@prog)
     print " " x 8; 
     print "PROG.add(new Command(";
     (defined $line->[0]) 
-        ? (printf "%-*s , ", 6, "\"$line->[0]\"") : (print "null , ");
+        ? (printf "%-*s , ", 6, "\"$line->[0]\"") : (print "null   , ");
     (defined $line->[1]) 
         ? (printf "%-*s , ", 4,  $line->[1]) : (print "null , ");
     (defined $line->[2]) 
