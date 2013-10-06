@@ -1,11 +1,11 @@
 package robot;
 
 // Default libraries
+import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.lang.reflect.Method;
 
 // Libraries
 import robot.*;
@@ -70,13 +70,18 @@ public class RVM
         Command c = this.PROG.elementAt(0);
         for(int i = 0; c != null; i++)
         {
-            // Carrega labels e transforma linhas 
-            // só de labels em linhas com a string "0"
+            // Upload labels to HashMap
             if(c.getLabel() != null) 
                 this.LABEL.put(c.getLabel(), i);
             c = this.PROG.elementAt(i+1);
         }
-        
+         
+        /* for(String label : LABEL.keySet()) */
+        /* { */
+            /* String value = String.valueOf(LABEL.get(label)); */
+            /* System.out.println("label: " + label + " value: " + value); */
+        /* } */
+
         //##############################################################
         //##                     EXECUTE CODE                         ##
         //##############################################################
@@ -86,23 +91,23 @@ public class RVM
         String  function = com.getCommand();
         
         this.PC = 0; // Zera contador
-        while(!function.equals("END"))
+        for(;;) // while(true)
         {
-            Stackable arg = com.getAttribute(); // Carrega argumento
+            Stackable arg = com.getAttribute(); // Upload argument
             int line = ++this.PC;
             
             // Call function
             if(function != null)
             {
+                if(function.equals("END")) break;
                 try { Function.call(this, function, arg); }
                 catch (Exception e) {
                     System.out.print(e);
-                    System.out.println("Error in line " + line);
                 }
             }
             
             com      = this.PROG.elementAt(this.PC);
             function = com.getCommand();
-        }//while
+        } //while
     }
 }
