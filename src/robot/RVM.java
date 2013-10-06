@@ -74,10 +74,8 @@ public class RVM
         // Call function
         if(function != null)
         {
-            try { Function.call(this, function, arg); }
-            catch (Exception e) {
-                System.out.print(e);
-            }
+            try { Function.call(this, function, arg);  }
+            catch (Exception e) { System.out.print(e); }
         }
     }
 
