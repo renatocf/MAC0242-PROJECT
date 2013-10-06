@@ -12,5 +12,12 @@ if ! [ -f $FILE ]; then
     exit
 fi
 
+echo
+echo "Creating .java file for $FILE"
+echo "-----------------------------------------------------------------"
 perl bin/parser.pl $FILE
+
+echo
+echo "Rebuilding project"
+echo "-----------------------------------------------------------------"
 ant
