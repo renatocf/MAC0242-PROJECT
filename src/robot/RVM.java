@@ -67,17 +67,6 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        //##############################################################
-        //##                     UPLOAD LABELS                        ##
-        //##############################################################
-        //for(int i = 0 ;; i++)
-        //{
-        //    Command c = this.PROG.elementAt(i);
-        //    if(c == null) break;
-        //    
-        //    // Upload labels to HashMap
-        //    if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
-        //}
         upload_labels();
 
         //##############################################################
