@@ -76,11 +76,11 @@ my @prog = $positronic_brain->parse("$file");
 my %textual;
 my %numeric;
 
+my $n = 0;
 for my $line (@prog)
 {
     # Split line fields
     my ($func, $arg, $label) = @$line;
-    my $n = 0;
     
     # Creating variables
     if(defined $arg)
