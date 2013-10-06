@@ -56,6 +56,10 @@ final public class Function
             case "JMP" : Jumps.JMP (rvm, arg); break;
             case "JIT" : Jumps.JIT (rvm, arg); break;
             case "JIF" : Jumps.JIF (rvm, arg); break;
+
+            // Program workflow
+            case "NOP" : Prog.NOP  (rvm);      break;
+            case "END" : Prog.NOP  (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);
