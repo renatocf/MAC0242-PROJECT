@@ -1,0 +1,11 @@
+#!/bin/bash
+# reload.bash
+
+FILE=$1
+if ! [ -f $FILE ]; then
+    echo "File does not exist!"
+    exit
+fi
+
+perl bin/parser.pl $FILE
+ant
