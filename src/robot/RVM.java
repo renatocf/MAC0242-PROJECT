@@ -67,13 +67,13 @@ public class RVM
         //##############################################################
         //##                     UPLOAD LABELS                        ##
         //##############################################################
-        Command c = this.PROG.elementAt(0);
-        for(int i = 0; c != null; i++)
+        for(int i = 0 ;; i++)
         {
+            Command c = this.PROG.elementAt(i);
+            if(c == null) break;
+            
             // Upload labels to HashMap
-            if(c.getLabel() != null) 
-                this.LABEL.put(c.getLabel(), i);
-            c = this.PROG.elementAt(i+1);
+            if(c.getLabel() != null) this.LABEL.put(c.getLabel(), i);
         }
 
         //##############################################################
