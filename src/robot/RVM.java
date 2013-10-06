@@ -54,9 +54,9 @@ public class RVM
      * 
      * @throws SegmentationFaultException
      * @throws InvalidOperationException
-     * @throws StackUnderflowException,
-     * @throws NoLabelFoundException,
-     * @throws OutOfBoundsException,
+     * @throws StackUnderflowException
+     * @throws NoLabelFoundException
+     * @throws OutOfBoundsException
      * @throws WrongTypeException
      */ 
     public void exec() 
@@ -85,9 +85,9 @@ public class RVM
      * 
      * @throws SegmentationFaultException
      * @throws InvalidOperationException
-     * @throws StackUnderflowException,
-     * @throws NoLabelFoundException,
-     * @throws OutOfBoundsException,
+     * @throws StackUnderflowException
+     * @throws NoLabelFoundException
+     * @throws OutOfBoundsException
      * @throws WrongTypeException
      */ 
     public void run() 
