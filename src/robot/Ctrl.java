@@ -75,6 +75,12 @@ final public class Ctrl
             case "CALL": Func.CALL (rvm, arg); break;
             case "RET" : Func.RET  (rvm);      break;
             
+            // System calls
+            case "MOVE": Syst.MOVE (rvm);      break;
+            case "DRAG": Syst.DRAG (rvm);      break;
+            case "DROP": Syst.DROP (rvm);      break;
+            case "HIT" : Syst.HIT  (rvm);      break;
+            
             // Base case
             default: throw new InvalidOperationException(met);
         }

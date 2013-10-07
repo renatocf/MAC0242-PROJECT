@@ -23,5 +23,10 @@ class Main
         {
             System.out.println("Shit: " + e);
         }
+        
+        /* Direction d = new Direction("NE"); */
+        /* System.out.println(d); */
+        /* int[] qd = d.get(41); */
+        /* System.out.println(qd[0] + " " + qd[1]); */
     }
 }

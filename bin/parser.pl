@@ -75,6 +75,7 @@ my @prog = $positronic_brain->parse("$file");
 ########################################################################
 my %textual;
 my %numeric;
+my %direction;
 
 my $n = 0;
 for my $line (@prog)
@@ -89,6 +90,11 @@ for my $line (@prog)
         {
             $line->[1] = "n$arg";
             $numeric{$arg} = "Num n$arg = new Num($arg);";
+        }
+        elsif($arg =~ /^->/)
+        {
+            $arg = uc $arg; $arg =~ s/->//; $line->[1] = "d$arg";
+            $direction{$arg} = "Direction d$arg = new Direction(\"$arg\");";
         }
         else{ 
             if(not exists $textual{$arg})
@@ -146,8 +152,15 @@ if(scalar keys %numeric)
 
 if(scalar keys %textual)
 {
-    say " " x 8, "// Textual variables";
+    say " " x 8, "// textual variables";
     for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}[1]; }
+    print "\n";
+}
+
+if(scalar keys %direction)
+{
+    say " " x 8, "// Direction variables";
+    for my $dir (sort keys %direction) { say " " x 8, $direction{$dir}; }
     print "\n";
 }
 

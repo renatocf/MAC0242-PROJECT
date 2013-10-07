@@ -12,8 +12,9 @@ use warnings;
 
 my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # sem 
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET'); # arg
-my @ins2 = ('PUSH', 'RCL', 'STO');         # arg numérico (apenas)
-my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');  # arg string/numérico
+my @ins2 = ('PUSH', 'RCL', 'STO');                  # arg numérico (apenas)
+my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');           # arg string/numérico
+my @ins4 = ('MOVE', 'DRAG', 'DROP', 'HIT', 'PUSH'); # arg direção
 
 #######################################################################
 #                            CONSTRUTOR                               #
@@ -45,21 +46,26 @@ sub parse
         when(/^\s*#/)                  {} # Linha de comentário
         when(/^\s*$/)                  {} # Linha em branco
         when(/^\s*([A-Za-z]\w*):\s*$/) { push @stack, [undef,undef,$1] }
-        when(/^\s*             # Espaços
-                (?:            
-                    ([A-Za-z]  # LABEL: Começa com ao menos uma letra
-                    \w*):      # e pode terminar com dígitos|letras e :
-                )?             
-                \s*            # Espaços
-                (?:            
-                    ([A-Z]+)   # COMANDO
+        when(/^\s*                 # Espaços
+                (?:                
+                    ([A-Za-z]      # LABEL: Começa com ao menos uma letra
+                    \w*):          # e pode terminar com dígitos|letras e :
+                )?                 
+                \s*                # Espaços
+                (?:                
+                    ([A-Z]+)       # COMANDO
                     (?:
-                        \s+    # Espaço
-                        (\w+)  # ARGUMENTO
+                        \s+        # Espaço
+                        (
+                            (?:
+                                -> # ARGUMENTO
+                            )?
+                            \w+    # ARGUMENTO
+                        )
                     )?
                 )?             
-                \s*            # Espaço
-                (?:\#.*)?      # Comentário
+                \s*                # Espaço
+                (?:\#.*)?          # Comentário
             $/x)
         { 
             my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
@@ -70,7 +76,8 @@ sub parse
                 when(@ins1) { $err = 1 if(defined $arg);              }
                 when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
                 when(@ins3) { $err = 3 if($arg !~ m/^[A-Za-z]+\w*$/); }
-                default     { $err = 4;                               }
+                when(@ins4) { $err = 4 if($arg !~ m/^->[NS]?[WE]$/);  }
+                default     { $err = 5;                               }
             }
             
             if($err) { &err($line, $err, $com); return undef; } 
@@ -95,7 +102,7 @@ sub err
     my ($line, $err, $com) = @_;
     
     select STDERR;
-    print "Erro na linha $line! ";
+    print "Erro na linha $line! Erro $err";
     
     # Erro de sintaxe simples
     die "Sintaxe: <LABEL:> COMANDO <ARGUMENTO>\n" unless defined $com;
@@ -107,7 +114,8 @@ sub err
         when(1) { say("NÃO precisa de argumento!")          }
         when(2) { say("precisa de argumento NUMÉRICO!")     }
         when(3) { say("precisa de uma PALAVRA (um LABEL)!") }
-        when(4) { say("NÃO existe!")                        }
+        when(4) { say("precisa ser uma DIREÇÃO!")           }
+        when(5) { say("NÃO existe!")                        }
     }
 } 
 
