@@ -3,7 +3,8 @@ import java.util.Vector;
 import java.util.HashMap;
 
 // Libraries
-import robot.*;
+import arena.*;
+import robot.Command;
 import exception.*;
 import stackable.*;
 import parser.*;
@@ -15,8 +16,9 @@ class Main
         Parser user = new Parser();
         Vector<Command> PROG = user.upload();
         
-        RVM Walle = new RVM(PROG);
+        Robot Walle = new Robot("Wall-e", PROG);
         try {
+            Walle.identify();
             Walle.run();
         }
         catch(Exception e)
