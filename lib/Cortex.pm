@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 package Cortex;
-use v5.14;
+use v5.10;
 
 # Pragmas
 use strict;

@@ -1,11 +1,10 @@
 #!/usr/bin/perl
 package main;
-use v5.14;
+use v5.10;
 
 # Adding modules in @INC
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
-use lib "$Bin/../lib/RVM";
 
 # Pragmas
 use strict;
@@ -13,7 +12,6 @@ use warnings;
 
 # Packages
 use Cortex;
-use RVM::RVM;
 
 # Function to evaluate if a scalar is a number (or not)
 use Scalar::Util qw(looks_like_number); 
