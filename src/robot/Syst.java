@@ -21,14 +21,12 @@ import exception.*;
  */
 final public class Syst
 {
-    private static void action(RVM rvm, String type) // mandando Stackable!
+    private static void action(RVM rvm, Stackable arg, String type)
         throws WrongTypeException
     {
-        Stackable dir = rvm.DATA.pop();
         Operation op;
-        
         try { 
-            op = new Operation(type, dir); 
+            op = new Operation(type, arg);
         }
         catch (InvalidOperationException e) {
             throw new WrongTypeException(type);
@@ -38,27 +36,27 @@ final public class Syst
         rvm.DATA.push(permission);
     }
     
-    public static void MOVE(RVM rvm)
+    public static void MOVE(RVM rvm, Stackable arg)
         throws WrongTypeException
     {
-        action(rvm, "MOVE");
+        action(rvm, arg, "MOVE");
     }
     
-    public static void DRAG(RVM rvm)
+    public static void DRAG(RVM rvm, Stackable arg)
         throws WrongTypeException
     {
-        action(rvm, "DRAG");
+        action(rvm, arg, "DRAG");
     }
     
-    public static void DROP(RVM rvm)
+    public static void DROP(RVM rvm, Stackable arg)
         throws WrongTypeException
     {
-        action(rvm, "DROP");
+        action(rvm, arg, "DROP");
     }
     
-    public static void HIT(RVM rvm)
+    public static void HIT(RVM rvm, Stackable arg)
         throws WrongTypeException
     {
-        action(rvm, "HIT");
+        action(rvm, arg, "HIT");
     }
 }
