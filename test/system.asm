@@ -1,3 +1,7 @@
 PUSH ->NE
 MOVE
+PUSH ->NE
+MOVE
+PUSH ->E
+HIT
 END

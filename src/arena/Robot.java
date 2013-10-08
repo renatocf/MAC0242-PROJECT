@@ -5,8 +5,9 @@ import java.util.Vector;
 import exception.*;
 import robot.*;
 import stackable.*;
+import scenario.Scenario;
 
-public class Robot
+public class Robot implements Scenario
 {
     // ID
     final protected String name;
@@ -93,6 +94,12 @@ public class Robot
     public void upload(Vector<Command> PROG)
     {
         this.positronic.upload(PROG);
+    }
+    
+    public int takeDamage(int damage)
+    {
+        this.HP -= damage - this.forceShield;
+        return this.HP;
     }
     
 }
