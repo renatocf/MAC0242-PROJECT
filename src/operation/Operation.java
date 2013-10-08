@@ -2,6 +2,7 @@ package operation;
 
 // Libraries
 import arena.*;
+import robot.*;
 import exception.*;
 import stackable.*;
 
@@ -21,6 +22,7 @@ public class Operation
 {
     final private   Stackable arg;
     final private   String action;
+    final private   RVM robot;
     private boolean rightType;
     
     /**
@@ -31,12 +33,13 @@ public class Operation
      * @throws WrongTypeException
      * @throws InvalidOperationException
      */
-    public Operation(String action, Stackable arg)
+    public Operation(RVM robot, String action, Stackable arg)
         throws InvalidOperationException,
                WrongTypeException
     {
+        this.arg    = arg;
+        this.robot  = robot;
         this.action = action;
-        this.arg = arg;
         
         switch (this.action)
         {

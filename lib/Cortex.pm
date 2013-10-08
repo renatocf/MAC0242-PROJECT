@@ -11,10 +11,10 @@ use warnings;
 #######################################################################
 
 my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # sem 
-            'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET'); # arg
-my @ins2 = ('RCL', 'STO');                          # arg numérico (apenas)
-my @ins3 = ('PUSH', 'JMP', 'JIF', 'JIT', 'CALL');   # arg string/numérico
-    my @ins4 = ('MOVE', 'DRAG', 'DROP', 'HIT');         # arg direção
+            'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET',  # arg
+            'MOVE', 'DRAG', 'DROP', 'HIT');  
+my @ins2 = ('RCL', 'STO');                   # arg numérico (apenas)
+my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg string/numérico
 
 #######################################################################
 #                            CONSTRUTOR                               #
@@ -71,13 +71,24 @@ sub parse
             my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
 
             # caso algum com seja passado:
-            given($com)
-            {                   
-                when(@ins1) { $err = 1 if(defined $arg);              }
-                when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
-                when(@ins3) { $err = 3 if($arg !~ m/^[A-Za-z]+\w*$/); }
-                when(@ins4) { $err = 4 if($arg !~ m/^->[NS]?[WE]$/);  }
-                default     { $err = 5;                               }
+            if($com eq "PUSH") #=~ /^\s*PUSH\s*$/)
+            {
+                say $arg;
+                if    ($arg =~ m/^\d+$/)          {}         
+                elsif ($arg =~ m/^[A-Za-z]+\w*$/) {}
+                elsif ($arg =~ m/^->[NS]?[WE]$/)  {} 
+                else  { $err = 0; }
+            }                                        
+            else                                     
+            {
+                say "NO ELSE";
+                given($com)
+                {                   
+                    when(@ins1) { $err = 1 if(defined $arg);              }
+                    when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
+                    when(@ins3) { $err = 3 if($arg !~ m/^[a-za-z]+\w*$/); }
+                    default     { $err = 5;                               }
+                }
             }
             
             if($err) { &err($line, $err, $com); return undef; } 
@@ -111,6 +122,7 @@ sub err
     print "Comando '$com' ";
     given($err) 
     {
+        when(0) { say("Precisa de um argumento EMPILHÁVEL") }
         when(1) { say("NÃO precisa de argumento!")          }
         when(2) { say("precisa de argumento NUMÉRICO!")     }
         when(3) { say("precisa de uma PALAVRA (um LABEL)!") }

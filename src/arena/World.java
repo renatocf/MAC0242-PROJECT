@@ -8,24 +8,6 @@ import exception.*;
 
 public class World
 {
-    Num permission;
-    Direction dir;
-    
-    public World(boolean param)
-    {
-        this.permission = (param) ? new Num(1) : new Num(0);
-    }
-
-    public void setDirection(Direction d)
-    {
-        this.dir = d;
-    }
-
-    public Num get()
-    {
-        return this.permission;
-    }
-
     static public Num ctrl(Operation op)
     {
         switch(op.getAction())

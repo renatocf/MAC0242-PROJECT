@@ -1,2 +1,3 @@
-MOVE ->NE
+PUSH ->NE
+MOVE
 END
