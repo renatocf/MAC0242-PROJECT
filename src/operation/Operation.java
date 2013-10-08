@@ -40,10 +40,10 @@ public class Operation
         
         switch (this.action)
         {
-            case "MOVE" : rightType = checkArg(); break;
-            case "DRAG" : rightType = checkArg(); break;    
-            case "DROP" : rightType = checkArg(); break;
-            case "HIT"  : rightType = checkArg(); break;        
+            case "MOVE" : rightType = MOVE(); break;
+            case "DRAG" : rightType = DRAG(); break;    
+            case "DROP" : rightType = DROP(); break;
+            case "HIT"  : rightType = HIT (); break;        
             default     : throw new InvalidOperationException(this.action);
         }
         if(!rightType)
@@ -58,5 +58,8 @@ public class Operation
     public Stackable getArgument () { return this.arg;    }
     
     // Verify arguments
-    private boolean checkArg() {return this.arg instanceof Direction; }
+    private boolean MOVE () { return this.arg instanceof Direction; }
+    private boolean DRAG () { return this.arg instanceof Direction; }
+    private boolean DROP () { return this.arg instanceof Direction; }
+    private boolean HIT  () { return this.arg instanceof Direction; }
 }

@@ -1,35 +1,47 @@
 package arena;
 
-import stackable.*;
+// Libraries
 import robot.*;
+import stackable.*;
 import operation.*;
 import exception.*;
 
 public class World
 {
-    Num permissao;
+    Num permission;
     Direction dir;
+    
     public World(boolean param)
     {
-        if(param)
-          { this.permissao = new Num(1); }
-        else
-          { this.permissao = new Num(0); }
+        this.permission = (param) ? new Num(1) : new Num(0);
     }
-    
+
     public void setDirection(Direction d)
     {
         this.dir = d;
     }
-    
+
     public Num get()
     {
-        return this.permissao;
+        return this.permission;
     }
-    
+
     static public Num ctrl(Operation op)
     {
+        switch(op.getAction())
+        {
+            case "MOVE" : MOVE(); break;
+            case "DRAG" : DRAG(); break;    
+            case "DROP" : DROP(); break;
+            case "HIT"  : HIT (); break;        
+        }
+        
         Num answer = new Num(1); 
         return answer;
     }
+    
+    private static void MOVE () {  }
+    private static void DRAG () {  }
+    private static void DROP () {  }
+    private static void HIT  () {  }
 }
