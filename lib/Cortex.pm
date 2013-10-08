@@ -12,9 +12,9 @@ use warnings;
 
 my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # sem 
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET'); # arg
-my @ins2 = ('PUSH', 'RCL', 'STO');                  # arg numérico (apenas)
-my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');           # arg string/numérico
-my @ins4 = ('MOVE', 'DRAG', 'DROP', 'HIT', 'PUSH'); # arg direção
+my @ins2 = ('RCL', 'STO');                          # arg numérico (apenas)
+my @ins3 = ('PUSH', 'JMP', 'JIF', 'JIT', 'CALL');   # arg string/numérico
+    my @ins4 = ('MOVE', 'DRAG', 'DROP', 'HIT');         # arg direção
 
 #######################################################################
 #                            CONSTRUTOR                               #
