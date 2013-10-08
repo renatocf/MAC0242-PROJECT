@@ -40,6 +40,11 @@ final public class Syst
         throws WrongTypeException
     {
         action(rvm, arg, "MOVE");
+        Stackable ans = rvm.DATA.pop();
+        if(ans instanceof Num) 
+        {
+            System.out.println("MOVE");
+        }
     }
     
     public static void DRAG(RVM rvm, Stackable arg)

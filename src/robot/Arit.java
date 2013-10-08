@@ -12,8 +12,8 @@ import exception.*;
  * stack of the virtual machine.
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see robot.RMV
+ * @see robot.Ctrl
  */
 final public class Arit
 {
