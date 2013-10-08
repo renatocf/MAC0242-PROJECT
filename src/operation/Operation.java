@@ -17,12 +17,11 @@ import stackable.*;
  * @see RVM 
  * @see World
  */
-
 public class Operation
 {
     final private   Stackable arg;
     final private   String action;
-    private boolean wrongType;
+    private boolean rightType;
     
     /**
      * Class constructor.
@@ -32,8 +31,6 @@ public class Operation
      * @throws WrongTypeException
      * @throws InvalidOperationException
      */
-     
-    //11public Operation(String action, Stackable arg)
     public Operation(String action, Stackable arg)
         throws InvalidOperationException,
                WrongTypeException
@@ -43,13 +40,13 @@ public class Operation
         
         switch (this.action)
         {
-            case "MOVE" : wrongType = checkArg(); break;
-            case "DRAG" : wrongType = checkArg(); break;    
-            case "DROP" : wrongType = checkArg(); break;
-            case "HIT"  : wrongType = checkArg(); break;        
+            case "MOVE" : rightType = checkArg(); break;
+            case "DRAG" : rightType = checkArg(); break;    
+            case "DROP" : rightType = checkArg(); break;
+            case "HIT"  : rightType = checkArg(); break;        
             default     : throw new InvalidOperationException(this.action);
         }
-        if(wrongType)
+        if(!rightType)
         {
             throw new WrongTypeException("argument to operation " + 
                 this.action + ", but argument was " + arg.toString());
@@ -61,5 +58,5 @@ public class Operation
     public Stackable getArgument () { return this.arg;    }
     
     // Verify arguments
-    private boolean checkArg() { return this.arg instanceof Direction; }
-}  
+    private boolean checkArg() {return this.arg instanceof Direction; }
+}
