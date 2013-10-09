@@ -57,7 +57,7 @@ public class Terrain implements Stackable
         this.scenario = s;
     }
     
-    public boolean setScenario(Scenario scenario)
+    protected boolean setScenario(Scenario scenario)
     {
         if(this.scenario == null)
         { 
@@ -67,18 +67,28 @@ public class Terrain implements Stackable
         return false;
     }
     
-    public Scenario removeScenario()
+    protected Scenario removeScenario()
     {
         Scenario sRet = this.scenario; 
         this.scenario = null;
         return sRet;
     }
     
-    public Item removeItem()
+    public Scenario getScenario()
+    {
+        return this.scenario;
+    }
+    
+    protected Item removeItem()
     {
         Item iRet = this.item; 
         this.item = null;
         return iRet;
+    }
+    
+    public Item getItem()
+    {
+        return this.item;
     }
     
     public String toString()

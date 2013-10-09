@@ -22,6 +22,7 @@ public class World implements Parameters
     private static int time = 0;
     
     public static void genesis(int np, Weather w)
+        throws InvalidOperationException
     {
         // Set game configurations
         nPlayers = np;

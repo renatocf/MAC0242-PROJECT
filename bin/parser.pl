@@ -75,26 +75,39 @@ my %textual;
 my %numeric;
 my %direction;
 
+my $stone = 0;
+my $crystal = 0;
+
 my $n = 0;
 for my $line (@prog)
 {
+    next if not defined $line;
+    
     # Split line fields
     my ($func, $arg, $label) = @$line;
     
     # Creating variables
     if(defined $arg)
     {
-        if( looks_like_number($arg) ) 
+        if( looks_like_number($arg) ) # Numeric argument
         {
             $line->[1] = "n$arg";
             $numeric{$arg} = "Num n$arg = new Num($arg);";
         }
-        elsif($arg =~ /^->/)
+        elsif($arg =~ /^->/) # Direction
         {
             $arg = uc $arg; $arg =~ s/->//; $line->[1] = "d$arg";
             $direction{$arg} = "Direction d$arg = new Direction(\"$arg\");";
         }
-        else{ 
+        elsif($arg =~ /^{(\w+)}$/) # Stackable argument
+        {
+            given($1)
+            {
+                when(/crystal/i) { $cristal = 1; $line[1] = "CRYSTAL"; }
+                when(/stone/i)   { $stone   = 1; $line[1] = "STONE";   }
+            }
+        }
+        else{ # String argument
             if(not exists $textual{$arg})
             {
                 $n++; $line->[1] = "msg$n";
@@ -142,7 +155,7 @@ public class Parser
         Vector<Command> PROG = new Vector<Command>();
 PARSER_H
 
-# Print sorted numerical and textual variables
+# Print sorted numerical, textual, direction and stackable variables
 if(scalar keys %numeric) 
 {
     say " " x 8, "// Numerical variables";
@@ -152,7 +165,7 @@ if(scalar keys %numeric)
 
 if(scalar keys %textual)
 {
-    say " " x 8, "// textual variables";
+    say " " x 8, "// Textual variables";
     for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}[1]; }
     print "\n";
 }
@@ -162,6 +175,18 @@ if(scalar keys %direction)
     say " " x 8, "// Direction variables";
     for my $dir (sort keys %direction) { say " " x 8, $direction{$dir}; }
     print "\n";
+}
+
+if($cristal) 
+{
+    say " " x 8, "// Crystal variable" 
+    say " " x 8, "Crystal CRYSTAL = new Crystal()"; 
+}
+
+if($stone) 
+{
+    say " " x 8, "// Stone variable" 
+    say " " x 8, "Stone STONE = new Stone()"; 
 }
 
 # Printing program

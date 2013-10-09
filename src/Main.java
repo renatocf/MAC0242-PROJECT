@@ -12,6 +12,7 @@ import parser.*;
 class Main
 {
     public static void main(String[] args)
+        throws InvalidOperationException
     {
         Parser user = new Parser();
         Vector<Command> PROG = user.upload();

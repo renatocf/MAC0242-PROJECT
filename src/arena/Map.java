@@ -5,6 +5,7 @@ import stackable.item.*;
 import parser.Parser;
 import java.util.Vector;
 import robot.*;
+import exception.*;
 
 public class Map implements Parameters
 {
@@ -18,6 +19,7 @@ public class Map implements Parameters
     }
     
     public Robot[][] genesis(int nPlayers)
+        throws InvalidOperationException
     {
         for(int i = 0; i < MAP_SIZE; i++)
         {

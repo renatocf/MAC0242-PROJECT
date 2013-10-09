@@ -7,17 +7,18 @@ use strict;
 use warnings;
 
 #######################################################################
-#                        VARIÁVEIS DE PACOTE                          #
+#                        PACKAGE VARIABLES                            #
 #######################################################################
 
-my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # sem 
+my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # no 
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET',  # arg
             'MOVE', 'DRAG', 'DROP', 'HIT', 'LOOK');  
-my @ins2 = ('RCL', 'STO');                   # arg numérico (apenas)
-my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg string/numérico
+my @ins2 = ('RCL', 'STO');                   # arg: numeric (only)
+my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg: numeric/string
+my @stk  = ('crystal', 'stone');             # stackables
 
 #######################################################################
-#                            CONSTRUTOR                               #
+#                            CONSTRUCTOR                              #
 #######################################################################
 
 sub new 
@@ -28,62 +29,76 @@ sub new
 }
 
 #######################################################################
-#                              MÉTODOS                                #
+#                              METHODS                                #
 #######################################################################
 
 sub parse
 {
-    my ($obj, $file) = @_;   # Objeto e arquivo
-    my @stack; my $line = 0; # stack e contador de linhas
+    my ($obj, $file) = @_;   # Object and file
+    my @stack; my $line = 0; # Stack and line counter
     
-    # Abrindo arquivo
+    # Opening file
     open(FILE, '<', $file)
-    or die("Falha ao abrir o arquivo $file!");
+    or die("Failed opening $file!");
 
     foreach(<FILE>)
     { 
         chomp; $line++;
-        when(/^\s*#/)                  {} # Linha de comentário
-        when(/^\s*$/)                  {} # Linha em branco
+        when(/^\s*#/)                  {} # Comment line
+        when(/^\s*$/)                  {} # Blank line
         when(/^\s*([A-Za-z]\w*):\s*$/) { push @stack, [undef,undef,$1] }
-        when(/^\s*                       # Espaços
+        when(/^\s*                       # Spaces
                 (?:                
-                    ([A-Za-z]            # LABEL: Começa com ao menos uma letra
-                    \w*):                # e pode terminar com dígitos|letras e :
+                    ([A-Za-z]            # LABEL: Starts with at least
+                    \w*):                # one character, others 0 or
+                                         # more alphanumerics and :
                 )?                 
-                \s*                      # Espaços
+                \s*                      # Spaces
                 (?:                
                     ([A-Z]+)             # COMANDO
                     (?:
-                        \s+              # Espaço
+                        \s+              # Spaces
                         (
-                            ->\w*|\w+    # ARGUMENTO
+                            ->\w*        # DIRECTION }
+                            |            #           }
+                            \w+          # STRING    } ARGUMENT
+                            |            #           }
+                            {\w+}        # STACKABLE }
                         )
                     )?
                 )?             
-                \s*                      # Espaço
-                (?:\#.*)?                # Comentário
+                \s*                      # Spaces
+                (?:\#.*)?                # Comemnts
             $/x)
         { 
             my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
 
-            # caso algum com seja passado:
-            if($com eq "PUSH") #=~ /^\s*PUSH\s*$/)
+            # If there is any command
+            if($com eq "PUSH")
             {
                 say $arg;
-                if    ($arg =~ m/^\d+$/)          {}         
-                elsif ($arg =~ m/^[A-Za-z]+\w*$/) {}
-                elsif ($arg =~ m/^(->[NS]?[WE]|->)$/)  {} 
-                else  { $err = 0; }
-            }                                        
+                if    ($arg =~ m/^\d+$/)                {} # Numeric
+                elsif ($arg =~ m/^[A-Za-z]+\w*$/)       {} # String
+                elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {} # Direction
+                elsif ($arg =~ m/^{(\w+)}$/)
+                {
+                    $err = 1; # If matches, return
+                              # to the default value
+                    # map { $err = -1 if $_ eq $1 } @stk; 
+                    foreach (@stk) { $err = 0 if $_ eq $1 }
+                }                                        # Stackable
+                else  { $err = 0; }                      # Default
+                
+            }
             else                                     
             {
                 say "NO ELSE";
                 given($com)
                 {                   
-                    when(@ins1) { $err = 1 if(defined $arg);              }
-                    when(@ins2) { $err = 2 if($arg !~ m/^\d+$/);          }
-                    when(@ins3) { $err = 3 if($arg !~ m/^[a-za-z]+\w*$/); }
+                    when(@ins1) { $err = 2 if(defined $arg);              }
+                    when(@ins2) { $err = 3 if($arg !~ m/^\d+$/);          }
+                    when(@ins3) { $err = 4 if($arg !~
+                                              m/^(?:[a-za-z]+\w*|\d+)$/); }
                     default     { $err = 5;                               }
                 }
             }
@@ -92,12 +107,12 @@ sub parse
             else     { push @stack, [uc $com, $arg, $lab];     }
         }
         
-        # Erro de sintaxe
-        default { print "no default"; &err($line, $_); return undef; } 
+        # Syntax error
+        default { &err($line, $_); return undef; } 
     }
     close(FILE);
     
-    # Sem erros, retorne a stack
+    # No errors. Return stack
     return @stack;
 }
 
@@ -110,21 +125,20 @@ sub err
     my ($line, $err, $com) = @_;
     
     select STDERR;
-    print "Erro na linha $line! Erro $err";
+    print "Error on line $line! Error $err ";
     
-    # Erro de sintaxe simples
-    die "Sintaxe: <LABEL:> COMANDO <ARGUMENTO>\n" unless defined $com;
+    # Simple syntax error
+    die "Syntax: <LABEL:> COMMAND <ARGUMENT>\n" unless defined $com;
     
-    # Problema com comandos
-    print "Comando '$com' ";
+    # Problems with commands
+    print "Command '$com' ";
     given($err) 
     {
-        when(0) { say("Precisa de um argumento EMPILHÁVEL") }
-        when(1) { say("NÃO precisa de argumento!")          }
-        when(2) { say("precisa de argumento NUMÉRICO!")     }
-        when(3) { say("precisa de uma PALAVRA (um LABEL)!") }
-        when(4) { say("precisa ser uma DIREÇÃO!")           }
-        when(5) { say("NÃO existe!")                        }
+        when(1) { say("needs a STACKABLE argument!") }
+        when(2) { say("needs NO argument!")          }
+        when(3) { say("needs a NUMERIC argument!")   }
+        when(4) { say("needs a LABEL argument!")     }
+        when(5) { say("does not exist!")             }
     }
 } 
 
