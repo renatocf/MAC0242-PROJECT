@@ -7,6 +7,7 @@ import java.util.Vector;
 import robot.*;
 import exception.*;
 import stackable.*;
+import stackable.item.Item;
 import scenario.Scenario;
 
 public class Robot implements Scenario
@@ -19,7 +20,7 @@ public class Robot implements Scenario
     protected int j; // Column
     
     // Hardware
-    protected Stackable[] slots;
+    Item[] slots;
     protected RVM positronic;
     
     // Energy
@@ -49,7 +50,7 @@ public class Robot implements Scenario
         this.j = j;
         
         // Hardware
-        this.slots = new Stackable[1];
+        this.slots = new Item[1];
         this.positronic = new RVM (PROG);
         
         // Energy

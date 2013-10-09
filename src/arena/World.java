@@ -1,5 +1,9 @@
 package arena;
 
+// Default libraries
+import java.io.IOException;
+import java.lang.Thread;
+
 // Libraries
 import robot.*;
 import scenario.*;
@@ -15,6 +19,7 @@ public class World implements Parameters
     private static Robot[][] armies;
     
     private static Robot turn;
+    private static int time = 0;
     
     public static void genesis(int np, Weather w)
     {
@@ -34,6 +39,7 @@ public class World implements Parameters
     
     public static void timeStep()
     {
+        time++; // On each time step, increments time
         for(int i = 0; i < nPlayers; i++)
         {
             for(int j = 0; armies[i][j] != null; j++)
@@ -45,50 +51,95 @@ public class World implements Parameters
                     System.out.println("["+ turn.toString() +"] " + e);
                 }
             }
+            
         }
+        
+        try { 
+            Thread.sleep(500);
+        } catch (Exception e) {
+        }
+        System.out.print("\n\n\n\n");
+        print();
     }
     
     static public Num ctrl(Operation op)
     {
+        boolean can = false;
         switch(op.getAction())
         {
-            case "MOVE" : MOVE(op); break;
-            case "DRAG" : DRAG(op); break;    
-            case "DROP" : DROP(op); break;
-            case "HIT"  : HIT (op); break;        
+            case "MOVE" : can = MOVE(op); break;
+            case "DRAG" : can = DRAG(op); break;    
+            case "DROP" : can = DROP(op); break;
+            case "HIT"  : can = HIT (op); break;        
         }
-        
-        Num answer = new Num(1);
+        Num answer = new Num( (can)? 1 : 0 ) ;
         return answer;
     }
     
-    private static void MOVE (Operation op) 
+    private static boolean MOVE (Operation op) 
     {
         // Extract direction info from operation
         Direction d = (Direction) op.getArgument();
         int[] update = d.get(turn.i);
         
+        int newI = turn.i + update[0];
+        int newJ = turn.j + update[1];
+        
+        if(newI >= MAP_SIZE 
+        || newJ >= MAP_SIZE  
+        || newI < 0  
+        || newJ < 0  
+        || map.map[newI][newJ].scenario != null) return false;
+        
+        
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].removeScenario();
         
-        System.out.println("\n[" + turn.toString() + "]");
-        System.out.println("=========================");
-        
         // Update robot attributes
-        System.out.println("I: " + turn.i + "J: " + turn.j);
-        turn.i += update[0]; 
-        turn.j += update[1];
-        System.out.println("I: " + turn.i + "J: " + turn.j);
+        turn.i = newI; 
+        turn.j = newJ;
         
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
-        
-        System.out.println("Move to " + d.toString());
+        return true;
     }
     
-    private static void DRAG (Operation op) {  }
-    private static void DROP (Operation op) {  }
-    private static void HIT  (Operation op) {  }
+    private static boolean DRAG (Operation op) 
+    { 
+         // Extract direction info from operation
+        Direction d = (Direction) op.getArgument();
+        int[] update = d.get(turn.i);
+        
+        int lookI = turn.i + update[0];
+        int lookJ = turn.j + update[1];
+        int cont = 0;
+        
+        if(lookI >= MAP_SIZE 
+        || lookJ >= MAP_SIZE  
+        || lookI < 0  
+        || lookJ < 0  
+        || map.map[lookI][lookJ].item == null) return false;
+        
+        
+        // Takes out from original position
+        Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
+        
+        for(int i = 0; robot.slots[i] != null; i++) cont++;
+        if(cont == robot.slots.length) return false;
+            
+        robot.slots[cont] = map.map[lookI][lookJ].removeItem();
+        return true;
+    }
+    
+    private static boolean DROP (Operation op) 
+    {  
+        return true;
+    }
+    
+    private static boolean HIT  (Operation op) 
+    {  
+        return true;
+    }
     
     public static void print()
     {

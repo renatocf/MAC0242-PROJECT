@@ -74,6 +74,13 @@ public class Terrain implements Stackable
         return sRet;
     }
     
+    public Item removeItem()
+    {
+        Item iRet = this.item; 
+        this.item = null;
+        return iRet;
+    }
+    
     public String toString()
     {
         return type.toString() + " " + appearence.toString() + " " + scenario.toString() + " " +  item.toString();
