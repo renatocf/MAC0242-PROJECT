@@ -16,15 +16,20 @@ class Main
         Parser user = new Parser();
         Vector<Command> PROG = user.upload();
         
-        Robot Walle = new Robot("Wall-e", PROG);
-        try {
-            Walle.identify();
-            Walle.run();
-        }
-        catch(Exception e)
-        {
-            System.out.println("Shit: " + e);
-        }
+        //Robot Walle = new Robot("Wall-e", PROG);
+        //try {
+        //    Walle.identify();
+        //    Walle.run();
+        //}
+        //catch(Exception e)
+        //{
+        //    System.out.println("Shit: " + e);
+        //}
+        World.genesis(2, Weather.CONTINENTAL);
+        for(int t = 0; t < 1; t++)
+            World.timeStep();
+        
+        World.print();
         
         /* Direction d = new Direction("NE"); */
         /* System.out.println(d); */

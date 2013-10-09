@@ -1,9 +1,11 @@
 package arena;
 
+// Default libraries
 import java.util.Vector;
 
-import exception.*;
+// Libraries
 import robot.*;
+import exception.*;
 import stackable.*;
 import scenario.Scenario;
 
@@ -11,7 +13,11 @@ public class Robot implements Scenario
 {
     // ID
     final protected String name;
-
+    
+    // Position
+    protected int i; // Line
+    protected int j; // Column
+    
     // Hardware
     protected Stackable[] slots;
     protected RVM positronic;
@@ -33,21 +39,30 @@ public class Robot implements Scenario
     final protected int sight;
     final protected int costTime;
     
-    public Robot(String baptism, Vector<Command> PROG)
+    public Robot(String baptism, int i, int j, Vector<Command> PROG)
     {
+        // ID
         this.name = baptism;
         
+        // Position
+        this.i = i;
+        this.j = j;
+        
+        // Hardware
         this.slots = new Stackable[1];
         this.positronic = new RVM (PROG);
         
+        // Energy
         this.HP         = 12;
         this.power      = 12;
         
+        // Combat
         this.damageMelee = 1;
         this.damageRange = 0;
         this.maxRange    = 0;
         this.forceShield = 0;
         
+        // Capacities
         this.maxHP       = 12;
         this.maxPower    = 24;
         this.costMove    = 3;
@@ -57,6 +72,7 @@ public class Robot implements Scenario
     
     public void identify()
     {
+        System.out.print  ("[" + this.i + "," + this.j + "] ");
         System.out.println(this.toString());
         System.out.println("-------------------------");
         System.out.println("HP          = " + this.HP         );
@@ -101,5 +117,4 @@ public class Robot implements Scenario
         this.HP -= damage - this.forceShield;
         return this.HP;
     }
-    
 }

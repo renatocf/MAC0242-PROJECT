@@ -6,38 +6,47 @@ import parser.Parser;
 import java.util.Vector;
 import robot.*;
 
-
-public class Map
+public class Map implements Parameters
 {
-    Terrain[][] map = new Terrain[50][50];
+    // Map Matrix
+    Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];
     Weather w;
-    
     
     public Map(Weather w)
     {
         this.w = w;
     }
     
-    public void genesis()
+    public Robot[][] genesis(int nPlayers)
     {
-        for(int i = 0; i<50; i++)
+        for(int i = 0; i < MAP_SIZE; i++)
         {
-            for(int j = 0; j < 50; j++)
+            for(int j = 0; j < MAP_SIZE; j++)
             {
-                if(j%5 == 0 && i%5 == 0)
-                { this.map[i][j] = new Terrain(Appearence.GRASS, new Crystal()); }
+                if(j % 5 == 0 && i % 5 == 0)
+                { this.map[i][j] = new Terrain(nPlayers, Appearence.GRASS, new Crystal()); }
                 else
-                { this.map[i][j] = new Terrain(Appearence.GRASS); }
+                { this.map[i][j] = new Terrain(nPlayers, Appearence.GRASS); }
             }
         }
         
+        // TODO: receive PROG, generate robots
         Parser user = new Parser();
         Vector<Command> PROG = user.upload();
         
-        Robot bender = new Robot("Bender", PROG);
-        Robot c3po = new Robot("C3PO", PROG);
+        Robot bender = new Robot("Bender", 8, 8, PROG);
+        Robot c3po   = new Robot("C3PO", 9, 8, PROG);
+        bender.identify();
+        c3po.identify();
                 
-        this.map[42][13].setScenario(bender);
-        this.map[42][12].setScenario(c3po);
+        Robot[][] initial = new Robot[nPlayers][ROBOTS_NUM_INITIAL];
+        
+        initial[0][0] = bender; 
+        initial[1][0] = c3po;
+        
+        this.map[8][8].setScenario(bender);
+        this.map[9][8].setScenario(c3po);
+        
+        return initial;
     }
 }
