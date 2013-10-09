@@ -46,7 +46,8 @@ public class Operation
             case "MOVE" : rightType = MOVE(); break;
             case "DRAG" : rightType = DRAG(); break;    
             case "DROP" : rightType = DROP(); break;
-            case "HIT"  : rightType = HIT (); break;        
+            case "HIT"  : rightType = HIT (); break;
+            case "LOOK" : rightType = LOOK(); break;         
             default     : throw new InvalidOperationException(this.action);
         }
         if(!rightType)
@@ -65,4 +66,5 @@ public class Operation
     private boolean DRAG () { return this.arg instanceof Direction; }
     private boolean DROP () { return this.arg instanceof Direction; }
     private boolean HIT  () { return this.arg instanceof Direction; }
+    private boolean LOOK () { return this.arg instanceof Direction; }
 }

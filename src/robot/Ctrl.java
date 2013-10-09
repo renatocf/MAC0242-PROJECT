@@ -80,6 +80,7 @@ final public class Ctrl
             case "DRAG": Syst.DRAG (rvm);      break;
             case "DROP": Syst.DROP (rvm);      break;
             case "HIT" : Syst.HIT  (rvm);      break;
+            case "LOOK": Syst.LOOK (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);

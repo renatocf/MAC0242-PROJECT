@@ -24,7 +24,9 @@ public class RVM
     HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
     int PC = 0;
-    
+
+    boolean syscall = false;
+
     /**
      * Class constructor specifying a 'program' (vector of
      * objects of the class Command) to the RVM.
@@ -102,7 +104,13 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        for(this.PC = 0; this.PC != -1; this.PC++) exec();
+        this.syscall = false;  
+        while(this.PC != -1 && !this.syscall) 
+        {            
+            exec();
+            if (this.PC < 0) this.PC = 0;
+            else this.PC++;
+        }
     }
     
     /**

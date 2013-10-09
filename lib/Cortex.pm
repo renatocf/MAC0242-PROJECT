@@ -12,7 +12,7 @@ use warnings;
 
 my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # sem 
             'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET',  # arg
-            'MOVE', 'DRAG', 'DROP', 'HIT');  
+            'MOVE', 'DRAG', 'DROP', 'HIT', 'LOOK');  
 my @ins2 = ('RCL', 'STO');                   # arg numérico (apenas)
 my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg string/numérico
 
@@ -46,26 +46,23 @@ sub parse
         when(/^\s*#/)                  {} # Linha de comentário
         when(/^\s*$/)                  {} # Linha em branco
         when(/^\s*([A-Za-z]\w*):\s*$/) { push @stack, [undef,undef,$1] }
-        when(/^\s*                 # Espaços
+        when(/^\s*                       # Espaços
                 (?:                
-                    ([A-Za-z]      # LABEL: Começa com ao menos uma letra
-                    \w*):          # e pode terminar com dígitos|letras e :
+                    ([A-Za-z]            # LABEL: Começa com ao menos uma letra
+                    \w*):                # e pode terminar com dígitos|letras e :
                 )?                 
-                \s*                # Espaços
+                \s*                      # Espaços
                 (?:                
-                    ([A-Z]+)       # COMANDO
+                    ([A-Z]+)             # COMANDO
                     (?:
-                        \s+        # Espaço
+                        \s+              # Espaço
                         (
-                            (?:
-                                -> # ARGUMENTO
-                            )?
-                            \w+    # ARGUMENTO
+                            ->\w*|\w+    # ARGUMENTO
                         )
                     )?
                 )?             
-                \s*                # Espaço
-                (?:\#.*)?          # Comentário
+                \s*                      # Espaço
+                (?:\#.*)?                # Comentário
             $/x)
         { 
             my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
@@ -76,7 +73,7 @@ sub parse
                 say $arg;
                 if    ($arg =~ m/^\d+$/)          {}         
                 elsif ($arg =~ m/^[A-Za-z]+\w*$/) {}
-                elsif ($arg =~ m/^->[NS]?[WE]$/)  {} 
+                elsif ($arg =~ m/^(->[NS]?[WE]|->)$/)  {} 
                 else  { $err = 0; }
             }                                        
             else                                     

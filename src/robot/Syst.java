@@ -34,8 +34,9 @@ final public class Syst
             throw new WrongTypeException(type);
         }
         
-        Num permission = World.ctrl(op);
-        rvm.DATA.push(permission);
+        Stackable stk = World.ctrl(op);
+        rvm.DATA.push(stk);
+        rvm.syscall = true;
     }
     
     public static void MOVE(RVM rvm)
@@ -61,4 +62,11 @@ final public class Syst
     {
         action(rvm, "HIT");
     }
+    
+    public static void LOOK(RVM rvm)
+        throws WrongTypeException
+    {
+        action(rvm, "LOOK");
+    }
+        
 }

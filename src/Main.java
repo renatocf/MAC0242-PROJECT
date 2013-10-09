@@ -27,7 +27,7 @@ class Main
         //}
         World.genesis(2, Weather.CONTINENTAL);
         World.print();
-        for(int t = 0; t < 37; t++)
+        for(int t = 0; t < 370; t++)
             World.timeStep();
         
         /* World.print(); */

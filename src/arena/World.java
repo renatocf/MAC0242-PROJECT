@@ -51,29 +51,28 @@ public class World implements Parameters
                     System.out.println("["+ turn.toString() +"] " + e);
                 }
             }
-            
         }
+        paint();
         
-        try { 
-            Thread.sleep(500);
-        } catch (Exception e) {
-        }
-        System.out.print("\n\n\n\n");
-        print();
     }
     
-    static public Num ctrl(Operation op)
+    static public Stackable ctrl(Operation op)
     {
+        Stackable stackable = null;
         boolean can = false;
         switch(op.getAction())
         {
             case "MOVE" : can = MOVE(op); break;
             case "DRAG" : can = DRAG(op); break;    
             case "DROP" : can = DROP(op); break;
-            case "HIT"  : can = HIT (op); break;        
+            case "HIT"  : can = HIT (op); break;
+            
+            case "LOOK" : stackable = LOOK(op); break;            
         }
-        Num answer = new Num( (can)? 1 : 0 ) ;
-        return answer;
+        
+        if(stackable == null) 
+            return new Num( (can)? 1 : 0 ) ;
+        return stackable;
     }
     
     private static boolean MOVE (Operation op) 
@@ -139,6 +138,34 @@ public class World implements Parameters
     private static boolean HIT  (Operation op) 
     {  
         return true;
+    }
+    
+    private static Stackable LOOK (Operation op) 
+    { 
+         // Extract direction info from operation
+        Direction d = (Direction) op.getArgument();
+        int[] update = d.get(turn.i);
+        
+        int lookI = turn.i + update[0];
+        int lookJ = turn.j + update[1];
+        
+        if(lookI >= MAP_SIZE 
+        || lookJ >= MAP_SIZE  
+        || lookI < 0  
+        || lookJ < 0) return null;
+        
+        // Takes out from original position
+        return map.map[turn.i][turn.j];
+    }
+    
+    public static void paint()
+    {
+        try { 
+            Thread.sleep(SPEED);
+        } catch (Exception e) {
+        }
+        System.out.print("\n\n\n\n");
+        print();
     }
     
     public static void print()

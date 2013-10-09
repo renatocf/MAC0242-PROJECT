@@ -9,7 +9,7 @@ public class Direction implements Stackable
     int movement[][] = new int[2][2];
     String cardPoint;
     
-    public Direction(String dir) //throws InvalidOperationException
+    public Direction(String dir) throws InvalidOperationException
     {
         this.cardPoint = dir;
         switch (dir)
@@ -20,8 +20,8 @@ public class Direction implements Stackable
           case "W" : set( 0, -1,  0, -1); break; 
           case "SW": set( 1, -1,  1,  0); break; 
           case "SE": set( 1,  0,  1,  1); break; 
-          default  : set( 0,  0,  0,  0); 
-          //default: throw new InvalidOperationException(dir);
+          case ""  : set( 0,  0,  0,  0); break; 
+          default: throw new InvalidOperationException(dir);
         }
     }
     

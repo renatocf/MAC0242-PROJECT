@@ -119,6 +119,7 @@ say << "PREAMBLE";
 
 // Default libraries
 import stackable.*;
+import exception.*;
 import robot.*;
 import java.util.Vector;
 PREAMBLE
@@ -136,6 +137,7 @@ public class Parser
      * Method for uploading the program.
      */
     public Vector<Command> upload()
+        throws InvalidOperationException
     {
         Vector<Command> PROG = new Vector<Command>();
 PARSER_H
