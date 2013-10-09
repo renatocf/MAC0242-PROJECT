@@ -127,6 +127,11 @@ public class World implements Parameters
             }
             System.out.println("|");
             
+            System.out.print( (odd) ? "   " : "");
+            for(int j = 0; j < MAP_SIZE; j++)
+                System.out.print("|     ");
+            System.out.println("|");
+            
             if(i == MAP_SIZE-1) break;
             for(int j = 0; j < MAP_SIZE; j++)
                 System.out.print( (odd) ? "  / \\ " : " \\   /");
