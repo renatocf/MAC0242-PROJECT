@@ -103,8 +103,12 @@ for my $line (@prog)
         {
             given($1)
             {
-                when(/crystal/i) { $cristal = 1; $line[1] = "CRYSTAL"; }
-                when(/stone/i)   { $stone   = 1; $line[1] = "STONE";   }
+                when(/crystal/i) { 
+                    $crystal = 1; $line->[1] = "CRYSTAL"; 
+                }
+                when(/stone/i)   { 
+                    $stone = 1; $line->[1] = "STONE";   
+                }
             }
         }
         else{ # String argument
@@ -130,11 +134,14 @@ select $PARSER;
 say << "PREAMBLE";
  package parser;
 
-// Default libraries
-import stackable.*;
-import exception.*;
-import robot.*;
+// Default Libraries
 import java.util.Vector;
+
+// Libraries
+import robot.*;
+import exception.*;
+import stackable.*;
+import stackable.item.*;
 PREAMBLE
 
 say << "PARSER_H";
@@ -177,16 +184,16 @@ if(scalar keys %direction)
     print "\n";
 }
 
-if($cristal) 
+if($crystal) 
 {
-    say " " x 8, "// Crystal variable" 
-    say " " x 8, "Crystal CRYSTAL = new Crystal()"; 
+    say " " x 8, "// Crystal variable";
+    say " " x 8, "Crystal CRYSTAL = new Crystal();";
 }
 
 if($stone) 
 {
-    say " " x 8, "// Stone variable" 
-    say " " x 8, "Stone STONE = new Stone()"; 
+    say " " x 8, "// Stone variable";
+    say " " x 8, "Stone STONE = new Stone();";
 }
 
 # Printing program
