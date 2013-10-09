@@ -93,17 +93,20 @@ public class World implements Parameters
     public static void print()
     {
         for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print("  /\\ ");
+            System.out.print("   .  ");
         System.out.println(" ");
         for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print(" /  \\");
+            System.out.print("  / \\ ");
+        System.out.println(" ");
+        for(int j = 0; j < MAP_SIZE; j++)
+            System.out.print(" /   \\");
         System.out.println(" ");
         
         for(int i = 0; i < MAP_SIZE; i++)
         {
             boolean odd = (i % 2 == 1) ? true : false;
             
-            System.out.print( (odd) ? "  " : "");
+            System.out.print( (odd) ? "   " : "");
             for(int j = 0; j < MAP_SIZE; j++)
             {
                 String item     = " ";
@@ -112,33 +115,40 @@ public class World implements Parameters
                 if      (map.map[i][j].scenario == null)          scenario = " ";
                 else if (map.map[i][j].scenario instanceof Base ) scenario = "ß";
                 else if (map.map[i][j].scenario instanceof Rock ) scenario = "ø";
-                else if (map.map[i][j].scenario instanceof Tree ) scenario = "ł";
-                else if (map.map[i][j].scenario instanceof Water) scenario = "_";
-                else if (map.map[i][j].scenario instanceof Robot) scenario = "R";
+                else if (map.map[i][j].scenario instanceof Tree ) scenario = "☘";
+                else if (map.map[i][j].scenario instanceof Water) scenario = "≈";
+                else if (map.map[i][j].scenario instanceof Robot) scenario = "R"; 
                 
                 if      (map.map[i][j].item == null)            item = " ";
-                else if (map.map[i][j].item instanceof Crystal) item = "*";
+                else if (map.map[i][j].item instanceof Crystal) item = "◇";
                 else if (map.map[i][j].item instanceof Stone)   item = ".";
                 
-                System.out.print("| " + scenario + item + " ");
+                System.out.print("| " + scenario + " " + item + " ");
             }
             System.out.println("|");
             
             if(i == MAP_SIZE-1) break;
             for(int j = 0; j < MAP_SIZE; j++)
-                System.out.print( (odd) ? "  /\\ " : " \\  /");
-            System.out.println( (odd) ? " /" : "\\");
+                System.out.print( (odd) ? "  / \\ " : " \\   /");
+            System.out.println( (odd) ? "  /" : " \\");
             
             for(int j = 0; j < MAP_SIZE; j++)
-                System.out.print( (odd) ? " /  \\" : "  \\/ ");
-            System.out.println( (odd) ? "/" : " \\"); 
+                System.out.print( (odd) ? " /   \\" : "  \\ / ");
+            System.out.println( (odd) ? " /" : "  \\"); 
         }
             
         for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print(" \\  /");
+            System.out.print(" \\   /");
         System.out.println(" ");
         for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print("  \\/ ");
+            System.out.print("  \\ / ");
+        System.out.println(" ");
+        for(int j = 0; j < MAP_SIZE; j++)
+            System.out.print("   '  ");
         System.out.println(" ");
     }
 }
+
+// :¨:
+// =%=
+// / \
