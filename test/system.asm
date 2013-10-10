@@ -1,18 +1,11 @@
-PUSH ->W
-MOVE
-PUSH ->
-MOVE
-PUSH ->E
-MOVE
-PUSH ->
-MOVE
-PUSH ->
-MOVE
-PUSH ->W
-MOVE
-PUSH ->E
-MOVE
-
-
-
-END
+     PUSH ->W
+     DUP
+     LOOK
+     ITEM
+     PUSH {crystal}
+     EQ
+     JIF  end
+     DRAG
+end: PUSH ->SE
+     MOVE
+     END

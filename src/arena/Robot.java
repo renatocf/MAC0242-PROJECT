@@ -71,6 +71,14 @@ public class Robot implements Scenario
         this.costTime    = 5;
     }
     
+    public Item removeSlots(int position)
+    {
+    //*
+    	Item item = this.slots[position];
+    	slots[position] = null;
+    	return item;
+    }
+    
     public void identify()
     {
         System.out.print  ("[" + this.i + "," + this.j + "] ");

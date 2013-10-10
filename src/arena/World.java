@@ -163,6 +163,41 @@ public class World implements Game
     
     private static boolean DROP (Operation op) 
     {  
+    //*	
+        Direction d = (Direction) op.getArgument();
+        int[] update = d.get(turn.i);
+        
+        int lookI = turn.i + update[0];
+        int lookJ = turn.j + update[1];
+        
+        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
+        else if(lookI < 0) lookI += MAP_SIZE;
+        
+        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
+        else if(lookJ < 0) lookJ += MAP_SIZE;
+        
+        int cont = 0;
+        
+        if(lookI >= MAP_SIZE 
+        || lookJ >= MAP_SIZE  
+        || lookI < 0  
+        || lookJ < 0  
+        || map.map[lookI][lookJ].item != null) return false;
+        
+        // Takes out from original position
+        Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
+        
+        for(int i = 0; robot.slots[i] != null; i++) cont++;
+        if(cont == 0) return false;
+            
+        String pre = "    [DROP]";
+        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        //robot.slots[cont] = map.map[lookI][lookJ].removeItem(); // Add item
+        
+        map.map[lookI][lookJ].item = robot.removeSlots(cont - 1);
+        
+        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        
         return true;
     }
     
