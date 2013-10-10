@@ -3,6 +3,7 @@ package robot;
 // Libraries
 import stackable.*;
 import exception.*;
+import stackable.item.*;
 
 /**
  * Assembly functions - class Tests.
@@ -53,14 +54,33 @@ final public class Tests
             /* TODO: res ? DATA.push(yes) : DATA.push(no); */
             if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
         }
+        else throw new WrongTypeException("Num");
     }
     
-    static void EQ(RVM rvm) throws WrongTypeException,
-                     StackUnderflowException
+    static void EQ(RVM rvm) 
+        throws WrongTypeException, StackUnderflowException
     {
-        compare(rvm, new Cmp() {
-            public boolean cmp(double a, double b) { return a == b; } }
-        );
+        // Default answers
+        Num no = new Num(0), yes = new Num(1);
+           
+        // Stores the arguments to be tested
+        Stackable arg1 = rvm.DATA.pop(), arg2 = rvm.DATA.pop();
+        
+        if(arg1 instanceof Num && arg2 instanceof Num)
+        {
+            // Downcasts to number if the type is correct
+            Num num1 = (Num) arg1, num2 = (Num) arg2;
+            
+            // Result of the comparison
+            boolean res = num1.getNumber() == num2.getNumber();
+            
+            // Push true or false accordingly to the comparison
+            if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
+            return;
+        }
+        
+        if( arg1.getClass().equals(arg2.getClass()) ) rvm.DATA.push(yes);
+        else                                          rvm.DATA.push(no);
     }
     
     static void GT(RVM rvm) 

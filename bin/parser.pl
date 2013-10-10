@@ -21,12 +21,14 @@ use Getopt::Long;
 
 my $base  = "$Bin/..";
 my $src   = "src";
+my $item  = "$base/$src/stackable/item";
 my $help  = undef; 
 my $build = "build/classes";
 
 Getopt::Long::Configure('bundling');
 GetOptions(
     "b|build-path=s" => \$build,
+    "i|item-path=s"  => \$item,
     "h|help"         => \$help,
     "r|root-path=s"  => \$base,
     "s|src-path=s"   => \$src,
@@ -71,14 +73,24 @@ my @prog = $positronic_brain->parse("$file");
 ########################################################################
 ##                             PREPROC                                ##
 ########################################################################
+
+my $max_size_com = 4; # null
+my $max_size_arg = 4; # null
+my $max_size_lab = 4; # null
+
+# Hashes with values
+my %item;
 my %textual;
 my %numeric;
 my %direction;
 
-my $stone = 0;
-my $crystal = 0;
+# Get items from item directory
+opendir ITEMS, $item;
+map  { s/\.java//; $item{$_} = 0 } 
+grep { not /^\./ and not /^Item/ and -f "$item/$_"} readdir ITEMS;
+closedir ITEMS;
 
-my $n = 0;
+my ($t, $n) = (0, 0);
 for my $line (@prog)
 {
     next if not defined $line;
@@ -86,42 +98,69 @@ for my $line (@prog)
     # Split line fields
     my ($func, $arg, $label) = @$line;
     
+    # Calculate maximum function and label
+    # (each +2 are came from the double quotes)
+    if(defined $func and $max_size_com < length($func) + 2)
+    { $max_size_com = length($func)+ 2; }
+    
+    if(defined $label and $max_size_lab < length($label)+ 2)
+    { $max_size_lab = length($label)+ 2; }
+    
     # Creating variables
     if(defined $arg)
     {
-        if( looks_like_number($arg) ) # Numeric argument
+        # Numeric argument
+        if( looks_like_number($arg) )
         {
-            $line->[1] = "n$arg";
-            $numeric{$arg} = "Num n$arg = new Num($arg);";
+            if(not exists $numeric{$arg})
+            {
+                $n++; $line->[1] = "num$n";
+                $numeric{$arg} = 
+                    [ $n, "Num num$n = new Num($arg);" ];
+            }
+            else { $line->[1] = "num$numeric{$arg}[0]"; }
         }
-        elsif($arg =~ /^->/) # Direction
+        
+        # Direction
+        elsif($arg =~ /^->/)
         {
-            $arg = uc $arg; $arg =~ s/->//; $line->[1] = "d$arg";
+            $arg = uc $arg; 
+            $arg =~ s/->//; 
+            $line->[1] = "d$arg";
             $direction{$arg} = "Direction d$arg = new Direction(\"$arg\");";
         }
-        elsif($arg =~ /^{(\w+)}$/) # Stackable argument
+        
+        # Stackable argument
+        elsif($arg =~ /^{(\w+)}$/)
         {
-            given($1)
+            while(my ($key, $value) = each %item)
             {
-                when(/crystal/i) { 
-                    $crystal = 1; $line->[1] = "CRYSTAL"; 
-                }
-                when(/stone/i)   { 
-                    $stone = 1; $line->[1] = "STONE";   
-                }
+                if($1 =~ /$key/i) 
+                    { $item{$key} = 1; $line->[1] = uc $key; }
             }
         }
-        else{ # String argument
+        
+        # String argument
+        else
+        { 
             if(not exists $textual{$arg})
             {
-                $n++; $line->[1] = "msg$n";
+                $t++; $line->[1] = "msg$t";
                 $textual{$arg} = 
-                    [ $n, "Text msg$n = new Text(\"$arg\");" ];
+                    [ $t, "Text msg$t = new Text(\"$arg\");" ];
             }
             else { $line->[1] = "msg$textual{$arg}[0]"; }
         }
     }
 }
+
+
+# Checks maximum argument size (item/text/numeric) 
+for my $var(keys %item, length $t, length $n)
+{
+    if(length $var > $max_size_arg) 
+    { $max_size_arg = length $var; }
+}                
 
 ########################################################################
 ##                          PRINTING PARSER                           ##
@@ -165,49 +204,64 @@ PARSER_H
 # Print sorted numerical, textual, direction and stackable variables
 if(scalar keys %numeric) 
 {
+    my %numbered_numeric;
+    
+    while(my ($key, $value) = each %numeric)
+    {
+        my ($var, $number) = ($value->[0], $value->[1]);
+        $numbered_numeric{$var} = $number;
+    }   
+    
     say " " x 8, "// Numerical variables";
-    for my $num (sort keys %numeric) { say " " x 8, $numeric{$num}; }
+    for my $var (sort keys %numbered_numeric) 
+    { say " " x 8, $numbered_numeric{$var}; }
     print "\n";
 }
 
 if(scalar keys %textual)
 {
     say " " x 8, "// Textual variables";
-    for my $txt (sort keys %textual) { say " " x 8, $textual{$txt}[1]; }
+    for my $txt (sort keys %textual) 
+    { say " " x 8, $textual{$txt}[1]; }
     print "\n";
 }
 
 if(scalar keys %direction)
 {
     say " " x 8, "// Direction variables";
-    for my $dir (sort keys %direction) { say " " x 8, $direction{$dir}; }
+    for my $dir (sort keys %direction) 
+    { say " " x 8, $direction{$dir}; }
     print "\n";
 }
 
-if($crystal) 
+# Printing items (if used)
+while(my ($key, $value) = each %item)
 {
-    say " " x 8, "// Crystal variable";
-    say " " x 8, "Crystal CRYSTAL = new Crystal();";
-}
-
-if($stone) 
-{
-    say " " x 8, "// Stone variable";
-    say " " x 8, "Stone STONE = new Stone();";
+    next if not $item{$key}; # No items found
+    
+    my $class = ucfirst $key;
+    my $object = uc $key;
+    
+    say " " x 8, "// $class variable";
+    say " " x 8, "$class $object = new $class();";
+    print "\n";
 }
 
 # Printing program
 for my $line (@prog)
 {
     print " " x 8; 
-    print "PROG.add(new Command(";
+    print "PROG.add(new Command( ";
     (defined $line->[0]) 
-        ? (printf "%-*s , ", 6, "\"$line->[0]\"") : (print "null   , ");
+        ? (printf "%-*s , ", $max_size_com, "\"$line->[0]\"") 
+        : (printf "%-*s , ", $max_size_com, "null");
     (defined $line->[1]) 
-        ? (printf "%-*s , ", 4,  $line->[1]) : (print "null , ");
+        ? (printf "%-*s , ", $max_size_arg,  $line->[1]) 
+        : (printf "%-*s , ", $max_size_arg,  "null"); 
     (defined $line->[2]) 
-        ? (printf "%s", "\"$line->[2]\"") : (print "null");
-    print "));";
+        ? (printf "%-*s",    $max_size_lab, "\"$line->[2]\"") 
+        : (printf "%-*s",    $max_size_lab, "null");
+    print " ));";
     
     print "\n";
 }

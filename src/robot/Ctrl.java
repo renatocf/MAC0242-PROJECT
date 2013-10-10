@@ -81,6 +81,9 @@ final public class Ctrl
             case "DROP": Syst.DROP (rvm);      break;
             case "HIT" : Syst.HIT  (rvm);      break;
             case "LOOK": Syst.LOOK (rvm);      break;
+
+            // Item veirification
+            case "ITEM": Item.ITEM (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);

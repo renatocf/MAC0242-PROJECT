@@ -76,7 +76,6 @@ sub parse
             # If there is any command
             if($com eq "PUSH")
             {
-                say $arg;
                 if    ($arg =~ m/^\d+$/)                {} # Numeric
                 elsif ($arg =~ m/^[A-Za-z]+\w*$/)       {} # String
                 elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {} # Direction
@@ -92,7 +91,6 @@ sub parse
             }
             else                                     
             {
-                say "NO ELSE";
                 given($com)
                 {                   
                     when(@ins1) { $err = 2 if(defined $arg);              }
