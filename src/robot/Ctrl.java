@@ -8,6 +8,7 @@ import java.util.HashMap;
 import robot.*;
 import stackable.*;
 import exception.*;
+import parameters.*;
 
 final public class Ctrl
 {
@@ -33,6 +34,14 @@ final public class Ctrl
                OutOfBoundsException,
                WrongTypeException
     {
+        if(Verbosity.v)
+        {
+            System.out.print("[CTRL] " + met);
+            if(arg != null) System.out.print(" " + arg.toString());
+            System.out.println();
+            if(met.equals("END")) System.out.println("===========");
+        }
+        
         switch(met)
         {
             // IO functions

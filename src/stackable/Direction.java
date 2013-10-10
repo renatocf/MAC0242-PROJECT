@@ -27,7 +27,7 @@ public class Direction implements Stackable
     
     public String toString()
     {
-        return this.cardPoint;   
+        return "->" + this.cardPoint;
     }
     
     public int[] get(int row)

@@ -10,9 +10,10 @@ import scenario.*;
 import operation.*;
 import exception.*;
 import stackable.*;
+import parameters.*;
 import stackable.item.*;
 
-public class World implements Parameters
+public class World implements Game
 {
     private static Map map;
     private static int nPlayers;
@@ -41,11 +42,25 @@ public class World implements Parameters
     public static void timeStep()
     {
         time++; // On each time step, increments time
+        
+        if(Verbosity.v)
+        {
+            String pre = "\n[WORLD] ====================== ";
+            Verbosity.debug(pre + time + "ts");
+        }
+
         for(int i = 0; i < nPlayers; i++)
         {
             for(int j = 0; armies[i][j] != null; j++)
             {
                 turn = armies[i][j];
+                
+                if(Verbosity.v) 
+                {
+                    System.out.print("\n[" + turn.toString() + "]");
+                    System.out.println("[" + time + "ts]");
+                }
+                
                 try { turn.run(); }
                 catch (Exception e) 
                 {
@@ -53,8 +68,7 @@ public class World implements Parameters
                 }
             }
         }
-        paint();
-        
+        if(!(Verbosity.v)) paint();
     }
     
     static public Stackable ctrl(Operation op)
@@ -85,6 +99,12 @@ public class World implements Parameters
         int newI = turn.i + update[0];
         int newJ = turn.j + update[1];
         
+        if(newI > MAP_SIZE) newI %= MAP_SIZE;
+        else if(newI < 0) newI += MAP_SIZE;
+        
+        if(newJ > MAP_SIZE) newJ %= MAP_SIZE;
+        else if(newJ < 0) newJ += MAP_SIZE;
+        
         if(newI >= MAP_SIZE 
         || newJ >= MAP_SIZE  
         || newI < 0  
@@ -112,6 +132,13 @@ public class World implements Parameters
         
         int lookI = turn.i + update[0];
         int lookJ = turn.j + update[1];
+        
+        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
+        else if(lookI < 0) lookI += MAP_SIZE;
+        
+        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
+        else if(lookJ < 0) lookJ += MAP_SIZE;
+        
         int cont = 0;
         
         if(lookI >= MAP_SIZE 
@@ -120,14 +147,17 @@ public class World implements Parameters
         || lookJ < 0  
         || map.map[lookI][lookJ].item == null) return false;
         
-        
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
         
         for(int i = 0; robot.slots[i] != null; i++) cont++;
-        if(cont == robot.slots.length) return false;
+        if(cont+1 == robot.slots.length) return false;
             
+        String pre = "    [DRAG]";
+        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
         robot.slots[cont] = map.map[lookI][lookJ].removeItem();
+        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        
         return true;
     }
     
@@ -150,13 +180,34 @@ public class World implements Parameters
         int lookI = turn.i + update[0];
         int lookJ = turn.j + update[1];
         
+        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
+        else if(lookI < 0) lookI += MAP_SIZE;
+        
+        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
+        else if(lookJ < 0) lookJ += MAP_SIZE;
+        
+        if(Verbosity.v)
+        {
+            String pre = "    [LOOK] ";
+            Verbosity.debug(pre + "dir: " + d.toString());
+            Verbosity.debug(pre + "pos: I: " + lookI);
+            Verbosity.debug(pre + "pos: J: " + lookJ);
+        }
+        
         if(lookI >= MAP_SIZE 
         || lookJ >= MAP_SIZE  
         || lookI < 0  
         || lookJ < 0) return null;
         
+        if(Verbosity.v)
+        {
+            String pre = "    [LOOK] ";
+            String t = map.map[lookI][lookJ].toString();
+            Verbosity.debug(pre + "ter: " + t);
+        }
+        
         // Takes out from original position
-        return map.map[turn.i][turn.j];
+        return map.map[lookI][lookJ];
     }
     
     public static void paint()
@@ -165,7 +216,7 @@ public class World implements Parameters
             Thread.sleep(SPEED);
         } catch (Exception e) {
         }
-        System.out.print("\n\n\n\n");
+        /* System.out.print("\n\n\n\n"); */
         print();
     }
     

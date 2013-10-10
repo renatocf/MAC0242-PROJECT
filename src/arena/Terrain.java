@@ -93,6 +93,16 @@ public class Terrain implements Stackable
     
     public String toString()
     {
-        return type.toString() + " " + appearence.toString() + " " + scenario.toString() + " " +  item.toString();
+        String sItem = (item == null) 
+                       ? ("NONE") : (item.toString());
+        String sType = (type == null) 
+                       ? ("NONE") : (type.toString());
+        String sScen = (scenario == null) 
+                       ? ("NONE") : (scenario.toString());
+        String sAppe = (appearence == null) 
+                       ? ("NONE") : (appearence.toString());
+        
+        return "[type:" + sType + "] [appearence:" + sAppe + "] "
+             + "[scenario:" + sScen + "] [item:" + sItem + "]";
     }
 }

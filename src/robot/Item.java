@@ -1,10 +1,11 @@
 package robot;
 
 // Libraries
-import stackable.*;
-import stackable.item.*;
-import arena.Terrain;
 import exception.*;
+import stackable.*;
+import parameters.*;
+import arena.Terrain;
+import stackable.item.*;
 
 /**
  * Assembly functions - class ITEM.
@@ -42,6 +43,13 @@ final public class Item
         // Get terrain's item
         Terrain t = (Terrain) stk;
         stackable.item.Item item = t.getItem();
+        
+        if(Verbosity.v)
+        { 
+            String pre = "    [ITEM] ";
+            String itm = (item != null) ? item.toString() : "NONE";
+            Verbosity.debug(pre + itm); 
+        }
         
         // Return Num(0) if no item is avaiable.
         if(item == null) rvm.DATA.push(new Num(0));

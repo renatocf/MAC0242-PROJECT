@@ -1,13 +1,17 @@
 package arena;
 
-import stackable.*;
-import stackable.item.*;
-import parser.Parser;
+// Default libraries
 import java.util.Vector;
-import robot.*;
-import exception.*;
 
-public class Map implements Parameters
+// Libraries
+import robot.*;
+import stackable.*;
+import exception.*;
+import parameters.*;
+import parser.Parser;
+import stackable.item.*;
+
+public class Map implements Game
 {
     // Map Matrix
     Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];

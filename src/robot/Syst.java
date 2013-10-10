@@ -48,9 +48,7 @@ final public class Syst
     public static void DRAG(RVM rvm)
         throws WrongTypeException
     {
-        System.out.println("DRAG");
         action(rvm, "DRAG");
-        System.out.println("OUT DRAG");
     }
     
     public static void DROP(RVM rvm)
@@ -70,5 +68,4 @@ final public class Syst
     {
         action(rvm, "LOOK");
     }
-        
 }

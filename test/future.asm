@@ -1,4 +1,4 @@
-     PUSH ->
+     PUSH ->SW
      DUP
      LOOK
      ITEM
@@ -6,5 +6,6 @@
      EQ
      JIF  end
      DRAG
-end: END
-    
+end: PUSH ->W
+     MOVE
+     END

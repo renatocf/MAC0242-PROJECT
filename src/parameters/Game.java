@@ -1,6 +1,6 @@
-package arena;
+package parameters;
 
-public interface Parameters
+public interface Game
 {
     public static int MAP_SIZE           = 15;
     public static int ROBOTS_NUM_MAX     = 100;
