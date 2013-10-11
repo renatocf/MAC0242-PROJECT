@@ -90,6 +90,7 @@ final public class Ctrl
             case "DROP": Syst.DROP (rvm);      break;
             case "HIT" : Syst.HIT  (rvm);      break;
             case "LOOK": Syst.LOOK (rvm);      break;
+            case "SEE" : Syst.SEE  (rvm);      break;
 
             // Item veirification
             case "ITEM": Item.ITEM (rvm);      break;

@@ -71,9 +71,10 @@ public class World implements Game, Colors
         if(!(Verbosity.v)) paint();
     }
     
-    static public Stackable ctrl(Operation op)
+    static public Stackable[] ctrl(Operation op)
+        throws InvalidOperationException
     {
-        Stackable stackable = null;
+        Stackable[] stackable = null;
         boolean can = false;
         switch(op.getAction())
         {
@@ -82,11 +83,15 @@ public class World implements Game, Colors
             case "DROP" : can = DROP(op); break;
             case "HIT"  : can = HIT (op); break;
             
-            case "LOOK" : stackable = LOOK(op); break;            
+            case "LOOK" : stackable = LOOK(op); break;
+            case "SEE"  : stackable = SEE (op); break;
         }
         
         if(stackable == null) 
-            return new Num( (can)? 1 : 0 ) ;
+        {
+            stackable = new Stackable[1]; 
+            stackable[0] = new Num( (can)? 1 : 0 );
+        }
         return stackable;
     }
     
@@ -98,12 +103,6 @@ public class World implements Game, Colors
         
         int newI = turn.i + update[0];
         int newJ = turn.j + update[1];
-        
-        if(newI > MAP_SIZE) newI %= MAP_SIZE;
-        else if(newI < 0) newI += MAP_SIZE;
-        
-        if(newJ > MAP_SIZE) newJ %= MAP_SIZE;
-        else if(newJ < 0) newJ += MAP_SIZE;
         
         if(newI >= MAP_SIZE 
         || newJ >= MAP_SIZE  
@@ -133,12 +132,7 @@ public class World implements Game, Colors
         int lookI = turn.i + update[0];
         int lookJ = turn.j + update[1];
         
-        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
-        else if(lookI < 0) lookI += MAP_SIZE;
-        
-        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
-        else if(lookJ < 0) lookJ += MAP_SIZE;
-        
+     
         int cont = 0;
         
         if(lookI >= MAP_SIZE 
@@ -146,16 +140,14 @@ public class World implements Game, Colors
         || lookI < 0  
         || lookJ < 0  
         || map.map[lookI][lookJ].item == null) return false;
-        
-        // Takes out from original position
-        Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
-        
-        for(int i = 0; robot.slots[i] != null; i++) cont++;
-        if(cont+1 == robot.slots.length) return false;
+
+        for(int i = 0; i < turn.slots.length && turn.slots[i] != null; i++) cont++;
+        if(cont >= turn.slots.length) return false;
             
         String pre = "    [DRAG]";
         if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
-        robot.slots[cont] = map.map[lookI][lookJ].removeItem();
+        turn.slots[cont] = map.map[lookI][lookJ].removeItem();
+        //if(map.map[lookI][lookJ].item == null);
         if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
         
         return true;
@@ -170,12 +162,6 @@ public class World implements Game, Colors
         int lookI = turn.i + update[0];
         int lookJ = turn.j + update[1];
         
-        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
-        else if(lookI < 0) lookI += MAP_SIZE;
-        
-        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
-        else if(lookJ < 0) lookJ += MAP_SIZE;
-        
         int cont = 0;
         
         if(lookI >= MAP_SIZE 
@@ -187,7 +173,7 @@ public class World implements Game, Colors
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
         
-        for(int i = 0; robot.slots[i] != null; i++) cont++;
+        for(int i = 0; i < turn.slots.length && robot.slots[i] != null; i++) cont++;
         if(cont == 0) return false;
             
         String pre = "    [DROP]";
@@ -206,7 +192,7 @@ public class World implements Game, Colors
         return true;
     }
     
-    private static Stackable LOOK (Operation op) 
+    private static Stackable[] LOOK (Operation op) 
     { 
          // Extract direction info from operation
         Direction d = (Direction) op.getArgument();
@@ -241,8 +227,66 @@ public class World implements Game, Colors
             Verbosity.debug(pre + "ter: " + t);
         }
         
+        Stackable[] st = new Stackable[1];
+        st[0] = map.map[lookI][lookJ];
+        
         // Takes out from original position
-        return map.map[lookI][lookJ];
+        return st;
+    }
+    
+    public static Stackable[] SEE(Operation op)
+        throws InvalidOperationException
+    {
+        Direction d;
+        
+        Stackable[] st = new Stackable[1];
+        
+        int nTerrain; 
+        if(turn.sight == 1) nTerrain = 7;
+        else nTerrain = 19;
+        
+        Terrain[] ter = new Terrain[nTerrain];
+        
+        int lookI;
+        int lookJ;
+        
+        for(int i = 0; i < nTerrain; i++)
+        {
+            d = new Direction(0, i);
+            
+            int[] update = d.get(turn.i);
+            lookI = turn.i + update[0];
+            lookJ = turn.j + update[1];
+            
+            if(lookI >= MAP_SIZE 
+            || lookJ >= MAP_SIZE  
+            || lookI < 0  
+            || lookJ < 0)         ter[i] = null;
+            
+            else 
+            {  
+                if(i < 7)
+                    ter[i] = map.map[lookI][lookJ];
+                else
+                {
+                    d = new Direction(1, i);
+                    update =  d.get(lookI);
+                    lookI  += update[0];
+                    lookJ  += update[1];
+                    
+                    if(lookI >= MAP_SIZE 
+                    || lookJ >= MAP_SIZE  
+                    || lookI < 0  
+                    || lookJ < 0)         ter[i] = null;
+                    
+                    else  ter[i] = map.map[lookI][lookJ];
+                    
+                }
+            }
+        }
+        Around a = new Around(ter);
+        st[0] = (Stackable)a;
+        return st;
     }
     
     public static void paint()

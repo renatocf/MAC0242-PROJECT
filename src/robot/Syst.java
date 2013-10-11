@@ -22,7 +22,8 @@ import exception.*;
 final public class Syst
 {
     private static void action(RVM rvm, String type)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException 
     {
         Stackable arg = rvm.DATA.pop();
         Operation op;
@@ -34,38 +35,50 @@ final public class Syst
             throw new WrongTypeException(type);
         }
         
-        Stackable stk = World.ctrl(op);
-        rvm.DATA.push(stk);
+        Stackable[] stk = World.ctrl(op);
+        for(int i = 0; i< stk.length; i++) rvm.DATA.push(stk[i]);
         rvm.syscall = true;
     }
     
     public static void MOVE(RVM rvm)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException
     {
         action(rvm, "MOVE");
     }
     
     public static void DRAG(RVM rvm)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException
     {
         action(rvm, "DRAG");
     }
     
     public static void DROP(RVM rvm)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException
     {
         action(rvm, "DROP");
     }
     
     public static void HIT(RVM rvm)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException
     {
         action(rvm, "HIT");
     }
     
     public static void LOOK(RVM rvm)
-        throws WrongTypeException
+        throws WrongTypeException,
+               InvalidOperationException
     {
         action(rvm, "LOOK");
+    }
+    
+    public static void SEE(RVM rvm)
+        throws WrongTypeException,
+               InvalidOperationException
+    {
+        action(rvm, "SEE");
     }
 }
