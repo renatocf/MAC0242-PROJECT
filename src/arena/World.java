@@ -296,7 +296,7 @@ public class World implements Game, Colors
         } catch (Exception e) {
         }
         // Clear screen
-        System.out.println(CLEAR);
+        System.out.print(CLEAR);
         print();
     }
     
