@@ -84,6 +84,7 @@ public class Terrain implements Stackable
         Item iRet = this.item; 
         this.item = null;
         return iRet;
+      
     }
     
     public Item getItem()

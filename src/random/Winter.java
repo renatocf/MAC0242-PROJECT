@@ -9,7 +9,7 @@ import arena.Appearence;
 
 public class Winter
 {
-    private Random rand = new Random();
+    private Random rand = new Random(42);
     
     public Terrain[][] generateMap(char[][] matrix, int nPlayer, int side)
     {

@@ -1,4 +1,4 @@
-     PUSH ->SW
+     PUSH ->W
      DUP
      LOOK
      ITEM
@@ -6,6 +6,13 @@
      EQ
      JIF  end
      DRAG
+     PUSH 1
+     JIT moveup
 end: PUSH ->W
      MOVE
      END
+moveup: PUSH ->NE
+        MOVE
+        PUSH ->NW
+        MOVE
+        JMP moveup
