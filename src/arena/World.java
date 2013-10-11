@@ -13,7 +13,7 @@ import stackable.*;
 import parameters.*;
 import stackable.item.*;
 
-public class World implements Game
+public class World implements Game, Colors
 {
     private static Map map;
     private static int nPlayers;
@@ -295,7 +295,6 @@ public class World implements Game
             Thread.sleep(SPEED);
         } catch (Exception e) {
         }
-        /* System.out.print("\n\n\n\n"); */
         print();
     }
     
@@ -307,68 +306,175 @@ public class World implements Game
         } catch (Exception e) {
         }
     }
+
+    private static String hexTop(int type, String midColor)
+    {
+        if(type == 1)
+            return RESTORE + "/" + midColor +  " "  + RESTORE + "\\"; /*  / \\ */
+        else
+            return RESTORE + "/" + midColor + "   " + RESTORE + "\\"; /* /   \\ */
+    }
+
+    private static String hexBot(int type, String midColor)
+    {
+        if(type == 1)
+            return RESTORE + "\\" + midColor + "   " + RESTORE + "/"; /* \   // */
+        else
+            return RESTORE + "\\" + midColor +  " "  + RESTORE + "/"; /*  \ / */
+    }
+
+    private static String colorof(Appearence ap)
+    {
+        if(ap == null) return RESTORE;
+        switch (ap)
+        {
+            case DIRT   : return ON_BLACK; 
+            case GRASS  : return ON_IGREEN;
+            case TUNDRA : return ON_WHITE; 
+            
+            case ROCKY  : return ON_IBLACK;
+            case ICE    : return ON_CYAN;  
+            case JUNGLE : return ON_IGREEN;
+            case WATER  : return ON_BLUE;  
+            case SAND   : return ON_YELLOW;
+            default     : return RESTORE;  
+        }
+    }
+
+    private static Appearence terrainLook(int i, int j)
+    {
+        // For arrays out of bounds, we'll have null.
+        // In colorof function, its color will be RESTORE
+        if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) return null;
+        return map.map[i][j].appearence;
+    }
     
     public static void print()
     {
-        for(int j = 0; j < MAP_SIZE; j++)
+        // Print scenario top
+        for(int j = 0; j < MAP_SIZE-1; j++)
             System.out.print("   .  ");
-        System.out.println(" ");
-        for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print("  / \\ ");
-        System.out.println(" ");
-        for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print(" /   \\");
-        System.out.println(" ");
+        System.out.println("   .");
         
+        System.out.print("  " + hexTop( 1, colorof(terrainLook(0,0)) ));
+        for(int j = 1; j < MAP_SIZE; j++)
+            System.out.print("   " + hexTop( 1, colorof(terrainLook(0,j)) ));
+        System.out.println(RESTORE);
+        
+        System.out.print(" " + hexTop(2, colorof(terrainLook(0,0)) ));
+        for(int j = 1; j < MAP_SIZE; j++)
+            System.out.print(" " + hexTop(2, colorof(terrainLook(0,j)) ));
+        System.out.println(RESTORE);
+        
+        // Print ordinary lines
         for(int i = 0; i < MAP_SIZE; i++)
         {
+            /* System.out.print(ON_GREEN); */
             boolean odd = (i % 2 == 1) ? true : false;
             
+            // Print itens and scenario
             System.out.print( (odd) ? "   " : "");
             for(int j = 0; j < MAP_SIZE; j++)
             {
-                String item     = " ";
-                String scenario = " ";
+                String item1     = " ", item2     = " ";
+                String scenario1 = " ", scenario2 = " ";
                 
-                if      (map.map[i][j].scenario == null)          scenario = " ";
-                else if (map.map[i][j].scenario instanceof Base ) scenario = "ß";
-                else if (map.map[i][j].scenario instanceof Rock ) scenario = "ø";
-                else if (map.map[i][j].scenario instanceof Tree ) scenario = "☘";
-                else if (map.map[i][j].scenario instanceof Water) scenario = "≈";
-                else if (map.map[i][j].scenario instanceof Robot) scenario = "R"; 
+                if      (map.map[i][j].scenario == null)          { scenario1 = " "; }
+                else if (map.map[i][j].scenario instanceof Base ) { scenario1 = ON_RED   + "ß"; scenario2 = ON_RED   + "ß"; }
+                else if (map.map[i][j].scenario instanceof Rock ) { scenario1 = ON_BLACK + "⌈"; scenario2 = ON_BLACK + "⌉"; }
+                else if (map.map[i][j].scenario instanceof Tree ) { scenario1 = ON_GREEN + "☘"; scenario2 = ON_GREEN + "☘"; }
+                else if (map.map[i][j].scenario instanceof Water) { scenario1 = ON_BLUE  + "≈"; scenario2 = ON_BLUE  + "≈"; }
+                else if (map.map[i][j].scenario instanceof Robot) { scenario1 = ON_BLACK + "("; scenario2 = ON_BLACK + ")"; }
                 
-                if      (map.map[i][j].item == null)            item = " ";
-                else if (map.map[i][j].item instanceof Crystal) item = "◇";
-                else if (map.map[i][j].item instanceof Stone)   item = ".";
+                if      (map.map[i][j].item == null)            { item1 = " "; item2 = " "; }
+                else if (map.map[i][j].item instanceof Crystal) { item1 = ON_YELLOW + "/"; item2 = ON_YELLOW + "\\"; }
+                else if (map.map[i][j].item instanceof Stone)   { item1 = ON_BLACK  + "."; item2 = ON_BLACK  + "."; }
                 
-                System.out.print("| " + scenario + " " + item + " ");
+                item1     += colorof(terrainLook(i,j));
+                item2     += colorof(terrainLook(i,j));
+                scenario1 += colorof(terrainLook(i,j));
+                scenario2 += colorof(terrainLook(i,j));
+                
+                System.out.print(RESTORE + "|" + colorof(terrainLook(i,j)) 
+                                + scenario1 + scenario2 + " " + item1 + item2);
             }
-            System.out.println("|");
+            System.out.println(RESTORE + "|");
             
+            // Center of hexagons
             System.out.print( (odd) ? "   " : "");
             for(int j = 0; j < MAP_SIZE; j++)
-                System.out.print("|     ");
-            System.out.println("|");
+            {
+                String item1     = " ", item2     = " ";
+                String scenario1 = " ", scenario2 = " ";
+                
+                if      (map.map[i][j].scenario == null)          { scenario1 = " "; }
+                else if (map.map[i][j].scenario instanceof Base ) { scenario1 = ON_RED   + "ß"; scenario2 = ON_RED   + "ß"; }
+                else if (map.map[i][j].scenario instanceof Rock ) { scenario1 = ON_BLACK + "⌊"; scenario2 = ON_BLACK + "⌋"; }
+                else if (map.map[i][j].scenario instanceof Tree ) { scenario1 = ON_GREEN + "☘"; scenario2 = ON_GREEN + "☘"; }
+                else if (map.map[i][j].scenario instanceof Water) { scenario1 = ON_BLUE  + "≈"; scenario2 = ON_BLUE  + "≈"; }
+                else if (map.map[i][j].scenario instanceof Robot) { scenario1 = ON_BLACK + "/"; scenario2 = ON_BLACK + "\\"; }
+                
+                if      (map.map[i][j].item == null)            { item1 = " "; item2 = " "; }
+                else if (map.map[i][j].item instanceof Crystal) { item1 = ON_YELLOW + "\\"; item2 = ON_YELLOW + "/"; }
+                else if (map.map[i][j].item instanceof Stone)   { item1 = ON_BLACK  + "¨";  item2 = ON_BLACK  + "¨"; }
+                
+                item1     += colorof(terrainLook(i,j));
+                item2     += colorof(terrainLook(i,j));
+                scenario1 += colorof(terrainLook(i,j)); 
+                scenario2 += colorof(terrainLook(i,j)); 
+                
+                System.out.print(RESTORE + "|" + colorof(terrainLook(i,j)) 
+                                + scenario1 + scenario2 + " " + item1 + item2);
+            }
+            System.out.println(RESTORE + "|");
             
             if(i == MAP_SIZE-1) break;
-            for(int j = 0; j < MAP_SIZE; j++)
-                System.out.print( (odd) ? "  / \\ " : " \\   /");
-            System.out.println( (odd) ? "  /" : " \\");
+
+            // First line of hexagons
+            System.out.print( (odd) 
+                    ? "  "  + hexTop(1, colorof( terrainLook(i,  0) )) 
+                    : " "   + hexBot(1, colorof( terrainLook(i+1,0) )) 
+            );
+            for(int j = 1; j < MAP_SIZE; j++)
+                System.out.print( (odd) 
+                    ? colorof( terrainLook(i,  j-1) ) + "   " + hexTop(1, colorof( terrainLook(i+1,j) )) 
+                    : colorof( terrainLook(i+1,j-1) ) + " "   + hexBot(1, colorof( terrainLook(i,  j) ))
+            );
+            System.out.println( (odd) 
+                    ? colorof( terrainLook(i,MAP_SIZE-1) ) + "   " + RESTORE + "/" 
+                    : colorof( terrainLook(i+1,MAP_SIZE-1) ) + " "   + RESTORE + "\\"
+            );
             
-            for(int j = 0; j < MAP_SIZE; j++)
-                System.out.print( (odd) ? " /   \\" : "  \\ / ");
-            System.out.println( (odd) ? " /" : "  \\"); 
+            // Second line of hexagons
+            System.out.print( (odd) 
+                    ? " "   + hexTop(2, colorof( terrainLook(i,0) ))
+                    : "  "  + hexBot(2, colorof( terrainLook(i,0) ))
+            );
+            for(int j = 1; j < MAP_SIZE; j++)
+                System.out.print( (odd) 
+                    ? colorof( terrainLook(i,  j-1) ) + " "   + hexTop(2, colorof( terrainLook(i+1,j) ))
+                    : colorof( terrainLook(i+1,j-1) ) + "   " + hexBot(2, colorof( terrainLook(i,  j) ))
+            );
+            System.out.println( (odd) 
+                    ? colorof( terrainLook(i,MAP_SIZE-1) ) + " "   + RESTORE + "/" 
+                    : colorof( terrainLook(i,MAP_SIZE-1) ) + "   " + RESTORE + "\\"
+            ); 
         }
             
-        for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print(" \\   /");
-        System.out.println(" ");
-        for(int j = 0; j < MAP_SIZE; j++)
-            System.out.print("  \\ / ");
-        System.out.println(" ");
-        for(int j = 0; j < MAP_SIZE; j++)
+        // Print scenario bottom
+        System.out.print(" " + hexBot(1, colorof(terrainLook(MAP_SIZE-1,0)) ));
+        for(int j = 1; j < MAP_SIZE; j++)
+            System.out.print(" " + hexBot(1, colorof(terrainLook(MAP_SIZE-1,j)) ));
+        System.out.println(RESTORE);
+        
+        System.out.print("  " + hexBot(2, colorof(terrainLook(MAP_SIZE-1,0)) ));
+        for(int j = 1; j < MAP_SIZE; j++)
+            System.out.print("   " + hexBot(2, colorof(terrainLook(MAP_SIZE-1,j)) ));
+        System.out.println(RESTORE);
+        
+        for(int j = 0; j < MAP_SIZE-1; j++)
             System.out.print("   '  ");
-        System.out.println(" ");
+        System.out.println("   '");
     }
 }
 
