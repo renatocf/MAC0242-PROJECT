@@ -251,6 +251,8 @@ public class World implements Game, Colors
             Thread.sleep(SPEED);
         } catch (Exception e) {
         }
+        // Clear screen
+        System.out.println(CLEAR);
         print();
     }
     
