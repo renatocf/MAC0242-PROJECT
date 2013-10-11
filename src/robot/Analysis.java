@@ -99,7 +99,7 @@ final public class Analysis
         
         
         
-        for(int i = 0; i < a.matrix[0].length; i++)
+        for(int i = a.matrix[0].length - 1; i >= 0; i--)
         {
             if(a.matrix[index][i]!= null && s.equals(a.matrix[index][i]))
             {

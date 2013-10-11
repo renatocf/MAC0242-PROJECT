@@ -94,6 +94,7 @@ final public class Ctrl
 
             // Item veirification
             case "ITEM": Analysis.ITEM (rvm);  break;
+            case "SEEK": Analysis.SEEK (rvm);  break;
             
             // Base case
             default: throw new InvalidOperationException(met);

@@ -73,14 +73,14 @@ public class RVM
     {
         Command   com      = this.PROG.elementAt(this.PC);
         String    function = com.getFunction  ();
-        Stackable arg      = com.getAttribute ();
-        
+        Stackable arg      = com.getAttribute (); 
         // Call function
         if(function != null)
         {
-            try { Ctrl.ctrl(this, function, arg); }
-            catch (Exception e) { System.out.print(e); }
+            try { Ctrl.ctrl(this, function, arg);}
+            catch (Exception e) {System.out.print(e); }
         }
+        else throw new UndefinedFunctionException(function);  
     }
 
     /**
@@ -104,9 +104,9 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        this.syscall = false;  
+        this.syscall = false;
         while(this.PC != -1 && !this.syscall) 
-        {            
+        {           
             exec();
             if (this.PC < 0) this.PC = 0;
             else this.PC++;

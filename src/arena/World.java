@@ -285,7 +285,7 @@ public class World implements Game, Colors
             }
         }
         Around a = new Around(ter);
-        st[0] = (Stackable)a;
+        st[0] = (Stackable) a;
         return st;
     }
     

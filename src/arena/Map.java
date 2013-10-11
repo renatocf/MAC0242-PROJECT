@@ -37,6 +37,7 @@ public class Map implements Game
         
         Robot bender = new Robot("Bender", 8, 9, PROG);
         Robot c3po   = new Robot("C3PO", 9, 8, PROG);
+        System.out.println("Rolê Imenso para debugar \n\n\n\n\n");
         /* bender.identify(); */
         /* c3po.identify(); */
                 

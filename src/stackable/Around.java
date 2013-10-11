@@ -6,7 +6,7 @@ import scenario.*;
 import stackable.item.*;
 import arena.Robot;
 
-public class Around
+public class Around implements Stackable
 {
     public String [][] matrix;
     public Around(Terrain[] seeing)
@@ -14,13 +14,17 @@ public class Around
         matrix = new String[2][seeing.length];
         for(int i = 0; i< seeing.length; i++)
         {
-            Scenario s = seeing[i].getScenario();
-            if(s == null) matrix[0][i] = " ";
-            else          matrix[0][i] = s.getClass().getName();
+            if (seeing[i] == null) matrix[0][i] = "";
+            else
+            {
+                Scenario s = seeing[i].getScenario();
+                if(s == null) matrix[0][i] = " ";
+                else          matrix[0][i] = s.getClass().getName();
             
-            stackable.item.Item it = seeing[i].getItem(); 
-            if(it == null) matrix[1][i] = " ";
-            else          matrix[1][i] = it.getClass().getName();
+                stackable.item.Item it = seeing[i].getItem(); 
+                if(it == null) matrix[1][i] = " ";
+                else          matrix[1][i] = it.getClass().getName();
+            }
         }
     }
     

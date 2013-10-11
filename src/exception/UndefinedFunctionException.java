@@ -13,4 +13,7 @@ public final class UndefinedFunctionException extends Exception
      */
     public UndefinedFunctionException (int pos) 
     { super("Undefined function in position " + pos + ".\n"); }
+    
+    public UndefinedFunctionException (String function) 
+    { super("Undefined function: " + function + ".\n"); }
 }

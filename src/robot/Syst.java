@@ -25,7 +25,9 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException 
     {
-        Stackable arg = rvm.DATA.pop();
+        Stackable arg = null;
+        if(!(type.equals("SEE")))
+            arg = rvm.DATA.pop();
         Operation op;
         
         try { 
