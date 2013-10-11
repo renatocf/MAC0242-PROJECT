@@ -32,7 +32,7 @@ class Main
         World.genesis(2, Weather.ARTICAL);
         
         World.printMiniMap();
-        World.print();
+        /* World.paint(); */
         
         for(int t = 0; t < 370; t++)
             World.timeStep();

@@ -3,7 +3,8 @@ package arena;
 public interface Colors
 {
     // Restore default
-    String RESTORE="\u001B[0m";
+    String CLEAR      = "\033[2J\033[;H";
+    String RESTORE    = "\u001B[0m";
     
     // Normal
     String BLACK      = "\u001B[0;30m";  // Black
