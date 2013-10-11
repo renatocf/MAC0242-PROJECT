@@ -30,7 +30,10 @@ class Main
         //    System.out.println("Shit: " + e);
         //}
         World.genesis(2, Weather.CONTINENTAL);
+        
+        World.printMiniMap();
         World.print();
+        
         for(int t = 0; t < 370; t++)
             World.timeStep();
         

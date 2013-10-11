@@ -10,11 +10,13 @@ import exception.*;
 import parameters.*;
 import parser.Parser;
 import stackable.item.*;
+import random.*;
 
 public class Map implements Game
 {
     // Map Matrix
     Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];
+    char[][] miniMap = new char[MAP_SIZE][MAP_SIZE];
     Weather w;
     
     public Map(Weather w)
@@ -25,16 +27,9 @@ public class Map implements Game
     public Robot[][] genesis(int nPlayers)
         throws InvalidOperationException
     {
-        for(int i = 0; i < MAP_SIZE; i++)
-        {
-            for(int j = 0; j < MAP_SIZE; j++)
-            {
-                if(j % 5 == 0 && i % 5 == 0)
-                { this.map[i][j] = new Terrain(nPlayers, Appearence.GRASS, new Crystal()); }
-                else
-                { this.map[i][j] = new Terrain(nPlayers, Appearence.GRASS); }
-            }
-        }
+        Winter w = new Winter();
+        miniMap = w.generateMatrix(MAP_SIZE); 
+        map = w.generateMap(miniMap ,nPlayers, MAP_SIZE);              
         
         // TODO: receive PROG, generate robots
         Parser user = new Parser();
@@ -55,4 +50,16 @@ public class Map implements Game
         
         return initial;
     }
+    
+    public void print()
+    {
+        for(int i = 0; i < MAP_SIZE; i++)
+        {
+            for(int j = 0; j < MAP_SIZE; j++)
+            {
+                System.out.print(miniMap[i][j]);
+            }
+            System.out.println();
+        }
+    }   
 }

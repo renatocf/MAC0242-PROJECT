@@ -255,6 +255,15 @@ public class World implements Game
         print();
     }
     
+    public static void printMiniMap()
+    {
+        map.print();
+        try { 
+            Thread.sleep(3000);
+        } catch (Exception e) {
+        }
+    }
+    
     public static void print()
     {
         for(int j = 0; j < MAP_SIZE; j++)
