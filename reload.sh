@@ -1,23 +1,27 @@
 #!/bin/sh
 # reload.sh
 
-if [ $# != 1 ]; then
+if [ $# -eq 0 ]; then
     echo "Usage reload.sh program.txt"
     exit
 fi
 
-FILE=$1
-if ! [ -f $FILE ]; then
-    echo "File does not exist!"
-    exit
-fi
+for f in $*
+do
+    echo "================================================================="
+    
+    if ! [ -f $f ]; then
+        echo "File does not exist!"
+        continue
+    fi
+    
+    echo
+    echo "Creating .java file for $f"
+    echo "-----------------------------------------------------------------"
+    perl bin/parser.pl $f
 
-echo
-echo "Creating .java file for $FILE"
-echo "-----------------------------------------------------------------"
-perl bin/parser.pl $FILE
-
-echo
-echo "Rebuilding project"
-echo "-----------------------------------------------------------------"
-ant
+    echo
+    echo "Rebuilding project"
+    echo "-----------------------------------------------------------------"
+    ant
+done

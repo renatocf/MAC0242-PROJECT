@@ -135,7 +135,8 @@ for my $line (@prog)
         {
             while(my ($key, $value) = each %item)
             {
-                if($1 =~ /$key/i) 
+                my $stk = lc $1;
+                if($stk =~ /$key/i) 
                     { $item{$key} = 1; $line->[1] = uc $key; }
             }
         }

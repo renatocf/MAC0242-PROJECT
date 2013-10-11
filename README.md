@@ -16,3 +16,12 @@ Vinícius Nascimento Silva            7557626
                                            
 Em  caso  de  eventuais  problemas,  acesse:       
 https://github.com/renatocf/MAC0242-PROJECT#
+
+
+#### INSTALAÇÃO ####
+
+Para instalar o jogo, digite:
+    
+    $ant
+
+que  o   executável  do  jogo  será  gerado.
