@@ -1,9 +1,12 @@
 package random;
 
+// Default libraries
 import java.lang.Math;
 import java.util.Random;
-import arena.Terrain;
+
+// Libraries
 import scenario.*;
+import arena.Terrain;
 import stackable.item.*;
 import arena.Appearence;
 
@@ -178,7 +181,6 @@ public class Winter
         return map;
     }
     
-    
     private static int coordX(int rad, double ang)
     {
         return (int) (rad*Math.cos(ang) + 0.5);
@@ -188,6 +190,7 @@ public class Winter
     {
         return (int) (rad*Math.sin(ang) + 0.5);
     }
+
     private int updateMod(int mod, int remain, int rad, int side)
     {
         double probPlus  = (double) (remain - mod) / remain;
@@ -201,8 +204,4 @@ public class Winter
         if(rad+mod > side/3) mod-=2;
         return mod;
     }
-    
-    
-    
-    
 }
