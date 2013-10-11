@@ -29,7 +29,7 @@ class Main
         //{
         //    System.out.println("Shit: " + e);
         //}
-        World.genesis(2, Weather.CONTINENTAL);
+        World.genesis(2, Weather.ARTICAL);
         
         World.printMiniMap();
         World.print();
