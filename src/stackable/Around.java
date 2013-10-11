@@ -8,22 +8,19 @@ import arena.Robot;
 
 public class Around
 {
-    char [][] matrix;
+    public String [][] matrix;
     public Around(Terrain[] seeing)
     {
-        matrix = new char[2][seeing.length];
+        matrix = new String[2][seeing.length];
         for(int i = 0; i< seeing.length; i++)
         {
-                 if(seeing[i].getScenario() == null)           matrix[0][i] = ' ';
-            else if(seeing[i].getScenario() instanceof Robot)  matrix[0][i] = 'R';
-            else if(seeing[i].getScenario() instanceof Tree)   matrix[0][i] = '☘';
-            else if(seeing[i].getScenario() instanceof Rock)   matrix[0][i] = 'ø';
-            else if(seeing[i].getScenario() instanceof Water)  matrix[0][i] = '≈';
-            else if(seeing[i].getScenario() instanceof Base)   matrix[0][i] = 'ß';
+            Scenario s = seeing[i].getScenario();
+            if(s == null) matrix[0][i] = " ";
+            else          matrix[0][i] = s.getClass().getName();
             
-                 if(seeing[i].getItem() == null)               matrix[1][i] = ' ';
-            else if(seeing[i].getItem() instanceof Crystal)    matrix[1][i] = '◇';
-            else if(seeing[i].getItem() instanceof Stone)      matrix[1][i] = '*'; 
+            stackable.item.Item it = seeing[i].getItem(); 
+            if(it == null) matrix[1][i] = " ";
+            else          matrix[1][i] = it.getClass().getName();
         }
     }
     

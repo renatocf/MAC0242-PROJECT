@@ -93,7 +93,7 @@ final public class Ctrl
             case "SEE" : Syst.SEE  (rvm);      break;
 
             // Item veirification
-            case "ITEM": Item.ITEM (rvm);      break;
+            case "ITEM": Analysis.ITEM (rvm);  break;
             
             // Base case
             default: throw new InvalidOperationException(met);

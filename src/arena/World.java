@@ -72,7 +72,7 @@ public class World implements Game, Colors
     }
     
     static public Stackable[] ctrl(Operation op)
-        throws InvalidOperationException
+       throws InvalidOperationException
     {
         Stackable[] stackable = null;
         boolean can = false;
