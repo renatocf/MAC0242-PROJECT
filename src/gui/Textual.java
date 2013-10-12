@@ -28,10 +28,6 @@ public class Textual implements Game, Colors
     public void printMiniMap()
     {
         map.print();
-        try { 
-            Thread.sleep(3000);
-        } catch (Exception e) {
-        }
     }
     
     private String hexTop(int type, String midColor)
