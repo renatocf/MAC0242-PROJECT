@@ -7,17 +7,19 @@ import parameters.*;
 import stackable.item.*;
 
 /**
- * Assembly functions - class Tests.
+ * <b>Assembly functions - class Tests</b><br>
  * Provides the funcions for making 
  * boolean comparisons between elements
- * inside the stack of the virtual machine.
+ * inside the stack of the virtual Machine
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Tests
 {
+    // No instances of this class allowed
+    private Tests() {} 
+    
     /** 
      * Interface for compartison operations,
      * Dummy interface with the aim of being a 
@@ -28,6 +30,19 @@ final public class Tests
         boolean cmp(double a, double b);
     }
 
+    /**
+     * Assembly funcion EQ. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack.
+     * <p>
+     * If numerical, checks if their value are
+     * the same. In the other case, Checks if
+     * they have the same type.
+     * 
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void EQ(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {
@@ -76,6 +91,19 @@ final public class Tests
         }
     }
     
+    /**
+     * Assembly funcion NEQ. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack.
+     * <p>
+     * If numerical, checks if their value are
+     * different. In the other case, Checks if
+     * they have different types.
+     * 
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void NE(RVM rvm)
         throws StackUnderflowException, WrongTypeException
     {
@@ -125,10 +153,17 @@ final public class Tests
     }
     
     /**
-     * General-model funcion compare.
+     * General-model funcion compare. <br>
      * Makes the correspondent funcion 
      * comparison between the two elements
      * int the top of the main stack.
+     * 
+     * @param  rvm Virtual Machine
+     * @param  cmp Anonymous inner class that
+     *             implements Cmp interface
+     * 
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
      */
     static void compare(RVM rvm, Cmp cmp) 
         throws WrongTypeException, StackUnderflowException
@@ -153,6 +188,17 @@ final public class Tests
         else throw new WrongTypeException("Num");
     }
     
+    /**
+     * Assembly funcion GT. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack to 
+     * see if the top is greater than the 
+     * second.
+     *
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void GT(RVM rvm) 
         throws StackUnderflowException, WrongTypeException
     {
@@ -161,6 +207,17 @@ final public class Tests
         );
     }
     
+    /**
+     * Assembly funcion GE. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack to 
+     * see if the top is greater or equal 
+     * than the second.
+     *
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void GE(RVM rvm) 
         throws StackUnderflowException, WrongTypeException
     {
@@ -169,6 +226,16 @@ final public class Tests
         );
     }
     
+    /**
+     * Assembly funcion LT. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack to 
+     * see if the top is lower than the second.
+     *
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void LT(RVM rvm)
         throws StackUnderflowException, WrongTypeException
     {
@@ -177,6 +244,17 @@ final public class Tests
         );
     }
     
+    /**
+     * Assembly funcion LE. <br>
+     * Compares the two top most elements of 
+     * the virtual machine's main stack to 
+     * see if the top is lower or equal than 
+     * the second.
+     *
+     * @param  rvm Virtual Machine
+     * @throws WrongTypeException
+     * @throws StackUnderflowException
+     */
     static void LE(RVM rvm)
         throws StackUnderflowException, WrongTypeException
     {

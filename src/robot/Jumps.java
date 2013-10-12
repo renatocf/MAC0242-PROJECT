@@ -9,18 +9,20 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Jumps.
+ * <b>Assembly functions - class Jumps</b><br>
  * Provides the funcions for conditional
  * (JMP) and unconditional (JIF/JIT) jumps
  * in the Program Counter (PC) of a giver
  * Virtual Machine.
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Jumps
 {
+    // No instances of this class allowed
+    private Jumps() {} 
+    
     /** 
      * Interface for compartison operations,
      * Dummy interface with the aim of being a 
@@ -32,15 +34,17 @@ final public class Jumps
     }
     
     /**
-     * General-model funcion JCMP.
+     * General-model funcion JCMP. <br>
      * Takes out the top of the main stack 
      * updates the counter accordingly to
      * the value on it. 
-     * @param Virtual Machine
-     * @param Stackable argument
-     * @param Anonymous inner class of type Cmp
+     * @param  rvm Virtual Machine
+     * @param  arg Stackable argument
+     * @param  v   Anonymous inner class of type Cmp
+     *
+     * @throws OutOfBoundsException
      */
-    static final private void JCMP(RVM rvm, Stackable arg, Verify v)
+    private static final void JCMP(RVM rvm, Stackable arg, Verify v)
         throws OutOfBoundsException
     {
         if(!v.verify()) return;
@@ -76,7 +80,17 @@ final public class Jumps
         }
     }
     
-    static final public void JMP(RVM rvm, Stackable arg) 
+    /**
+     * Assembly funcion JMP. <br>
+     * Unconditional Jump
+     *
+     * @param  rvm Virtual Machine
+     * @param  arg Stackable argument
+     *
+     * @throws OutOfBoundsException
+     * @throws WrongTypeException
+     */
+    public static final void JMP(RVM rvm, Stackable arg) 
         throws OutOfBoundsException, WrongTypeException
     {
         // Always jump
@@ -85,7 +99,17 @@ final public class Jumps
         );
     }
     
-    static final public void JIT(RVM rvm, Stackable arg)
+    /**
+     * Assembly funcion JIT. <br>
+     * Jump if stack top is a number that verifyes true.
+     *
+     * @param  rvm Virtual Machine
+     * @param  arg Stackable argument
+     *
+     * @throws OutOfBoundsException
+     * @throws WrongTypeException
+     */
+    public static final void JIT(RVM rvm, Stackable arg)
         throws OutOfBoundsException, WrongTypeException
     {
         Stackable top = rvm.DATA.pop();
@@ -101,7 +125,17 @@ final public class Jumps
         );
     }
     
-    static final public void JIF(RVM rvm, Stackable arg)
+    /**
+     * Assembly funcion JIF. <br>
+     * Jump if stack top is a number that verifyes false.
+     *
+     * @param  rvm Virtual Machine
+     * @param  arg Stackable argument
+     *
+     * @throws OutOfBoundsException
+     * @throws WrongTypeException
+     */
+    public static final void JIF(RVM rvm, Stackable arg)
         throws OutOfBoundsException, WrongTypeException
     {
         Stackable top = rvm.DATA.pop();

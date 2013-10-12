@@ -5,21 +5,26 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Stk.
+ * <b>Assembly functions - class Stk</b><br>
  * Provides the funcions for manipulating 
  * the main stack of the virtual machine.
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Stk
 {
+    // No instances of this class allowed
+    private Stk() {} 
+    
     /**
-     * Assembly funcion PUSH. 
+     * Assembly funcion PUSH. <br>
      * Puts an element in the top of the main stack.
-     * @param Stackable element.
-     * @see Stackable
+     * 
+     * @param  rvm Virtual Machine
+     * @param  st  Stackable element.
+     * @throws StackUnderflowException
+     * @see    Stackable
      */
     static void PUSH(RVM rvm, Stackable st)
     {
@@ -27,9 +32,12 @@ final public class Stk
     }
     
     /**
-     * Assembly funcion POP. 
+     * Assembly funcion POP. <br>
      * Takes out an element of the top of the main stack.
-     * @see Stackable
+     * 
+     * @param  rvm Virtual Machine
+     * @throws StackUnderflowException
+     * @see    Stackable
      */
     static Stackable POP(RVM rvm) throws StackUnderflowException
     {
@@ -37,9 +45,12 @@ final public class Stk
     }
     
     /**
-     * Assembly funcion DUP. 
+     * Assembly funcion DUP. <br>
      * Duplicates the top of the main stack.
-     * @see Stackable
+     * 
+     * @param  rvm Virtual Machine
+     * @throws StackUnderflowException
+     * @see    Stackable
      */
     static void DUP(RVM rvm) throws StackUnderflowException
     {

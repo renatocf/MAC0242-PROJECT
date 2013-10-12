@@ -13,7 +13,7 @@ import exception.*;
 import stackable.*;
 
 /**
- * Main class with the constructor of the robot and its data.
+ * <b>Main package class with the constructor of the robot and its data.</b>
  * @author Renato Cordeiro Ferreira
  */
 public class RVM 
@@ -84,8 +84,8 @@ public class RVM
     }
 
     /**
-     * Function responsible for executing the 'program', step by 
-     * step, untill it ends.
+     * Function responsible for executing the 'program', 
+     * step by step, untill a syscall operation.
      * 
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException

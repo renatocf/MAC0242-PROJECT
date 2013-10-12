@@ -8,23 +8,29 @@ import arena.Terrain;
 import stackable.item.*;
 
 /**
- * Assembly functions - class Analysis.
+ * <b>Assembly functions - class Analysis</b><br>
  * Provides the funcions for checking
- * items in a terrain.
+ * terrains and neighborhoods content.
  * 
+ * @author Karina Awoki
  * @author Renato Cordeiro Ferreira
  * @author Vinícius Silva
- * @see Function
- * @see RMV
+ * @see arena.Terrain
+ * @see stackable.Around
  */
 final public class Analysis
 {
+    // No instances of this class allowed
+    private Analysis() {} 
+    
     /**
-     * Assembly funcion ITEM. 
+     * Assembly funcion ITEM. <br>
      * Takes out the top of the main stack,
      * checks if it's a terrain. If it has
      * an item, pushes it. In the other case,
-         * pushes 0 in the top of the stack.
+     * pushes 0 in the top of the stack.
+     *
+     * @param rvm Virtual Machine
      */
     static void ITEM(RVM rvm)
         throws StackUnderflowException,
@@ -56,7 +62,18 @@ final public class Analysis
         else             rvm.DATA.push(item);
     }
     
-    
+    /**
+     * Assembly funcion SEEK. <br>
+     * Process an 'Around' stackable for 
+     * serching if there is an item avaiable.
+     * The item to be searched and the around
+     * are taken from the top of the stack.
+     * (First the item, secondly, around). 
+     * The answer is put in the top of the 
+     * main stack.
+     * 
+     * @param rvm Virtual Machine
+     */
     static void SEEK(RVM rvm)
      throws StackUnderflowException,
                WrongTypeException,
@@ -64,9 +81,10 @@ final public class Analysis
     {
         Stackable ar;
         Stackable stk;
-        
         int cont = 0;
         
+        // Takes the argument and the neighborhood
+        // from the top of the stack.
         try { stk = rvm.DATA.pop(); }
         catch (Exception e) {
             throw new StackUnderflowException();
@@ -75,8 +93,8 @@ final public class Analysis
         catch (Exception e) {
             throw new StackUnderflowException();
         }
-        
      
+        // Checks if ar is of type around.
         if(!(ar instanceof Around))
             throw new WrongTypeException("Around");
         
@@ -84,8 +102,8 @@ final public class Analysis
         String s;
         int index;
         
-        
-        if(stk  instanceof Text)
+        // Checks if stk is a text or an item.
+        if(stk instanceof Text)
         {
             s = ((Text)stk).getText();
             index = 0;
@@ -95,15 +113,15 @@ final public class Analysis
             s = stk.getClass().getName();
             index = 1;
         }
-        else throw new WrongTypeException("Around");
+        else throw new WrongTypeException("Text or Item");
         
-        
-        
+        // TODO: add documentation
         for(int i = a.matrix[0].length - 1; i >= 0; i--)
         {
-            if(a.matrix[index][i]!= null && s.equals(a.matrix[index][i]))
+            if(a.matrix[index][i] != null 
+            && s.equals(a.matrix[index][i]) )
             {
-                if(i<7)
+                if(i < 7)
                 {
                     rvm.DATA.push(new Direction(0, i));
                     rvm.DATA.push(new Num(1));    
@@ -114,20 +132,19 @@ final public class Analysis
                     rvm.DATA.push(new Direction(0, i));
                     rvm.DATA.push(new Num(2));                        
                 }
-                cont ++;
+                cont++;
             }
         }
         
-        
         rvm.DATA.push(new Num(cont));
         
+        // Debug info
         if(Verbosity.v)
         { 
             String pre = "    [SEEK] ";
             String arnd = (a != null)   ? "Pop the around correctly: " : "NONE";
             String stack  = (a != null) ? stk.toString()               : "NONE";
             Verbosity.debug(pre + arnd + stack);
-            
         }
     }
 }

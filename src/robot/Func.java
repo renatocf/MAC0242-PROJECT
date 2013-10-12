@@ -5,23 +5,32 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Func.
+ * <b>Assembly functions - class Func</b><br>
  * Provides the funcions for controlling
  * the creation of functions: CALL and
  * RET (special types of jumps).
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Func
 {
+    // No instances of this class allowed
+    private Func() {} 
+    
     /**
-     * Assembly funcion CALL.
+     * Assembly funcion CALL. <br>
      * Execute an inconditional jump to 
      * a label or position, storing the 
      * position of return in the CTRL
      * stack for doing a callback with RET.
+     * 
+     * @param  rvm Virtual Machine
+     * @param  arg Numeric position or label of
+     *             the argument
+     *
+     * @throws WrongTypeException
+     * @throws OutOfBoundsException
      */
     static void CALL(RVM rvm, Stackable arg) 
         throws WrongTypeException, OutOfBoundsException
@@ -57,10 +66,14 @@ final public class Func
     }
     
     /**
-     * Assembly funcion RET.
+     * Assembly funcion RET. <br>
      * Pops the top most saved return postion
      * to be able to go back to the function 
      * caller.
+     * 
+     * @param  rvm Virtual Machine
+     *
+     * @throws UndefinedFunctionException 
      */
     static void RET(RVM rvm)
         throws UndefinedFunctionException

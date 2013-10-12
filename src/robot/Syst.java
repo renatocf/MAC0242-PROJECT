@@ -7,20 +7,40 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Syst.
+ * <b>Assembly functions - class Syst</b><br>
  * Implements the commands MOVE, DRAG,
- * DROP and HIT and get from the World
+ * DROP, HIT, LOOK and get from the World
  * if it has permission for executing 
  * the correspondent action.
  *
  * @author Karina Suemi 
  * @author Renato Cordeiro
  * @author Vinícius Silva 
- * @see Function 
- * @see World
+ * @see Ctrl
+ * @see arena.World
  */
 final public class Syst
 {
+    // No instances of this class allowed
+    private Syst() {} 
+    
+    /**
+     * General-model funcion action.
+     * Takes out the top of the main stack,
+     * generates an operand object and does
+     * a system call. Pushes all the system
+     * answers in the Virtual Machine main 
+     * stack. 
+     * <p>
+     * If the command needs no argument, 
+     * does not pop the stack.
+     * 
+     * @param rvm  Virtual Machine.
+     * @param type Command type.
+     *
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
     private static void action(RVM rvm, String type)
         throws WrongTypeException,
                InvalidOperationException 
@@ -38,46 +58,105 @@ final public class Syst
         }
         
         Stackable[] stk = World.ctrl(op);
-        for(int i = 0; i< stk.length; i++) rvm.DATA.push(stk[i]);
+        for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
         rvm.syscall = true;
     }
     
-    public static void MOVE(RVM rvm)
+    /**
+     * Assembly funcion MOVE. <br>
+     * Makes a syscall, requesting for a 
+     * movement in the arena.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
+    static void MOVE(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "MOVE");
     }
     
-    public static void DRAG(RVM rvm)
+    /**
+     * Assembly funcion DRAG. <br>
+     * Makes a syscall, requesting for  
+     * taking an item from the arena.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
+    static void DRAG(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "DRAG");
     }
     
-    public static void DROP(RVM rvm)
+    /**
+     * Assembly funcion DROP. <br>
+     * Makes a syscall, requesting for  
+     * taking leaving an item in the 
+     * arena.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
+    static void DROP(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "DROP");
     }
     
-    public static void HIT(RVM rvm)
+    /**
+     * Assembly funcion HIT. <br>
+     * Makes a syscall, requesting to
+     * attack a robot or a scenario
+     * in the arena.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
+    static void HIT(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "HIT");
     }
     
-    public static void LOOK(RVM rvm)
+    /**
+     * Assembly funcion LOOK. <br>
+     * Makes a syscall, requesting to
+     * get a terrain for being analysed.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     * @see    Analysis
+     */
+    static void LOOK(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "LOOK");
     }
     
-    public static void SEE(RVM rvm)
+    /**
+     * Assembly funcion SEE. <br>
+     * Makes a syscall, requesting to
+     * get a neighbothood for being 
+     * analysed.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     * @see    Analysis
+     */
+    static void SEE(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {

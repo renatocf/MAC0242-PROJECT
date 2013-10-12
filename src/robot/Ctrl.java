@@ -10,13 +10,27 @@ import stackable.*;
 import exception.*;
 import parameters.*;
 
+/**
+ * <b>Ctrl</b><br>
+ * Given a assembly function name and its
+ * argument (if required), executes it for
+ * the Virtual Machine specified.
+ *
+ * @author Karina Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinícius Silva
+ * @see Ctrl
+ */
 final public class Ctrl
 {
+    // No instances of this class allowed
+    private Ctrl() {} 
+    
     /** 
      * Selector for the function to be called
-     * @param Virtual Machine
-     * @param String with the name of the function
-     * @param Argument of the assembly method
+     * @param rvm Virtual Machine
+     * @param met String with the name of the function
+     * @param arg Argument of the assembly method
      * 
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException
@@ -26,7 +40,7 @@ final public class Ctrl
      * @throws OutOfBoundsException
      * @throws WrongTypeException
      */
-    static public void ctrl(RVM rvm, String met, Stackable arg) 
+    public static void ctrl(RVM rvm, String met, Stackable arg) 
         throws SegmentationFaultException,
                UndefinedFunctionException,
                InvalidOperationException,

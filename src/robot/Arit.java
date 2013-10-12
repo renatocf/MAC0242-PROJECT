@@ -5,18 +5,20 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Arit.
+ * <b>Assembly functions - class Arit</b><br>
  * Provides the funcions for arithmetic
- * operations (sum, subtractio, multiplication,
+ * operations (sum, subtraction, multiplication,
  * division and modulus) in the data inside the 
  * stack of the virtual machine.
  * 
  * @author Renato Cordeiro Ferreira
- * @see robot.RMV
- * @see robot.Ctrl
+ * @see Ctrl
  */
 final public class Arit
 {
+    // No instances of this class allowed
+    private Arit() {} 
+    
     /** 
      * Interface for arithmetic operations,
      * Dummy interface with the aim of being a 
@@ -28,13 +30,15 @@ final public class Arit
     }
     
     /**
-     * General-model funcion calculate.
+     * General-model funcion calculate. <br>
      * Takes out the two arguments in the top 
      * of the main stack and pushes the answer
      * of the operation made over them.
-     * @param Anonymous inner class of type operation
+     * 
+     * @param rvm Virtual Machine
+     * @param op  Anonymous inner class of type operation
      */
-    static final private void calculate(RVM rvm, Operation op) 
+    private static final void calculate(RVM rvm, Operation op) 
         throws WrongTypeException,
                StackUnderflowException
     {
@@ -50,6 +54,10 @@ final public class Arit
         else { throw new WrongTypeException("Num"); }
     }
 
+    /**
+     * Assembly function ADD.
+     * @param rvm Virtual Machine
+     */
     static void ADD(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {
@@ -58,6 +66,10 @@ final public class Arit
         );
     }
     
+    /**
+     * Assembly function SUB.
+     * @param rvm Virtual Machine
+     */
     static void SUB(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {
@@ -66,6 +78,10 @@ final public class Arit
         );
     }
     
+    /**
+     * Assembly function MUL.
+     * @param rvm Virtual Machine
+     */
     static void MUL(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {
@@ -74,6 +90,10 @@ final public class Arit
         );
     }
     
+    /**
+     * Assembly function DIV.
+     * @param rvm Virtual Machine
+     */
     static void DIV(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {
@@ -82,6 +102,10 @@ final public class Arit
         );
     }
     
+    /**
+     * Assembly function MOD.
+     * @param rvm Virtual Machine
+     */
     static void MOD(RVM rvm) 
         throws WrongTypeException, StackUnderflowException
     {

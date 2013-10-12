@@ -8,25 +8,30 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Mem.
+ * <b>Assembly functions - class Mem</b><br>
  * Provides the funcions for using 
  * the auxiliar memory in the virtual 
  * machine.
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Mem
 {
+    // No instances of this class allowed
+    private Mem() {} 
+    
     /**
-     * Assembly funcion STO.
+     * Assembly funcion STO. <br>
      * Takes out the top of the main stack
      * and puts it in a specific position 
      * of the secondary memory.
-     * @param Stackable position (but 
-     *        must be numeric)
-     * @throws OutOfBoundsException
+     *
+     * @param  rvm      Virtual Machine
+     * @param  position Stackable position 
+     *                  (must be numeric)
+     *                  
+     * @throws SegmentationFaultException
      * @throws StackUnderflowException
      */
     static void STO(RVM rvm, Stackable position)
@@ -44,13 +49,16 @@ final public class Mem
     }
     
     /**
-     * Assembly funcion RCL.
+     * Assembly funcion RCL. <br>
      * Takes out the data in the secondary
      * memory (if avaiable) and puts it in 
      * the top of the main stack.
-     * @param Stackable position (but 
-     *        must be numeric)
-     * @throws OutOfBoundsException
+     *
+     * @param  rvm      Virtual Machine
+     * @param  position Stackable position 
+     *                  (must be numeric)
+     *                  
+     * @throws SegmentationFaultException
      * @throws StackUnderflowException
      */
     static void RCL(RVM rvm, Stackable position) 

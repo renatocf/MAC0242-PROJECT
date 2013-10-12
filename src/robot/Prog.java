@@ -5,25 +5,27 @@ import stackable.*;
 import exception.*;
 
 /**
- * Assembly functions - class Prog.
+ * <b>Assembly functions - class Prog</b><br>
  * Provides the funcions for controlling
  * the program: no operation (NOP) and 
  * end of program (END).
  * 
  * @author Renato Cordeiro Ferreira
- * @see Function
- * @see RMV
+ * @see Ctrl
  */
 final public class Prog
 {
+    // No instances of this class allowed
+    private Prog() {} 
+    
     /**
-     * Assembly funcion NOP. 
+     * Assembly funcion NOP. <br>
      * Do nothing for one step.
      */
     static void NOP(RVM rvm) {}
     
     /**
-     * Assembly funcion END. 
+     * Assembly funcion END. <br>
      * Sets the counter to indicate
      * the END of the program.
      */
