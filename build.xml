@@ -51,9 +51,9 @@
     <target name="manifest">
         <echo>Creating MANIFEST.MF file</echo>
         <manifest file="${build.dir}/MANIFEST.MF">
-            <attribute name="Built-By" value="${user.name}"/>
+            <attribute name="Built-By"   value="${user.name}"/>
             <attribute name="Created-By" value="${mf.created.by}"/>
-            <attribute name="Main-Class" value = "${mf.main.class}"/>
+            <attribute name="Main-Class" value="${mf.main.class}"/>
             <section name="common">
                 <attribute name  = "Specification-Title"
                            value = "${mf.spec.title}"       />
@@ -97,9 +97,9 @@
     <!-- Compressing files and saving .jar in dist bin -->
     <target name="dist" depends="compile,manifest">
         <echo>Building .jar file</echo>
-        <jar destfile="${dist.dir}/${ant.project.name}.jar" 
-             basedir="${build.classes.dir}" 
-             manifest="${build.dir}/MANIFEST.MF">
+        <jar destfile = "${dist.dir}/${ant.project.name}.jar" 
+             basedir  = "${build.classes.dir}" 
+             manifest = "${build.dir}/MANIFEST.MF">
         </jar>
         <echo>.jar Build Completed Successfully</echo>
     </target>
@@ -114,7 +114,12 @@
     <!-- Generate javadocs for current project into ${doc.dir} -->
     <target name="javadoc" depends="init">
         <description>generate documentation</description>
-        <javadoc sourcepath="${src.dir}" destdir="${doc.javadoc.dir}"/>
+        <javadoc sourcepath  = "${src.dir}" 
+                 package     = "yes"
+                 encoding    = "utf8"
+                 doctitle    = "${ant.project.name}"
+                 destdir     = "${doc.javadoc.dir}"
+                 windowtitle = "${ant.project.name}"/>
     </target>
 
     <target name="doc" depends="javadoc" />
