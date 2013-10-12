@@ -7,6 +7,30 @@ import operation.Operation;
 
 public class Action implements Game
 {      
+    static Stackable[] ctrl (Map map, Robot turn, Operation op)
+       throws InvalidOperationException
+    {
+        Stackable[] stackable = null;
+        boolean can = false;
+        switch(op.getAction())
+        {
+            case "MOVE" : can = MOVE (map, turn, op); break;
+            case "DRAG" : can = DRAG (map, turn, op); break;    
+            case "DROP" : can = DROP (map, turn, op); break;
+            case "HIT"  : can = HIT  (map, turn, op); break;
+            
+            case "LOOK" : stackable = LOOK (map, turn, op); break;
+            case "SEE"  : stackable = SEE  (map, turn, op); break;
+        }
+        
+        if(stackable == null) 
+        {
+            stackable = new Stackable[1]; 
+            stackable[0] = new Num( (can) ? 1 : 0 );
+        }
+        return stackable;
+    }
+    
     static boolean MOVE (Map map, Robot turn, Operation op) 
     {
         // Extract direction info from operation

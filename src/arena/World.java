@@ -1,29 +1,37 @@
 package arena;
 
-// Default libraries
-import java.io.IOException;
-import java.lang.Thread;
-
 // Libraries
 import gui.*;
 import robot.*;
-import scenario.*;
 import operation.*;
 import exception.*;
 import stackable.*;
 import parameters.*;
-import stackable.item.*;
 
+/**
+ * World - general game configuration.
+ * Manages the time, players and scenario
+ * of the game.
+ *
+ * @author Karina Suemi
+ * @author Renato Cordeiro Ferreira
+ * @author Vinícius Silva
+ * @see Action
+ * @see gui.Textual
+ */
 public class World implements Game
 {
+    // Global settings
+    private static int time = 0;
     private static int nPlayers;
+    
+    // Global characteristics
+    private static Map       map;
+    private static Robot     turn;
     private static Robot[][] armies;
     
-    private static int time = 0;
+    // Graphical User Interface (GUI)
     private static Textual GUI;
-    
-    private static Map map;
-    private static Robot turn;
     
     public static void genesis(int np, Weather w)
         throws InvalidOperationException
@@ -41,8 +49,9 @@ public class World implements Game
             for(int j = 0; j < ROBOTS_NUM_INITIAL; j++)
                 armies[i][j] = initial[i][j];
         
+        // Initializes GUI
         GUI = new Textual(map);
-        GUI.printMiniMap();
+        if(Verbosity.v) GUI.printMiniMap();
     }
     
     public static void timeStep()
@@ -70,7 +79,7 @@ public class World implements Game
                 try { turn.run(); }
                 catch (Exception e) 
                 {
-                    System.out.println("["+ turn.toString() +"] " + e);
+                    System.out.println("[World]["+ turn.toString() +"] " + e);
                 }
             }
         }
@@ -80,28 +89,6 @@ public class World implements Game
     static public Stackable[] ctrl(Operation op)
        throws InvalidOperationException
     {
-        Stackable[] stackable = null;
-        boolean can = false;
-        switch(op.getAction())
-        {
-            case "MOVE" : can = Action.MOVE (map, turn, op); break;
-            case "DRAG" : can = Action.DRAG (map, turn, op); break;    
-            case "DROP" : can = Action.DROP (map, turn, op); break;
-            case "HIT"  : can = Action.HIT  (map, turn, op); break;
-            
-            case "LOOK" : stackable = Action.LOOK (map, turn, op); break;
-            case "SEE"  : stackable = Action.SEE  (map, turn, op); break;
-        }
-        
-        if(stackable == null) 
-        {
-            stackable = new Stackable[1]; 
-            stackable[0] = new Num( (can)? 1 : 0 );
-        }
-        return stackable;
+        return Action.ctrl(map, turn, op);
     }
 }
-
-// :¨:
-// =%=
-// / \
