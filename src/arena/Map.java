@@ -14,10 +14,12 @@ import random.*;
 
 public class Map implements Game
 {
-    // Map Matrix
-    public Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];
-    char[][] miniMap = new char[MAP_SIZE][MAP_SIZE];
-    Weather w;
+    // Map Matrixes
+    public Terrain[][] map     = new Terrain[MAP_SIZE][MAP_SIZE];
+    public char[][]    miniMap = new char[MAP_SIZE][MAP_SIZE];
+
+    // Weather
+    final private Weather w;
     
     public Map(Weather w)
     {
@@ -48,16 +50,4 @@ public class Map implements Game
         
         return initial;
     }
-    
-    public void print()
-    {
-        for(int i = 0; i < MAP_SIZE; i++)
-        {
-            for(int j = 0; j < MAP_SIZE; j++)
-            {
-                System.out.print(miniMap[i][j]);
-            }
-            System.out.println();
-        }
-    }   
 }
