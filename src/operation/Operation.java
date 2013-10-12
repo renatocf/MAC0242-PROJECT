@@ -7,16 +7,16 @@ import exception.*;
 import stackable.*;
 
 /**
- * Class Operation.
+ * <b>Class Operation</b> <br>
  * Validates the type and arguments of
- * a given operation. Also, is an interface
- * betwen the arena and a RVM.
+ * a given operation and works as an 
+ * interface betwen the arena and a RVM.
  * 
  * @author Karina Suemi 
  * @author Renato Cordeiro
  * @author Vinícius Silva 
- * @see RVM 
- * @see World
+ * @see robot.RVM 
+ * @see arena.World
  */
 public class Operation
 {
@@ -27,8 +27,8 @@ public class Operation
     
     /**
      * Class constructor.
-     * @param Action to be executed
-     * @param Required arguments
+     * @param action Action to be executed
+     * @param arg    Required arguments
      * 
      * @throws WrongTypeException
      * @throws InvalidOperationException
@@ -59,7 +59,9 @@ public class Operation
     }
     
     // Getters
+    /** @return String with the action's name */
     public String    getAction   () { return this.action; }
+    /** @return String with the action's argument's name */
     public Stackable getArgument () { return this.arg;    }
     
     // Verify arguments
