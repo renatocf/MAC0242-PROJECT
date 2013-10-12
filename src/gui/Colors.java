@@ -1,4 +1,4 @@
-package arena;
+package gui;
 
 public interface Colors
 {

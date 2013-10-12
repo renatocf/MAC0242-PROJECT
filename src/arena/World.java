@@ -14,7 +14,7 @@ import stackable.*;
 import parameters.*;
 import stackable.item.*;
 
-public class World implements Game, Colors
+public class World implements Game
 {
     private static Map map;
     private static int nPlayers;
