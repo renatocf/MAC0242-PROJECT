@@ -55,8 +55,10 @@ public class Textual
             return RESTORE + "\\" + midColor +  " "  + RESTORE + "/"; /*  \ / */
     }
     
-    final private String colorof(Appearence ap)
+    final private String colorof(int i, int j) //(Appearence ap)
     {
+        Appearence ap = map.map[i][j].getAppearence();
+        
         if(ap == null) return RESTORE;
         switch (ap)
         {
@@ -71,14 +73,6 @@ public class Textual
             case SAND   : return ON_YELLOW;
             default     : return RESTORE;  
         }
-    }
-    
-    final private Appearence terrainLook(int i, int j)
-    {
-        // For arrays out of bounds, we'll have null.
-        // In colorof function, its color will be RESTORE
-        if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) return null;
-        return map.map[i][j].getAppearence();
     }
     
     final private Scenario scen(int i, int j)
@@ -100,7 +94,7 @@ public class Textual
     
     final private void println(String s)
     {
-        print(s + "\n");
+        System.out.println(s);
     }
     
     public void printMap()
@@ -110,14 +104,14 @@ public class Textual
             print("   .  ");
         println("   .");
         
-        print("  " + hexTop( 1, colorof(terrainLook(0,0)) ));
+        print("  " + hexTop( 1, colorof(0,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
-            print("   " + hexTop( 1, colorof(terrainLook(0,j)) ));
+            print("   " + hexTop( 1, colorof(0,j)) );
         println(RESTORE);
-        
-        print(" " + hexTop(2, colorof(terrainLook(0,0)) ));
+       
+        print(" " + hexTop(2, colorof(0,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
-            print(" " + hexTop(2, colorof(terrainLook(0,j)) ));
+            print(" " + hexTop(2, colorof(0,j)) );
         println(RESTORE);
         
         // Print ordinary lines
@@ -144,12 +138,12 @@ public class Textual
                 else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "/"; item2 = ON_YELLOW + "\\"; }
                 else if (item(i,j) instanceof Stone)   { item1 = ON_BLACK  + "."; item2 = ON_BLACK  + ".";  }
                 
-                item1 += colorof(terrainLook(i,j));
-                item2 += colorof(terrainLook(i,j));
-                scen1 += colorof(terrainLook(i,j));
-                scen2 += colorof(terrainLook(i,j));
+                item1 += colorof(i,j);
+                item2 += colorof(i,j);
+                scen1 += colorof(i,j);
+                scen2 += colorof(i,j);
                 
-                print(RESTORE + "|" + colorof(terrainLook(i,j)) 
+                print(RESTORE + "|" + colorof(i,j)
                       + scen1 + scen2 + " " + item1 + item2);
             }
             println(RESTORE + "|");
@@ -172,12 +166,12 @@ public class Textual
                 else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "\\"; item2 = ON_YELLOW + "/"; }
                 else if (item(i,j) instanceof Stone)   { item1 = ON_BLACK  + "¨";  item2 = ON_BLACK  + "¨"; }
                 
-                item1 += colorof(terrainLook(i,j));
-                item2 += colorof(terrainLook(i,j));
-                scen1 += colorof(terrainLook(i,j)); 
-                scen2 += colorof(terrainLook(i,j)); 
+                item1 += colorof(i,j);
+                item2 += colorof(i,j);
+                scen1 += colorof(i,j); 
+                scen2 += colorof(i,j); 
                 
-                print(RESTORE + "|" + colorof(terrainLook(i,j)) 
+                print(RESTORE + "|" + colorof(i,j)
                       + scen1 + scen2 + " " + item1 + item2);
             }
             println(RESTORE + "|");
@@ -186,44 +180,44 @@ public class Textual
 
             // First line of hexagons
             print( (odd) 
-                    ? "  "  + hexTop(1, colorof( terrainLook(i,  0) )) 
-                    : " "   + hexBot(1, colorof( terrainLook(i+1,0) )) 
+                    ? "  "  + hexTop(1, colorof(i,  0) ) 
+                    : " "   + hexBot(1, colorof(i+1,0) )
             );
             for(int j = 1; j < MAP_SIZE; j++)
                 print( (odd) 
-                    ? colorof( terrainLook(i,  j-1) ) + "   " + hexTop(1, colorof( terrainLook(i+1,j) )) 
-                    : colorof( terrainLook(i+1,j-1) ) + " "   + hexBot(1, colorof( terrainLook(i,  j) ))
+                    ? colorof(i,  j-1) + "   " + hexTop(1, colorof(i+1,j))
+                    : colorof(i+1,j-1) + " "   + hexBot(1, colorof(i,  j))
             );
             println( (odd) 
-                    ? colorof( terrainLook(i,MAP_SIZE-1) )   + "   " + RESTORE + "/" 
-                    : colorof( terrainLook(i+1,MAP_SIZE-1) ) + " "   + RESTORE + "\\"
+                    ? colorof(i,  MAP_SIZE-1) + "   " + RESTORE + "/" 
+                    : colorof(i+1,MAP_SIZE-1) + " "   + RESTORE + "\\"
             );
             
             // Second line of hexagons
             print( (odd) 
-                    ? " "   + hexTop(2, colorof( terrainLook(i,0) ))
-                    : "  "  + hexBot(2, colorof( terrainLook(i,0) ))
+                    ? " "   + hexTop(2, colorof(i,0))
+                    : "  "  + hexBot(2, colorof(i,0))
             );
             for(int j = 1; j < MAP_SIZE; j++)
                 print( (odd) 
-                    ? colorof( terrainLook(i,  j-1) ) + " "   + hexTop(2, colorof( terrainLook(i+1,j) ))
-                    : colorof( terrainLook(i+1,j-1) ) + "   " + hexBot(2, colorof( terrainLook(i,  j) ))
+                    ? colorof(i,  j-1) + " "   + hexTop(2, colorof(i+1,j))
+                    : colorof(i+1,j-1) + "   " + hexBot(2, colorof(i,  j))
             );
             println( (odd) 
-                    ? colorof( terrainLook(i,MAP_SIZE-1) ) + " "   + RESTORE + "/" 
-                    : colorof( terrainLook(i,MAP_SIZE-1) ) + "   " + RESTORE + "\\"
+                    ? colorof(i,MAP_SIZE-1) + " "   + RESTORE + "/" 
+                    : colorof(i,MAP_SIZE-1) + "   " + RESTORE + "\\"
             ); 
         }
             
         // Print scenario bottom
-        print(" " + hexBot(1, colorof(terrainLook(MAP_SIZE-1,0)) ));
+        print(" " + hexBot(1, colorof(MAP_SIZE-1,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
-            print(" " + hexBot(1, colorof(terrainLook(MAP_SIZE-1,j)) ));
+            print(" " + hexBot(1, colorof(MAP_SIZE-1,j)) );
         println(RESTORE);
         
-        print("  " + hexBot(2, colorof(terrainLook(MAP_SIZE-1,0)) ));
+        print("  " + hexBot(2, colorof(MAP_SIZE-1,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
-            print("   " + hexBot(2, colorof(terrainLook(MAP_SIZE-1,j)) ));
+            print("   " + hexBot(2, colorof(MAP_SIZE-1,j)) );
         println(RESTORE);
         
         for(int j = 0; j < MAP_SIZE-1; j++)
