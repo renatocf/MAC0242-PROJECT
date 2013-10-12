@@ -92,6 +92,11 @@ public class Terrain implements Stackable
         return this.item;
     }
     
+    public Appearence getAppearence()
+    {
+        return this.appearence;
+    }
+    
     public String toString()
     {
         String sItem = (item == null) 

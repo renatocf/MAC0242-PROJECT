@@ -15,7 +15,7 @@ import random.*;
 public class Map implements Game
 {
     // Map Matrix
-    Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];
+    public Terrain[][] map = new Terrain[MAP_SIZE][MAP_SIZE];
     char[][] miniMap = new char[MAP_SIZE][MAP_SIZE];
     Weather w;
     
