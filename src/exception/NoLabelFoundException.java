@@ -4,7 +4,7 @@ package exception;
  * Exception used inside RVM to declare when there is no
  * of the required label defined in the code.
  * @author Renato Cordeiro Ferreira
- * @see    RVM
+ * @see    robot.RVM
  */
 public final class NoLabelFoundException extends Exception 
 {

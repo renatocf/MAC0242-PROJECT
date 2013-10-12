@@ -5,7 +5,7 @@ package exception;
  * inside the stack - Example: requiring 2 arguments when there
  * is only one in the stack).
  * @author Renato Cordeiro Ferreira
- * @see    RVM
+ * @see    robot.RVM
  */
 public final class SegmentationFaultException extends Exception 
 {

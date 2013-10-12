@@ -5,7 +5,7 @@ package exception;
  * does not correspond with the command - Example: operation
  * ADD for non-numeric stackable arguments.
  * @author Renato Cordeiro Ferreira
- * @see    RVM
+ * @see    robot.RVM
  */
 public final class InvalidOperationException extends Exception 
 {

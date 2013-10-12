@@ -6,7 +6,7 @@ package exception;
  * @author Karina Awoki
  * @author Renato Cordeiro
  * @author Vinicius Silva
- * @see    Function
+ * @see    robot.RVM
  */
 public final class WrongTypeException extends Exception 
 {
