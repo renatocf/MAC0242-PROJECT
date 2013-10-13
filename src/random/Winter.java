@@ -4,77 +4,15 @@ package random;
 import java.lang.Math;
 import java.util.Random;
 
-// Libraries
-import scenario.*;
-import arena.Terrain;
-import stackable.item.*;
-import arena.Appearence;
-
-public class Winter
+class Winter implements Theme
 {
-    private Random rand = new Random(42);
-    
-    public Terrain[][] generateMap(char[][] matrix, int nPlayer, int side)
-    {
-        Terrain[][] map = new Terrain[side][side];
-        for(int i = 0; i < side; i++)
-            for(int j = 0; j < side; j++)
-            {
-                switch (matrix[i][j])
-                {
-                    case '.'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA);                            break;
-                    case '#'     : map[i][j] = new Terrain(nPlayer, Appearence.ICE);                               break;
-                    case '\u2662': map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Crystal());             break;
-                    case '\u2663': map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Tree());                break;
-                    case 'O'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Rock());                break;
-                    case '*'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Stone());               break;
-                    case 'B'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Base());                break;    
-                    case 'Y'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Tree(), new Crystal()); break;
-                    case '@'     : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA, new Rock(), new Crystal()); break;
-                    default      : map[i][j] = new Terrain(nPlayer, Appearence.TUNDRA);                            break;
-                }
-            }
-        return map;
-    }
-    
-    private int[][] generateLakeBorder(int side)
-    {
-        int[][] points = new int[2][1000];
-        int t = 0;
-        double i = 0;
-        int rad = (int) (this.rand.nextFloat() * (side/6.0) + side/6.0 + 0.5);
-        int mod = 0;
-        points[0][t] = coordX(rad, 0);
-        points[1][t] = coordY(rad, 0);
-        for(int j = side*100; j > 0; j--)
-        {
-            int x, y;
-            i += Math.PI / (side*50);
-            x = coordX(rad + mod, i);
-            y = coordY(rad + mod, i);;
-            if(x != points[0][t] || y != points[1][t])
-            { 
-                t++;
-                mod = updateMod(mod, j, rad, side);
-                points[0][t] = coordX(rad + mod, i);
-                points[1][t] = coordY(rad + mod, i);
-            }
-        }
-        int[][] coord = new int[2][t];
-        for(int j = 0; j < t; j++)
-        {
-            coord[0][j] = points[0][j];
-            coord[1][j] = points[1][j];
-        } 
-        return coord;
-    }   
+    private Random rand = new Random();
     
     public char[][] generateMatrix(int side)
     {    
         char[][] map = new char[side][side];
         int devMax = (int) ((side/10.0 + 1)*(side/10.0 + 1));
-        boolean open = true;
-        
+        boolean open = true;        
         
         while(open)
         {
@@ -125,6 +63,38 @@ public class Winter
         map = putBases(map);
         return map;
     }
+    
+    private int[][] generateLakeBorder(int side)
+    {
+        int[][] points = new int[2][1000];
+        int t = 0;
+        double i = 0;
+        int rad = (int) (this.rand.nextFloat() * (side/6.0) + side/6.0 + 0.5);
+        int mod = 0;
+        points[0][t] = coordX(rad, 0);
+        points[1][t] = coordY(rad, 0);
+        for(int j = side*100; j > 0; j--)
+        {
+            int x, y;
+            i += Math.PI / (side*50);
+            x = coordX(rad + mod, i);
+            y = coordY(rad + mod, i);;
+            if(x != points[0][t] || y != points[1][t])
+            { 
+                t++;
+                mod = updateMod(mod, j, rad, side);
+                points[0][t] = coordX(rad + mod, i);
+                points[1][t] = coordY(rad + mod, i);
+            }
+        }
+        int[][] coord = new int[2][t];
+        for(int j = 0; j < t; j++)
+        {
+            coord[0][j] = points[0][j];
+            coord[1][j] = points[1][j];
+        } 
+        return coord;
+    }   
     
     private char[][] putTrees(char[][] map)
     {
@@ -193,8 +163,8 @@ public class Winter
 
     private int updateMod(int mod, int remain, int rad, int side)
     {
-        double probPlus  = (double) (remain - mod) / remain;
-        double probMinus = (double) (remain + mod) / remain;
+        double probPlus  = (double) (remain - mod);
+        double probMinus = (double) (remain + mod);
         double total     = probPlus + probMinus;
         double rand      = this.rand.nextFloat();
         probPlus /= total;
