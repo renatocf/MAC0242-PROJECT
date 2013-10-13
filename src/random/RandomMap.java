@@ -22,12 +22,12 @@ public class RandomMap
         if      (style == Weather.ARTICAL)  t = new Winter();
         else if (style == Weather.TROPICAL) t = new Jungle();
         else if (style == Weather.DESERTIC) t = new Desert();
-        this.matrix = t.generateMatrix(this.side);
+        else                                t = new CalmField();
+        this.matrix = t.generateMatrix(this.side);        
     }
     
     public Terrain[][] generateMap()
     {
-        
         Terrain[][] map = new Terrain[this.side][this.side];
         
         Appearence a = null;
@@ -35,6 +35,7 @@ public class RandomMap
         if      (style == Weather.ARTICAL)  a = Appearence.TUNDRA;
         else if (style == Weather.TROPICAL) a = Appearence.GRASS;
         else if (style == Weather.DESERTIC) a = Appearence.DIRT; 
+        else                                a = Appearence.GRASS;
         
         
         for(int i = 0; i < this.side; i++)

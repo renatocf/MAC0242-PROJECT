@@ -1,0 +1,3 @@
+PUSH ->W
+MOVE
+END
