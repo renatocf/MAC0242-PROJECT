@@ -86,9 +86,21 @@ public class World implements Game
         if(!(Verbosity.v)) GUI.paint();
     }
     
-    static public Stackable[] ctrl(Operation op)
+    public static Stackable[] ctrl(Operation op)
        throws InvalidOperationException
     {
         return Action.ctrl(map, turn, op);
+    }
+    
+    public static void insertArmy
+        (int player, String name, int i, int j, String pathToProg)
+        throws SegmentationFaultException
+    {
+        Robot r = map.insertArmy(name, i, j, pathToProg);
+        for(int k = 0; k < ROBOTS_NUM_MAX; k++)
+            if(armies[player-1][k] == null)
+            {
+                armies[player-1][k] = r; break;
+            }
     }
 }
