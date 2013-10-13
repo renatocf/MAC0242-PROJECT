@@ -25,7 +25,12 @@ class Main
         getopt(args); // Get options
         String input = args[0];
         
-        World.genesis(2, Weather.ARTICAL);
+        // Generate map
+        /* World.genesis(2, Weather.CONTINENTAL ); */
+        /* World.genesis(2, Weather.ARTICAL     ); */
+        /* World.genesis(2, Weather.DESERTIC    ); */
+        World.genesis(2, Weather.TROPICAL    );
+        
         try{
             World.insertArmy(1, "Bender", 8, 9, args[0]);
             World.insertArmy(2, "C3PO"  , 9, 8, args[1]);
@@ -34,8 +39,6 @@ class Main
         {
             System.err.println("Invalid position!");
         }
-        
-        World.genesis(2, Weather.CONTINENTAL);
         
         for(int t = 0; t < 370; t++)
             World.timeStep();
