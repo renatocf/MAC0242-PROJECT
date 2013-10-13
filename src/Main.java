@@ -35,6 +35,8 @@ class Main
             System.err.println("Invalid position!");
         }
         
+        World.genesis(2, Weather.CONTINENTAL);
+        
         for(int t = 0; t < 370; t++)
             World.timeStep();
     }
