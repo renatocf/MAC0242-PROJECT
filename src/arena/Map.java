@@ -32,9 +32,9 @@ public class Map implements Game
     public Robot[][] genesis(int nPlayers)
         throws InvalidOperationException
     {
-        Winter w = new Winter();
-        miniMap = w.generateMatrix(MAP_SIZE); 
-        map = w.generateMap(miniMap, nPlayers, MAP_SIZE);              
+        RandomMap arena = new RandomMap (w, nPlayers, MAP_SIZE);
+        miniMap = arena.getMatrix   (); 
+        map     = arena.generateMap ();              
         
         //// TODO: receive PROG, generate robots
         //Parser user = new Parser();
