@@ -51,7 +51,6 @@ public class Map implements Game
     public Robot insertArmy(String name, int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
-        System.out.println("inserting army");
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
             throw new SegmentationFaultException();
         
