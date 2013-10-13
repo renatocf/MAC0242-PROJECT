@@ -7,4 +7,9 @@ public class Verbosity
     {
         System.out.println(s);
     }
+    
+    public static void debug()
+    {
+        System.out.println();
+    }
 }
