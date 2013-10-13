@@ -1,3 +1,6 @@
+#!/bin/sh
+# fast.sh
+
 if [ $1 = build ]
 then
     ant clean
