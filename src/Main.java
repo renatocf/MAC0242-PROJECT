@@ -1,56 +1,39 @@
 // Default Libraries
 import java.util.Vector;
-import java.lang.reflect.Method;
 
 // Libraries
 import arena.*;
-import parser.*;
 import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
 
-class Main
+class Main 
 {
     final static String USAGE = 
-        "USAGE: java -jar dist/MAC0242.jar <prog> [-v]";
+        "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
     
     public static void main(String[] args)
         throws InvalidOperationException
     {
-        if(args.length < 1) 
+        if(args.length < 2)
         {
             System.err.println(USAGE);
             return;
         }
         
         getopt(args); // Get options
-        
-        // Process input
         String input = args[0];
-        char   first = Character.toUpperCase(input.charAt(0));
-        String other = input.substring(1).toLowerCase();
-        String prog  = first + other;
-        if(!prog.equals(input))
-        {
-            System.out.println(input + "not a valid name!");
-            System.out.println("Searching for " + prog);
-        }
-        
-        try { Class Parser = Class.forName("parser." + prog); }
-        catch(ClassNotFoundException e) 
-        {
-            System.err.println(
-                "Class not found! Program \"" + 
-                prog + "\" does not exist!"
-            );
-            return;
-        }
-        
-        Parser user = new Parser();
-        Vector<Command> PROG = user.upload();
         
         World.genesis(2, Weather.ARTICAL);
+        try{
+            World.insertArmy(1, "Bender", 8, 9, args[0]);
+            World.insertArmy(2, "C3PO"  , 9, 8, args[1]);
+        }
+        catch(SegmentationFaultException e)
+        {
+            System.err.println("Invalid position!");
+        }
         
         for(int t = 0; t < 370; t++)
             World.timeStep();
