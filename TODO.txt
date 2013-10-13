@@ -2,15 +2,16 @@
     Finishes documentation (LaTeX).
     
 [Renato]
-    Fix parser.pl to accept many files.
-    Refatorate GUI.
+    [OK] Fix parser.pl to accept many files.
+    [OK] Refatorate GUI.
     
 [Vinícius]
-    Add new maps. 
+    [OK] Add new maps. 
     Create robot behaviors.
 
 [All]
     Create command HIT.
     Fix SEEK and SEE.
-    Create insert/remove Army.
+    [OK] Create insert Army.
+    Create remove Army.
     Create menu.
