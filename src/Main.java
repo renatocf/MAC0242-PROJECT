@@ -32,8 +32,8 @@ class Main
         World.genesis(2, Weather.TROPICAL    );
         
         try{
-            World.insertArmy(1, "Bender", 8, 9, args[0]);
-            World.insertArmy(2, "C3PO"  , 9, 8, args[1]);
+            World.insertArmy(1, "R2D2", 8, 9, args[0]);
+            World.insertArmy(2, "Bender"  , 9, 8, args[1]);
         }
         catch(SegmentationFaultException e)
         {
