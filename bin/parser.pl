@@ -167,7 +167,9 @@ for my $var(keys %item, length $t, length $n)
 ##                          PRINTING PARSER                           ##
 ########################################################################
 mkdir "$base/$src/parser";
-my $java_file = ucfirst lc ($file =~ s|.*/(.*)\..*|$1|r);
+my $java_file = $file;
+$java_file =~ s|.*/(.*)\..*|$1|;
+$java_file = ucfirst lc $java_file;
 say "FILE: $java_file";
 
 open(my $PARSER, ">", "$base/$src/parser/$java_file.java");
