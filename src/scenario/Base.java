@@ -7,4 +7,6 @@ public class Base implements Scenario
         // Bases cannot be destroyed...
         return 0;
     }
+    
+    public int getHP() { return 42; }
 }

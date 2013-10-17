@@ -7,4 +7,6 @@ public class Rock implements Scenario
     {
         return HP -= damage;
     }
+    
+    public int getHP() { return HP; }
 }

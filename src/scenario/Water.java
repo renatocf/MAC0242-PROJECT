@@ -4,7 +4,9 @@ public class Water implements Scenario
 {
     public int takeDamage(int damage) 
     {
-        // Bases cannot be destroyed...
+        // Water cannot be destroyed...
         return 0;
     }
+    
+    public int getHP() { return 42; }
 }

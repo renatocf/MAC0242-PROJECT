@@ -7,4 +7,6 @@ public class Tree implements Scenario
     {
         return HP -= damage;
     }
+    
+    public int getHP() { return this.HP; }
 }
