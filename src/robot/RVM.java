@@ -11,6 +11,7 @@ import java.util.Iterator;
 import robot.*;
 import exception.*;
 import stackable.*;
+import parameters.*;
 
 /**
  * <b>Main package class with the constructor of the robot and its data.</b>
@@ -81,6 +82,7 @@ public class RVM
             catch (Exception e) {System.out.print(e); }
         }
         else throw new UndefinedFunctionException(function);  
+        
     }
 
     /**
@@ -111,8 +113,16 @@ public class RVM
             if (this.PC < 0) this.PC = 0;
             else this.PC++;
         }
+        if(Verbosity.v)
+        {
+            System.out.println("[Stack] \n    ");
+            for(Stackable stk: this.DATA)
+            {
+                System.out.print(stk.toString() + ", ");
+            }
+            System.out.println();
+        }
     }
-    
     /**
      * Function responsible for uploading the labels of PROG,
      * doint it if and only if the program is new.
