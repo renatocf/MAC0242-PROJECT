@@ -20,7 +20,7 @@ import stackable.*;
  */
 public class Operation
 {
-    final private   Stackable arg;
+    final private   Stackable[] arg;
     final private   String action;
     final private   RVM robot;
     private boolean rightType;
@@ -33,7 +33,7 @@ public class Operation
      * @throws WrongTypeException
      * @throws InvalidOperationException
      */
-    public Operation(RVM robot, String action, Stackable arg)
+    public Operation(RVM robot, String action, Stackable[] arg)
         throws InvalidOperationException,
                WrongTypeException
     {
@@ -58,17 +58,41 @@ public class Operation
         }
     }
     
+    public Operation(RVM robot, String action, Stackable arg)
+        throws InvalidOperationException,
+               WrongTypeException
+    {
+        this(robot, action, new Stackable[] { arg });
+    }
+    
     // Getters
     /** @return String with the action's name */
-    public String    getAction   () { return this.action; }
+    public String      getAction   () { return this.action; }
     /** @return String with the action's argument's name */
-    public Stackable getArgument () { return this.arg;    }
+    public Stackable[] getArgument () { return this.arg;    }
     
     // Verify arguments
-    private boolean MOVE () { return this.arg instanceof Direction; }
-    private boolean DRAG () { return this.arg instanceof Direction; }
-    private boolean DROP () { return this.arg instanceof Direction; }
-    private boolean HIT  () { return this.arg instanceof Direction; }
-    private boolean LOOK () { return this.arg instanceof Direction; }
-    private boolean SEE  () { return true;                          }
+    private boolean SEE  () { return true;                             }
+    private boolean MOVE () { return this.arg[0] instanceof Direction; }
+    private boolean DRAG () { return this.arg[0] instanceof Direction; }
+    private boolean DROP () { return this.arg[0] instanceof Direction; }
+    private boolean LOOK () { return this.arg[0] instanceof Direction; }
+    
+    private boolean HIT  () 
+    { 
+        // Argument 0: attack type; Argument 1: Number of directions
+        if(!(this.arg[0] instanceof Attack)) return false;
+        if(!(this.arg[1] instanceof Num   )) return false;
+        
+        // Check if the number of directions is consistent
+        Num ndirs = (Num) arg[1];
+        if(ndirs.getNumber() != arg.length-2) return false;
+        
+        // Check if the arguments are directions
+        for(int i = 2; i < arg.length; i++)
+            if(!(this.arg[i] instanceof Direction)) return false;
+ 
+        // Otherwise, it's all right       
+        return true;
+    }
 }
