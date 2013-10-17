@@ -1,5 +1,6 @@
 package arena;
 
+import scenario.*;
 import stackable.*;
 import exception.*;
 import parameters.*;
@@ -34,7 +35,8 @@ public class Action implements Game
     static boolean MOVE (Map map, Robot turn, Operation op) 
     {
         // Extract direction info from operation
-        Direction d = (Direction) op.getArgument();
+        Stackable[] s = op.getArgument();
+        Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
         int newI = turn.i + update[0];
@@ -62,7 +64,8 @@ public class Action implements Game
     static boolean DRAG (Map map, Robot turn, Operation op)
     { 
          // Extract direction info from operation
-        Direction d = (Direction) op.getArgument();
+        Stackable[] s = op.getArgument();
+        Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
         int lookI = turn.i + update[0];
@@ -90,7 +93,8 @@ public class Action implements Game
     
     static boolean DROP (Map map, Robot turn, Operation op)
     {  
-        Direction d = (Direction) op.getArgument();
+        Stackable[] s = op.getArgument();
+        Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
         int lookI = turn.i + update[0];
@@ -121,14 +125,85 @@ public class Action implements Game
     }
     
     static boolean HIT  (Map map, Robot turn, Operation op)
-    {  
+    {
+        String pre = "    [HIT]";
+        Stackable[] s = op.getArgument();
+        
+        Attack      atk  = (Attack) s[0];
+        Num         num  = (Num)    s[1];
+        Direction[] dirs = new Direction[(int)num.getNumber()];
+        
+        int damage = 0;
+        int distance = (int) num.getNumber();
+        
+        // TODO: PROBLEMS HERE ↓ 
+        // If we add more commands to HIT, we 
+        // need to change this +2.
+        for(int i = 0; i < distance; i++)
+            dirs[i] = (Direction) s[i + 2];
+
+        switch (atk.getAttack())
+        {
+            case "MELEE" : damage = turn.damageMelee; 
+                           if(distance > 1)             return false; break;
+            case "RANGED": damage = turn.damageRange; 
+                           if(distance > turn.maxRange) return false; break;
+        }
+                
+        if(Verbosity.v) 
+        {  
+            String directions = "";
+            Verbosity.debug(pre + "[" + atk.getAttack() + "]");
+            for(Direction d: dirs) directions += d.toString() + " ";
+            Verbosity.debug(pre + " " + directions);
+        } 
+
+        int lookI = turn.i;
+        int lookJ = turn.j;
+        Scenario thing = null;
+
+        for(Direction d: dirs)
+        {
+            int[] update = d.get(lookI);
+            
+            lookI += update[0];
+            lookJ += update[1];
+            
+            if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+            
+            if(lookI >= MAP_SIZE
+            || lookJ >= MAP_SIZE
+            || lookI < 0
+            || lookJ < 0) return false;
+                        
+            thing = map.map[lookI][lookJ].getScenario();
+            if(thing != null)
+            {
+                int done = thing.takeDamage(damage);
+                if(Verbosity.v) { Verbosity.debug(pre + "[DAMAGE:" + done + "]"); }
+
+                if(thing.getHP() <= 0) 
+                {                 
+                    map.map[lookI][lookJ].removeScenario();
+                    if(Verbosity.v) {   Verbosity.debug(pre + "[DESTROYED]"); }
+                }
+                break;
+            }
+        }   
+        
+        if(thing == null) 
+        {
+            if(Verbosity.v) { Verbosity.debug(pre + "[EMPTY]"); }
+            return false;
+        }
         return true;
     }
     
     static Stackable[] LOOK (Map map, Robot turn, Operation op)
     { 
          // Extract direction info from operation
-        Direction d = (Direction) op.getArgument();
+        Stackable[] s = op.getArgument();
+        Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
         int lookI = turn.i + update[0];
