@@ -125,7 +125,29 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "HIT");
+        Stackable atk = null;
+        Stackable num = null;
+        
+        atk = rvm.DATA.pop();
+        num = rvm.DATA.pop();
+        int ndirs = (int) ((Num)num).getNumber();
+        
+        Stackable[] args = new Stackable[ndirs+2];
+        args[0] = atk; args[1] = num;
+        for(int i = 2; i < ndirs+2; i++)
+            args[i] = rvm.DATA.pop();
+        
+        Operation op;
+        try { 
+            op = new Operation(rvm, "HIT", args);
+        }
+        catch (InvalidOperationException e) {
+            throw new WrongTypeException("HIT");
+        }
+        
+        Stackable[] stk = World.ctrl(op);
+        for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
+        rvm.syscall = true;
     }
     
     /**
