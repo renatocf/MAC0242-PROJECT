@@ -56,4 +56,26 @@ public class Around implements Stackable
         }
         return ret;
     }
+    
+    public void print()
+    {
+        String pre = "    [AROUND] ";
+        System.out.print(pre + "Scenario: ");
+        for(String s: matrix[0])
+        {
+            System.out.print(s + " " );
+        }   
+        
+        System.out.print("\n" + pre + "Item: ");
+        for(String s: matrix[1])
+        {
+            System.out.print(s + " " );
+        } 
+        System.out.println();
+    }
+    
+    public String toString()
+    {
+        return "( Around )";
+    }
 }
