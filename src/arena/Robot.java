@@ -126,4 +126,6 @@ public class Robot implements Scenario
         this.HP -= damage - this.forceShield;
         return this.HP;
     }
+    
+    public int getHP() { return HP; }
 }
