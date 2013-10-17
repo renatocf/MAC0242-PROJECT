@@ -80,6 +80,7 @@ my $max_size_lab = 4; # null
 
 # Hashes with values
 my %item;
+my %attack;
 my %textual;
 my %numeric;
 my %direction;
@@ -128,6 +129,15 @@ for my $line (@prog)
             $arg =~ s/->//; 
             $line->[1] = "d$arg";
             $direction{$arg} = "Direction d$arg = new Direction(\"$arg\");";
+        }
+        
+        # Attack argument
+        elsif($arg =~ /^\(x\)(\w+)$/)
+        {
+            $arg = uc $arg; 
+            $arg =~ s/\(X\)//; 
+            $line->[1] = "x$arg";
+            $direction{$arg} = "Attack x$arg = new Attack(\"$arg\");";
         }
         
         # Stackable argument

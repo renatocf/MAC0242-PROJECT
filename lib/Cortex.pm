@@ -17,6 +17,7 @@ my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # no
 my @ins2 = ('RCL', 'STO');                   # arg: numeric (only)
 my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg: numeric/string
 my @stk  = ('crystal', 'stone');             # stackables
+my @atk  = ('ranged',  'melee'); 
 
 #######################################################################
 #                            CONSTRUCTOR                              #
@@ -60,9 +61,11 @@ sub parse
                     (?:
                         \s+              # Spaces
                         (
-                            ->\w*        # DIRECTION }
+                            \(x\)\w+     # ATTACK    }
                             |            #           }
-                            \w+          # STRING    } ARGUMENT
+                            ->\w*        # DIRECTION } ARGUMENT
+                            |            #           }
+                            \w+          # STRING    } 
                             |            #           }
                             {\w+}        # STACKABLE }
                         )
@@ -73,21 +76,28 @@ sub parse
             $/x)
         { 
             my ($lab, $com, $arg, $err) = ($1, $2, $3, 0);
-
+            
             # If there is any command
             if($com eq "PUSH")
             {
                 if    ($arg =~ m/^\d+$/)                {} # Numeric
                 elsif ($arg =~ m/^[A-Za-z]+\w*$/)       {} # String
                 elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {} # Direction
-                elsif ($arg =~ m/^{(\w+)}$/)
+                elsif ($arg =~ m/^{(\w+)}$/)               # Stackable
                 {
                     $err = 1; # If matches, return
                               # to the default value
                     # map { $err = -1 if $_ eq $1 } @stk; 
-                    foreach (@stk) { $err = 0 if $_ eq $1 }
-                }                                        # Stackable
-                else  { $err = 0; }                      # Default
+                    foreach (@stk) { $err = 0 if $_ eq lc $1 }
+                }                                        
+                elsif ($arg =~ m/^\(x\)(\w+)$/)            # Attack
+                {
+                    $err = 1; # If matches, return
+                              # to the default value
+                    # map { $err = -1 if $_ eq $1 } @stk; 
+                    foreach (@atk) { $err = 0 if $_ eq lc $1 }
+                }                                          
+                else  { $err = 0; }                       # Default
                 
             }
             else                                     
@@ -97,7 +107,7 @@ sub parse
                     when(@ins1) { $err = 2 if(defined $arg);              }
                     when(@ins2) { $err = 3 if($arg !~ m/^\d+$/);          }
                     when(@ins3) { $err = 4 if($arg !~
-                                              m/^(?:[a-za-z]+\w*|\d+)$/); }
+                                              m/^(?:[A-Za-z]+\w*|\d+)$/); }
                     default     { $err = 5;                               }
                 }
             }
