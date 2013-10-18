@@ -107,19 +107,13 @@ public class RVM
                WrongTypeException
     {
         this.syscall = false;
-        while(this.PC != -1 && !this.syscall) 
-        {           
-            exec();
-            if (this.PC < 0) this.PC = 0;
-            else this.PC++;
-        }
+        while(!this.syscall) { exec(); this.PC++; }
         if(Verbosity.v)
         {
-            System.out.println("[Stack] \n    ");
+            System.out.println("[Stack]";
+            System.out.print  ("    ");
             for(Stackable stk: this.DATA)
-            {
                 System.out.print(stk.toString() + ", ");
-            }
             System.out.println();
         }
     }

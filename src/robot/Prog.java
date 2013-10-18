@@ -21,15 +21,17 @@ final public class Prog
     /**
      * Assembly funcion NOP. <br>
      * Do nothing for one step.
+     * (Equivalent to a syscall)
      */
-    static void NOP(RVM rvm) {}
+    static void NOP(RVM rvm) { this.syscall = true; }
     
     /**
      * Assembly funcion END. <br>
      * Sets the counter to indicate
-     * the END of the program.
+     * the END of the program and stops
+     * the execution for 1 step.
      */
-    static void END(RVM rvm) { rvm.PC = -2; }
-    // Sets the counter to -2, to be able to
+    static void END(RVM rvm) { rvm.PC = -1; this.syscall = true; }
+    // Sets the counter to -1, to be able to
     // increment in each iteration of a for loop.
 }
