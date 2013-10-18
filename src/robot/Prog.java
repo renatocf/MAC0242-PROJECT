@@ -23,7 +23,7 @@ final public class Prog
      * Do nothing for one step.
      * (Equivalent to a syscall)
      */
-    static void NOP(RVM rvm) { this.syscall = true; }
+    static void NOP(RVM rvm) { rvm.syscall = true; }
     
     /**
      * Assembly funcion END. <br>
@@ -31,7 +31,7 @@ final public class Prog
      * the END of the program and stops
      * the execution for 1 step.
      */
-    static void END(RVM rvm) { rvm.PC = -1; this.syscall = true; }
+    static void END(RVM rvm) { rvm.PC = -1; rvm.syscall = true; }
     // Sets the counter to -1, to be able to
     // increment in each iteration of a for loop.
 }
