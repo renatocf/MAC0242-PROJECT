@@ -19,9 +19,9 @@ do
     echo "Creating .java file for $f"
     echo "-----------------------------------------------------------------"
     perl bin/parser.pl $f
-
-    echo
-    echo "Rebuilding project"
-    echo "-----------------------------------------------------------------"
-    ant
 done
+
+echo
+echo "Rebuilding project"
+echo "-----------------------------------------------------------------"
+ant
