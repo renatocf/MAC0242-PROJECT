@@ -14,6 +14,8 @@ public class Robot implements Scenario
 {
     // ID
     final protected String name;
+    final protected int    team;
+    final protected int    ID;
     
     // Position
     protected int i; // Line
@@ -40,10 +42,13 @@ public class Robot implements Scenario
     final protected int sight;
     final protected int costTime;
     
-    public Robot(String baptism, int i, int j, Vector<Command> PROG)
+    public Robot(String baptism, int team, int ID, 
+                 int i, int j, Vector<Command> PROG)
     {
         // ID
         this.name = baptism;
+        this.team = team;
+        this.ID   = ID;
         
         // Position
         this.i = i;

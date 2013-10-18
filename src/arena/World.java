@@ -3,6 +3,7 @@ package arena;
 // Libraries
 import gui.*;
 import robot.*;
+import scenario.*;
 import operation.*;
 import exception.*;
 import stackable.*;
@@ -66,9 +67,11 @@ public class World implements Game
 
         for(int i = 0; i < nPlayers; i++)
         {
-            for(int j = 0; armies[i][j] != null; j++)
+            for(int j = 0; j < ROBOTS_NUM_MAX; j++)
             {
-                turn = armies[i][j];
+                // No army found in the list: continue
+                if(armies[i][j] == null) continue;
+                else turn = armies[i][j];
                 
                 if(Verbosity.v) 
                 {
@@ -79,7 +82,8 @@ public class World implements Game
                 try { turn.run(); }
                 catch (Exception e) 
                 {
-                    System.out.println("[World]["+ turn.toString() +"] " + e);
+                    System.out.println
+                        ("[World]["+ turn.toString() +"] " + e);
                 }
             }
         }
@@ -96,11 +100,40 @@ public class World implements Game
         (int player, String name, int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
-        Robot r = map.insertArmy(name, i, j, pathToProg);
-        for(int k = 0; k < ROBOTS_NUM_MAX; k++)
-            if(armies[player-1][k] == null)
+        for(int id = 0; id < ROBOTS_NUM_MAX; id++)
+            if(armies[player-1][id] == null)
             {
-                armies[player-1][k] = r; break;
+                Robot r = map.insertArmy(name, player, id, 
+                                         i, j, pathToProg);
+                armies[player-1][id] = r; break;
             }
+    }
+    
+    public static void removeArmy(Robot died)
+        throws SegmentationFaultException
+    {
+        int player  = died.team; 
+        int robotID = died.ID; 
+        map.removeScenario(died.i, died.j);
+        armies[player-1][robotID] = null;
+    }
+    
+    public static void destroy(int i, int j)
+    {
+        // Remove all scenarios, but robots.
+        // This ones are removed by the ctrl.
+        Scenario s = map.map[i][j].getScenario();
+        try 
+        { 
+            if(s instanceof Robot) 
+                removeArmy((Robot) s);
+            else map.removeScenario(i,j);
+        } 
+        catch(SegmentationFaultException e) 
+        {
+            System.out.println(
+               "[World] Destroying in invalid " +
+               "position (" + i + "," + j + ")");
+        }
     }
 }

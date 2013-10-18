@@ -8,12 +8,12 @@ import java.lang.ProcessBuilder;
 
 // Libraries
 import robot.*;
+import random.*;
 import stackable.*;
 import exception.*;
 import parameters.*;
-import parser.Parser;
 import stackable.item.*;
-import random.*;
+import scenario.Scenario;
 
 public class Map implements Game
 {
@@ -48,7 +48,8 @@ public class Map implements Game
         return initial;
     }
 
-    public Robot insertArmy(String name, int i, int j, String pathToProg)
+    public Robot insertArmy(String name, int player, int ID, 
+                            int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
@@ -70,7 +71,7 @@ public class Map implements Game
             @SuppressWarnings("unchecked")
             Vector<Command> PROG = (Vector<Command>) upload.invoke(null);
             
-            Robot r = new Robot(name, i, j, PROG);
+            Robot r = new Robot(name, player, ID, i, j, PROG);
             this.map[i][j].setScenario(r);
             return r;
         }
@@ -85,6 +86,11 @@ public class Map implements Game
         catch(IllegalAccessException    e) {}
         catch(InvocationTargetException e) {}
         return null;
+    }
+    
+    public Scenario removeScenario(int i, int j)
+    {
+        return map[i][j].removeScenario();
     }
 
     private static void precompile(String input)

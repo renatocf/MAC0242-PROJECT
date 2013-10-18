@@ -191,7 +191,7 @@ public class Action implements Game
                 
                 if(thing.getHP() <= 0) 
                 {                 
-                    map.map[lookI][lookJ].removeScenario();
+                    World.destroy(lookI, lookJ);
                     if(Verbosity.v) { Verbosity.debug(pre + "[DESTROYED]"); }
                 }
                 break;
