@@ -1,5 +1,5 @@
 [Karina]
-    Finishes documentation (LaTeX).
+    Finish documentation (LaTeX).
     
 [Renato]
     [OK] Fix parser.pl to accept many files.
@@ -10,8 +10,12 @@
     Create robot behaviors.
 
 [All]
-    Create command HIT.
-    Fix SEEK and SEE.
     [OK] Create insert Army.
-    Create remove Army.
+    [OK] Fix SEEK 
+    [OK] Create command HIT.
+    [OK] Create remove Army.
+    Test SEE.
+    Create commands ALOC and FREE.
+    Create robots automatically.
+    Refactorate arena.Action.
     Create menu.
