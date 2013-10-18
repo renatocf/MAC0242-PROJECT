@@ -169,7 +169,9 @@ public class Action implements Game
             lookI += update[0];
             lookJ += update[1];
             
-            if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+            if(Verbosity.v) { 
+                Verbosity.debug(pre + " " + map.map[lookI][lookJ].toString()); 
+            }
             
             if(lookI >= MAP_SIZE
             || lookJ >= MAP_SIZE
@@ -180,12 +182,17 @@ public class Action implements Game
             if(thing != null)
             {
                 int done = thing.takeDamage(damage);
-                if(Verbosity.v) { Verbosity.debug(pre + "[DAMAGE:" + done + "]"); }
-
+                if(Verbosity.v) 
+                { 
+                    Verbosity.debug(pre + "[FIGHT]");
+                    Verbosity.debug("         [DAMAGE:" + damage + "]");
+                    Verbosity.debug("         [REMAIN:" + done   + "]"); 
+                }
+                
                 if(thing.getHP() <= 0) 
                 {                 
                     map.map[lookI][lookJ].removeScenario();
-                    if(Verbosity.v) {   Verbosity.debug(pre + "[DESTROYED]"); }
+                    if(Verbosity.v) { Verbosity.debug(pre + "[DESTROYED]"); }
                 }
                 break;
             }

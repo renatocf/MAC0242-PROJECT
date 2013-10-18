@@ -110,7 +110,7 @@ public class RVM
         while(!this.syscall) { exec(); this.PC++; }
         if(Verbosity.v)
         {
-            System.out.println("[Stack]");
+            System.out.println("[STACK]");
             System.out.print  ("    ");
             for(Stackable stk: this.DATA)
                 System.out.print(stk.toString() + ", ");
