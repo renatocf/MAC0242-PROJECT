@@ -9,4 +9,6 @@ public class Tree implements Scenario
     }
     
     public int getHP() { return this.HP; }
+    
+    public String toString() { return "(♣) Tree"; }
 }

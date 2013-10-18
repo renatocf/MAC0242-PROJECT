@@ -9,4 +9,6 @@ public class Water implements Scenario
     }
     
     public int getHP() { return 42; }
+    
+    public String toString() { return "(≈) Water"; }
 }

@@ -9,4 +9,6 @@ public class Rock implements Scenario
     }
     
     public int getHP() { return HP; }
+    
+    public String toString() { return "(O) Rock"; }
 }

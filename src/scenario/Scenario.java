@@ -2,6 +2,7 @@ package scenario;
 
 public interface Scenario
 {
-    public int getHP     ();
-    public int takeDamage(int damage);
+    public int    getHP      ();
+    public int    takeDamage (int damage);
+    public String toString   ();
 }
