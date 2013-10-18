@@ -1,7 +1,7 @@
 MAC0242-PROJECT
 ===============
 
-#### INFORMAÇÔES ####                       
+#### INFORMAÇÔES ####
                                             
 MAC 0242  -  Laboratório  de  Programação II
 IME-USP   -  Segundo   Semestre    de   2013
@@ -18,7 +18,7 @@ Em  caso  de  eventuais  problemas,  acesse:
 https://github.com/renatocf/MAC0242-PROJECT#
                                             
                                             
-#### INSTALAÇÃO ####                        
+#### INSTALAÇÃO ####
                                             
 Para criar o executável do jogo, digite:    
                                             
@@ -31,7 +31,7 @@ fornecê-lo aos robôs, basta digitar:
     $ sh reload.sh path/para/o/arquivo.asm
 
 
-#### JOGO ####                              
+#### JOGO ####
                                             
 Para iniciar o jogo, digite:                
                                             
