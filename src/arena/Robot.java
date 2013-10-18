@@ -132,5 +132,6 @@ public class Robot implements Scenario
         return this.HP;
     }
     
-    public int getHP() { return HP; }
+    public int getHP   () { return this.HP;   }
+    public int getTeam () { return this.team; }
 }

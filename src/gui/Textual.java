@@ -122,7 +122,7 @@ public class Textual
                 else if (scen(i,j) instanceof Rock )   { scen1 = ON_BLACK  + "⌈"; scen2 = ON_BLACK  + "⌉";  }
                 else if (scen(i,j) instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
                 else if (scen(i,j) instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
-                else if (scen(i,j) instanceof Robot)   { scen1 = ON_BLACK  + "("; scen2 = ON_BLACK  + ")";  }
+                else if (scen(i,j) instanceof Robot)   { scen1 = team(i,j) + "("; scen2 = team(i,j) + ")";  }
                 
                 if      (item(i,j) == null)            { item1 = " "; item2 = " "; }
                 else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "/"; item2 = ON_YELLOW + "\\"; }
@@ -150,7 +150,7 @@ public class Textual
                 else if (scen(i,j) instanceof Rock )   { scen1 = ON_BLACK  + "⌊"; scen2 = ON_BLACK  + "⌋";  }
                 else if (scen(i,j) instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
                 else if (scen(i,j) instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
-                else if (scen(i,j) instanceof Robot)   { scen1 = ON_BLACK  + "/"; scen2 = ON_BLACK  + "\\"; }
+                else if (scen(i,j) instanceof Robot)   { scen1 = team(i,j) + "/"; scen2 = team(i,j) + "\\"; }
                 
                 if      (item(i,j) == null)            { item1 = " "; item2 = " "; }
                 else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "\\"; item2 = ON_YELLOW + "/"; }
@@ -253,7 +253,7 @@ public class Textual
     
     /**
      * Auxiliar getter for: terrain's appearence color.<br>
-     * Encapsulates the printing of an hexagon top.
+     * Encapsulates the printing of the terrain's appearence.
      * 
      * @param  i Line position in the terrain matrix
      *           (from 0 to MAP_SIZE-1)
@@ -284,8 +284,35 @@ public class Textual
     }
     
     /**
+     * Auxiliar getter for: robot's team color.<br>
+     * Encapsulates the printing of a team color.
+     * 
+     * @param  i Line position in the terrain matrix
+     *           (from 0 to MAP_SIZE-1)
+     * @param  j Colum position in the terrain matrix
+     *           (from 0 to MAP_SIZE-1)
+     * @return String with the color of a robot's team.
+     */
+    final private String team(int i, int j)
+    {
+        Scenario s = scen(i, j);
+        if(s instanceof Robot)
+        {
+            Robot r = (Robot) s;
+            int team = r.getTeam();
+            switch(team)
+            {
+                case 1: return ON_BLACK;
+                case 2: return ON_RED;
+                default: return "";
+            }
+        }
+        return "";
+    }
+    
+    /**
      * Auxiliar getter for: terrain's scenario.<br>
-     * Encapsulates the printing of an hexagon top.
+     * Encapsulates the printing of the terrain's scenario.
      * 
      * @param  i Line position in the terrain matrix
      *           (from 0 to MAP_SIZE-1)
