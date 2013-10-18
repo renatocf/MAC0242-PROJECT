@@ -10,8 +10,8 @@ Turma 45  -  Marcos Dimas Gubitoso
 Projeto:                                    
 BATALHA DE ROBÔS                            
                                             
-Karina Suemi Awoki                   7572102 
-Renato Cordeiro Ferreira             7990933 
+Karina Suemi Awoki                   7572102    
+Renato Cordeiro Ferreira             7990933    
 Vinícius Nascimento Silva            7557626 
                                             
 Em  caso  de  eventuais  problemas,  acesse:
