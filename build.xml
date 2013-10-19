@@ -115,6 +115,7 @@
     <target name="javadoc" depends="init">
         <description>generate documentation</description>
         <javadoc sourcepath  = "${src.dir}" 
+                 author      = "yes"
                  package     = "yes"
                  encoding    = "utf8"
                  doctitle    = "${ant.project.name}"
