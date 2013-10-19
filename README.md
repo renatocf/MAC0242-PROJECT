@@ -6,18 +6,18 @@ MAC0242-PROJECT
 MAC 0242  -  Laboratório  de  Programação II    
 IME-USP   -  Segundo   Semestre    de   2013    
 Turma 45  -  Marcos Dimas Gubitoso              
-                                            
+
 Projeto:                                    
 BATALHA DE ROBÔS                            
-                                            
+
 [Karina Suemi Awoki][1]              7572102    
 [Renato Cordeiro Ferreira][2]        7990933    
 [Vinícius Nascimento Silva][3]       7557626 
-                                            
+
 Em caso de problemas, acesse:    
 https://github.com/renatocf/MAC0242-PROJECT#
-                                            
-                                            
+
+
 #### INSTALAÇÃO ####
                                             
 Para compilar o jogo, digite:    
@@ -32,12 +32,12 @@ Para  tanto,  os robôs devem  ter suas ações
 programadas. Eles irão executá-las até que o 
 jogo acabe ou sejam destruídos.
 
-Nesta fase do desenvolvimento, a programação
+Nesta fase do desenvolvimento, a programação 
 deve  ser  feita   em  linguagem  *Assembly*,
 desenvolvida  especialmente  para  a máquina 
-virtual  em *Java*.  
+virtual  em *Java*. 
 
-Os programas devem  ser criados com extensão
+Os programas devem  ser criados com extensão 
 *.asm*.   Exemplos   estão   disponíveis  no 
 diretório `test/` junto ao código-fonte. 
 
@@ -54,7 +54,7 @@ Para iniciar o jogo, digite:
 
 #### DOCUMENTAÇÃO ####
 
-A   documentação    do   código-fonte   está  
+A   documentação    do   código-fonte   está 
 disponível no formato [`Javadoc`][4].
 
 [1]: https://github.com/renatocf
