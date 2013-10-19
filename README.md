@@ -54,7 +54,7 @@ E para iniciar o jogo:
 #### DOCUMENTAÇÃO ####
 
 A   documentação    do   código-fonte   está 
-disponível no formato [`Javadoc`][4].
+disponível no formato [Javadoc][4].
 
 [1]: https://github.com/renatocf
 [2]: https://github.com/karinaawoki
