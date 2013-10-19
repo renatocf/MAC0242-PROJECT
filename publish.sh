@@ -13,22 +13,27 @@ if [ -n "$(git diff --exit-code)" ]; then
     exit
 elif [ -n "$(git diff --cached --exit-code)" ]; then
     echo "${RED}Local staged changes! Check git status for more info.${RES}"
+    exit
+elif [ ! -d "doc/javadoc/" ]; then
+    echo "${RED}Create javadoc first!${RES}" 
+    exit
 fi
 
 # Adding and stashing javadoc
-mv -f doc/javadoc javadoc/ \
-&& git add javadoc
+cp -pr doc/javadoc javadoc/ \
+&& git add javadoc          \
 && git stash || exit $?
 
 # Switching to gh-pages
 git checkout gh-pages || exit $?
 
 # Remove old and set up new javadoc
-git stash pop
+git rm -rf javadoc \
+&& git stash pop   \
 && git commit -am "Regenerating javadoc" || exit $?
 
 # Pushing to remote server
-git push origin gh-pages || exit $?
+# git push origin gh-pages || exit $?
 
 # Switch back to the old branch
 git checkout $OLD_BRANCH || exit $?
