@@ -1,15 +1,15 @@
-[Karina]
+[Karina]    
     - [ ] Finish documentation (LaTeX).
     
-[Renato]
+[Renato]    
     - [x] Fix parser.pl to accept many files.
     - [x] Refatorate GUI.
     
-[Vinícius]
+[Vinícius]    
     - [x] Add new maps. 
     - [ ] Create robot behaviors.
 
-[All]
+[All]    
     - [x] Create insert Army.
     - [x] Fix SEEK 
     - [x] Create command HIT.
