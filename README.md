@@ -49,7 +49,7 @@ basta digitar:
                                             
 Para iniciar o jogo, digite:                
                                             
-    $ java -jar dist/MAC0242-Project.jar    
+    $ java -jar dist/MAC0242-Project.jar 
       programa_jogador_1 programa_jogador_2 
 
 #### DOCUMENTAÇÃO ####
