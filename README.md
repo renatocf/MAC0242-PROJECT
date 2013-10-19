@@ -42,12 +42,11 @@ Os programas devem  ser criados com extensão
 diretório `test/` junto ao código-fonte. 
 
 Para  utilizá-los  como  programas  para  os 
-robôs, é necessário  compilá-los. Para tanto,
-basta digitar:
+robôs, compile-os com:
 
     $ sh reload.sh path/para/o/arquivo.asm
                                             
-Para iniciar o jogo, digite:                
+E para iniciar o jogo: 
                                             
     $ java -jar dist/MAC0242-Project.jar \
       programa_jogador_1 programa_jogador_2 
