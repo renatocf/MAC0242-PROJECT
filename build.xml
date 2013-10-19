@@ -123,6 +123,12 @@
                  windowtitle = "${ant.project.name}"/>
     </target>
 
+    <target name="publish" depends="javadoc">
+        <exec executable="/bin/bash">
+            <arg value="publish.sh"/>
+        </exec>
+    </target>
+
     <target name="doc" depends="javadoc" />
     
     <!-- 
