@@ -15,8 +15,10 @@ BATALHA DE ROBÔS
 [Vinícius Nascimento Silva][3]       7557626 
 
 Em caso de problemas, acesse:    
-https://github.com/renatocf/MAC0242-PROJECT#
+<https://github.com/renatocf/MAC0242-PROJECT#>
 
+Para a página do projeto:    
+<http://renatocf.github.io/MAC0242-PROJECT/>
 
 #### INSTALAÇÃO ####
                                             
@@ -54,9 +56,9 @@ E para iniciar o jogo:
 #### DOCUMENTAÇÃO ####
 
 A   documentação    do   código-fonte   está 
-disponível no formato [`Javadoc`][4].
+disponível no formato [Javadoc][4].
 
 [1]: https://github.com/renatocf
 [2]: https://github.com/karinaawoki
 [3]: https://github.com/Dhinihan
-[4]: http://renatocf.github.io/MAC0242-PROJECT/
+[4]: http://renatocf.github.io/MAC0242-PROJECT/javadoc/index.html
