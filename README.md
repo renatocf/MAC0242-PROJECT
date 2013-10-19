@@ -10,30 +10,54 @@ Turma 45  -  Marcos Dimas Gubitoso
 Projeto:                                    
 BATALHA DE ROBÔS                            
                                             
-Karina Suemi Awoki                   7572102    
-Renato Cordeiro Ferreira             7990933    
-Vinícius Nascimento Silva            7557626 
+[Karina Suemi Awoki][1]              7572102    
+[Renato Cordeiro Ferreira][2]        7990933    
+[Vinícius Nascimento Silva][3]       7557626 
                                             
-Em  caso  de  eventuais  problemas,  acesse:
+Em caso de problemas, acesse:
 https://github.com/renatocf/MAC0242-PROJECT#
                                             
                                             
 #### INSTALAÇÃO ####
                                             
-Para criar o executável do jogo, digite:    
+Para compilar o jogo, digite:    
                                             
     $ ant                                   
-                                            
-Para  carregar  um  novo  programa,  crie um  
-arquivo no formato *.asm*. Para compilá-lo e
-fornecê-lo aos robôs, basta digitar:        
-
-    $ sh reload.sh path/para/o/arquivo.asm
-
 
 #### JOGO ####
+
+O  jogo consiste  em programar uma  série de  
+robôs para batalharem, num estilo de TRS 2x2.
+Para  tanto,  os robôs devem  ter suas ações 
+programadas. Eles irão executá-las até que o 
+jogo acabe ou sejam destruídos.
+
+Nesta fase do desenvolvimento, a programação
+deve  ser  feita   em  linguagem  *Assembly*,
+desenvolvida  especialmente  para  a máquina 
+virtual  em *Java*.  
+
+Os programas devem  ser criados com extensão
+*.asm*. Exemplos estão  disponíveis na pasta 
+`test` junto ao código fonte. 
+
+Para  utilizá-los  como  programas  para  os 
+robôs, é necessário  compilá-los. Para tanto,
+basta digitar:
+
+    $ sh reload.sh path/para/o/arquivo.asm
                                             
 Para iniciar o jogo, digite:                
                                             
     $ java -jar dist/MAC0242-Project.jar    
       programa_jogador_1 programa_jogador_2 
+
+#### DOCUMENTAÇÃO ####
+
+A   documentação    do   código-fonte   está  
+disponível no formato [`Javadoc`][4].
+
+[1]: https://github.com/renatocf
+[2]: https://github.com/karinaawoki
+[3]: https://github.com/Dhinihan
+[4]: http://renatocf.github.io/MAC0242-PROJECT/
