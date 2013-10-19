@@ -33,7 +33,7 @@ git rm -rf javadoc \
 && git commit -am "Regenerating javadoc" || exit $?
 
 # Pushing to remote server
-# git push origin gh-pages || exit $?
+git push origin gh-pages || exit $?
 
 # Switch back to the old branch
 git checkout $OLD_BRANCH || exit $?
