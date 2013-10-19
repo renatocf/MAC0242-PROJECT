@@ -26,8 +26,8 @@ Para compilar o jogo, digite:
 
 #### JOGO ####
 
-O  jogo consiste  em programar uma  série de  
-robôs para batalharem, num estilo de TRS 2x2.
+O  jogo consiste  em programar uma  série de 
+robôs para batalharem, num estilo de RTS 2x2.
 Para  tanto,  os robôs devem  ter suas ações 
 programadas. Eles irão executá-las até que o 
 jogo acabe ou sejam destruídos.
