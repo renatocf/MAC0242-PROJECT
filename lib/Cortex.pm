@@ -10,12 +10,12 @@ use warnings;
 #                        PACKAGE VARIABLES                            #
 #######################################################################
 
-my @ins1 = ('ADD', 'DIV', 'DUP', 'END', 'EQ', 'GE', 'GT', 'MOD',  # no 
-            'LE', 'LT', 'MUL', 'NE', 'POP', 'PRN', 'SUB', 'RET',  # arg
-            'MOVE', 'DRAG', 'DROP', 'HIT', 'LOOK', 'ITEM','SEE',
-            'SEEK');  
-my @ins2 = ('RCL', 'STO');                   # arg: numeric (only)
-my @ins3 = ('JMP', 'JIF', 'JIT', 'CALL');    # arg: numeric/string
+my @ins1 = ('ADD' , 'DIV' , 'DUP' , 'END', 'EQ'  , 'GE'  , 'GT' , 'MOD',  # no 
+            'LE'  , 'LT'  , 'MUL' , 'NE' , 'POP' , 'PRN' , 'SUB', 'RET',  # arg
+            'MOVE', 'DRAG', 'DROP', 'HIT', 'LOOK', 'ITEM', 'SEE',
+            'SEEK', 'ASK');  
+my @ins2 = ('RCL' , 'STO');                   # arg: numeric (only)
+my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL');    # arg: numeric/string
 my @stk  = ('crystal', 'stone');             # stackables
 my @atk  = ('ranged',  'melee'); 
 

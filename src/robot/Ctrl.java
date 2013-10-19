@@ -105,6 +105,7 @@ final public class Ctrl
             case "HIT" : Syst.HIT  (rvm);      break;
             case "LOOK": Syst.LOOK (rvm);      break;
             case "SEE" : Syst.SEE  (rvm);      break;
+            case "ASK" : Syst.ASK  (rvm);      break;
 
             // Item veirification
             case "ITEM": Analysis.ITEM (rvm);  break;

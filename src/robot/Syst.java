@@ -184,4 +184,12 @@ final public class Syst
     {
         action(rvm, "SEE");
     }
+    
+       static void ASK(RVM rvm)
+        throws WrongTypeException,
+               InvalidOperationException
+    {
+        action(rvm, "ASK");
+    }
+
 }

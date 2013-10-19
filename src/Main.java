@@ -26,10 +26,10 @@ class Main
         String input = args[0];
         
         // Generate map
-        /* World.genesis(2, Weather.CONTINENTAL ); */
-        /* World.genesis(2, Weather.ARTICAL     ); */
+        //World.genesis(2, Weather.CONTINENTAL );
+         World.genesis(2, Weather.ARTICAL     ); 
         /* World.genesis(2, Weather.DESERTIC    ); */
-        World.genesis(2, Weather.TROPICAL    );
+        //World.genesis(2, Weather.TROPICAL    );
         
         try{
             World.insertArmy(1, "R2D2", 8, 9, args[0]);

@@ -22,6 +22,7 @@ public class Action implements Game
             
             case "LOOK" : stackable = LOOK (map, turn, op); break;
             case "SEE"  : stackable = SEE  (map, turn, op); break;
+            case "ASK"  : stackable = ASK  (map, turn, op); break;
         }
         
         if(stackable == null) 
@@ -302,5 +303,33 @@ public class Action implements Game
         Around a = new Around(ter);
         st[0] = (Stackable) a;
         return st;
+    }
+
+        static Stackable[] ASK (Map map, Robot turn, Operation op)
+    {  
+        Stackable[] s = op.getArgument();
+        Text t = (Text) s[0];
+        
+        switch (t.toString())
+        {
+            case "position":
+            case "Position": 
+                Num one = new Num(1);
+                Num x   = new Num(turn.i);
+                Num y   = new Num(turn.j);
+                s       = new Stackable[3];
+                s[2]    = one; s[1] = x; s[0    ] = y;
+                break;
+            default: 
+                Num zero = new Num(0);
+                s        = new Stackable[1];
+                s[0]     = zero;
+                break;
+        }
+        
+        String pre = "    [ASK]";
+        if(Verbosity.v) { Verbosity.debug(pre + t);}
+        
+        return s;
     }
 }

@@ -72,6 +72,6 @@ final public class Mem
             pos = (int) num.getNumber();
         }
         else throw new StackUnderflowException();
-        rvm.DATA.push(rvm.RAM.remove(pos));
+        rvm.DATA.push(rvm.RAM.get(pos));
     }
 }
