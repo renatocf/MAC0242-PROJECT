@@ -3,9 +3,9 @@ MAC0242-PROJECT
 
 #### INFORMAÇÔES ####
                                             
-MAC 0242  -  Laboratório  de  Programação II
-IME-USP   -  Segundo   Semestre    de   2013
-Turma 45  -  Marcos Dimas Gubitoso          
+MAC 0242  -  Laboratório  de  Programação II    
+IME-USP   -  Segundo   Semestre    de   2013    
+Turma 45  -  Marcos Dimas Gubitoso              
                                             
 Projeto:                                    
 BATALHA DE ROBÔS                            
@@ -14,7 +14,7 @@ BATALHA DE ROBÔS
 [Renato Cordeiro Ferreira][2]        7990933    
 [Vinícius Nascimento Silva][3]       7557626 
                                             
-Em caso de problemas, acesse:
+Em caso de problemas, acesse:    
 https://github.com/renatocf/MAC0242-PROJECT#
                                             
                                             
