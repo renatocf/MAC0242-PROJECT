@@ -1,0 +1,53 @@
+###################
+# Perl .gitignore #
+###################
+
+blib/
+.build/
+_build/
+cover_db/
+inc/
+Build
+!Build/
+Build.bat
+.last_cover_stats
+Makefile
+Makefile.old
+MANIFEST.bak
+META.yml
+MYMETA.yml
+nytprof.out
+pm_to_blib
+
+###################
+# Java .gitignore #
+###################
+
+# Java parser
+src/parser/
+
+# Build directories
+build/
+dist/
+*.class
+
+# Javadoc
+# doc/javadoc/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Eclipse logs
+.classpath
+.metadata/
+.project
+.settings/
+
+####################
+# LaTex .gitignore #
+####################
+*.log
+*.aux
+*.out
