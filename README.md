@@ -38,8 +38,8 @@ desenvolvida  especialmente  para  a máquina
 virtual  em *Java*.  
 
 Os programas devem  ser criados com extensão
-*.asm*. Exemplos estão  disponíveis na pasta 
-`test` junto ao código fonte. 
+*.asm*.   Exemplos   estão   disponíveis  no 
+diretório `test/` junto ao código-fonte. 
 
 Para  utilizá-los  como  programas  para  os 
 robôs, é necessário  compilá-los. Para tanto,
