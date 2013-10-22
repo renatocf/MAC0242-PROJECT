@@ -75,14 +75,13 @@ public class RVM
         Command   com      = this.PROG.elementAt(this.PC);
         String    function = com.getFunction  ();
         Stackable arg      = com.getAttribute (); 
+        
         // Call function
         if(function != null)
         {
             try { Ctrl.ctrl(this, function, arg);}
-            catch (Exception e) {System.out.print(e); }
+            catch (Exception e) { System.out.print(e); }
         }
-        else throw new UndefinedFunctionException(function);  
-        
     }
 
     /**
