@@ -15,6 +15,9 @@
     [OK] Create command HIT.
     [OK] Create remove Army.
     Test SEE.
+    Create stackable Address.
+    Add Address in the parser.
+    Test jumps with address.
     Create commands ALOC and FREE.
     Create robots automatically.
     Refactorate arena.Action.
