@@ -81,6 +81,7 @@ my $max_size_lab = 4; # null
 # Hashes with values
 my %item;
 my %attack;
+my %address;
 my %textual;
 my %numeric;
 my %direction;
@@ -91,7 +92,7 @@ map  { s/\.java//; $item{$_} = 0 }
 grep { not /^\./ and not /^Item/ and -f "$item/$_"} readdir ITEMS;
 closedir ITEMS;
 
-my ($t, $n) = (0, 0);
+my ($t, $n, $a) = (0, 0, 0);
 for my $line (@prog)
 {
     next if not defined $line;
@@ -102,16 +103,29 @@ for my $line (@prog)
     # Calculate maximum function and label
     # (each +2 are came from the double quotes)
     if(defined $func and $max_size_com < length($func) + 2)
-    { $max_size_com = length($func)+ 2; }
+    { $max_size_com = length($func) + 2; }
     
     if(defined $label and $max_size_lab < length($label)+ 2)
-    { $max_size_lab = length($label)+ 2; }
+    { $max_size_lab = length($label) + 2; }
     
     # Creating variables
     if(defined $arg)
     {
+        # Address argument
+        if($arg =~ /^0x(\d+)/)
+        {
+            $arg = $1;
+            if(not exists $address{$arg})
+            {
+                $a++; $line->[1] = "adr$a";
+                $address{$arg} = 
+                    [ $a, "Addr adr$a = new Addr($arg);" ];
+            }
+            else { $line->[1] = "addr$address{$arg}[0]"; }
+        }
+        
         # Numeric argument
-        if( looks_like_number($arg) )
+        elsif( looks_like_number($arg) )
         {
             if(not exists $numeric{$arg})
             {
@@ -140,7 +154,7 @@ for my $line (@prog)
             $direction{$arg} = "Attack x$arg = new Attack(\"$arg\");";
         }
         
-        # Stackable argument
+        # Stackable (item) argument
         elsif($arg =~ /^{(\w+)}$/)
         {
             while(my ($key, $value) = each %item)
@@ -166,12 +180,27 @@ for my $line (@prog)
 }
 
 
-# Checks maximum argument size (item/text/numeric) 
-for my $var(keys %item, length $t, length $n)
+# Checks maximum argument size (items)
+for my $var(keys %item)
 {
+    next unless($item{$var}); # Ignores items that not appeared
     if(length $var > $max_size_arg) 
     { $max_size_arg = length $var; }
 }                
+
+# Checks maximum argument size (attack)
+for my $var(keys %attack) 
+{ 
+    if(length $var > $max_size_arg+1) 
+    { $max_size_arg = length $var; }
+}
+
+# Checks maximum argument size (others)
+for my $var($t, $n, $a)
+{
+    if(length $var > $max_size_arg+3) 
+    { $max_size_arg = length $var; }
+}
 
 ########################################################################
 ##                          PRINTING PARSER                           ##
@@ -221,6 +250,22 @@ final public class $java_file
 PARSER_H
 
 # Print sorted numerical, textual, direction and stackable variables
+if(scalar keys %address) 
+{
+    my %address_numeric;
+    
+    while(my ($key, $value) = each %address)
+    {
+        my ($var, $address) = ($value->[0], $value->[1]);
+        $address_numeric{$var} = $address;
+    }   
+    
+    say " " x 8, "// Address variables";
+    for my $var (sort keys %address_numeric) 
+    { say " " x 8, $address_numeric{$var}; }
+    print "\n";
+}
+
 if(scalar keys %numeric) 
 {
     my %numbered_numeric;
