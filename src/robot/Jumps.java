@@ -7,6 +7,7 @@ import java.util.HashMap;
 // Libraries
 import stackable.*;
 import exception.*;
+import parameters.*;
 
 /**
  * <b>Assembly functions - class Jumps</b><br>
@@ -49,9 +50,9 @@ final public class Jumps
     {
         if(!v.verify()) return;
         
-        if(arg instanceof Address)
+        if(arg instanceof Addr)
         {
-            Address address = (Address) arg; 
+            Addr address = (Addr) arg; 
             int index = (int) address.getAddress();
             
             try {
@@ -77,6 +78,13 @@ final public class Jumps
                 // iteration of a for loop.
             else
                 throw new OutOfBoundsException();
+        }
+        
+        // Debug info
+        if(Verbosity.v)
+        { 
+            String pre = "    [GOTO] ";
+            Verbosity.debug(pre + (rvm.PC+1));
         }
     }
     
