@@ -21,13 +21,12 @@ final public class Func
     /**
      * Assembly funcion CALL. <br>
      * Execute an inconditional jump to 
-     * a label or position, storing the 
-     * position of return in the CTRL
+     * a label or address, storing the 
+     * address of return in the CTRL
      * stack for doing a callback with RET.
      * 
      * @param  rvm Virtual Machine
-     * @param  arg Numeric position or label of
-     *             the argument
+     * @param  arg Address or label
      *
      * @throws WrongTypeException
      * @throws OutOfBoundsException
@@ -38,11 +37,11 @@ final public class Func
         // Saves PC in the CTRL stack
         rvm.CTRL.push(rvm.PC);
         
-        // Do inconditional Jump to label/position
-        if(arg instanceof Num)
+        // Do inconditional Jump to label/address
+        if(arg instanceof Addr)
         {
-            Num num = (Num) arg; 
-            int index = (int) num.getNumber();
+            Addr address = (Addr) arg; 
+            int index = (int) address.getAddress();
             
             try {
                 if(rvm.PROG.elementAt(index) != null)
@@ -67,7 +66,7 @@ final public class Func
     
     /**
      * Assembly funcion RET. <br>
-     * Pops the top most saved return postion
+     * Pops the top most saved return address
      * to be able to go back to the function 
      * caller.
      * 
