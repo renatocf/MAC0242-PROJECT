@@ -1,24 +1,25 @@
 [Karina]
-    Finish documentation (LaTeX).
+    [ ] Finish documentation (LaTeX).
     
 [Renato]
-    [OK] Fix parser.pl to accept many files.
-    [OK] Refatorate GUI.
+    [X] Fix parser.pl to accept many files.
+    [X] Refatorate GUI.
     
 [Vinícius]
-    [OK] Add new maps. 
-    Create robot behaviors.
+    [X] Add new maps. 
+    [ ] Create robot behaviors.
 
 [All]
-    [OK] Create insert Army.
-    [OK] Fix SEEK 
-    [OK] Create command HIT.
-    [OK] Create remove Army.
-    Test SEE.
-    Create stackable Address.
-    Add Address in the parser.
-    Test jumps with address.
-    Create commands ALOC and FREE.
-    Create robots automatically.
-    Refactorate arena.Action.
-    Create menu.
+    [X] Create insert Army.
+    [X] Fix SEEK 
+    [X] Create command HIT.
+    [X] Create remove Army.
+    [X] Create stackable Address.
+    [X] Add Address in the parser.
+    [X] Test jumps with address.
+    [ ] Test SEE.
+    [ ] Test CALL and RET.
+    [ ] Create commands ALOC and FREE.
+    [ ] Create robots automatically.
+    [ ] Refactorate arena.Action.
+    [ ] Create menu.
