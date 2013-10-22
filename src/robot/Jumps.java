@@ -49,10 +49,10 @@ final public class Jumps
     {
         if(!v.verify()) return;
         
-        if(arg instanceof Num)
+        if(arg instanceof Address)
         {
-            Num num = (Num) arg; 
-            int index = (int) num.getNumber();
+            Address address = (Address) arg; 
+            int index = (int) address.getAddress();
             
             try {
                 if(rvm.PROG.elementAt(index) != null) 
