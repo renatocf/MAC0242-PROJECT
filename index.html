@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/respond.js"></script>
+    
+    <!-- Galleria -->
+    <link type="text/css" rel="stylesheet" href="galleria/themes/classic/galleria.classic.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="galleria/galleria-1.3.js"></script>
+    <style>
+        #galleria{ width: 600px; height: 680px; background: #000 }
+    </style>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -28,7 +36,6 @@
       </div><!-- end header -->
 
     <div class="wrapper">
-
       <section>
         <div id="title">
           <h1>BATALHA DE ROBÔS</h1>
@@ -38,78 +45,120 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h3>
-<a name="instala%C3%87%C3%83o" class="anchor" href="#instala%C3%87%C3%83o"><span class="octicon octicon-link"></span></a>INSTALAÇÃO</h3>
+        <div>
+          <h3>
+            <a name="instala%C3%87%C3%83o" class="anchor" href="#instala%C3%87%C3%83o">
+              <span class="octicon octicon-link"></span></a>INSTALAÇÃO
+          </h3>
 
-<p>Para compilar o jogo, digite:    </p>
+          <p>Para compilar o jogo, digite:    </p>
+          
+          <pre><code>$ ant</code></pre>
+        </div>
 
-<pre><code>$ ant                                   
-</code></pre>
+        <div>
+          <h3>
+            <a name="jogo" class="anchor" href="#jogo">
+            <span class="octicon octicon-link"></span></a>JOGO
+          </h3>
+          
+          <p>O  jogo consiste  em programar uma  série de 
+          robôs para batalharem, num estilo de RTS 2x2.
+          Para  tanto,  os robôs executarão suas ações 
+          até  que  o jogo  acabe,  ou que eles  sejam 
+          destruídos.</p>
+          
+          <p>Nesta fase do desenvolvimento, a programação 
+          deve  ser  feita   em  linguagem  <em>Assembly</em>,
+          desenvolvida  especialmente  para  a máquina 
+          virtual  em <em>Java</em>. </p>
+          
+          <p>Os programas devem  ser criados com extensão 
+          <em>.asm</em>.   Exemplos   estão   disponíveis  no 
+          diretório <em>"test/"</em> junto ao código-fonte. </p>
+          
+          <p>Para  utilizá-los  como  programas  para  os 
+          robôs, compile-os com:</p>
+          
+          <pre><code>$ sh reload.sh path/para/o/arquivo.asm</code></pre>
+          
+          <p>E para iniciar o jogo: </p>
+          
+          <pre><code>$ java -jar dist/MAC0242-Project.jar \ <br>  programa_jogador_1.asm programa_jogador_2.asm</code></pre>
+        </div>
 
-<h3>
-<a name="jogo" class="anchor" href="#jogo"><span class="octicon octicon-link"></span></a>JOGO</h3>
+        <div>
+          <h4>
+            <a name="cen%C3%A1rio" class="anchor" href="#cen%C3%A1rio">
+            <span class="octicon octicon-link"></span></a>Cenário
+          </h4>
+          
+          <p>As  batalhas poderão ocorrer em arenas de 4
+          climas diferentes:</p>
+          
+          <ul>
+            <li>Tropical  </li>
+            <li>Ártico    </li>
+            <li>Desértico </li>
+            <li>Temperado </li>
+          </ul>
+          
+          <p>
+            A interface gráfica  atual está configurada 
+            para  funcionar  em  terminais de  sistemas 
+            <strong>Unix</strong> que aceitam 
+            <a href="http://en.wikipedia.org/wiki/ANSI_escape_code"><em>ANSI Escape Codes</em></a>.
+          </p>
+        </div>
 
-<p>O  jogo consiste  em programar uma  série de 
-robôs para batalharem, num estilo de RTS 2x2.
-Para  tanto,  os robôs executarão suas ações 
-até  que  o jogo  acabe,  ou que eles  sejam 
-destruídos.</p>
+        <!-- Galleria plugin -->
+        <div align="center">
+          <div id="galleria">
+            <img src="images/TROPICAL.png" title="Tropical" alt="Atravesse o vau do rio para chegar ao inimigo!">
+            <img src="images/ARTICAL.png" title="Ártico" alt="Um lago eternamente congelado!">
+          </div>
+          <script>
+            Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
+            Galleria.run('#galleria');
+          </script>
+        </div>
 
-<p>Nesta fase do desenvolvimento, a programação 
-deve  ser  feita   em  linguagem  <em>Assembly</em>,
-desenvolvida  especialmente  para  a máquina 
-virtual  em <em>Java</em>. </p>
+        <div style="margin-top: 20px">
+          <h3>
+            <a name="documenta%C3%87%C3%83o" class="anchor" href="#documenta%C3%87%C3%83o">
+            <span class="octicon octicon-link"></span></a>DOCUMENTAÇÃO
+          </h3>
+        
+          <p>
+            A documentação do código-fonte está disponível no formato 
+            <a href="http://renatocf.github.io/MAC0242-PROJECT/javadoc/index.html">Javadoc</a>.
+          </p>
+        </div>
 
-<p>Os programas devem  ser criados com extensão 
-<em>.asm</em>.   Exemplos   estão   disponíveis  no 
-diretório <em>"test/"</em> junto ao código-fonte. </p>
+        <div>
+          <h3>
+            <a name="autores" class="anchor" href="#autores">
+            <span class="octicon octicon-link"></span></a>AUTORES
+          </h3>
+        
+          <p>
+            <a href="https://github.com/karinaawoki">Karina Suemi Awoki</a><br>
+            <a href="https://github.com/renatocf">Renato Cordeiro Ferreira</a><br>
+            <a href="https://github.com/Dhinihan">Vinícius Nascimento Silva</a>
+          </p>
+        </div>
 
-<p>Para  utilizá-los  como  programas  para  os 
-robôs, compile-os com:</p>
-
-<pre><code>$ sh reload.sh path/para/o/arquivo.asm
-</code></pre>
-
-<p>E para iniciar o jogo: </p>
-
-<pre><code>$ java -jar dist/MAC0242-Project.jar \
-  programa_jogador_1 programa_jogador_2 
-</code></pre>
-
-<h4>
-<a name="cen%C3%A1rio" class="anchor" href="#cen%C3%A1rio"><span class="octicon octicon-link"></span></a>Cenário</h4>
-
-<p>As  batalhas poderão ocorrer em arenas de 4
-climas diferentes:</p>
-
-<ul>
-<li>Tropical</li>
-<li>Ártico</li>
-<li>Desértico</li>
-<li>Temperado</li>
-</ul><p>A interface gráfica  atual está configurada 
-para  funcionar  em  terminais de  sistemas 
-<strong>Unix</strong> que aceitam <a href="http://en.wikipedia.org/wiki/ANSI_escape_code"><em>ANSI Escape Codes</em></a>.</p>
-
-<div align="center">
-    <p><img src="http://renatocf.github.io/MAC0242-PROJECT/images/TROPICAL.png" alt="Arena Tropical"></p>
-</div>
-
-<h3>
-<a name="documenta%C3%87%C3%83o" class="anchor" href="#documenta%C3%87%C3%83o"><span class="octicon octicon-link"></span></a>DOCUMENTAÇÃO</h3>
-
-<p>A   documentação    do   código-fonte   está 
-disponível no formato <a href="http://renatocf.github.io/MAC0242-PROJECT/javadoc/index.html">Javadoc</a>.</p>
-
-<h3>
-<a name="autores" class="anchor" href="#autores"><span class="octicon octicon-link"></span></a>AUTORES</h3>
-
-<p><a href="https://github.com/karinaawoki">Karina Suemi Awoki</a><br><a href="https://github.com/renatocf">Renato Cordeiro Ferreira</a><br><a href="https://github.com/Dhinihan">Vinícius Nascimento Silva</a>        </p>
-
-<h3>
-<a name="veja-tamb%C3%89m" class="anchor" href="#veja-tamb%C3%89m"><span class="octicon octicon-link"></span></a>VEJA TAMBÉM</h3>
-
-<p><a href="http://www.ime.usp.br/">Instituto de Matemática e Estatística</a><br><a href="http://www5.usp.br/">Universidade de São Paulo</a>    </p>
+        <div>
+          <h3>
+            <a name="veja-tamb%C3%89m" class="anchor" href="#veja-tamb%C3%89m">
+            <span class="octicon octicon-link"></span></a>VEJA TAMBÉM
+          </h3>
+        
+          <p>
+            <a href="http://www.ime.usp.br/">Instituto de Matemática e Estatística</a><br>
+            <a href="http://www5.usp.br/">Universidade de São Paulo</a>
+          </p>
+        </div>
       </section>
 
     </div>
