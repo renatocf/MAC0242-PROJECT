@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="galleria/themes/classic/galleria.classic.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+        <script src="galleria/galleria-1.3.js"></script>
+        <style>
+                #galleria{ width: 400px; height: 650px; background: #000 }
+        </style>
+    </head>
+    <body>
+        <div id="galleria">
+            <img src="images/ARTICAL.png">
+            <img src="images/TROPICAL.png">
+        </div>
+        <script>
+            Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
+            Galleria.configure({
+                    imageCrop: true
+            });
+            Galleria.run('#galleria');
+        </script>
+    </body>
+</html>
