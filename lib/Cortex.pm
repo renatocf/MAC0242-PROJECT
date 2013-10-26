@@ -63,8 +63,8 @@ sub parse
                         \s+          # Spaces
                         (
                             \d+      # NUMBER    }
-                            |        #           }
-                            0x\d+    # ADDRESS   }
+                            # |        #           }
+                            # 0x\d+    # ADDRESS   }
                             |        #           }
                             \(x\)\w+ # ATTACK    }
                             |        #           }
@@ -113,7 +113,7 @@ sub parse
                 {                   
                     when(@ins1) { $err = 2 if(defined $arg)               }
                     when(@ins2) { $err = 3 if($arg !~ m/^\d+$/)           }
-                    when(@ins3) { $err = 4 if($arg !~ m/^(?:\w+|0x\d+)$/) }
+                    when(@ins3) { $err = 4 if($arg !~ m/^(?:\w+|\d+)$/) }
                     default     { $err = 5                                }
                 }
             }
