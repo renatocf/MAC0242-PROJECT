@@ -17,8 +17,8 @@
     [X] Create stackable Address.
     [X] Add Address in the parser.
     [X] Test jumps with address.
-    [ ] Test SEE.
-    [ ] Test CALL and RET.
+    [X] Test SEE. 
+    [X] Test CALL and RET. (Vinícius: tested when i made the movetowards.asm)
     [ ] Create commands ALOC and FREE.
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.

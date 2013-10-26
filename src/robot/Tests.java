@@ -119,7 +119,7 @@ final public class Tests
             Num num1 = (Num) arg1, num2 = (Num) arg2;
             
             // Result of the comparison
-            boolean res = num1.getNumber() == num2.getNumber();
+            boolean res = num1.getNumber() != num2.getNumber();
             
             // Push true or false accordingly to the comparison
             if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }

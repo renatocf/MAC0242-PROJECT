@@ -318,7 +318,7 @@ public class Action implements Game
                 Num x   = new Num(turn.i);
                 Num y   = new Num(turn.j);
                 s       = new Stackable[3];
-                s[2]    = one; s[1] = x; s[0    ] = y;
+                s[2]    = one; s[1] = x; s[0] = y;
                 break;
             default: 
                 Num zero = new Num(0);
