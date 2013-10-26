@@ -170,7 +170,7 @@ final public class Syst
     /**
      * Assembly funcion SEE. <br>
      * Makes a syscall, requesting to
-     * get a neighbothood for being 
+     * get a neighborhood for being 
      * analysed.
      * 
      * @param  rvm Virtual Machine.
@@ -185,11 +185,21 @@ final public class Syst
         action(rvm, "SEE");
     }
     
-       static void ASK(RVM rvm)
+    /**
+     * Assembly funcion ASK. <br>
+     * Makes a syscall, requesting to
+     * get info about the robot from 
+     * the arena's control.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     * @see    Analysis
+     */
+    static void ASK(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
         action(rvm, "ASK");
     }
-
 }

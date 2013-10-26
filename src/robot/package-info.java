@@ -10,6 +10,7 @@
  * The assembly function are:
  * <ul>
  *      <li> ADD
+ *      <li> ASK
  *      <li> CALL
  *      <li> DIV
  *      <li> DRAG

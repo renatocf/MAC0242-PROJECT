@@ -141,9 +141,13 @@ final public class Analysis
         // Debug info
         if(Verbosity.v)
         { 
-            String pre = "    [SEEK] ";
-            String arnd = (a != null)   ? "Pop the around correctly: " : "NONE";
-            String stack  = (a != null) ? stk.toString()               : "NONE";
+            String pre   = "    [SEEK] ";
+            String arnd  = (a != null)   
+                ? "Pop the around correctly: " 
+                : "NONE";
+            String stack = (a != null) 
+                ? stk.toString() 
+                : "NONE";
             Verbosity.debug(pre + arnd + stack);
         }
     }

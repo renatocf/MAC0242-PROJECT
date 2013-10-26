@@ -116,6 +116,7 @@ public class RVM
             System.out.println();
         }
     }
+    
     /**
      * Function responsible for uploading the labels of PROG,
      * doint it if and only if the program is new.

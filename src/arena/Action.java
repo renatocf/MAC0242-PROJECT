@@ -305,22 +305,24 @@ public class Action implements Game
         return st;
     }
 
-        static Stackable[] ASK (Map map, Robot turn, Operation op)
+    static Stackable[] ASK (Map map, Robot turn, Operation op)
     {  
         Stackable[] s = op.getArgument();
         Text t = (Text) s[0];
         
-        switch (t.toString())
+        switch (t.getText())
         {
             case "position":
-            case "Position": 
-                Num one = new Num(1);
-                Num x   = new Num(turn.i);
-                Num y   = new Num(turn.j);
-                s       = new Stackable[3];
-                s[2]    = one; s[1] = x; s[0    ] = y;
+            case "Position":
+                Num one  = new Num(1);
+                Num x    = new Num(turn.i);
+                Num y    = new Num(turn.j);
+                s        = new Stackable[3];
+                s[2]     = one; 
+                s[1]     = x; 
+                s[0]     = y;
                 break;
-            default: 
+            default:
                 Num zero = new Num(0);
                 s        = new Stackable[1];
                 s[0]     = zero;
