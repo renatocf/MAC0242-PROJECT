@@ -11,14 +11,14 @@
 
 [All]
     [X] Create insert Army.
-    [X] Fix SEEK 
+    [X] Fix SEEK.
     [X] Create command HIT.
     [X] Create remove Army.
     [X] Create stackable Address.
     [X] Add Address in the parser.
     [X] Test jumps with address.
+    [X] Test CALL and RET.
     [ ] Test SEE.
-    [ ] Test CALL and RET.
     [ ] Create commands ALOC and FREE.
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.
