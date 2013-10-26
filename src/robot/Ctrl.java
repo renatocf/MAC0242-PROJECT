@@ -49,9 +49,9 @@ final public class Ctrl
                WrongTypeException
     {
         // Debug
-        Debugger.say("[CTRL] ", met);
-        if(arg != null) Debugger.say(" ", arg.toString());
-        System.out.println();
+        Debugger.print("[CTRL] ", met);
+        if(arg != null) Debugger.print(" ", arg.toString());
+        Debugger.say();
         if(met.equals("END")) Debugger.say("===========");
         
         switch(met)
