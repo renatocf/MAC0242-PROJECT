@@ -17,7 +17,7 @@ import parameters.*;
  * <b>Main package class with the constructor of the robot and its data.</b>
  * @author Renato Cordeiro Ferreira
  */
-public class RVM 
+public class RVM implements Game
 {
     Vector  <Command>   PROG;
     Stack   <Integer>   CTRL = new Stack <Integer>   ();
@@ -105,8 +105,8 @@ public class RVM
                OutOfBoundsException,
                WrongTypeException
     {
-        this.syscall = false;
-        while(!this.syscall) { exec(); this.PC++; }
+        this.syscall = false; int c = 0;
+        while(!this.syscall && c < ASM_MAX_RUN) { exec(); this.PC++; c++; }
         if(Verbosity.v)
         {
             System.out.println("[STACK]");

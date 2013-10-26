@@ -28,7 +28,7 @@ final public class Prog
     /**
      * Assembly funcion END. <br>
      * Sets the counter to indicate
-     * the END of the program and stops
+     * the END of the program.
      * the execution for 1 step.
      */
     static void END(RVM rvm) { rvm.PC = -1; rvm.syscall = true; }
