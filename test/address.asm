@@ -7,5 +7,5 @@ WHILE:  PUSH  "A"
         PUSH    5
         EQ
         JIT   END
-        JMP   0x1
+        JMP     1
 END:    END

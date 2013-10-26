@@ -111,9 +111,10 @@ sub parse
             {
                 given($com)
                 {                   
-                    when(@ins1) { $err = 2 if(defined $arg)               }
-                    when(@ins2) { $err = 3 if($arg !~ m/^\d+$/)           }
-                    when(@ins3) { $err = 4 if($arg !~ m/^(?:\w+|\d+)$/) }
+                    when(@ins1) { $err = 2 if defined $arg                }
+                    when(@ins2) { $err = 3 if $arg !~ m/^\d+$/            }
+                    when(@ins3) { $err = 4 if $arg !~ m/^(\d+)|\w+$/;    
+                                  $arg = "ADDRESS($arg)" if defined $1    }
                     default     { $err = 5                                }
                 }
             }
