@@ -3,6 +3,9 @@
 RED="\033[1;31m"
 RES="\033[0m"
 
+# First of all: call the javadoc by ant
+ant javadoc
+
 # Find the old branch to go back later
 OLD_BRANCH=`git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
 
