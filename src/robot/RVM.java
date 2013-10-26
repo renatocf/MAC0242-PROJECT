@@ -107,14 +107,12 @@ public class RVM implements Game
     {
         this.syscall = false; int c = 0;
         while(!this.syscall && c < ASM_MAX_RUN) { exec(); this.PC++; c++; }
-        if(Verbosity.v)
-        {
-            System.out.println("[STACK]");
-            System.out.print  ("    ");
-            for(Stackable stk: this.DATA)
-                System.out.print(stk.toString() + ", ");
-            System.out.println();
-        }
+
+        Debugger.say  ("[STACK]");
+        Debugger.print("    ");
+        for(Stackable stk: this.DATA)
+            Debugger.print(stk.toString() + ", ");
+        Debugger.say  ();
     }
     
     /**

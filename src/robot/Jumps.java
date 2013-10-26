@@ -80,12 +80,8 @@ final public class Jumps
                 throw new OutOfBoundsException();
         }
         
-        // Debug info
-        if(Verbosity.v)
-        { 
-            String pre = "    [GOTO] ";
-            Verbosity.debug(pre + (rvm.PC+1));
-        }
+        // Debug
+        Debugger.say("    [GOTO] ", rvm.PC+1);
     }
     
     /**

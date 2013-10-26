@@ -48,13 +48,11 @@ final public class Ctrl
                OutOfBoundsException,
                WrongTypeException
     {
-        if(Verbosity.v)
-        {
-            System.out.print("[CTRL] " + met);
-            if(arg != null) System.out.print(" " + arg.toString());
-            System.out.println();
-            if(met.equals("END")) System.out.println("===========");
-        }
+        // Debug
+        Debugger.say("[CTRL] ", met);
+        if(arg != null) Debugger.say(" ", arg.toString());
+        System.out.println();
+        if(met.equals("END")) Debugger.say("===========");
         
         switch(met)
         {

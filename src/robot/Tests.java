@@ -72,21 +72,19 @@ final public class Tests
                 rvm.DATA.push(yes);
             else rvm.DATA.push(no);
             
-            if(Verbosity.v)
+            // Debug
+            String pre = "    [EQ] "; 
+            if( arg1.getClass().equals(arg2.getClass()) )
             {
-                String pre = "    [EQ] "; 
-                if( arg1.getClass().equals(arg2.getClass()) )
-                {
-                    Verbosity.debug(pre + "YES");
-                    Verbosity.debug(pre + "stack: " + class1); 
-                    Verbosity.debug(pre + "stack: " + class2);
-                }
-                else
-                {
-                    Verbosity.debug(pre + "NO");
-                    Verbosity.debug(pre + "stack: " + class1); 
-                    Verbosity.debug(pre + "stack: " + class2);
-                }
+                Debugger.say(pre, "YES");
+                Debugger.say(pre, "stack: ", class1); 
+                Debugger.say(pre, "stack: ", class2);
+            }
+            else
+            {
+                Debugger.say(pre, "NO");
+                Debugger.say(pre, "stack: ", class1); 
+                Debugger.say(pre, "stack: ", class2);
             }
         }
     }
@@ -119,7 +117,7 @@ final public class Tests
             Num num1 = (Num) arg1, num2 = (Num) arg2;
             
             // Result of the comparison
-            boolean res = num1.getNumber() == num2.getNumber();
+            boolean res = num1.getNumber() != num2.getNumber();
             
             // Push true or false accordingly to the comparison
             if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
@@ -133,21 +131,19 @@ final public class Tests
                 rvm.DATA.push(yes);
             else rvm.DATA.push(no);
             
-            if(Verbosity.v)
+            // Debug
+            String pre = "    [NE] "; 
+            if( !arg1.getClass().equals(arg2.getClass()) )
             {
-                String pre = "    [EQ] "; 
-                if( !arg1.getClass().equals(arg2.getClass()) )
-                {
-                    Verbosity.debug(pre + "YES");
-                    Verbosity.debug(pre + "stack: " + class1); 
-                    Verbosity.debug(pre + "stack: " + class2);
-                }
-                else
-                {
-                    Verbosity.debug(pre + "NO");
-                    Verbosity.debug(pre + "stack: " + class1); 
-                    Verbosity.debug(pre + "stack: " + class2);
-                }
+                Debugger.say(pre, "YES");
+                Debugger.say(pre, "stack: ", class1); 
+                Debugger.say(pre, "stack: ", class2);
+            }
+            else
+            {
+                Debugger.say(pre, "NO");
+                Debugger.say(pre, "stack: ", class1); 
+                Debugger.say(pre, "stack: ", class2);
             }
         }
     }
