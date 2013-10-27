@@ -8,7 +8,7 @@
 [Vinícius]
     [X] Add new maps. 
     [ ] Create robot behaviors.
-
+    
 [All]
     [X] Create insert Army.
     [X] Fix SEEK.
@@ -24,3 +24,4 @@
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.
     [ ] Create menu.
+    [ ] Finish Javadoc
