@@ -17,13 +17,14 @@ import parameters.*;
  * <b>Main package class with the constructor of the robot and its data.</b>
  * @author Renato Cordeiro Ferreira
  */
-public class RVM 
+public class RVM implements Game
 {
     Vector  <Command>   PROG;
     Stack   <Integer>   CTRL = new Stack <Integer>   ();
     Stack   <Stackable> DATA = new Stack <Stackable> ();
-    HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
-    HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
+    HashMap <String, Integer>  LABEL = new HashMap <String, Integer>    ();
+    HashMap <String, Stackable> VARS = new HashMap <String, Stackable>  ();
+    HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable> ();
     int PC = 0;
 
     boolean syscall = false;
@@ -58,6 +59,7 @@ public class RVM
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException
      * @throws InvalidOperationException
+     * @throws NotInitializedException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
      * @throws OutOfBoundsException
@@ -67,6 +69,7 @@ public class RVM
         throws SegmentationFaultException, 
                UndefinedFunctionException,
                InvalidOperationException, 
+               NotInitializedException,
                StackUnderflowException,
                NoLabelFoundException,
                OutOfBoundsException,
@@ -91,6 +94,7 @@ public class RVM
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException
      * @throws InvalidOperationException
+     * @throws NotInitializedException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
      * @throws OutOfBoundsException
@@ -100,22 +104,22 @@ public class RVM
         throws SegmentationFaultException, 
                UndefinedFunctionException,
                InvalidOperationException, 
+               NotInitializedException,
                StackUnderflowException,
                NoLabelFoundException,
                OutOfBoundsException,
                WrongTypeException
     {
-        this.syscall = false;
-        while(!this.syscall) { exec(); this.PC++; }
-        if(Verbosity.v)
-        {
-            System.out.println("[STACK]");
-            System.out.print  ("    ");
-            for(Stackable stk: this.DATA)
-                System.out.print(stk.toString() + ", ");
-            System.out.println();
-        }
+        this.syscall = false; int c = 0;
+        while(!this.syscall && c < ASM_MAX_RUN) { exec(); this.PC++; c++; }
+
+        Debugger.say  ("[STACK]");
+        Debugger.print("    ");
+        for(Stackable stk: this.DATA)
+            Debugger.print(stk.toString() + ", ");
+        Debugger.say  ();
     }
+    
     /**
      * Function responsible for uploading the labels of PROG,
      * doint it if and only if the program is new.

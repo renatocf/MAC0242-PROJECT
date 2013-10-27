@@ -52,18 +52,16 @@ public class World implements Game
         
         // Initializes GUI
         GUI = new Textual(map);
-        if(Verbosity.v) GUI.printMiniMap();
+        if(Debugger.info) GUI.printMiniMap();
     }
     
     public static void timeStep()
     {
         time++; // On each time step, increments time
         
-        if(Verbosity.v)
-        {
-            String pre = "\n[WORLD] ====================== ";
-            Verbosity.debug(pre + time + "ts");
-        }
+        // Debug
+        String pre = "\n[WORLD] ====================== ";
+        Debugger.say(pre + time + "ts");
 
         for(int i = 0; i < nPlayers; i++)
         {
@@ -73,11 +71,9 @@ public class World implements Game
                 if(armies[i][j] == null) continue;
                 else turn = armies[i][j];
                 
-                if(Verbosity.v) 
-                {
-                    System.out.print("\n[" + turn.toString() + "]");
-                    System.out.println("[" + time + "ts]");
-                }
+                // Debug
+                Debugger.print("\n[" + turn.toString() + "]");
+                Debugger.say  ("[" + time + "ts]");
                 
                 try { turn.run(); }
                 catch (Exception e) 
@@ -87,7 +83,7 @@ public class World implements Game
                 }
             }
         }
-        if(!(Verbosity.v)) GUI.paint();
+        if(!(Debugger.info)) GUI.paint();
     }
     
     public static Stackable[] ctrl(Operation op)

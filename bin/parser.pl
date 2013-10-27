@@ -80,6 +80,7 @@ my $max_size_lab = 4; # null
 
 # Hashes with values
 my %item;
+my %vars;
 my %attack;
 my %address;
 my %textual;
@@ -92,7 +93,7 @@ map  { s/\.java//; $item{$_} = 0 }
 grep { not /^\./ and not /^Item/ and -f "$item/$_"} readdir ITEMS;
 closedir ITEMS;
 
-my ($t, $n, $a) = (0, 0, 0);
+my ($t, $n, $a, $v) = (0, 0, 0, 0);
 for my $line (@prog)
 {
     next if not defined $line;
@@ -112,7 +113,7 @@ for my $line (@prog)
     if(defined $arg)
     {
         # Address argument
-        if($arg =~ /^0x(\d+)/)
+        if($arg =~ /^ADDRESS\((\d+)\)/)
         {
             $arg = $1;
             if(not exists $address{$arg})
@@ -165,6 +166,18 @@ for my $line (@prog)
             }
         }
         
+        # Variable name argument
+        elsif($arg =~ /^\[(\w+)\]$/)
+        {
+            if(not exists $vars{$arg})
+            {
+                $v++; $line->[1] = "var$v";
+                $vars{$arg} = 
+                    [ $v, "Text var$v = new Text(\"$arg\");" ];
+            }
+            else { $line->[1] = "var$vars{$arg}[0]"; }
+        }
+        
         # String argument
         else
         { 
@@ -196,7 +209,7 @@ for my $var(keys %attack)
 }
 
 # Checks maximum argument size (others)
-for my $var($t, $n, $a)
+for my $var($t, $n, $a, $v)
 {
     if(length $var > $max_size_arg+3) 
     { $max_size_arg = length $var; }
@@ -279,6 +292,14 @@ if(scalar keys %numeric)
     say " " x 8, "// Numerical variables";
     for my $var (sort keys %numbered_numeric) 
     { say " " x 8, $numbered_numeric{$var}; }
+    print "\n";
+}
+
+if(scalar keys %vars)
+{
+    say " " x 8, "// Assembly's local variables";
+    for my $var (sort keys %vars) 
+    { say " " x 8, $vars{$var}[1]; }
     print "\n";
 }
 

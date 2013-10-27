@@ -48,7 +48,8 @@ class Main
     {
         for(String arg: args)
         {
-            if(arg.equals("-v")) Verbosity.v = true;
+            if(arg.equals("-v")) Debugger.info = true;
+            if(arg.equals("-d")) Debugger.info = true;
         }
     }
 }

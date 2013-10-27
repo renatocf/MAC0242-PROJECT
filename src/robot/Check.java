@@ -8,7 +8,7 @@ import arena.Terrain;
 import stackable.item.*;
 
 /**
- * <b>Assembly functions - class Analysis</b><br>
+ * <b>Assembly functions - class Check</b><br>
  * Provides the funcions for checking
  * terrains and neighborhoods content.
  * 
@@ -18,10 +18,10 @@ import stackable.item.*;
  * @see arena.Terrain
  * @see stackable.Around
  */
-final public class Analysis
+final public class Check
 {
     // No instances of this class allowed
-    private Analysis() {} 
+    private Check() {} 
     
     /**
      * Assembly funcion ITEM. <br>
@@ -50,12 +50,9 @@ final public class Analysis
         Terrain t = (Terrain) stk;
         stackable.item.Item item = t.getItem();
         
-        if(Verbosity.v)
-        { 
-            String pre = "    [ITEM] ";
-            String itm = (item != null) ? item.toString() : "NONE";
-            Verbosity.debug(pre + itm); 
-        }
+        // Debug
+        String itm = (item != null) ? item.toString() : "NONE";
+        Debugger.say("    [ITEM] ", itm); 
         
         // Return Num(0) if no item is avaiable.
         if(item == null) rvm.DATA.push(new Num(0));
@@ -138,13 +135,13 @@ final public class Analysis
         
         rvm.DATA.push(new Num(cont));
         
-        // Debug info
-        if(Verbosity.v)
-        { 
-            String pre = "    [SEEK] ";
-            String arnd = (a != null)   ? "Pop the around correctly: " : "NONE";
-            String stack  = (a != null) ? stk.toString()               : "NONE";
-            Verbosity.debug(pre + arnd + stack);
-        }
+        // Debug
+        String arnd  = (a != null)   
+            ? "Pop the around correctly: " 
+            : "NONE";
+        String stack = (a != null) 
+            ? stk.toString() 
+            : "NONE";
+        Debugger.say("    [SEEK] ", arnd, stack);
     }
 }

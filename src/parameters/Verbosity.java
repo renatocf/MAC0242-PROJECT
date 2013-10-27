@@ -1,5 +1,6 @@
 package parameters;
 
+@Deprecated
 public class Verbosity
 {
     public static boolean v = false;

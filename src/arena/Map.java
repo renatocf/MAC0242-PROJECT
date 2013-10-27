@@ -100,7 +100,7 @@ public class Map implements Game
     //        String [] params = { "perl", "bin/parser.pl", input };
     //        Process process = new ProcessBuilder(params).start();
     //        
-    //        if(Verbosity.v)
+    //        if(Debbuger.info)
     //        {
     //            InputStream is        = process.getInputStream();
     //            InputStreamReader isr = new InputStreamReader(is);
@@ -133,11 +133,11 @@ public class Map implements Game
         String prog  = first + other;
 
         // Debug message
-        if(Verbosity.v && !prog.equals(input))
+        if(!prog.equals(input))
         {
-            Verbosity.debug(input + " is not a valid name!");
-            Verbosity.debug("Searching for " + prog);
-            Verbosity.debug();
+            Debugger.say(input + " is not a valid name!");
+            Debugger.say("Searching for " + prog);
+            Debugger.say();
         }
         return prog;
     }

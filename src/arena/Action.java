@@ -83,11 +83,11 @@ public class Action implements Game
         for(int i = 0; i < turn.slots.length && turn.slots[i] != null; i++) cont++;
         if(cont >= turn.slots.length) return false;
             
-        String pre = "    [DRAG]";
-        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        Debugger.say("    [DRAG]", map.map[lookI][lookJ] );
+        
         turn.slots[cont] = map.map[lookI][lookJ].removeItem();
-        //if(map.map[lookI][lookJ].item == null);
-        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        
+        Debugger.say("    [DRAG]", map.map[lookI][lookJ] );
         
         return true;
     }
@@ -115,12 +115,11 @@ public class Action implements Game
         for(int i = 0; i < turn.slots.length && robot.slots[i] != null; i++) cont++;
         if(cont == 0) return false;
             
-        String pre = "    [DROP]";
-        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        Debugger.say("    [DROP]", map.map[lookI][lookJ].toString());
         
         map.map[lookI][lookJ].item = robot.removeSlots(cont - 1);
         
-        if(Verbosity.v) { Verbosity.debug(pre + map.map[lookI][lookJ].toString()); }
+        Debugger.say("    [DROP]", map.map[lookI][lookJ].toString());
         
         return true;
     }
@@ -151,14 +150,13 @@ public class Action implements Game
                            if(distance > turn.maxRange) return false; break;
         }
                 
-        if(Verbosity.v) 
-        {  
-            String directions = "";
-            Verbosity.debug(pre + "[" + atk.getAttack() + "]");
-            for(Direction d: dirs) directions += d.toString() + " ";
-            Verbosity.debug(pre + " " + directions);
-        } 
-
+        // Debug
+        String directions = "";
+        for(Direction d: dirs) directions += d.toString() + " ";
+        
+        Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
+        Debugger.say("    [HIT]", " ", directions);
+        
         int lookI = turn.i;
         int lookJ = turn.j;
         Scenario thing = null;
@@ -170,9 +168,8 @@ public class Action implements Game
             lookI += update[0];
             lookJ += update[1];
             
-            if(Verbosity.v) { 
-                Verbosity.debug(pre + " " + map.map[lookI][lookJ].toString()); 
-            }
+            // Debug
+            Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
             
             if(lookI >= MAP_SIZE
             || lookJ >= MAP_SIZE
@@ -183,17 +180,14 @@ public class Action implements Game
             if(thing != null)
             {
                 int done = thing.takeDamage(damage);
-                if(Verbosity.v) 
-                { 
-                    Verbosity.debug(pre + "[FIGHT]");
-                    Verbosity.debug("         [DAMAGE:" + damage + "]");
-                    Verbosity.debug("         [REMAIN:" + done   + "]"); 
-                }
+                Debugger.say("    [HIT]", "[FIGHT]");
+                Debugger.say("         [DAMAGE:", damage, "]");
+                Debugger.say("         [REMAIN:", done  , "]"); 
                 
                 if(thing.getHP() <= 0) 
                 {                 
                     World.destroy(lookI, lookJ);
-                    if(Verbosity.v) { Verbosity.debug(pre + "[DESTROYED]"); }
+                    Debugger.say("    [HIT]", "[DESTROYED]");
                 }
                 break;
             }
@@ -201,7 +195,7 @@ public class Action implements Game
         
         if(thing == null) 
         {
-            if(Verbosity.v) { Verbosity.debug(pre + "[EMPTY]"); }
+            Debugger.say("    [HIT]", "[EMPTY]");
             return false;
         }
         return true;
@@ -223,25 +217,18 @@ public class Action implements Game
         if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
         else if(lookJ < 0) lookJ += MAP_SIZE;
         
-        if(Verbosity.v)
-        {
-            String pre = "    [LOOK] ";
-            Verbosity.debug(pre + "dir: " + d.toString());
-            Verbosity.debug(pre + "pos: I: " + lookI);
-            Verbosity.debug(pre + "pos: J: " + lookJ);
-        }
+        // Debug
+        Debugger.say("    [LOOK] ", "dir: "   , d);
+        Debugger.say("    [LOOK] ", "pos: I: ", lookI);
+        Debugger.say("    [LOOK] ", "pos: J: ", lookJ);
         
         if(lookI >= MAP_SIZE 
         || lookJ >= MAP_SIZE  
         || lookI < 0  
         || lookJ < 0) return null;
         
-        if(Verbosity.v)
-        {
-            String pre = "    [LOOK] ";
-            String t = map.map[lookI][lookJ].toString();
-            Verbosity.debug(pre + "ter: " + t);
-        }
+        // Debug
+        Debugger.say("    [LOOK] ", "ter: ", map.map[lookI][lookJ]);
         
         Stackable[] st = new Stackable[1];
         st[0] = map.map[lookI][lookJ];
@@ -305,30 +292,32 @@ public class Action implements Game
         return st;
     }
 
-        static Stackable[] ASK (Map map, Robot turn, Operation op)
+    static Stackable[] ASK (Map map, Robot turn, Operation op)
     {  
         Stackable[] s = op.getArgument();
         Text t = (Text) s[0];
         
-        switch (t.toString())
+        switch (t.getText())
         {
             case "position":
-            case "Position": 
-                Num one = new Num(1);
-                Num x   = new Num(turn.i);
-                Num y   = new Num(turn.j);
-                s       = new Stackable[3];
-                s[2]    = one; s[1] = x; s[0] = y;
+            case "Position":
+                Num one  = new Num(1);
+                Num x    = new Num(turn.i);
+                Num y    = new Num(turn.j);
+                s        = new Stackable[3];
+                s[2]     = one; 
+                s[1]     = x; 
+                s[0]     = y;
                 break;
-            default: 
+            default:
                 Num zero = new Num(0);
                 s        = new Stackable[1];
                 s[0]     = zero;
                 break;
         }
         
-        String pre = "    [ASK]";
-        if(Verbosity.v) { Verbosity.debug(pre + t);}
+        // Debug
+        Debugger.say("    [ASK]", t);
         
         return s;
     }

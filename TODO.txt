@@ -8,18 +8,20 @@
 [Vinícius]
     [X] Add new maps. 
     [ ] Create robot behaviors.
-
+    
 [All]
     [X] Create insert Army.
-    [X] Fix SEEK 
+    [X] Fix SEEK.
     [X] Create command HIT.
     [X] Create remove Army.
     [X] Create stackable Address.
     [X] Add Address in the parser.
     [X] Test jumps with address.
-    [X] Test SEE. 
-    [X] Test CALL and RET. (Vinícius: tested when i made the movetowards.asm)
-    [ ] Create commands ALOC and FREE.
+    [X] Test CALL and RET.
+    [X] Create commands ALOC and FREE.
+    [ ] Test SEE.
+    [ ] Test more ALOC, FREE, GET, SET.
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.
     [ ] Create menu.
+    [ ] Finish Javadoc
