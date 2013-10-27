@@ -14,11 +14,12 @@ my @ins1 = ('ADD' , 'DIV' , 'DUP' , 'END' , 'EQ'  , 'GE'  , 'GT'  ,
             'MOD' , 'LE'  , 'LT'  , 'MUL' , 'NE'  , 'POP' , 'PRN' , 
             'SUB' , 'RET' , 'MOVE', 'DRAG', 'DROP', 'HIT' , 'LOOK', 
             'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP'); # arg: none
-my @ins2 = ('RCL' , 'STO');                   # arg: numeric (only)
-my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL');  # arg: address/string
+my @ins2 = ('RCL' , 'STO');                  # arg: numeric  (only)
+my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL'); # arg: address/string
+my @ins4 = ('ALOC', 'FREE', 'GET' , 'SET' ); # arg: var name (only)
 
-my @stk  = ('crystal', 'stone');              # stackables
-my @atk  = ('ranged',  'melee');              # attacks
+my @stk  = ('crystal', 'stone');             # stackables
+my @atk  = ('ranged',  'melee');             # attacks
 
 #######################################################################
 #                            CONSTRUCTOR                              #
@@ -63,8 +64,8 @@ sub parse
                         \s+          # Spaces
                         (
                             \d+      # NUMBER    }
-                            # |        #           }
-                            # 0x\d+    # ADDRESS   }
+                            |        #           }
+                            \[\w+\]  # VARIABLE  }
                             |        #           }
                             \(x\)\w+ # ATTACK    }
                             |        #           }
@@ -115,7 +116,8 @@ sub parse
                     when(@ins2) { $err = 3 if $arg !~ m/^\d+$/            }
                     when(@ins3) { $err = 4 if $arg !~ m/^(\d+)|\w+$/;    
                                   $arg = "ADDRESS($arg)" if defined $1    }
-                    default     { $err = 5                                }
+                    when(@ins4) { $err = 5 if $arg !~ m/^\[\w+\]$/        }
+                    default     { $err = 6                                }
                 }
             }
             
@@ -154,7 +156,8 @@ sub err
         when(2) { say("needs NO argument!")                 }
         when(3) { say("needs a NUMERIC argument!")          }
         when(4) { say("needs a LABEL or ADDRESS argument!") }
-        when(5) { say("does not exist!")                    }
+        when(5) { say("needs a STRING argument")            }
+        when(6) { say("does not exist!")                    }
     }
 } 
 
