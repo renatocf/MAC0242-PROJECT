@@ -3,6 +3,7 @@ exception
 gui
 operation
 parameters
+parser
 random
 robot
 scenario
