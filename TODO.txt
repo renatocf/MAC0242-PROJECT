@@ -18,8 +18,9 @@
     [X] Add Address in the parser.
     [X] Test jumps with address.
     [X] Test CALL and RET.
+    [X] Create commands ALOC and FREE.
     [ ] Test SEE.
-    [ ] Create commands ALOC and FREE.
+    [ ] Test more ALOC, FREE, GET, SET.
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.
     [ ] Create menu.
