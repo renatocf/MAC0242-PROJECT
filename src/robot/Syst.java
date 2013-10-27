@@ -158,7 +158,7 @@ final public class Syst
      * @param  rvm Virtual Machine.
      * @throws WrongTypeException
      * @throws InvalidOperationException 
-     * @see    Analysis
+     * @see    Check
      */
     static void LOOK(RVM rvm)
         throws WrongTypeException,
@@ -176,7 +176,7 @@ final public class Syst
      * @param  rvm Virtual Machine.
      * @throws WrongTypeException
      * @throws InvalidOperationException 
-     * @see    Analysis
+     * @see    Check
      */
     static void SEE(RVM rvm)
         throws WrongTypeException,
@@ -194,7 +194,7 @@ final public class Syst
      * @param  rvm Virtual Machine.
      * @throws WrongTypeException
      * @throws InvalidOperationException 
-     * @see    Analysis
+     * @see    Check
      */
     static void ASK(RVM rvm)
         throws WrongTypeException,
