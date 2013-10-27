@@ -27,30 +27,31 @@ public class Direction implements Stackable
     
     public Direction(int move, int dir) throws InvalidOperationException
     {
+        
         if (move == 0)
         { 
             switch (dir)
             {
-              case 0: set( 0,  0,  0,  0 ); break; // ->
-              case 1: set( 0,  1,  0,  1 ); break; // ->E
-              case 2: set(-1,  0, -1,  1 ); break; // ->NE
-              case 3: set(-1, -1, -1,  0 ); break; // ->NW
-              case 4: set( 0, -1,  0, -1 ); break; // ->W
-              case 5: set( 1, -1,  1,  0 ); break; // ->SW
-              case 6: set( 1,  0,  1,  1 ); break; // ->SE
-                 
-              case 7:  set( 0,  1,  0,  1 );  break; // ->E
-              case 8:  set(-1,  0, -1,  1 );  break; // ->NE
-              case 9:  set(-1,  0, -1,  1 );  break; // ->NE
-              case 10: set(-1, -1, -1,  0 );  break; // ->NW
-              case 11: set(-1, -1, -1,  0 );  break; // ->NW
-              case 12: set( 0, -1,  0, -1 );  break; // ->W
-              case 13: set( 0, -1,  0, -1 );  break; // ->W
-              case 14: set( 1, -1,  1,  0 );  break; // ->SW
-              case 15: set( 1, -1,  1,  0 );  break; // ->SW
-              case 16: set( 1,  0,  1,  1 );  break; // ->SE
-              case 17: set( 1,  0,  1,  1 );  break; // ->SE
-              case 18: set( 0,  1,  0,  1 );  break; // ->E
+              case 0: set( 0,  0,  0,  0 ); this.cardPoint = "";     break; // ->
+              case 1: set( 0,  1,  0,  1 ); this.cardPoint = "E";    break; // ->E
+              case 2: set(-1,  0, -1,  1 ); this.cardPoint = "NE";   break; // ->NE
+              case 3: set(-1, -1, -1,  0 ); this.cardPoint = "NW";   break; // ->NW
+              case 4: set( 0, -1,  0, -1 ); this.cardPoint = "W";    break; // ->W
+              case 5: set( 1, -1,  1,  0 ); this.cardPoint = "SW";   break; // ->SW
+              case 6: set( 1,  0,  1,  1 ); this.cardPoint = "SE";   break; // ->SE
+                  
+              case 7:  set( 0,  1,  0,  1 );  this.cardPoint = "E";  break; // ->E
+              case 8:  set(-1,  0, -1,  1 );  this.cardPoint = "NE"; break; // ->NE
+              case 9:  set(-1,  0, -1,  1 );  this.cardPoint = "NE"; break; // ->NE
+              case 10: set(-1, -1, -1,  0 );  this.cardPoint = "NW"; break; // ->NW
+              case 11: set(-1, -1, -1,  0 );  this.cardPoint = "NW"; break; // ->NW
+              case 12: set( 0, -1,  0, -1 );  this.cardPoint = "W";  break; // ->W
+              case 13: set( 0, -1,  0, -1 );  this.cardPoint = "W";  break; // ->W
+              case 14: set( 1, -1,  1,  0 );  this.cardPoint = "SW"; break; // ->SW
+              case 15: set( 1, -1,  1,  0 );  this.cardPoint = "SW"; break; // ->SW
+              case 16: set( 1,  0,  1,  1 );  this.cardPoint = "SE"; break; // ->SE
+              case 17: set( 1,  0,  1,  1 );  this.cardPoint = "SE"; break; // ->SE
+              case 18: set( 0,  1,  0,  1 );  this.cardPoint = "E";  break; // ->E
    
               default: throw new InvalidOperationException("" + dir);
             }
