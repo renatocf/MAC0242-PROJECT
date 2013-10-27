@@ -1,5 +1,6 @@
 // Default Libraries
 import java.util.Vector;
+import java.util.Arrays;
 
 // Libraries
 import arena.*;
@@ -14,27 +15,31 @@ import gnu.getopt.LongOpt;
 
 class Main 
 {
-    final static String USAGE = 
+    final private static String USAGE = 
         "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
     
-    public static void main(String[] args)
+    final private static String HELP  = 
+        "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
+
+    // Options
+    static private boolean help;
+    static private boolean usage;
+    static private Weather weather = Weather.TROPICAL;
+    
+    public static void main(String[] argv)
         throws InvalidOperationException
     {
-        if(args.length < 2)
-        {
-            System.err.println(USAGE);
-            return;
-        }
+        String[] args = getopt(argv); // Get options
         
-        getopt(args); // Get options
-        String input = args[0];
+        // Help and Usage
+        if(help)            { System.err.println(HELP);  return; }
+        if(args.length < 2) { System.err.println(USAGE); return; }
         
         // Generate map
-        //World.genesis(2, Weather.CONTINENTAL );
-         World.genesis(2, Weather.ARTICAL     ); 
-        /* World.genesis(2, Weather.DESERTIC    ); */
-        //World.genesis(2, Weather.TROPICAL    );
+        World.genesis(2, weather); 
         
+        // Menu
+        // TODO: automate inserction of programs
         try{
             World.insertArmy(1, "R2D2", 8, 9, args[0]);
             World.insertArmy(2, "Bender"  , 9, 8, args[1]);
@@ -44,29 +49,57 @@ class Main
             System.err.println("Invalid position!");
         }
         
+        // Game main loop
         for(int t = 0; t < 370; t++)
             World.timeStep();
     }
-
-    private static void getopt(String[] args)
+    
+    private static String[] getopt(String[] argv)
     {
         LongOpt[] longopts = 
         {
+            // Help and Debug
             new LongOpt("help"   , LongOpt.NO_ARGUMENT, null, 'h'),
             new LongOpt("debug"  , LongOpt.NO_ARGUMENT, null, 'd'),
             new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
+
+            // Weather options
+            new LongOpt("artical"     , LongOpt.NO_ARGUMENT, null, 1),
+            new LongOpt("desertic"    , LongOpt.NO_ARGUMENT, null, 2),
+            new LongOpt("tropical"    , LongOpt.NO_ARGUMENT, null, 3),
+            new LongOpt("continental" , LongOpt.NO_ARGUMENT, null, 4),
         };
         //
-        Getopt g = new Getopt("testprog", args, "hdv", longopts);
+        Getopt g = new Getopt("MAC0242-Project", argv, "hdv", longopts);
         
-        for (int i = g.getOptind(); i < args.length ; i++)
-            System.out.println("Non option argv element: " 
-                    + args[i] + "\n");
-
-        for(String arg: args)
+        int c;
+        while ((c = g.getopt()) != -1)
         {
-            if(arg.equals("-v")) Debugger.info = true;
-            if(arg.equals("-d")) Debugger.info = true;
+            switch(c)
+            {
+                case 'h': // --help
+                    help = true;
+                    break;
+                //
+                case 'd': // --debug
+                case 'v': // --verbose
+                    Debugger.info = true;
+                    break;
+                //
+                case 1: weather = Weather.ARTICAL;
+                case 2: weather = Weather.DESERTIC;
+                case 3: weather = Weather.TROPICAL;
+                case 4: weather = Weather.CONTINENTAL;
+                //
+                case '?': // getopt() will print the error
+                    break;
+                //
+                default:
+                    System.out.println("getopt() returned " + c);
+            }
         }
+        
+        // Return array without the options
+        return Arrays.copyOfRange(argv, g.getOptind(), argv.length);
     }
 }
