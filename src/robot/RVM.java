@@ -22,8 +22,9 @@ public class RVM implements Game
     Vector  <Command>   PROG;
     Stack   <Integer>   CTRL = new Stack <Integer>   ();
     Stack   <Stackable> DATA = new Stack <Stackable> ();
-    HashMap <String, Integer> LABEL = new HashMap <String, Integer>();
-    HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable>();
+    HashMap <String, Integer>  LABEL = new HashMap <String, Integer>    ();
+    HashMap <String, Stackable> VARS = new HashMap <String, Stackable>  ();
+    HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable> ();
     int PC = 0;
 
     boolean syscall = false;
@@ -58,6 +59,7 @@ public class RVM implements Game
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException
      * @throws InvalidOperationException
+     * @throws NotInitializedException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
      * @throws OutOfBoundsException
@@ -67,6 +69,7 @@ public class RVM implements Game
         throws SegmentationFaultException, 
                UndefinedFunctionException,
                InvalidOperationException, 
+               NotInitializedException,
                StackUnderflowException,
                NoLabelFoundException,
                OutOfBoundsException,
@@ -91,6 +94,7 @@ public class RVM implements Game
      * @throws SegmentationFaultException
      * @throws UndefinedFunctionException
      * @throws InvalidOperationException
+     * @throws NotInitializedException
      * @throws StackUnderflowException
      * @throws NoLabelFoundException
      * @throws OutOfBoundsException
@@ -100,6 +104,7 @@ public class RVM implements Game
         throws SegmentationFaultException, 
                UndefinedFunctionException,
                InvalidOperationException, 
+               NotInitializedException,
                StackUnderflowException,
                NoLabelFoundException,
                OutOfBoundsException,

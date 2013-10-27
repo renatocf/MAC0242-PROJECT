@@ -8,7 +8,7 @@ import arena.Terrain;
 import stackable.item.*;
 
 /**
- * <b>Assembly functions - class Analysis</b><br>
+ * <b>Assembly functions - class Check</b><br>
  * Provides the funcions for checking
  * terrains and neighborhoods content.
  * 
@@ -18,10 +18,10 @@ import stackable.item.*;
  * @see arena.Terrain
  * @see stackable.Around
  */
-final public class Analysis
+final public class Check
 {
     // No instances of this class allowed
-    private Analysis() {} 
+    private Check() {} 
     
     /**
      * Assembly funcion ITEM. <br>
