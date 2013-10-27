@@ -47,7 +47,6 @@ public class Debugger
      * @param args   Variable size list of objects,
      *               which will have their 'toString()'
      *               method used for being printed.
-     * @see   java.lang.System.out.printf
      */
     public static void printf(String format, Object ... args)
     {
