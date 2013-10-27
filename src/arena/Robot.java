@@ -113,6 +113,7 @@ public class Robot implements Scenario
             throws SegmentationFaultException, 
                UndefinedFunctionException,
                InvalidOperationException, 
+               NotInitializedException,
                StackUnderflowException,
                NoLabelFoundException,
                OutOfBoundsException,
