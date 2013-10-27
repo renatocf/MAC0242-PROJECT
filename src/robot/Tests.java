@@ -63,6 +63,36 @@ final public class Tests
             // Push true or false accordingly to the comparison
             if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
         }
+        else if(arg1 instanceof Direction && arg2 instanceof Direction)
+        {
+            // Downcasts to direction if the type is correct
+            Direction d1 = (Direction) arg1, d2 = (Direction) arg2;
+            
+            // Gets the direction
+            String s1 = d1.toString(), s2 = d2.toString();
+            
+            // Push true or false accordingly to the comparison
+            if( s1.equals(s2)) 
+                rvm.DATA.push(yes);
+            else rvm.DATA.push(no);
+            
+            if(Verbosity.v)
+            {
+                String pre = "    [EQ] "; 
+                if(s1.equals(s2))
+                {
+                    Verbosity.debug(pre + "YES");
+                    Verbosity.debug(pre + "stack: " + s1); 
+                    Verbosity.debug(pre + "stack: " + s2);
+                }
+                else
+                {
+                    Verbosity.debug(pre + "NO");
+                    Verbosity.debug(pre + "stack: " + s1); 
+                    Verbosity.debug(pre + "stack: " + s2);
+                }
+            }
+        }
         else
         {
             String class1 = arg1.getClass().getName();

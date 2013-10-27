@@ -94,7 +94,7 @@ evadeR:
         PUSH    ->NE
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
 
 evadeL:
         PUSH    ->NW
@@ -103,7 +103,7 @@ evadeL:
         PUSH    ->SW
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
                 
 sameJ:
         RCL     100
@@ -121,7 +121,7 @@ evadeU:
         PUSH    ->NW
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
 
 evadeD:
         PUSH    ->SW
@@ -130,7 +130,7 @@ evadeD:
         PUSH    ->SE
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
 
 notInLine:
         RCL     101
@@ -151,7 +151,7 @@ moveR:
         PUSH    ->NE
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
         
 moveL:  
         PUSH    ->W
@@ -163,7 +163,7 @@ moveL:
         PUSH    ->NW
         MOVE
         JIT     start
-        JMP     fim
+        JMP     end
 
 lookForCrystal:
         SEE
@@ -173,7 +173,7 @@ lookForCrystal:
         JIF     retlfc
         STO     1000
 llfc:   POP
-        PRN
+        CALL    printPosition
         RCL     1000
         PUSH    1
         SUB
@@ -185,9 +185,198 @@ llfc:   POP
 retlfc: POP
         RET
 
+printPosition:
+        DUP
+        PUSH    ->
+        EQ
+        JIT     printRobotPosition
 
-fim:    NOP
-        JMP     fim
+        DUP
+        PUSH    ->E
+        EQ
+        JIT     printEPosition
+
+        DUP
+        PUSH    ->NE
+        EQ
+        JIT     printNEPosition
+
+        DUP
+        PUSH    ->NW
+        EQ
+        JIT     printNWPosition
+
+        DUP
+        PUSH    ->W
+        EQ
+        JIT     printRobotWPosition
+        
+        DUP
+        PUSH    ->SW
+        EQ
+        JIT     printSWPosition
+        
+        DUP
+        PUSH    ->SE
+        EQ
+        JIT     printSEPosition
+
+printRobotPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PRN
+        RCL     101
+        PRN
+        RET
+
+printEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PRN
+        RCL     101
+        PUSH    1
+        ADD
+        PRN
+        RET
+        
+printNEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PUSH    2
+        MOD
+        JIF     evenNE
+        JMP     oddNE
+
+printNWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PUSH    2
+        MOD
+        JIF     evenNW
+        JMP     oddNW
+        
+printWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PRN
+        RCL     101
+        PUSH    1
+        SUB
+        PRN
+        RET
+
+printSWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PUSH    2
+        MOD
+        JIF     evenSW
+        JMP     oddSW
+        
+printSEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        RCL     100
+        PUSH    2
+        MOD
+        JIF     evenSE
+        JMP     oddSE        
+    
+evenNE:
+        RCL     100
+        PUSH    1
+        SUB
+        PRN
+        RCL     101
+        PRN
+        RET            
+
+oddNE:
+        RCL     100
+        PUSH    1
+        SUB
+        PRN
+        RCL     101
+        PUSH    1
+        ADD
+        PRN
+        RET            
+
+evenNW:
+        RCL     100
+        PUSH    1
+        SUB
+        PRN
+        RCL     101
+        PUSH    1
+        SUB
+        PRN
+        RET
+        
+oddNW:
+        RCL     100
+        PUSH    1
+        SUB
+        PRN
+        RCL     101
+        PRN
+        RET            
+            
+evenSW:
+        RCL     100
+        PUSH    1
+        ADD
+        PRN
+        RCL     101
+        PUSH    1
+        SUB
+        PRN
+        RET            
+
+oddSW:
+        RCL     100
+        PUSH    1
+        ADD
+        PRN
+        RCL     101
+        PRN
+        RET            
+
+evenSE:
+        RCL     100
+        PUSH    1
+        ADD
+        PRN
+        RCL     101
+        PUSH    1
+        RET            
+
+oddSE:
+        RCL     100
+        PUSH    1
+        ADD
+        PRN
+        RCL     101
+        PUSH    1
+        ADD
+        PRN            
+        RET
+        
+end:    NOP
+        JMP     end
 
 
 mvtw:
