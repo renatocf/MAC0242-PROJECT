@@ -28,7 +28,7 @@
 \usepackage{calc}  
 \usepackage{enumitem}  
 
-\title  {Projeto de Laboratório de Programação II - Fase 1}
+\title  {Projeto de Laboratório de Programação II - Fase 2}
 \author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
 \date   {}
 
@@ -40,10 +40,18 @@
 
 \section{Introdução} \label{sec:introdução}
 
-    Nesta fase inicial, o projeto consiste em criar um leitor e 
-    interpretador de comandos em linguegem de máquina. O principal 
-    objetivo destes é servir como núcleo da futura classe responsável 
-    pelos robôs.
+    Nesta fase, o projeto consiste na criação de uma máquina
+    virtual em JAVA, juntamente com a implementação de funções
+    que darão ao usuário o poder de controlar o robô através 
+    de comandos usados com pilha de dados.
+    Há também a criação da Arena, esta é resposável por controlar
+    os robôs de forma que eles sejam impossibilitados de fazer
+    movimentos não propícios. 
+    
+    E por último, temos os tipos de terrenos e objetos que estarão
+    dispostos nele, como cristais, rochas ( como objetos ), bases, 
+    água, árvores, entre outros ( como cenário ). 
+    
     
     \subsection{Projeto}
     
@@ -154,10 +162,16 @@
     
     \begin{center}
       \begin{tabular}{|c|l|rc|}
-          Vazio     &  ADD - DIV - DUP - END - EQ - GE - GT - 
-                       LE - LT - MUL - NE - POP - PRN - SUB   \\
-          Numérico  &  PUSH - RCL - STO - JMP - JIT - JIF     \\
-          String    &  JIF - JIT                              \\
+                     &  ADD - DIV - DUP - END - EQ - GE - GT   \\
+          Vazio      &  MOD - LE - LT - MUL - NE - POP - PRN   \\
+                     &  SUB - RET - MOVE - DRAG - DROP - HIT   \\
+                     &  LOOK - ITEM - SEE - SEEK               \\
+                     &										   \\
+          Numérico   &  RCL - STO                              \\
+          			 &										   \\
+          String     &  JMP - JIF - JIT - CALL                 \\
+          			 &										   \\
+          Empilhável &  crystal - stone                        \\
       \end{tabular}
     \end{center}  
     
@@ -354,4 +368,188 @@
             \item NE: A != B
         \end{itemize}
     
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\newpage
+
+\section{Packages}
+	Foram criados pacotes para facilitar a divisão
+	e entendimento do código.
+	
+	\subsection{Arena}
+		O package "Arena" cuida da 
+		\subsubsection{ Action.java }
+		\subsubsection{ Appearence.java }
+		\subsubsection{ Map.java }
+		\subsubsection{ Robot.java }
+		\subsubsection{ Terrain.java }
+		\subsubsection{ Type.java }
+		\subsubsection{ Weather.java }						
+		\subsubsection{ World.java }				
+				
+	\subsection{Exception}
+		O package "Exception" cuida dos lançamentos de exceção
+		que o programa gera para erros no código que será recebido
+		do usuário.
+
+		Como por exemplo as exceções de falha de segmentação,
+		operações inválidas, erros de tipo, variáveis não
+		inicializadas, entre outros.
+		
+		As classes desse package são chamadas pelas outras classes
+		que utilizam essa forma de mandar exceção.
+		 
+	\subsection{Operation}
+		\subsubsection{ Operation.java }
+		\subsubsection{ package-info.java }
+		
+	\subsection{Parameters}
+		\subsubsection{ Debugger.java }
+		\subsubsection{ Game.java     }
+		\subsubsection{ Verbosity.java}
+		
+	\subsection{Parser}
+		\subsubsection{ Parser.java }
+		
+	\subsection{Random}
+		\subsubsection{ CalmField.java }
+		\subsubsection{ Desert.java }
+		\subsubsection{ Jungle.java }
+		\subsubsection{ RamdomMap.java }
+		\subsubsection{ Theme.java }
+		\subsubsection{ Winter.java }
+	
+	\subsection{Robot}
+		\subsubsection{ Arit.java }
+		\subsubsection{ Check.java }
+		\subsubsection{ Command.java }
+		\subsubsection{ Ctrl.java }
+		\subsubsection{ Func.java }
+		\subsubsection{ IO.java }
+		\subsubsection{ Jumps.java }
+		\subsubsection{ Mem.java }
+		\subsubsection{ package-info.java }
+		\subsubsection{ Prog.java }
+		\subsubsection{ RVM.java }
+		\subsubsection{ Stk.java }
+		\subsubsection{ Syst.java }
+		\subsubsection{ T ests.java }
+		\subsubsection{ Var.java }
+		
+	\subsection{Scenario}
+		\subsubsection{ Base.java }
+		\subsubsection{ Rock.java }
+		\subsubsection{ Scenario.java }
+		\subsubsection{ Tree.java }
+		\subsubsection{ Water.java }
+		
+	\subsection{Stackable}
+		Nesse package, temos a interface Stackable que
+		será o tipo responsável pela atribuição da
+		característica empilhável dos empilháveis.
+		
+		\subsubsection { Addr.java }
+		\subsubsection { Around.java }
+		\subsubsection { Attack.java }
+		\subsubsection { Direction.java }
+			Os objetos do tipo Direction são do tipo que
+			orientará os robôs na arena em relação a 
+			movimentação e ataque. Pelo fato de a arena
+			ser formada por bases hexagonais, temos as
+			direções E(leste), NE(nordeste), NW(noroeste),
+			W(oeste), SW(sudoeste) e SE(sudeste).
+			Sempre que um objeto do tipo Direction for
+			chamado pelo usuário, este deve ser retratado
+			com o símbolo "->" antes do seu conteúdo.
+			
+			Por exemplo, "->WE".
+			
+			A classe Direction possui armazenará o movimento
+			como uma matriz de coordenadas, que terá
+			determinados tipos de movimento quando o robô 
+			estiver em uma linha par e outro tipo de movimento
+			quando o mesmo estiver numa linha ímpar.
+			Essas coordenadas são dadas de modo que, quando
+			a somamos com as coordenadas do robô, ele se 
+			movimentará para o local desehjado.
+			
+			
+			Temos as funções:
+			
+			public Direction(String dir)
+			que é o contrutor
+			
+			public Direction(int move, int dir)
+			que recebe a direção e partir dela, preenche o vetor
+		
+		\subsubsection { Item }
+			Item não é uma classe, é uma pasta com as 
+			classes que representam objetos do tipo item
+			(implementam a interface de itens),
+			o tipo item é um empilhável que pode ser pego
+			e destruído pelo robô.
+			Dentre elas, temos a
+			 
+			Crystal.java que é repsonsável pela criação de
+			objetos cristais.
+			
+			a Item.java que é uma interface responsável pela 
+			atribuição dotipo item às classes.
+			
+			e a Stone.java que é responsável pela criação
+			das pedras que são destruíveis e colecionáveis
+			pelos robôs.
+			 
+		\subsubsection { Num.java }
+			É um empilhável do tipo número.
+			Ela possui as seguintes funções:
+			
+			public Num(double num)
+			que é o construtor, que cria o objeto usando
+			um parametro numérico que é recebido.
+    
+    		public double getNumber()
+ 	  		que retorna o valor de Num em formato double.
+    
+    		public String toString()
+			que além de retornar a String com o valor de
+			da variável, manda o texto para as funções IO.
+			
+		\subsubsection { Stack.java }
+			Essa classe administra as pilhas do programa,
+			controlando informações sobre onde está o seu 
+			topo ou qual o seu tamanho.
+			
+			
+		\subsubsection { Stackable.java }
+			É a interface Stackable que se responsabiliza
+			pelos objetos empilháveis. Essa interface não
+			possui características exclusivas como funções
+			e variáveis que seriam herdadas pelas classes
+			desse tipo, é apenas para generalizar o tipo
+			dos empilháveis.
+			
+		\subsubsection { Text.java }
+			É criado o tipo de Stackable Text, onde 
+			poderemos empilhar um texto ou String.
+			Possui as seguintes funções:
+			
+			public String getText()  { return this.text; }
+			que retorna o texto em si em formato String.
+			
+    		public String toString() { return this.text; }
+			que além de retornar a String com o valor de
+			da variável, manda o texto para as funções IO.
+
+
 \end{document}
