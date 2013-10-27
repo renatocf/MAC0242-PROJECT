@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="MAC0242-Project" default="dist" basedir=".">
+
+<project name="MAC0242-Project" default="dist" basedir="."
+    xmlns:ivy="antlib:org.apache.ivy.ant">
     <description>
         A Real Time Strategy game - with Robots
     </description>
@@ -24,6 +26,7 @@
     -->
     
     <property name="bin.dir"           location="bin"    />
+    <property name="lib.dir"           location="lib"    />
     <property name="src.dir"           location="src"    />
     <property name="doc.dir"           location="doc"    />
     <property name="dist.dir"          location="dist"   />
@@ -32,7 +35,7 @@
     <property name="build.classes.dir" location="${build.dir}/classes"/>
 
     <path id="libraries.path">    
-        <fileset dir="${bin.dir}">
+        <fileset dir="${lib.dir}">
             <include name="*.jar"/>
         </fileset>
     </path>
@@ -56,13 +59,8 @@
     <!-- Create MANIFEST.MF file for .jar -->
     <target name="manifest">
         <echo>Creating MANIFEST.MF file</echo>
-
-        <mkdir dir="${build.classes.dir}/${bin.dir}"/>
-        <copy todir="${build.classes.dir}/${bin.dir}" flatten="true">
-            <path refid="libraries.path"/>
-        </copy>
         
-        <manifestclasspath property="manifest.classpath" 
+        <manifestclasspath property="mf.classpath" 
                            jarfile="${jar.file}">
             <classpath refid="libraries.path"/>
         </manifestclasspath> 
@@ -71,7 +69,7 @@
             <attribute name="Built-By"   value="${user.name}"/>
             <attribute name="Created-By" value="${mf.created.by}"/>
             <attribute name="Main-Class" value="${mf.main.class}"/>
-            <attribute name="Class-Path" value="${manifest.classpath}"/>
+            <attribute name="Class-Path" value="${mf.classpath}"/>
             <section name="common">
                 <attribute name  = "Specification-Title"
                            value = "${mf.spec.title}"       />
@@ -79,11 +77,28 @@
                            value = "${mf.spec.vendor}"      />
                 <attribute name  = "Implementation-Tytle"
                            value = "${mf.impl.title}"       />
-                <attribute name  = "Implementation-Vertion"  
+                <attribute name  = "Implementation-Version"  
                            value = "${mf.impl.vertion}"     />
             </section>
         </manifest>
         <echo>MANIFEST.MF Created Successfully</echo>
+    </target>
+
+    <!-- 
+    ===================================================================
+    ==                         DEPENDENCIES                          ==
+    ===================================================================
+    -->
+    <!-- Resolve dependencies -->
+    <target name="resolve">
+        <echo>Resolving dependencies</echo>
+        <ivy:retrieve/>
+        <echo>Dependencies Resolver Successfully</echo>
+    </target>    
+    
+    <!-- Resolve and list dependencies -->
+    <target name="report" depends="resolve">
+        <ivy:report todir="${build.dir}"/>
     </target>
 
     <!-- 
@@ -103,7 +118,7 @@
     </target>
     
     <!-- Compile messages and rules -->
-    <target name="compile" depends="init">
+    <target name="compile" depends="init,resolve">
         <echo>Starting the compilation process</echo>
         <javac destdir = "${build.classes.dir}"
                srcdir  = "${src.dir}"
@@ -116,12 +131,16 @@
     <!-- Compressing files and saving .jar in dist bin -->
     <target name="dist" depends="compile,manifest">
         <echo>Building .jar file</echo>
+        <copy todir="${build.classes.dir}/${lib.dir}" flatten="true">
+            <path refid="libraries.path"/>
+        </copy>
+
         <jar destfile = "${dist.dir}/${ant.project.name}.jar" 
              basedir  = "${build.classes.dir}" 
              manifest = "${build.dir}/MANIFEST.MF">
         </jar>
         <echo>.jar Build Completed Successfully</echo>
-        <echo message="${ant.project.name} Classpath: ${manifest.classpath}"/>
+        <echo message="${ant.project.name} Classpath: ${mf.classpath}"/>
         <!--<echoproperties regex = ".*\.path"/>-->
     </target>
 
