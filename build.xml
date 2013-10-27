@@ -31,6 +31,12 @@
     <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
 
+    <path id="libraries.path">    
+        <fileset dir="${bin.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
     <!-- 
     ===================================================================
     ==                             USAGE                             ==
@@ -50,10 +56,22 @@
     <!-- Create MANIFEST.MF file for .jar -->
     <target name="manifest">
         <echo>Creating MANIFEST.MF file</echo>
+
+        <mkdir dir="${build.classes.dir}/${bin.dir}"/>
+        <copy todir="${build.classes.dir}/${bin.dir}" flatten="true">
+            <path refid="libraries.path"/>
+        </copy>
+        
+        <manifestclasspath property="manifest.classpath" 
+                           jarfile="${jar.file}">
+            <classpath refid="libraries.path"/>
+        </manifestclasspath> 
+
         <manifest file="${build.dir}/MANIFEST.MF">
             <attribute name="Built-By"   value="${user.name}"/>
             <attribute name="Created-By" value="${mf.created.by}"/>
             <attribute name="Main-Class" value="${mf.main.class}"/>
+            <attribute name="Class-Path" value="${manifest.classpath}"/>
             <section name="common">
                 <attribute name  = "Specification-Title"
                            value = "${mf.spec.title}"       />
@@ -89,8 +107,9 @@
         <echo>Starting the compilation process</echo>
         <javac destdir = "${build.classes.dir}"
                srcdir  = "${src.dir}"
-               includeAntRuntime = "no"
-        />
+               includeAntRuntime = "no">
+               <classpath refid="libraries.path"/>
+        </javac>
         <echo>Compilation Completed Successfully</echo>
     </target>
     
@@ -102,6 +121,8 @@
              manifest = "${build.dir}/MANIFEST.MF">
         </jar>
         <echo>.jar Build Completed Successfully</echo>
+        <echo message="${ant.project.name} Classpath: ${manifest.classpath}"/>
+        <!--<echoproperties regex = ".*\.path"/>-->
     </target>
 
     <target name="all" depends="dist" />

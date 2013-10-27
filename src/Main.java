@@ -8,6 +8,10 @@ import stackable.*;
 import parameters.*;
 import robot.Command;
 
+// External Libraries (.jar)
+import gnu.getopt.Getopt;
+import gnu.getopt.LongOpt;
+
 class Main 
 {
     final static String USAGE = 
@@ -46,6 +50,19 @@ class Main
 
     private static void getopt(String[] args)
     {
+        LongOpt[] longopts = 
+        {
+            new LongOpt("help"   , LongOpt.NO_ARGUMENT, null, 'h'),
+            new LongOpt("debug"  , LongOpt.NO_ARGUMENT, null, 'd'),
+            new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
+        };
+        //
+        Getopt g = new Getopt("testprog", args, "hdv", longopts);
+        
+        for (int i = g.getOptind(); i < args.length ; i++)
+            System.out.println("Non option argv element: " 
+                    + args[i] + "\n");
+
         for(String arg: args)
         {
             if(arg.equals("-v")) Debugger.info = true;
