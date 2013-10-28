@@ -22,6 +22,7 @@
     [X] Set automatical getopt.
     [X] Test SEE.
     [X] Test more ALOC, FREE, GET, SET.
+    [X] Implements iterator.
     [ ] Create robots automatically.
     [ ] Refactorate arena.Action.
     [ ] Create menu.
