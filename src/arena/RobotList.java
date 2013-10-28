@@ -55,7 +55,7 @@ public class RobotList implements Game, Iterable<Robot>
         {
             if(r == null) continue;
             speedy.put(r.ID, rand.nextDouble() + r.speed);
-            Debugger.say("[SPEED]", speedy.get(r.ID));
+            Debugger.say("[SPEED][",r,"] ", speedy.get(r.ID));
         }
         
         quickSort(0, emptySpace-1);
@@ -88,7 +88,8 @@ public class RobotList implements Game, Iterable<Robot>
         //    }
         //);
         
-        Debugger.say("[SORT]    ");
+        Debugger.say  ("[SORT]");
+        Debugger.print("    ");
         for(Robot r: armies) 
             if(r != null) Debugger.print(r, ", ");
         Debugger.say();
@@ -187,13 +188,11 @@ public class RobotList implements Game, Iterable<Robot>
         double costA = speedy.get(robotA.ID);
         double costB = speedy.get(robotB.ID);
         
-        Debugger.say("[CMP] costA: ", costA);
-        Debugger.say("[CMP] costB: ", costB);
+        /* Debugger.say("[CMP] costA: ", costA); */
+        /* Debugger.say("[CMP] costB: ", costB); */
          
-//        if(speedy.get(robotA) == null) 
-//            costA = Double.POSITIVE_INFINITY;
-//        if(speedy.get(robotB) == null) 
-//            costB = Double.POSITIVE_INFINITY;
+        if(robotA == null) return true;
+        if(robotB == null) return false;
         return (costA <= costB);
     }
     
