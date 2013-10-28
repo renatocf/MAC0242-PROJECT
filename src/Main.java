@@ -1,4 +1,5 @@
 // Default Libraries
+import java.io.*;
 import java.util.Vector;
 import java.util.Arrays;
 
@@ -17,9 +18,6 @@ class Main
 {
     final private static String USAGE = 
         "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
-    
-    final private static String HELP  = 
-        "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
 
     // Options
     static private boolean help;
@@ -32,7 +30,7 @@ class Main
         String[] args = getopt(argv); // Get options
         
         // Help and Usage
-        if(help)            { System.err.println(HELP);  return; }
+        if(help)            { help();                    return; }
         if(args.length < 2) { System.err.println(USAGE); return; }
         
         // Generate map
@@ -101,5 +99,23 @@ class Main
         
         // Return array without the options
         return Arrays.copyOfRange(argv, g.getOptind(), argv.length);
+    }
+    
+    private static void help()
+    {
+        // Generate and run process
+        try {
+            Process p = Runtime.getRuntime().exec(
+                new String[] {"sh", "-c", "man ./doc/robots.6 < /dev/tty > /dev/tty" });
+            
+            try{ p.waitFor(); }
+            catch(InterruptedException e) {
+                System.err.println("Execution interrupted!");
+            }
+        }
+        catch(IOException e)
+        {
+            System.err.print("[MAIN] Impossible to print man output ");
+        }
     }
 }
