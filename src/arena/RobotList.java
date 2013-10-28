@@ -58,7 +58,7 @@ public class RobotList implements Game, Iterable<Robot>
             Debugger.say("[SPEED]", speedy.get(r.ID));
         }
         
-        mergeSort(0, emptySpace-1);
+        quickSort(0, emptySpace-1);
         //Arrays.<Robot>sort(armies, 0, emptySpace,
         //    new Comparator<Robot>() {
         //        public int compare(Robot robotA, Robot robotB)
@@ -155,6 +155,32 @@ public class RobotList implements Game, Iterable<Robot>
         Debugger.say();
     }
     
+    private void quickSort(int begin, int end)
+    {
+        if(begin < end)
+        {
+            int middle = divide(begin, end);
+            quickSort(begin, middle-1);
+            quickSort(middle +1, end);
+        }
+    }
+    
+    private int divide(int begin,int end)
+    {
+        int     i = begin -1;
+        Robot   x = armies[end];
+        
+        for(int j = begin; j <= end; j++)
+            if(cmpLessRobot(armies[j], x))
+            {
+                Robot t = armies[++i];
+                armies[i] = armies[j];
+                armies[j] = t;
+            }
+        
+        return i;
+    }
+    
     private boolean cmpLessRobot(Robot robotA, Robot robotB)
     {
         /* Comparison function */
@@ -164,11 +190,11 @@ public class RobotList implements Game, Iterable<Robot>
         Debugger.say("[CMP] costA: ", costA);
         Debugger.say("[CMP] costB: ", costB);
          
-        if(speedy.get(robotA) == null) 
-            costA = Double.POSITIVE_INFINITY;
-        if(speedy.get(robotB) == null) 
-            costB = Double.POSITIVE_INFINITY;
-        return costA <= costB;
+//        if(speedy.get(robotA) == null) 
+//            costA = Double.POSITIVE_INFINITY;
+//        if(speedy.get(robotB) == null) 
+//            costB = Double.POSITIVE_INFINITY;
+        return (costA <= costB);
     }
     
     private class RobotListIterator implements Iterator<Robot>
