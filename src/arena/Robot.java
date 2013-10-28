@@ -36,6 +36,7 @@ public class Robot implements Scenario
     protected int forceShield;
     
     // Capacities
+    final protected int speed;
     final protected int maxHP;
     final protected int maxPower;
     final protected int costMove;
@@ -69,6 +70,7 @@ public class Robot implements Scenario
         this.forceShield = 0;
         
         // Capacities
+        this.speed       = 10;
         this.maxHP       = 12;
         this.maxPower    = 24;
         this.costMove    = 3;
