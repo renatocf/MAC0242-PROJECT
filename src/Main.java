@@ -85,10 +85,10 @@ class Main
                     Debugger.info = true;
                     break;
                 //
-                case 1: weather = Weather.ARTICAL;
-                case 2: weather = Weather.DESERTIC;
-                case 3: weather = Weather.TROPICAL;
-                case 4: weather = Weather.CONTINENTAL;
+                case 1: weather = Weather.ARTICAL;     break;
+                case 2: weather = Weather.DESERTIC;    break;
+                case 3: weather = Weather.TROPICAL;    break;
+                case 4: weather = Weather.CONTINENTAL; break;
                 //
                 case '?': // getopt() will print the error
                     break;
