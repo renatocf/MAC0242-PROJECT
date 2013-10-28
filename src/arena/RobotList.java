@@ -20,11 +20,13 @@ public class RobotList implements Game
     
     RobotList(int nPlayers) 
     {
+        Debugger.say("[RobotList] Builded");
         armies = new Robot[nPlayers * ROBOTS_NUM_MAX];
     }
     
     void add(Robot r)
     {
+        if(r == null) return;
         armies[emptySpace++] = r;
         speedy.put(r.ID, 1.0 * r.speed);
     }
@@ -48,6 +50,17 @@ public class RobotList implements Game
         for(Robot r: armies) 
             if(r == null) break; 
             else emptySpace++;
+    }
+
+    Robot next()
+    {
+        nextRobot++;
+        if(nextRobot == emptySpace) 
+        { 
+            nextRobot = -1; 
+            return null;
+        }
+        return armies[nextRobot];
     }
     
     private void mergeSort(int begin, int end)
