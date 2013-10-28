@@ -384,15 +384,97 @@
 	e entendimento do código.
 	
 	\subsection{Arena}
-		O package "Arena" cuida da 
+		O package "Arena" cuida das classes que envolvem os
+		terrenos e a arena em si, bem como o classe que cuida
+		da autorização de execução de determinadas funções que
+		necessitam da consultoria da arena para serem executadas.
+		
 		\subsubsection{ Action.java }
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		    Aqui é onde encontramos a implementação das funções
+		    utilizadas diretamente pelos robôs, tais como 
+		    {\textcolor{NavyBlue}{HIT},
+		    {\textcolor{NavyBlue}{}
+		    
 		\subsubsection{ Appearence.java }
+		    É uma estrutura chamada Enum, onde dizemos que as
+		    aparências podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{DIRT},
+            {\textcolor{NavyBlue}{GRASS},
+            {\textcolor{NavyBlue}{ROCKY},
+            {\textcolor{NavyBlue}{ICE},
+            {\textcolor{NavyBlue}{WATER},
+            {\textcolor{NavyBlue}{SAND},
+            {\textcolor{NavyBlue}{JUNGLE} e
+            {\textcolor{NavyBlue}{TUNDRA}.
+		
 		\subsubsection{ Map.java }
+		    A classe mapa vai cuidar da matriz de terrenos, e 
+		    podemos assumir que cada mapa terá um clima diferente.
+		    
+		    É nessa classe que também criamos os times a partir
+		    do parâmetro número do time passado, onde temos uma 
+		    matriz representando jogadores de determinado time.
+		    
+		    Também inserimos exércitos e removemos Scenários.
+		    Como nas seguintes funções:
+		    
+		    {\textcolor{NavyBlue}{public Scenario
+		    removeScenario(int i, int j)}
+		    que eliminará os Scenários do terreno com as coordenadas
+		    passadas como parâmetro. Essa função serve para o caso 
+		    de termos ataque a árvores e até mesmo a morte de robôs,
+		    já que estes também são do tipo Scenario.
+		    
+		    {\textcolor{NavyBlue}{public Robot insertArmy(String
+		    name, int player, int ID, int i, int j, String pathToProg)}
+            que irá inserir um robô de acordo com os parâmetros
+            recebidos, como nome do robô, a qual jogador ele pertence,
+            o seu ID e as suas coordenadas.
+            Essa função irá criar esse robô e implementá-lo no como 
+            um Scenario nas coordenadas indicadas da arena.
+		    
 		\subsubsection{ Robot.java }
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		
 		\subsubsection{ Terrain.java }
+		    Cada terrain é um empilhável e possui um tipo de 
+		    rugosidade, uma aparência e possivelmente um
+		    Scenario.
+		    
+		    A maioria de suas funções, além do construtor ( que
+		    irá receber a aparência e a partir dela, determinar 
+		    o tipo de rugosidade ), tem-se basicamente getters,
+		    setters e removedores de características da classe.
+		    É válido lembrar que utilizamos polimorfismo para o
+		    cnstrutor dessa classe, pois há vários tipos dessa
+		    função que recebem diferentes tipos e números de
+		    argumentos.
+		    
+		
 		\subsubsection{ Type.java }
+		    Assim como em Appearence, type também é um Enum, só
+		    que dessa vez, representa os tipos de terreno da
+		    arena. Sendo eles, por enquanto:
+		    {\textcolor{NavyBlue}{NORMAL} e 
+            {\textcolor{NavyBlue}{ROUGH}.
+		
 		\subsubsection{ Weather.java }						
+		    Assim como Appearence e Type, Weather é do tipo Enum,
+		    representando desta vez. os vários tipos de clima da
+		    arena. Sendo eles:
+		    
+		    {\textcolor{NavyBlue}{CONTINENTAL},
+            {\textcolor{NavyBlue}{ARTICAL},
+            {\textcolor{NavyBlue}{DESERTIC} e
+            {\textcolor{NavyBlue}{TROPICAL}.
+		
 		\subsubsection{ World.java }				
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx	
+		
+		
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+		
 				
 	\subsection{Exception}
 		O package "Exception" cuida dos lançamentos de exceção
@@ -408,15 +490,34 @@
 		 
 	\subsection{Operation}
 		\subsubsection{ Operation.java }
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
 		
 	\subsection{Parameters}
 		\subsubsection{ Debugger.java }
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		
 		\subsubsection{ Game.java     }
-		\subsubsection{ Verbosity.java}
+		    É uma interface que detém as características do jogo 
+		    que serão passadas para muitas outras classes.
+		    Tais como a velocidade da animação, o tamanho do mapa,
+		    o número máximo de robôs, entre outras.
+		    
+		    Ela foi criada para ter um amior controle das 
+		    características configuracionais do jogo e caso
+		    necessitem ser alteradas, todas estarão no mesmo lugar.
+		    
 		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
-		
+		    O parser recebe um vetor de trincas (comando, argumento,
+		    label), analisa as variáveis conforme o tipo correspondente 
+		    no java e monta uma classe com o mesmo nome do programa em 
+		    assembly.
+		    
+		    Adicionalmente, o programa cria um arquivo "Parser.xml"
+		    para ser rodado pelo Ant e compilar todos os códigos no
+		    diretório do package.
+				
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\subsection{Random}
@@ -438,10 +539,30 @@
 		    características de um deserto.
 		    
 		\subsubsection{ Jungle.java }
+		    Gera um cenário com árvores, rochas, pedras,
+		    cristais e bases. Também possui um rio gerado
+		    e distribuido probabilisticamente em meio a 
+		    arena. 
+		    
+		    Esse rio possui partes de água mais rasas
+		    e outras mais profundas, são as chamadas
+		    deep water e water respectivamente.
 		
 		\subsubsection{ RamdomMap.java }
-		
+    		É responsável pela geração do mapa. Recebe 
+    		parâmetros indicando qual será o tipo de
+    		clima e os associa com o respectivo tipo
+    		de mapa.
+    		
+    		Em sua outra função, ela gera o mapa, colocando
+    		os determinados símbolos nos seus terrenos.
+    		
 		\subsubsection{ Theme.java }
+		    Essa é uma interface que padroniza todos os 
+		    tipos de temas, como JUNGLE, DESERT e WINTER.
+		    Esse tipo de dado possui uma função específica
+		    que retorna uma matriz representando o mapa
+		    criado. 
 		
 		\subsubsection{ Winter.java }
 		    Gera um cenário com árvores, rochas, pedras, 
@@ -467,17 +588,17 @@
 		    
 		    Temos a seguinte função:
 		    
-		    {\textcolor{blue}{ private static final void 
+		    {\textcolor{NavyBlue}{ private static final void 
 		    calculate(RVM rvm, Operation op) }
 		    que cuida da generalização do trabalho realizado 
 		    na pilhaEssa classe controla as funções que interpretam
 		    os comandos aritméticos que o usuário passar na
 		    pilha de comandos, como por exemplo: 
-		    {\textcolor{blue}{ADD} ( Soma ),
-		    {\textcolor{blue}{SUB} ( Subtração),
-		    {\textcolor{blue}{DIV} ( Divisão ), 
-		    {\textcolor{blue}{MUL} ( Multiplicação ) e 
-		    {\textcolor{blue}{MOD} ( Resto ).
+		    {\textcolor{NavyBlue}{ADD} ( Soma ),
+		    {\textcolor{NavyBlue}{SUB} ( Subtração),
+		    {\textcolor{NavyBlue}{DIV} ( Divisão ), 
+		    {\textcolor{NavyBlue}{MUL} ( Multiplicação ) e 
+		    {\textcolor{NavyBlue}{MOD} ( Resto ).
 		    Tudo isso é manipulado na pilha de dados,
 		    recebemos os valores de lá, e mandamos a resposta
 		    para o topo da mesma. de dados pelas funções aritméticas.
@@ -486,12 +607,12 @@
 		    Essa função tem como objetivo checar o terreno em
 		    si e sua visinhança, bem como 
 		    
-		    {\textcolor{blue}{  static void ITEM(RVM rvm) }
+		    {\textcolor{NavyBlue}{  static void ITEM(RVM rvm) }
 		    que dá um pop na pilha caso o topo seja um terreno
 		    e empilha os itens contidos nesse terreno na pilha
 		    de dados.
 		    
-		    {\textcolor{blue}{  static void SEEK(RVM rvm) }
+		    {\textcolor{NavyBlue}{  static void SEEK(RVM rvm) }
 		    que verifica se o topo é um Stackable e desempilha
 		    , depois verifica se o topo é um Around, e desempilha.
 		    Depois, percorre a visinhança do próprio robô 
@@ -522,11 +643,12 @@
 		    
 		    Dentre esses comandos que ela interpreta, estão também
 		    aqueles que podem ser executados pelos robôs, como
-		    {\textcolor{blue}{MOVE}, 
-		    {\textcolor{blue}{HIT}, 
-		    {\textcolor{blue}{DRAG}, 
-		    {\textcolor{blue}{DROP}, 
-		    entre outros.
+		    {\textcolor{NavyBlue}{MOVE}, 
+		    {\textcolor{NavyBlue}{HIT}, 
+		    {\textcolor{NavyBlue}{DRAG}, 
+		    {\textcolor{NavyBlue}{DROP}, 
+		    {\textcolor{NavyBlue}{SEE} e 
+		    {\textcolor{NavyBlue}{LOOK}.
 		    
 		\subsubsection{ Func.java }
 		    É responsável pelas funções CALL e RET que controlam
@@ -534,14 +656,14 @@
 		    executados.
 		    Temos as seguintes funções:
 		    
-		    {\textcolor{blue}{ static void CALL(RVM rvm, 
+		    {\textcolor{NavyBlue}{ static void CALL(RVM rvm, 
 		    Stackable arg) }
 		    Atualiza o PC para o valor que foi solicitado pelo
 		    por algum dos tipos de Jump, esse valor pode ser
 		    tanto uma label quanto um número que representa
 		    a linha do programa criado pelo usuário.
 		    
-		    {\textcolor{blue}{ static void RET(RVM rvm) }
+		    {\textcolor{NavyBlue}{ static void RET(RVM rvm) }
 		    Essa função trabalha em conjunto com o CALL,
 		    já que ela recupera o valor que o PC tinha antes de
 		    ser alterado pelo próprio CALL.
@@ -551,7 +673,7 @@
 		    os comandos IO (Input/Output) que o usuário 
 		    passar na pilha de comandos, que no caso, só
 		    temos o print (
-		    {\textcolor{blue}{ static void PRN(RVM rvm) }
+		    {\textcolor{NavyBlue}{ static void PRN(RVM rvm) }
 		    ). 
 		    
 		    Nessa função, desempilhamos o topo da pilha e
@@ -561,10 +683,10 @@
 		    Assim como as classes Arit e IO, essa classe
 		    também executa os comandos passados pelo usuário,
 		    só que, desta vez, com funções Jump. Como o 
-		    {\textcolor{blue}{JIT}  (Jump If True), 
-		    {\textcolor{blue}{JIF}  (Jump If False), 
-		    {\textcolor{blue}{JMP}  (JuMP) e
-		    {\textcolor{blue}{JCMP} (Jump CoMPare),
+		    {\textcolor{NavyBlue}{JIT}  (Jump If True), 
+		    {\textcolor{NavyBlue}{JIF}  (Jump If False), 
+		    {\textcolor{NavyBlue}{JMP}  (JuMP) e
+		    {\textcolor{NavyBlue}{JCMP} (Jump CoMPare),
 		    atuando de tal forma que
 		    o PC é atualizado para o endereço passado.
 		    
@@ -576,7 +698,7 @@
 		    
 		    Temos as seguintes funções:
 		    
-		    {\textcolor{blue}{ static void STO(RVM rvm, 
+		    {\textcolor{NavyBlue}{ static void STO(RVM rvm, 
 		    Stackable position) }
 		    que armazena o que está no topo da pilha de dados,
 		    na memória de acordo com o parâmetro recebido, que
@@ -584,7 +706,7 @@
 		    ser salvo o dado. E após esse processo, retira o
 		    dado da pilha de dados.
 		    
-		    {\textcolor{blue}{ static void RCL(RVM rvm, 
+		    {\textcolor{NavyBlue}{ static void RCL(RVM rvm, 
 		    Stackable position) }
 		    que recupera o que foi armazenado em um determinado
 		    endereço de memória, que é passado pelo usuário como
@@ -595,33 +717,54 @@
 		    no programa, como o END (que não faz mais nada além de
 		    finalizar o programa) e NOPE (que não realiza nada).
 		    
-		    Em: {\textcolor{blue}{ static void END(RVM rvm) }}
+		    Em: {\textcolor{NavyBlue}{ static void END(RVM rvm) }}
 		    atualizamos o PC para -1 (local onde não há nenhum
 		    outro comando) o que faz com que o programa seja
 		    finalizado.
 		    
 		\subsubsection{ RVM.java }
+		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		    Essa classe, mesmo que indiretamente, controla a
+		    pilha de dados e de comados do usuário, o PC, 
+		
 		\subsubsection{ Stk.java }
 		    Cuida das funções que mexem diretamente com a
 		    memória, como 
-		    {\textcolor{blue}{PUSH}, 
-		    {\textcolor{blue}{POP} e 
-		    {\textcolor{blue}{DUP}.
+		    {\textcolor{NavyBlue}{PUSH}, 
+		    {\textcolor{NavyBlue}{POP} e 
+		    {\textcolor{NavyBlue}{DUP}.
+		    Que implementam um dado no topo da pilha, o retiram
+		    e duplicam o q está no topo, respectivamente.
 		    
-		    
-		
 		\subsubsection{ Syst.java }
+		    Essa é a classe que controla os comandos destinados
+		    aos próprios robôs, como por exemplo
+		    {\textcolor{NavyBlue}{HIT},
+		    {\textcolor{NavyBlue}{DRAG},
+		    {\textcolor{NavyBlue}{DROP},
+		    {\textcolor{NavyBlue}{MOVE},
+		    {\textcolor{NavyBlue}{SEE} e
+		    {\textcolor{NavyBlue}{LOOK}.
+		    
+		    Sendo que 
+		    {\textcolor{NavyBlue}{private static void action(RVM rvm,
+		    String type)} guarda o tipo de comando passado da
+		    pilha de dados, cria uma {\textcolor{NavyBlue}{Operação} 
+		    op e verifica se essa operação é válida, caso seja, 
+		    coloca na pilha de dados as informações necessárias 
+		    que serão lançadas como resposta.
+		    
 		\subsubsection{ Tests.java }
 		    Controla as funções que executam os comandos do
 		    usuário e que são do tipo comparativas.
 		    Entre elas, estão 
-		    {\textcolor{blue}{CMP}, 
-		    {\textcolor{blue}{EQ}, 
-		    {\textcolor{blue}{NE}, 
-		    {\textcolor{blue}{LE}, 
-		    {\textcolor{blue}{LT},
-		    {\textcolor{blue}{GE}, 
-		    {\textcolor{blue}{GT}
+		    {\textcolor{NavyBlue}{CMP}, 
+		    {\textcolor{NavyBlue}{EQ}, 
+		    {\textcolor{NavyBlue}{NE}, 
+		    {\textcolor{NavyBlue}{LE}, 
+		    {\textcolor{NavyBlue}{LT},
+		    {\textcolor{NavyBlue}{GE}, 
+		    {\textcolor{NavyBlue}{GT}
 		    que dão pop no topo da pilha de dados, duas vezes,
 		    e compara os dois dados de acordo com a função
 		    especificada. 
@@ -633,6 +776,31 @@
 		    um Num de conteúdo 0. 
 		
 		\subsubsection{ Var.java }
+		    Essa classe cuida dos comandos voltados a criação de
+		    variáveis no programa do usuário. Tais como alocação
+		    de memóiria, liberação de memória, receber e alterar
+		    o valor da variável.
+		    Temos as seguintes funções:
+		    
+		    {\textcolor{NavyBlue}{static void ALOC(RVM rvm, 
+		    Stackable name)}
+		    que recebe o nome da variável como parâmtro e 
+		    verifica na RVM se não existe outra com outro nome.
+		    Caso negativo, é criada uma variável com valor null.
+		    
+		    {\textcolor{NavyBlue}{static void FREE(RVM rvm, 
+		    Stackable name)}
+		    que remove a variável com o nome name da RVM.
+		    
+		    {\textcolor{NavyBlue}{static void SET(RVM rvm, 
+		    Stackable name)}
+		    que pega o valor do topo da pilha e armazena na
+		    variável com o nome name, caso ela exista.
+		    
+		    {\textcolor{NavyBlue}{static void GET(RVM rvm, 
+		    Stackable name)}
+		    que pega o valor da variável e o coloca no topo da
+		    pilha de dados.
 		
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -673,15 +841,13 @@
 		    
 		    Tem-se as seguintes funções:
 		    
-		    {\textcolor{blue}{ public int getHP() }
+		    {\textcolor{NavyBlue}{ public int getHP() }
 		    Retorna o número de vidas do presentes no robô.
 		    
-            {\textcolor{blue}{ public int takeDamage (int damage) }
+            {\textcolor{NavyBlue}{ public int takeDamage (int damage) }
             Essa é a função que cuida dos danos recebidos 
             pelo objeto, recebendo o dano como parâmetro
             para poder subtrair vidas do cenário.
-            
-            public String toString   ()
 		    
 		\subsubsection{ Tree.java }
 		    Assim como a pedra, a árvore recebe danos e os subtrai
@@ -711,14 +877,14 @@
 			
 			Nele encontramos as seguintes funções:
 			
-			{\textcolor{blue}{ public Addr(int address) }
+			{\textcolor{NavyBlue}{ public Addr(int address) }
 			que é o construtor de objetos do tipo Addr.
 			
-			{\textcolor{blue}{ public int getAddress() }
+			{\textcolor{NavyBlue}{ public int getAddress() }
 			que retorna o valor do endereço como um 
 			inteiro.
 		
-			{\textcolor{blue}{ public String toString() }
+			{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
 		
@@ -730,20 +896,20 @@
 			
 			Nela, encontramos as seguintes funções:
 			
-			{\textcolor{blue}{ public Around(Terrain[] seeing) }
+			{\textcolor{NavyBlue}{ public Around(Terrain[] seeing) }
    
     
-    		{\textcolor{blue}{ public String[] indexToPosition
+    		{\textcolor{NavyBlue}{ public String[] indexToPosition
     		(int index) }
    			é responsável pelo retorno da String de coordenadas 
    			que o robô deve seguir para chegar a sua visinhança.
    			Ela recebe como parâmetro, o número de casas de 
    			distância que o robô pode atacar/ver.
 		    
-		    {\textcolor{blue}{ public void print() }
+		    {\textcolor{NavyBlue}{ public void print() }
     		função para modo debuger!
     
-		    {\textcolor{blue}{ public String toString() }
+		    {\textcolor{NavyBlue}{ public String toString() }
 		    devolve a String "around", incluindo para saídas de IO.
 
 		
@@ -760,14 +926,14 @@
 			
 			Nela, temos as seguintes funções:
 					
-			{\textcolor{blue}{ public Attack(String s) }
+			{\textcolor{NavyBlue}{ public Attack(String s) }
    			um construtor que monta o objeto a partir da
    			String passada.
 			
-			{\textcolor{blue}{ public String getAttack() }
+			{\textcolor{NavyBlue}{ public String getAttack() }
 			retorna o tipo de ataque em forma de String.
 		
-			{\textcolor{blue}{ public String toString() }
+			{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.	
 		
@@ -777,20 +943,20 @@
 			movimentação e ataque. Pelo fato de a arena
 			ser formada por bases hexagonais, temos as
 			direções 
-			{\textcolor{blue}{E}  (leste), 
-			{\textcolor{blue}{NE} (nordeste), 
-			{\textcolor{blue}{NW} (noroeste),
-			{\textcolor{blue}{W}  (oeste), 
-			{\textcolor{blue}{SW} (sudoeste) e 
-			{\textcolor{blue}{SE} (sudeste).
+			{\textcolor{NavyBlue}{E}  (leste), 
+			{\textcolor{NavyBlue}{NE} (nordeste), 
+			{\textcolor{NavyBlue}{NW} (noroeste),
+			{\textcolor{NavyBlue}{W}  (oeste), 
+			{\textcolor{NavyBlue}{SW} (sudoeste) e 
+			{\textcolor{NavyBlue}{SE} (sudeste).
 			Sempre que um objeto do tipo Direction for
 			chamado pelo usuário, este deve ser retratado
 			com o símbolo 
-			{\textcolor{blue}{''->''}
+			{\textcolor{NavyBlue}{''->''}
 			antes do seu conteúdo.
 			
 			Por exemplo, 
-			{\textcolor{blue}{''->WE''}.
+			{\textcolor{NavyBlue}{''->WE''}.
 			
 			A classe Direction possui armazenará o movimento
 			como uma matriz de coordenadas, que terá
@@ -808,23 +974,24 @@
 			public Direction(String dir)
 			que é o contrutor
 			
-			{\textcolor{blue}{ public Direction(int move, int dir) } 
-			que recebe a direção e a partir dela, preenche a
-			matriz com as respectivas direções.
+			{\textcolor{NavyBlue}{ public Direction(int move, 
+			int dir) } 
+			que recebe a direção e a partir dela, preenche a matriz 
+			com as respectivas direções.
 			
-			{\textcolor{blue}{ public String toString() }
+			{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
-			
-			{\textcolor{blue}{ public int[] get(int row) }
+			static void ALOC(RVM rvm, Stackable name)
+			{\textcolor{NavyBlue}{ public int[] get(int row) }
 			Devolve um vetor com a direção a ser seguida, se
 			a linha em que ele está for par, devolvemos a
 			"( ) Tree".
 			%"(♣) Tree".
 			1ª linha da matriz, caso contrário, a 2ª.
 			
-			{\textcolor{blue}{  private void set(int even\_x, int even\_y, 
-			int odd\_x, int odd\_y) }
+			{\textcolor{NavyBlue}{  private void set(int even\_x, 
+			int even\_y, int odd\_x, int odd\_y) }
 			preenche a matriz com as direções que são recebidas
 			como parâmetro.
 		
@@ -836,15 +1003,15 @@
 			e destruído pelo robô.
 			Dentre elas, temos a
 			 
-			{\textcolor{blue}{Crystal.java}
+			{\textcolor{NavyBlue}{Crystal.java}
 			 que é repsonsável pela criação de
 			objetos cristais.
 			
-			a {\textcolor{blue}{Item.java}
+			a {\textcolor{NavyBlue}{Item.java}
 			que é uma interface responsável pela atribuição 
 			do tipo item às classes.
 			
-			e a {\textcolor{blue}{Stone.java} que é 
+			e a {\textcolor{NavyBlue}{Stone.java} que é 
 			responsável pela criação das pedras que são 
 			destruíveis e colecionáveis pelos robôs.
 			 
@@ -852,14 +1019,14 @@
 			É um empilhável do tipo número.
 			Ela possui as seguintes funções:
 			
-			{\textcolor{blue}{ public Num(double num) }
+			{\textcolor{NavyBlue}{ public Num(double num) }
 			que é o construtor, que cria o objeto usando
 			um parametro numérico que é recebido.
     
-    		{\textcolor{blue}{ public double getNumber() }
+    		{\textcolor{NavyBlue}{ public double getNumber() }
  	  		que retorna o valor de Num em formato double.
   
-    		{\textcolor{blue}{ public String toString()}
+    		{\textcolor{NavyBlue}{ public String toString()}
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
 			
@@ -881,10 +1048,10 @@
 			poderemos empilhar um texto ou String.
 			Possui as seguintes funções:
 			
-			{\textcolor{blue}{public String getText() }
+			{\textcolor{NavyBlue}{public String getText() }
 			que retorna o texto em si em formato String.
 			
-    		{\textcolor{blue}{ public String toString() }
+    		{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
 

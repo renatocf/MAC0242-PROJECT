@@ -41,7 +41,7 @@ public class Map implements Game
         //Vector<Command> PROG = user.upload();
         //
         //Robot bender = new Robot("Bender", 8, 9, PROG);
-        //Robot c3po   = new Robot("C3PO", 9, 8, PROG);
+        //Robot c3po   = new Robot("C3PO"  , 9, 8, PROG);
         //
         Robot[][] initial = new Robot[nPlayers][ROBOTS_NUM_INITIAL];
         
