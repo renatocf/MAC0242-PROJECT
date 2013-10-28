@@ -459,8 +459,71 @@
 		característica empilhável dos empilháveis.
 		
 		\subsubsection { Addr.java }
+			Os objetos do tipo Addr são endereços de
+			determinados valores em um vetor. Portanto
+			são representados por inteiros.
+			
+			Nele encontramos as seguintes funções:
+			
+			public Addr(int address)
+			que é o construtor de objetos do tipo Addr.
+			
+			public int getAddress()
+			que retorna o valor do endereço como um 
+			inteiro.
+		
+			public String toString()
+			que além de retornar a String com o valor de
+			da variável, manda o texto para as funções IO.
+		
 		\subsubsection { Around.java }
+			Tem como característica uma matriz de Strings
+			que representam as direções as quais os robôs
+			devem seguir para chegar aos determinados
+			pontos visinhos.
+			
+			Nela, encontramos as seguintes funções:
+			
+			public Around(Terrain[] seeing)
+   
+    
+    		public String[] indexToPosition(int index)
+   			é responsável pelo retorno da String de coordenadas 
+   			que o robô deve seguir para chegar a sua visinhança.
+   			Ela recebe como parâmetro, o número de casas de 
+   			distância que o robô pode atacar/ver.
+		    
+		    public void print()
+    		função para modo debuger!
+    
+		    public String toString()
+		    devolve a String "around", incluindo para saídas de IO.
+
+		
 		\subsubsection { Attack.java }
+			Os objetos do tipo Attack são os tipos de
+			ataque que o robô pode realizar. Por enquanto,
+			temos o ataque MEELE que é a curta distancia(
+			somente poderá atacar o que estiver nas casas
+			visinhas a sua) ou RANGED que é a uma distância
+			determinada pelas características do robô (caso
+			o robo tenha um poder de atacar a 3 de distância,
+			ele irá atingir o que está a até 3 casas de
+			distância da sua).
+			
+			Nela, temos as seguintes funções:
+					
+			public Attack(String s)
+   			é um construtor que monta o objeto a partir da
+   			String passada.
+			
+			public String getAttack()
+			retorna o tipo de ataque em forma de String.
+		
+			public String toString()
+			que além de retornar a String com o valor de
+			da variável, manda o texto para as funções IO.	
+		
 		\subsubsection { Direction.java }
 			Os objetos do tipo Direction são do tipo que
 			orientará os robôs na arena em relação a 
@@ -482,7 +545,8 @@
 			Essas coordenadas são dadas de modo que, quando
 			a somamos com as coordenadas do robô, ele se 
 			movimentará para o local desehjado.
-			
+			Obs.: Quando a linha é par, usamos a 1ª linha da
+			matriz, caso contrário, usamos a 2ª.
 			
 			Temos as funções:
 			
@@ -490,7 +554,21 @@
 			que é o contrutor
 			
 			public Direction(int move, int dir)
-			que recebe a direção e partir dela, preenche o vetor
+			que recebe a direção e a partir dela, preenche a
+			matriz com as respectivas direções.
+			
+			public String toString()
+			que além de retornar a String com o valor de
+			da variável, manda o texto para as funções IO.
+			
+			public int[] get(int row)
+			Devolve um vetor com a direção a ser seguida, se
+			a linha em que ele está for par, devolvemos a
+			1ª linha da matriz, caso contrário, a 2ª.
+			
+			private void set(int even\_x, int even\_y, int odd\_x, int odd\_y)
+			preenche a matriz com as direções que são recebidas
+			como parâmetro.
 		
 		\subsubsection { Item }
 			Item não é uma classe, é uma pasta com as 
