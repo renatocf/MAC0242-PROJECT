@@ -1,0 +1,196 @@
+."---------------------------------------------------------------------
+.TH MAC0242-Project.jar 6 "2013-10-27" "Robots_Battle-1.0"
+."---------------------------------------------------------------------
+
+.SH NAME 
+."---------------------------------------------------------------------
+MAC0242-Project.jar - Programming for Fight!
+
+.SH SYNOPSIS
+."---------------------------------------------------------------------
+MAC0242-Project.jar
+.B [-h] [-d|-v] [--artical|--desertic|--tropical|--continental]
+.I prog_p1.asm prog_p2.asm
+
+Program your robots, drag the unstable crystals and throw them 
+in the enemy base!
+
+.P
+To run the program, resize your term screen to a better
+resolution. As default, a 15x15 arena will be created, but
+our algorithms are optimazed for more (wait for future phases!).
+
+See 
+.B OPTIONS 
+for more details.
+
+.SH OPTIONS
+."---------------------------------------------------------------------
+.TP
+.BR \-d,\ --debug
+Run the game in the debug mode, displaying a minimap
+with the random scenario and the assembly commands run 
+for each robot, timestep by timestep.
+
+.TP 
+.BR \-h,\ --help
+Display the help message.
+
+.TP
+.BR \-v,\ --verbose
+Alias for debug. See above.
+
+.TP
+.BR --artical
+A Frozen map with a frozen lake.
+
+.TP
+.BR --desertic
+Fill the sand with blood and oil.
+
+.TP
+.BR --tropical
+Cross the river and battle in the jungle.
+
+.TP
+.BR --continental
+Untill when this will be just a calm field?
+
+.SS INPUT
+."------------------------
+
+To start running the program, first of all it's 
+necessary to upload your programs. Some examples
+are avaiable in the directory test/. No special 
+extension is required, but we recommend using .asm 
+as default.
+
+To upload a program, run:
+
+    $ sh reload.sh path/to/your/prog.asm
+
+Finally, to execute, run:
+
+    $ java -jar dist/MAC0242-Project.jar \\
+      program_player1 programa_player2 
+
+.B IMPORTANT: 
+Do not to move the .jar file from its directory, 
+or the dependencies may do the program not work.
+
+.SS OUTPUT
+."------------------------
+
+In this phase, a textual user interface will 
+display the game. The draws will be shown in
+an animation. Each player has its own color:
+black for p1, red for pl2.
+
+In order to debug, just run with the flag 
+.B '-d'.
+
+.SH FILES
+."---------------------------------------------------------------------
+
+A brief description of the directory structure and files.
+For more info about the source code, see the online javadoc.
+For general explanations about the program, see the LaTeX doc.
+
+.TP 
+.I bin/parser.pl
+Perl binary file with the wrapper between Perl and Java.
+It is used be 
+.I reload.sh
+to create the Java code from the assembly programs.
+
+.TP 
+.I bin/robot.pl
+Old executable version of the project, to test the 
+prototyped Robot Virtual Machine (RVM).
+
+.TP 
+.I build.xml
+Used by Apache™ Ant in order to compile the program. 
+
+.TP 
+.I doc/
+All documentation files, including javadoc, LaTeX and
+this Man page.
+
+.TP 
+.I ivy.xml
+Dependency file required by Apache™ Ivy. It is used
+with Ant to resolve dependencies.
+
+.TP 
+.I lib/Cortex.pm
+Perl module with the assembly parser. It is used for
+both perl binaries as a scanner/lexer of the .asm 
+programs.
+
+.TP 
+.I lib/RVM/
+Old package with the perl implementation of the Robot
+Virtual Machine (RVM), no longer used since the Project
+phase one.
+
+.TP 
+.I lib/*.jar
+Dependency files uploaded by the main program. They 
+are automatically downloaded by Apache™ Ivy before
+the source compilation.
+
+.TP 
+.I LICENSE
+Apache™ License Version 2.0
+
+.TP 
+.I publish.sh
+Auxiliar shell script with the aim of publish on 
+branch 'gh_pages' to publish again the javadoc on 
+the Project's online webpage.
+
+.TP 
+.I README.md
+Readme for basic info about install/run and 
+Project contributors.
+
+.TP
+.I reload.sh
+Program to upload the assemnbly programs and 
+recompile the program binary, allowing the player
+to use that assembly code. For more info, see 
+section 
+.B INPUT
+
+.TP
+.I src/
+All source files with the package and class 
+structures. For detailed info, check the 
+javadoc on the web.
+
+.TP
+.I test/
+Sample with many RVM assembly programs, testing
+the multiple aspects of the Virtual Machine.
+
+.TP
+.I TODO.txt
+TODO list with the completed tasks and what is
+still to be done.
+
+.SH AUTHOR
+."---------------------------------------------------------------------
+Karina Suemi Awoki, IME-USP.
+Renato Cordeiro Ferreira, IME-USP.
+Vinícius Nascimento Silva, IME-USP.
+
+.SH SEE ALSO
+."---------------------------------------------------------------------
+.P
+.B Project webpage
+.I http://renatocf.github.io/MAC0242-PROJECT/
+
+.P 
+.B IME-USP
+.I http://www.ime.usp.br/

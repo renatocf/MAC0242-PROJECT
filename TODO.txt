@@ -19,6 +19,7 @@
     [X] Test jumps with address.
     [X] Test CALL and RET.
     [X] Create commands ALOC and FREE.
+    [X] Set automatical getopt.
     [ ] Test SEE.
     [ ] Test more ALOC, FREE, GET, SET.
     [ ] Create robots automatically.
