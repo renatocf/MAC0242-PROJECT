@@ -499,9 +499,6 @@
 		\subsubsection{ Game.java     }
 		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
 		
-		\subsubsection{ Verbosity.java}
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
-		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
 		    O parser recebe um vetor de trincas (comando, argumento,
@@ -534,13 +531,30 @@
 		    características de um deserto.
 		    
 		\subsubsection{ Jungle.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		    Gera um cenário com árvores, rochas, pedras,
+		    cristais e bases. Também possui um rio gerado
+		    e distribuido probabilisticamente em meio a 
+		    arena. 
+		    
+		    Esse rio possui partes de água mais rasas
+		    e outras mais profundas, são as chamadas
+		    deep water e water respectivamente.
 		
 		\subsubsection{ RamdomMap.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
-		
+    		É responsável pela geração do mapa. Recebe 
+    		parâmetros indicando qual será o tipo de
+    		clima e os associa com o respectivo tipo
+    		de mapa.
+    		
+    		Em sua outra função, ela gera o mapa, colocando
+    		os determinados símbolos nos seus terrenos.
+    		
 		\subsubsection{ Theme.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+		    Essa é uma interface que padroniza todos os 
+		    tipos de temas, como JUNGLE, DESERT e WINTER.
+		    Esse tipo de dado possui uma função específica
+		    que retorna uma matriz representando o mapa
+		    criado. 
 		
 		\subsubsection{ Winter.java }
 		    Gera um cenário com árvores, rochas, pedras, 
@@ -754,6 +768,31 @@
 		    um Num de conteúdo 0. 
 		
 		\subsubsection{ Var.java }
+		    Essa classe cuida dos comandos voltados a criação de
+		    variáveis no programa do usuário. Tais como alocação
+		    de memóiria, liberação de memória, receber e alterar
+		    o valor da variável.
+		    Temos as seguintes funções:
+		    
+		    {\textcolor{NavyBlue}{static void ALOC(RVM rvm, 
+		    Stackable name)}
+		    que recebe o nome da variável como parâmtro e 
+		    verifica na RVM se não existe outra com outro nome.
+		    Caso negativo, é criada uma variável com valor null.
+		    
+		    {\textcolor{NavyBlue}{static void FREE(RVM rvm, 
+		    Stackable name)}
+		    que remove a variável com o nome name da RVM.
+		    
+		    {\textcolor{NavyBlue}{static void SET(RVM rvm, 
+		    Stackable name)}
+		    que pega o valor do topo da pilha e armazena na
+		    variável com o nome name, caso ela exista.
+		    
+		    {\textcolor{NavyBlue}{static void GET(RVM rvm, 
+		    Stackable name)}
+		    que pega o valor da variável e o coloca no topo da
+		    pilha de dados.
 		
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -935,7 +974,7 @@
 			{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
-			
+			static void ALOC(RVM rvm, Stackable name)
 			{\textcolor{NavyBlue}{ public int[] get(int row) }
 			Devolve um vetor com a direção a ser seguida, se
 			a linha em que ele está for par, devolvemos a
