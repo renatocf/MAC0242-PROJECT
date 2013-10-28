@@ -6,7 +6,7 @@ import java.util.Random;
 
 class Winter implements Theme
 {
-    private Random rand = new Random(42);
+    private Random rand = new Random();
     
     public char[][] generateMatrix(int side)
     {    

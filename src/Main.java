@@ -28,7 +28,7 @@ class Main
         // Generate map
         //World.genesis(2, Weather.CONTINENTAL );
         World.genesis(2, Weather.ARTICAL     ); 
-        /* World.genesis(2, Weather.DESERTIC    ); */
+//        World.genesis(2, Weather.DESERTIC    );
         //World.genesis(2, Weather.TROPICAL    );
         
         try{

@@ -1,85 +1,104 @@
+        ALOC    [ROBOTI]
+        ALOC    [ROBOTJ]
+        ALOC    [I]
+        ALOC    [J]
+        ALOC    [VERT]
+        ALOC    [Walk]
         PUSH    1
-        STO     102
+        SET     [I]
         PUSH    13
-        STO     103
+        SET     [J]
         PUSH    1
-        STO     104     
-start:
+        SET     [VERT]
         PUSH    position
         ASK
         POP
-        STO     100
-        STO     101
-        RCL     101
-        RCL     100
-        RCL     103
-        RCL     102
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        
+start:
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    lookForCrystal
+        GET     [J]
+        GET     [I]
+        GET     [ROBOTJ]
+        GET     [ROBOTI]                
         CALL    mvtw
+        SET     [Walk]
+        SET     [ROBOTI]                
+        SET     [ROBOTJ]
+        GET     [Walk]
         JIT     start
-        CALL    arrive
-        JIF     evade
-        JMP     continue
+        JMP     arrive
+back:   JIF     evade
+        JMP     next
 
-continue:
-        RCL     104
+end:    NOP
+        JMP     end
+        
+next:
+        GET     [VERT]
         JIT     up
-        RCL     103
+        GET     [J]
         PUSH    1
         EQ
         JIT     right
         JMP     left
-
+        
 left:
         PUSH    1
-        STO     103
+        SET     [J]
         PUSH    1
-        STO     104
+        SET     [VERT]
         JMP     start
         
 right:
         PUSH    13
-        STO     103
+        SET     [J]
         PUSH    1
-        STO     104
+        SET     [VERT]
         JMP     start
 
 up:
-        RCL     102
+        GET     [I]
         PUSH    3
         ADD
-        STO     102
+        SET     [I]
         PUSH    0
-        STO     104
+        SET     [VERT]
         JMP     start
+        
+       
 
 arrive:
-        RCL     100
-        RCL     102
+        GET     [I]
+        GET     [ROBOTI]
         NE
-        JIT     false
-        RCL     101
-        RCL     103
+        JIT     fal
+        GET     [J]
+        GET     [ROBOTJ]
         NE      
-        JIT     false
+        JIT     fal
         PUSH    1
-        RET
-false:  PUSH    0
-        RET
+        JMP     back
+fal:    PUSH    0
+        JMP     back
 
 evade:
-        RCL     100
-        RCL     102
+        GET     [I]
+        GET     [ROBOTI]
         EQ
         JIT     sameI
-        RCL     101
-        RCL     103
+        GET     [J]
+        GET     [ROBOTJ]
         EQ      
         JIT     sameJ
         JMP     notInLine
         
 sameI:
-        RCL     101
-        RCL     103
+        GET     [ROBOTJ]
+        GET     [J] 
         SUB
         PUSH    0
         GT
@@ -89,24 +108,24 @@ sameI:
 evadeR:
         PUSH    ->SE
         MOVE
-        JIT     start
+        JIT     CorrectSE
         PUSH    ->NE
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectNE
+        JMP     end
 
 evadeL:
         PUSH    ->NW
         MOVE
-        JIT     start
+        JIT     CorrectNW
         PUSH    ->SW
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectSW
+        JMP     end
                 
 sameJ:
-        RCL     100
-        RCL     102
+        GET     [ROBOTI]
+        GET     [I]
         SUB
         PUSH    0
         GT
@@ -116,24 +135,24 @@ sameJ:
 evadeU:
         PUSH    ->NE
         MOVE
-        JIT     start
+        JIT     CorrectNE
         PUSH    ->NW
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectNW
+        JMP     end
 
 evadeD:
         PUSH    ->SW
         MOVE
-        JIT     start
+        JIT     CorrectSW
         PUSH    ->SE
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectSE
+        JMP     end
 
 notInLine:
-        RCL     101
-        RCL     103
+        GET     [ROBOTJ]
+        GET     [J]
         SUB
         PUSH    0
         GT
@@ -143,45 +162,346 @@ notInLine:
 moveR:  
         PUSH    ->E
         MOVE
-        JIT     start
+        JIT     CorrectE
         PUSH    ->SE
         MOVE
-        JIT     start
+        JIT     CorrectSE
         PUSH    ->NE
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectNE
+        JMP     end
         
 moveL:  
         PUSH    ->W
         MOVE
-        JIT     start
+        JIT     CorrectW
         PUSH    ->SW
         MOVE
-        JIT     start
+        JIT     CorrectSW
         PUSH    ->NW
         MOVE
-        JIT     start
-        JMP     fim
+        JIT     CorrectNW
+        JMP     end
 
-fim:    NOP
-        JMP     fim
+CorrectE:
+        POP
+        GET     [ROBOTJ]
+        PUSH    1
+        ADD
+        SET     [ROBOTJ]
+        JMP     start
+
+CorrectNE:
+        POP
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        SUB
+        SET     [ROBOTI]
+        JMP     start
+        
+CorrectNW:
+        POP
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        SUB
+        SET     [ROBOTI]
+        JMP     start        
+        
+CorrectW:
+        POP
+        GET     [ROBOTJ]
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        JMP     start
+        
+CorrectSW:
+        POP
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        ADD
+        SET     [ROBOTI]
+        JMP     start
+        
+CorrectSE:
+        POP
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        ADD
+        SET     [ROBOTI]
+        JMP     start
+
+lookForCrystal:
+        ALOC    [nCrystal]
+        ALOC    [lookI]
+        ALOC    [lookJ]
+        SET     [lookI]
+        SET     [lookJ]        
+        SEE
+        PUSH    {crystal}
+        SEEK
+        DUP
+        JIF     retlfc
+        SET     [nCrystal]
+llfc:   POP
+        CALL    printPosition
+        GET     [nCrystal]
+        PUSH    1
+        SUB
+        DUP
+        JIF     retlfc
+        SET     [nCrystal]
+        JMP     llfc
+        
+retlfc: POP
+        JMP     freeLFC
+
+freeLFC:
+        FREE    [nCrystal]
+        FREE    [lookI]
+        FREE    [lookJ]
+        RET
 
 
+printPosition:
+        DUP
+        PUSH    ->
+        EQ
+        JIT     printRobotPosition
+
+        DUP
+        PUSH    ->E
+        EQ
+        JIT     printEPosition
+
+        DUP
+        PUSH    ->NE
+        EQ
+        JIT     printNEPosition
+
+        DUP
+        PUSH    ->NW
+        EQ
+        JIT     printNWPosition
+
+        DUP
+        PUSH    ->W
+        EQ
+        JIT     printWPosition
+        
+        DUP
+        PUSH    ->SW
+        EQ
+        JIT     printSWPosition
+        
+        DUP
+        PUSH    ->SE
+        EQ
+        JIT     printSEPosition
+
+printRobotPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PRN
+        GET     [lookJ]
+        PRN
+        RET
+
+printEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        ADD
+        PRN
+        RET
+        
+printNEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PUSH    2
+        MOD
+        JIF     evenNE
+        JMP     oddNE
+
+printNWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PUSH    2
+        MOD
+        JIF     evenNW
+        JMP     oddNW
+        
+printWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        SUB
+        PRN
+        RET
+        
+printSWPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PUSH    2
+        MOD
+        JIF     evenSW
+        JMP     oddSW
+        
+printSEPosition:
+        POP
+        PUSH    crystalxy
+        PRN
+        GET     [lookI]
+        PUSH    2
+        MOD
+        JIF     evenSE
+        JMP     oddSE        
+    
+evenNE:
+        GET     [lookI]
+        PUSH    1
+        SUB
+        PRN
+        GET     [lookJ]
+        PRN
+        RET
+
+oddNE:
+        GET     [lookI]
+        PUSH    1
+        SUB
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        ADD
+        PRN
+        RET
+
+evenNW:
+        GET     [lookI]
+        PUSH    1
+        SUB
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        SUB
+        PRN
+        RET
+        
+oddNW:
+        GET     [lookI]
+        PUSH    1
+        SUB
+        PRN
+        GET     [lookJ]
+        PRN
+        RET
+            
+evenSW:
+        GET     [lookI]
+        PUSH    1
+        ADD
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        SUB
+        PRN
+        RET
+
+
+oddSW:
+        GET     [lookI]
+        PUSH    1
+        ADD
+        PRN
+        GET     [lookJ]
+        PRN
+        RET
+
+evenSE:
+        GET     [lookI]
+        PUSH    1
+        ADD
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        RET
+        
+oddSE:
+        GET     [lookI]
+        PUSH    1
+        ADD
+        PRN
+        GET     [lookJ]
+        PUSH    1
+        ADD
+        PRN            
+        RET
+        
 mvtw:
-        STO     10
-        STO     11
-        STO     12
-        STO     13
-        RCL     12
-        RCL     10
+        ALOC    [RI]
+        ALOC    [RJ]
+        ALOC    [PI]
+        ALOC    [PJ]
+        ALOC    [DI]
+        ALOC    [DJ]
+        SET     [RI]
+        SET     [RJ]
+        SET     [PI]
+        SET     [PJ]
+        GET     [RI]
+        GET     [PI]
         SUB
-        STO     10
-        RCL     13
-        RCL     11
+        SET     [DI]
+        GET     [RJ]
+        GET     [PJ]
         SUB
-        STO     11
-        RCL     10
+        SET     [DJ]
+        GET     [DI]
         DUP     
         PUSH    0
         EQ
@@ -196,7 +516,7 @@ mvtw:
         JIT     iNeg
 
 iZero:  POP
-        RCL     11
+        GET     [DJ]
         DUP
         PUSH    0
         EQ
@@ -207,11 +527,11 @@ iZero:  POP
         JMP     w
 
 
-iPlus:  RCL     11
+iPlus:  GET     [DJ]
         PUSH    0
         EQ
         JIT     iPjZero
-        RCL     11
+        GET     [DJ]
         PUSH    0
         GT
         JIT     iPjNeg
@@ -221,31 +541,31 @@ iNeg:   PUSH    1
         PUSH    2
         SUB
         MUL
-        RCL     11
+        GET     [DJ]
         PUSH    0
         EQ
         JIT     iNjZero
-        RCL     11
+        GET     [DJ]
         PUSH    0
         GT
         JIT     iNjNeg
         JMP     iNjPlus
 
 iPjZero:POP
-        RCL     12
+        GET     [RI]
         PUSH    2
         MOD
         JIF     ne
         JMP     nw
        
 iNjZero:POP
-        RCL     12
+        GET     [RI]
         PUSH    2
         MOD
         JIF     se
         JMP     sw
        
-iPjNeg: RCL     11
+iPjNeg: GET     [DJ]
         PUSH    1
         PUSH    2
         SUB
@@ -258,7 +578,7 @@ iPjNeg: RCL     11
         JIT     e
         JMP     ne
 
-iPjPlus:RCL     11
+iPjPlus:GET     [DJ]
         DIV
         PUSH    1
         PUSH    2
@@ -267,7 +587,7 @@ iPjPlus:RCL     11
         JIT     w
         JMP     nw
 
-iNjNeg: RCL     11
+iNjNeg: GET     [DJ]
         PUSH    1
         PUSH    2
         SUB
@@ -280,7 +600,7 @@ iNjNeg: RCL     11
         JIT     e
         JMP     se
 
-iNjPlus:RCL     11
+iNjPlus:GET     [DJ]
         DIV
         PUSH    1
         PUSH    2
@@ -288,38 +608,130 @@ iNjPlus:RCL     11
         GT      
         JIT     w
         JMP     sw
-
-
-        
-
- 
-
+       
 e:      PUSH    ->E    
         MOVE
-        RET
+        DUP
+        JIT     updateE
+        JMP     false
 
 ne:     PUSH    ->NE    
         MOVE
-        RET     
+        DUP
+        JIT     updateNE
+        JMP     false     
 
 nw:     PUSH    ->NW    
         MOVE
-        RET
+        DUP
+        JIT     updateNW
+        JMP     false
 
 w:      PUSH    ->W    
         MOVE
-        RET
+        DUP
+        JIT     updateW
+        JMP     false
 
 sw:     PUSH    ->SW    
         MOVE
-        RET
+        DUP
+        JIT     updateSW
+        JMP     false
 
 se:     PUSH    ->SE    
         MOVE
-        RET
+        DUP
+        JIT     updateSE
+        JMP     false
 
 ret:    POP
-        PUSH 0
-        RET
+false:  GET     [RJ]
+        GET     [RI]
+        PUSH    0
+        JMP     return
+
+updateE:
+        POP
+        GET     [RJ]
+        PUSH    1
+        ADD
+        GET     [RI]
+        PUSH    1
+        JMP     return
+
+updateNE:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        GET     [RJ]
+        ADD
+        GET     [RI]
+        PUSH    1
+        SUB
+        PUSH    1
+        JMP     return
         
-     
+updateNW:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        GET     [RJ]
+        ADD
+        PUSH    1
+        SUB
+        GET     [RI]
+        PUSH    1
+        SUB
+        PUSH    1
+        JMP     return        
+        
+updateW:
+        POP
+        GET     [RJ]
+        PUSH    1
+        SUB
+        GET     [RI]
+        PUSH    1
+        JMP     return
+        
+updateSW:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        GET     [RJ]
+        ADD
+        PUSH    1
+        SUB
+        GET     [RI]
+        PUSH    1
+        ADD
+        PUSH    1
+        JMP     return        
+        
+updateSE:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        GET     [RJ]
+        ADD
+        GET     [RI]
+        PUSH    1
+        ADD
+        PUSH    1
+        JMP     return
+                
+return:
+        FREE    [RI]
+        FREE    [RJ]
+        FREE    [PI]
+        FREE    [PJ]
+        FREE    [DI]
+        FREE    [DJ]
+        RET        
+        
+        
