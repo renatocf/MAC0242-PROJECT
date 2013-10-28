@@ -73,12 +73,15 @@ public class World implements Game
         
         armies.sort(); // Organize armies accordingly to
                        // their priorities.
-        while( (turn = armies.next()) != null )
+        for(Robot r: armies)
         {
+            // Set global turn
+            turn = r;
+            
             // Debug
             Debugger.print("\n[" + turn.toString() + "]");
             Debugger.say  ("[" + time + "ts]");
-
+            
             try { turn.run(); }
             catch (Exception e) 
             {
