@@ -23,13 +23,16 @@ import parameters.*;
 public class World implements Game
 {
     // Global settings
+    private static int id = 1;
     private static int time = 0;
     private static int nPlayers;
     
     // Global characteristics
     private static Map       map;
     private static Robot     turn;
-    private static Robot[][] armies;
+    
+    /* Robot list */
+    private static RobotList armies;
     
     // Graphical User Interface (GUI)
     private static Textual GUI;
@@ -40,7 +43,7 @@ public class World implements Game
         // Set game configurations
         nPlayers = np;
         map      = new Map(w);
-        armies   = new Robot[nPlayers][ROBOTS_NUM_MAX];
+        armies   = new RobotList(nPlayers);
         
         // Create map
         Robot[][] initial = map.genesis(nPlayers);
@@ -48,7 +51,12 @@ public class World implements Game
         // Set up initial robots
         for(int i = 0; i < nPlayers; i++)
             for(int j = 0; j < ROBOTS_NUM_INITIAL; j++)
-                armies[i][j] = initial[i][j];
+            {
+                Debugger.say("[i:",i,"],[j:",j,"]");
+                if(initial[i][j] == null)
+                    Debugger.say("[World] É null");
+                armies.add(initial[i][j]);
+            }
         
         // Initializes GUI
         GUI = new Textual(map);
@@ -62,27 +70,42 @@ public class World implements Game
         // Debug
         String pre = "\n[WORLD] ====================== ";
         Debugger.say(pre + time + "ts");
-
-        for(int i = 0; i < nPlayers; i++)
+        
+        armies.sort(); // Organize armies accordingly to
+                       // their priorities.
+        while( (turn = armies.next()) != null )
         {
-            for(int j = 0; j < ROBOTS_NUM_MAX; j++)
+            // Debug
+            Debugger.print("\n[" + turn.toString() + "]");
+            Debugger.say  ("[" + time + "ts]");
+
+            try { turn.run(); }
+            catch (Exception e) 
             {
-                // No army found in the list: continue
-                if(armies[i][j] == null) continue;
-                else turn = armies[i][j];
-                
-                // Debug
-                Debugger.print("\n[" + turn.toString() + "]");
-                Debugger.say  ("[" + time + "ts]");
-                
-                try { turn.run(); }
-                catch (Exception e) 
-                {
-                    System.out.println
-                        ("[World]["+ turn.toString() +"] " + e);
-                }
+                System.out.println
+                    ("[World]["+ turn.toString() +"] " + e);
             }
         }
+        //for(int i = 0; i < nPlayers; i++)
+        //{
+        //    for(int j = 0; j < ROBOTS_NUM_MAX; j++)
+        //    {
+        //        // No army found in the list: continue
+        //        if(armies[i][j] == null) continue;
+        //        else turn = armies[i][j];
+        //        
+        //        // Debug
+        //        Debugger.print("\n[" + turn.toString() + "]");
+        //        Debugger.say  ("[" + time + "ts]");
+        //        
+        //        try { turn.run(); }
+        //        catch (Exception e) 
+        //        {
+        //            System.out.println
+        //                ("[World]["+ turn.toString() +"] " + e);
+        //        }
+        //    }
+        //}
         if(!(Debugger.info)) GUI.paint();
     }
     
@@ -96,22 +119,16 @@ public class World implements Game
         (int player, String name, int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
-        for(int id = 0; id < ROBOTS_NUM_MAX; id++)
-            if(armies[player-1][id] == null)
-            {
-                Robot r = map.insertArmy(name, player, id, 
-                                         i, j, pathToProg);
-                armies[player-1][id] = r; break;
-            }
+        Robot r = map.insertArmy(name, player, id++, 
+                                 i, j, pathToProg);
+        armies.add(r);
     }
     
-    public static void removeArmy(Robot died)
+    public static void removeArmy(Robot dead)
         throws SegmentationFaultException
     {
-        int player  = died.team; 
-        int robotID = died.ID; 
-        map.removeScenario(died.i, died.j);
-        armies[player-1][robotID] = null;
+        map.removeScenario(dead.i, dead.j);
+        armies.remove(dead);
     }
     
     public static void destroy(int i, int j)
