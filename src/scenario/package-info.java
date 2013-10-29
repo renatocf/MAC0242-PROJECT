@@ -4,4 +4,4 @@
  * in a map for making it more iteractive.
  * </b>
  */
-package parameters;
+package scenario;
