@@ -3,7 +3,7 @@ package random;
 /**
  * <b>Weather</b><br>
  * Enumeration of all types of themes
- * defined to the scenario.
+ * that can be generated to the maps.
  *
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
