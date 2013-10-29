@@ -13,6 +13,9 @@ public class RandomMap
     int         side;
     char[][]    matrix;
         
+
+    // Construct a RandomMap object, accordingly with the 
+    // theme chosen and the size of the map.    
     public RandomMap(Weather style, int nPlayer, int side)
     {
         this.style = style;
@@ -26,6 +29,8 @@ public class RandomMap
         this.matrix = t.generateMatrix(this.side);        
     }
     
+    // This Method returns a random terrain matrix 
+    // accordingly with the theme, with the itens and the scenarios 
     public Terrain[][] generateMap()
     {
         Terrain[][] map = new Terrain[this.side][this.side];
@@ -67,6 +72,7 @@ public class RandomMap
         return map;
     }
     
+    //This method returns a matrix of characters for debug proposes
     public char[][] getMatrix()
     {   
         return this.matrix;

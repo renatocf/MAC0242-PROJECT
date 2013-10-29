@@ -8,6 +8,8 @@ class CalmField implements Theme
 {
     private Random rand = new Random();
     
+    // Generate random char matrix of the
+    // CalmField theme for RandomMap  
     public char[][] generateMatrix(int side)
     {    
         char[][] map = new char[side][side];
@@ -24,6 +26,8 @@ class CalmField implements Theme
         return map;
     }
     
+    // Put trees in a char matrix map with
+    // 2.5% of probability
     private char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -34,6 +38,8 @@ class CalmField implements Theme
         return map;
     }
     
+    // Put rocks in a char matrix map with
+    // 2.5% of probability
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -43,7 +49,10 @@ class CalmField implements Theme
 
         return map;
     }
-    
+
+    // Put crystals in a char matrix map with
+    // probability accordingly with the map size
+    // (bigger map, lesser crystals probability)         
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -60,6 +69,8 @@ class CalmField implements Theme
         return map;
     }
 
+    // Put stones in a char matrix map with
+    // 5% of probability
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -70,6 +81,8 @@ class CalmField implements Theme
         return map;
     }
     
+    // Put two bases in a char matrix map 
+    // in the opposity corners
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());

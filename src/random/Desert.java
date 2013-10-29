@@ -8,6 +8,8 @@ class Desert implements Theme
 {
     private Random rand = new Random();
     
+    // Generate random char matrix of the
+    // Desert theme for RandomMap  
     public char[][] generateMatrix(int side)
     {    
         char[][] map = generateSands(side); 
@@ -18,7 +20,8 @@ class Desert implements Theme
         return map;
     }
     
-    
+    //Create a char matrix representing a
+    //dirty terrain with sand spots
     char[][] generateSands(int side)
     {
         
@@ -39,10 +42,8 @@ class Desert implements Theme
             int tamMax          = (int) (balancedRand() * side/5);
             int tam             = tamStart;
             boolean shrinking   = false;
-            //System.out.println("(" + tamStart + ", " + tamMax + ")");
             while (tam > 0 && (!shrinking || tam > tamEnd))
             {
-                //System.out.println(spotI + ", " + spotJ);
                 for(int j = spotJ - tam/2; j < tam+spotJ - tam/2; j++)
                 {
                     if(spotI < side 
@@ -69,7 +70,8 @@ class Desert implements Theme
         return spots;   
     }   
     
-    
+    // Put rocks in a char matrix map with
+    // 10% of probability
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -85,6 +87,9 @@ class Desert implements Theme
         return map;
     }
     
+    // Put crystals in a char matrix map with
+    // probability accordingly with the map size
+    // (bigger map, lesser crystals probability)   
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -99,7 +104,11 @@ class Desert implements Theme
             }                    
         return map;
     }
-
+    
+    // Put stones in a char matrix map with
+    // 10% of probability if the terrain is
+    // a dirt and 5% of probability if its a
+    // sand
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -113,6 +122,8 @@ class Desert implements Theme
         return map;
     }
     
+    // Put two bases in a char matrix map 
+    // in the opposity corners
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
@@ -125,7 +136,9 @@ class Desert implements Theme
         map[x][y] = 'B';
         return map;
     }
-    
+   
+   //Returns a double rand number in [0,1]
+   //with less variance 
    private double balancedRand()
    {
         double a = rand.nextFloat();
