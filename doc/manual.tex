@@ -1,0 +1,110 @@
+\documentclass[a4paper]{article}
+
+% Linguagem
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+
+% Pacotes matemáticos
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+% Fontes e identaçãp
+\usepackage{setspace}                   % espaçamento flexível
+\usepackage{indentfirst}                % indentação do primeiro parágrafo
+\usepackage[fixlanguage]{babelbib}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
+% Pacotes para cores e modelos
+\usepackage[a4paper,top=3.0cm,bottom=2.0cm,left=3.0cm,right=2.0cm]{geometry} \usepackage[usenames,svgnames,dvipsnames]{xcolor}
+\usepackage[pdftex,plainpages=false,pdfpagelabels,pagebackref,
+            colorlinks=true,citecolor=DarkGreen,linkcolor=DarkRed,
+            urlcolor=DarkRed,filecolor=DarkGreen,
+            bookmarksopen=true]{hyperref}
+
+% Pacotes para itens
+\usepackage{calc}  
+\usepackage{enumitem}  
+
+\title  {Projeto de Laboratório de Programação II - Fase 2}
+\author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
+\date   {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\bigskip
+
+{\textcolor{NavyBlue}{\Huge ..Manual do Usuário..}
+
+\newpage
+
+{\textcolor{NavyBlue}{\LARGE INSTALAÇÃO }
+                
+\bigskip
+                            
+Para compilar o jogo, digite:    
+                                            
+\$ \textit {ant}                                   
+
+\bigskip
+\bigskip
+\bigskip
+
+{\textcolor{NavyBlue}{\LARGE JOGO }
+
+O  jogo consiste  em programar uma  série de 
+robôs para batalharem, num estilo de RTS 2x2.
+Para  tanto,  os robôs devem  ter suas ações 
+programadas. Eles irão executá-las até que o 
+jogo acabe ou sejam destruídos.
+
+Nesta fase do desenvolvimento, a programação 
+deve  ser  feita   em  linguagem  *Assembly*,
+desenvolvida  especialmente  para  a máquina 
+virtual  em *Java*. 
+
+Os programas devem  ser criados com extensão 
+*.asm*.   Exemplos   estão   disponíveis  no 
+diretório `test/` junto ao código-fonte. 
+
+Para  utilizá-los  como  programas  para  os 
+robôs, compile-os com:
+
+\$ \textit {sh reload.sh path/para/o/arquivo.asm}
+
+\bigskip
+                                            
+E para iniciar o jogo: 
+                                            
+\$ \textit{ java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2 } 
+
+\bigskip
+
+Caso queira executar o programa em modo 
+Debugger, digite:
+
+\$ \textit {java -jar dist/MAC0242-Project.jar }
+      programa\_jogador\_1 programa\_jogador\_2 -v
+
+\bigskip
+
+{\textcolor{NavyBlue}{\LARGE DOCUMENTAÇÃO }
+
+A   documentação    do   código-fonte   está 
+disponível no formato [Javadoc][4] e no
+formato relatório Latex para compreendimento
+do código.
+
+
+
+
+
+
+
+\end{document}
