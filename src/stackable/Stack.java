@@ -3,6 +3,7 @@ package stackable;
 // Libraries
 import exception.*;
 
+@Deprecated
 public class Stack
 {
     private int size = 20, top = 0;
