@@ -10,8 +10,7 @@ import stackable.item.*;
  * <b>Random Map Generator</b><br>
  * Generate an hexagonal matrix with 
  * an specified theme, with dimensions
- * side x side and a 'weather' style.
- * @see arena.Weather
+ * side x side and a 'Weather' style.
  * @see arena.World
  * @see gui
  *
