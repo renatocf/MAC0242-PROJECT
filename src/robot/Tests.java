@@ -76,21 +76,18 @@ final public class Tests
                 rvm.DATA.push(yes);
             else rvm.DATA.push(no);
             
-            if(Verbosity.v)
+            String pre = "    [EQ] "; 
+            if(s1.equals(s2))
             {
-                String pre = "    [EQ] "; 
-                if(s1.equals(s2))
-                {
-                    Verbosity.debug(pre + "YES");
-                    Verbosity.debug(pre + "stack: " + s1); 
-                    Verbosity.debug(pre + "stack: " + s2);
-                }
-                else
-                {
-                    Verbosity.debug(pre + "NO");
-                    Verbosity.debug(pre + "stack: " + s1); 
-                    Verbosity.debug(pre + "stack: " + s2);
-                }
+                Debugger.say(pre + "YES");
+                Debugger.say(pre + "stack: " + s1); 
+                Debugger.say(pre + "stack: " + s2);
+            }   
+            else
+            {   
+                Debugger.say(pre + "NO");
+                Debugger.say(pre + "stack: " + s1); 
+                Debugger.say(pre + "stack: " + s2);
             }
         }
         else
