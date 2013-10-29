@@ -12,12 +12,12 @@
     ===================================================================
     -->
     <property name  = "mf.created.by"   value = 
-        "Karina Suemi, Renato Cordeiro, Vinicius Silva"   />
-    <property name  = "mf.spec.title"   value = "Project" />
-    <property name  = "mf.spec.vendor"  value = "MAC0242" />
-    <property name  = "mf.impl.title"   value = "MAC0242" />
-    <property name  = "mf.impl.vertion" value = "MAC0242" />
-    <property name  = "mf.main.class"   value = "Main"    />
+        "Karina Suemi, Renato Cordeiro, Vinicius Silva"    />
+    <property name  = "mf.spec.title"   value = "Project"  />
+    <property name  = "mf.spec.vendor"  value = "MAC0242"  />
+    <property name  = "mf.impl.title"   value = "MAC0242"  />
+    <property name  = "mf.impl.vertion" value = "MAC0242"  />
+    <property name  = "mf.main.class"   value = "main.Main"/>
     
     <!-- 
     ===================================================================
@@ -137,7 +137,8 @@
     <!-- Compressing files and saving .jar in dist bin -->
     <target name="dist" depends="compile,manifest">
         <echo>Building .jar file</echo>
-        <copy todir="${build.classes.dir}/${lib.dir}" flatten="true">
+        <echo>${lib.dir}</echo>
+        <copy todir="${build.classes.dir}/lib" flatten="true">
             <path refid="libraries.path"/>
         </copy>
 
@@ -146,7 +147,6 @@
              manifest = "${build.dir}/MANIFEST.MF">
         </jar>
         <echo>.jar Build Completed Successfully</echo>
-        <!--<echoproperties regex = ".*\.path"/>-->
     </target>
 
     <target name="all" depends="dist" />
@@ -158,7 +158,7 @@
     -->
     <!-- Generate javadocs for current project into ${doc.dir} -->
     <target name="javadoc" depends="init">
-        <description>generate documentation</description>
+        <description>Generate documentation</description>
         <javadoc sourcepath  = "${src.dir}" 
                  author      = "yes"
                  package     = "yes"
