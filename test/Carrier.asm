@@ -782,8 +782,8 @@ attackI:
         SUB
         PUSH    0
         GT  
-        JIT     attackE
-        JMP     attackW        
+        JIT     attackW
+        JMP     attackE        
                     
 Jsame:  GET     [J]
         GET     [ROBOTJ]
