@@ -20,6 +20,7 @@ public interface Scenario
      * @param damage Total of points to
      *               be subtracted from 
      *               the HP.
+     * @return Scenario's remining HP.
      */
     public int    takeDamage (int damage);
     
