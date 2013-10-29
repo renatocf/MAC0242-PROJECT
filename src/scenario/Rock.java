@@ -1,5 +1,9 @@
 package scenario;
 
+/**
+ * <b>Scenario - Rock</b><br>
+ * Just an obstacle (that may be destroyed).
+ */
 public class Rock implements Scenario 
 {
     private int HP = 10;
