@@ -1,11 +1,23 @@
 package random;
 
-import arena.Terrain;
-import arena.Appearence;
-import arena.Weather;
-import stackable.item.*;
+// Libraries
 import scenario.*;
+import arena.Terrain;
+import arena.Weather;
+import arena.Appearence;
+import stackable.item.*;
 
+/**
+ * <b>Random Map Generator</b><br>
+ * Generate an hexagonal matrix with 
+ * an specified theme, with dimensions
+ * side x side and a 'weather' style.
+ * @see arena.Weather
+ * @see arena.World
+ * @see gui
+ *
+ * @author Vinicius Silva
+ */
 public class RandomMap
 {
     Weather     style;
@@ -13,9 +25,17 @@ public class RandomMap
     int         side;
     char[][]    matrix;
         
-
-    // Construct a RandomMap object, accordingly with the 
-    // theme chosen and the size of the map.    
+    /**
+     * Default constructor.<br>
+     * Construct a RandomMap object, accordingly with the 
+     * theme chosen and the size of the map.
+     * 
+     * @param style   Weather of the map
+     * @param nPlayer Number of players
+     * @param side    Size of the side of the 
+     *                matrix
+     * @see arena.Weather
+     */
     public RandomMap(Weather style, int nPlayer, int side)
     {
         this.style = style;
@@ -29,8 +49,11 @@ public class RandomMap
         this.matrix = t.generateMatrix(this.side);        
     }
     
-    // This Method returns a random terrain matrix 
-    // accordingly with the theme, with the itens and the scenarios 
+    /**
+     * Creates a random terrain matrix accordingly 
+     * to the theme, items and scenarios.
+     * @return Random terrain matrix
+     */
     public Terrain[][] generateMap()
     {
         Terrain[][] map = new Terrain[this.side][this.side];
@@ -41,7 +64,6 @@ public class RandomMap
         else if (style == Weather.TROPICAL) a = Appearence.GRASS;
         else if (style == Weather.DESERTIC) a = Appearence.DIRT; 
         else                                a = Appearence.GRASS;
-        
         
         for(int i = 0; i < this.side; i++)
             for(int j = 0; j < this.side; j++)
@@ -72,7 +94,12 @@ public class RandomMap
         return map;
     }
     
-    //This method returns a matrix of characters for debug proposes
+    /**
+     * This method returns a matrix of characters,
+     * with debug purposes.
+     * @return Matrix of characters representing
+     *         the entire map.
+     */
     public char[][] getMatrix()
     {   
         return this.matrix;

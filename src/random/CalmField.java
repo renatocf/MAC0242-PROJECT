@@ -4,12 +4,25 @@ package random;
 import java.lang.Math;
 import java.util.Random;
 
+/**
+ * <b>Random Map Theme - Calm Field</b><br>
+ * Generate a matrix with a scenario
+ * of theme 'Calm Field'.
+ *
+ * @author Vinicius Silva
+ */
 class CalmField implements Theme
 {
     private Random rand = new Random();
     
-    // Generate random char matrix of the
-    // CalmField theme for RandomMap  
+    /**
+     * Generate random char matrix of the
+     * CalmField theme for RandomMap.
+     * @param  side Size of the side of the 
+     *              matrix
+     * @return Random char matrix with the
+     *         class theme
+     */
     public char[][] generateMatrix(int side)
     {    
         char[][] map = new char[side][side];
@@ -26,8 +39,12 @@ class CalmField implements Theme
         return map;
     }
     
-    // Put trees in a char matrix map with
-    // 2.5% of probability
+    /**
+     * Put trees in a char matrix map with
+     * 2.5% of probability.
+     * @param  map Map matrix
+     * @return Map matrix with trees
+     */
     private char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -38,8 +55,12 @@ class CalmField implements Theme
         return map;
     }
     
-    // Put rocks in a char matrix map with
-    // 2.5% of probability
+    /**
+     * Put rocks in a char matrix map with
+     * 2.5% of probability.
+     * @param  map Map matrix
+     * @return Map matrix with rocks.
+     */
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -50,9 +71,13 @@ class CalmField implements Theme
         return map;
     }
 
-    // Put crystals in a char matrix map with
-    // probability accordingly with the map size
-    // (bigger map, lesser crystals probability)         
+    /**
+     * Put crystals in a char matrix map with
+     * probability accordingly to the map size
+     * (bigger map, lesser crystals probability).
+     * @param  map Map matrix
+     * @return Map matrix with crystals
+     */
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -69,8 +94,12 @@ class CalmField implements Theme
         return map;
     }
 
-    // Put stones in a char matrix map with
-    // 5% of probability
+    /**
+     * Put stones in a char matrix map with
+     * 5% of probability.
+     * @param  map Map matrix
+     * @return Map matrix with stones
+     */
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -81,8 +110,12 @@ class CalmField implements Theme
         return map;
     }
     
-    // Put two bases in a char matrix map 
-    // in the opposity corners
+    /**
+     * Put two bases in a char matrix map 
+     * in the opposity corners.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());

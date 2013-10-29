@@ -1,6 +1,11 @@
 package random;
 
-// Theme interface is used to gather Map Themes
+/**
+ * <b>Theme</b><br>
+ * Simple interface to gather Map Themes.
+ *
+ * @author Vinicius Silva
+ */
 interface Theme
 {
     char [][] generateMatrix(int side);

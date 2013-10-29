@@ -4,12 +4,25 @@ package random;
 import java.lang.Math;
 import java.util.Random;
 
+/**
+ * <b>Random Map Theme - Jungle</b><br>
+ * Generate a matrix with a scenario
+ * of theme 'Jungle'.
+ *
+ * @author Vinicius Silva
+ */
 class Jungle implements Theme
 {
     private Random rand = new Random(42);
     
-    // Generate random char matrix of the
-    // Jungle theme for RandomMap  
+    /**
+     * Generate random char matrix of the
+     * Jungle theme for RandomMap.
+     * @param  side Size of the side of the 
+     *              matrix
+     * @return Random char matrix with the
+     *         class theme
+     */
     public char[][] generateMatrix(int side)
     {    
         char[][] map        = new char[side][side];
@@ -53,8 +66,14 @@ class Jungle implements Theme
         return map;
     }
     
-    //Generate randomly the coordinates for the 
-    //river in the jungle
+    /**
+     * Generate randomly the coordinates for the 
+     * river in the jungle.
+     * @param  side Size of the side of the 
+     *              matrix
+     * @return Random char matrix with the
+     *         class theme
+     */
     int[][] generateRiver(int side)
     {
         int leftMargin  = (int) (side/12 + rand.nextFloat()*(side/12) + 0.5); 
@@ -95,8 +114,12 @@ class Jungle implements Theme
         return river;
     }   
     
-    // Put trees in a char matrix map with
-    // 20% of probability
+    /**
+     * Put trees in a char matrix map with
+     * 20% of probability.
+     * @param  map map matrix
+     * @return map matrix with trees
+     */
     private char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -106,8 +129,12 @@ class Jungle implements Theme
         return map;
     }
     
-    // Put Rocks in a char matrix map with
-    // 0.1% of probability
+    /**
+     * Put Rocks in a char matrix map with
+     * 0.1% of probability.
+     * @param  map map matrix
+     * @return map matrix with rocks
+     */
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -117,9 +144,13 @@ class Jungle implements Theme
         return map;
     }
     
-    // Put crystals in a char matrix map with
-    // probability accordingly with the map size
-    // (bigger map, lesser crystals probability)     
+    /**
+     * Put crystals in a char matrix map with
+     * probability accordingly to the map size
+     * (bigger map, lesser crystals probability).
+     * @param  map Map matrix
+     * @return Map matrix with crystals
+     */
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -137,8 +168,12 @@ class Jungle implements Theme
         return map;
     }
 
-    // Put stones in a char matrix map with
-    // 1% of probability
+    /**
+     * Put stones in a char matrix map with
+     * 1% of probability.
+     * @param  map map matrix
+     * @return map matrix with stones
+     */
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -148,8 +183,12 @@ class Jungle implements Theme
         return map;
     }
     
-    // Put two bases in a char matrix map 
-    // in the opposity corners    
+    /**
+     * Put two bases in a char matrix map 
+     * in the opposity corners.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
@@ -163,8 +202,16 @@ class Jungle implements Theme
         return map;
     }
     
-    //Give a new random value for a narrow margin
-    //tending to the flat margin 
+    /**
+     * Give a new random value for a narrow margin
+     * tending to the flat margin.
+     * @param  margin Margin position
+     * @param  remain Remaining quantity to the 
+     *                maximum river size
+     * @param  side   Size of the side of the 
+     *                matrix
+     * @return New random value for the flat margin.
+     */
     private int updateNarrowMargin(int margin, int remain, int side)
     {   
         
@@ -187,8 +234,16 @@ class Jungle implements Theme
         return margin;
     }
     
-    //Give a new random value for a flat margin
-    //tending to the narrow margin 
+    /**
+     * Give a new random value for a flat margin
+     * tending to the narrow margin.
+     * @param  margin Margin position
+     * @param  remain Remaining quantity to the 
+     *                maximum river size
+     * @param  side   Size of the side of the 
+     *                matrix
+     * @return New random value for the narrow margin.
+     */
     private int updateFlatMargin(int margin, int remain, int side)
     {   
         double probMinus = (margin - remain + side/6 + 2);
@@ -209,5 +264,4 @@ class Jungle implements Theme
         && probMinus <= 1  )    margin-=1;
         return margin;
     }
-    
 }

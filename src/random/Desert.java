@@ -4,12 +4,25 @@ package random;
 import java.lang.Math;
 import java.util.Random;
 
+/**
+ * <b>Random Map Theme - Desertic</b><br>
+ * Generate a matrix with a scenario
+ * of theme 'Desertic'.
+ *
+ * @author Vinicius Silva
+ */
 class Desert implements Theme
 {
     private Random rand = new Random();
     
-    // Generate random char matrix of the
-    // Desert theme for RandomMap  
+    /**
+     * Generate random char matrix of the
+     * Desert theme for RandomMap.
+     * @param  side Size of the side of the 
+     *              matrix
+     * @return Random char matrix with the
+     *         class theme
+     */
     public char[][] generateMatrix(int side)
     {    
         char[][] map = generateSands(side); 
@@ -20,11 +33,15 @@ class Desert implements Theme
         return map;
     }
     
-    //Create a char matrix representing a
-    //dirty terrain with sand spots
+    /**
+     * Create a char matrix representing a
+     * dirty terrain with sand spots.
+     * @param  side Size of the side 
+     *              of the matrix
+     * @return Map matrix with sands
+     */
     char[][] generateSands(int side)
     {
-        
         char[][] spots = new char[side][side];
         int nSpots = (int) (balancedRand() * side*3);
         System.out.println(nSpots);
@@ -55,7 +72,6 @@ class Desert implements Theme
                     }
                 }
                 
-                                     
                 if      (!shrinking && rand.nextFloat() < 0.8)  tam += 2;
                 else if (!shrinking)                            tam -= 2;
                 else if (rand.nextFloat() < 0.8)                tam -= 2;
@@ -66,12 +82,15 @@ class Desert implements Theme
                 spotI++;
             }
         }
-        
         return spots;   
-    }   
+    }
     
-    // Put rocks in a char matrix map with
-    // 10% of probability
+    /**
+     * Put rocks in a char matrix map with
+     * 10% of probability.
+     * @param  map Map matrix
+     * @return Map matrix with rocks
+     */
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -87,9 +106,13 @@ class Desert implements Theme
         return map;
     }
     
-    // Put crystals in a char matrix map with
-    // probability accordingly with the map size
-    // (bigger map, lesser crystals probability)   
+    /**
+     * Put crystals in a char matrix map with
+     * probability accordingly to the map size
+     * (bigger map, lesser crystals probability).
+     * @param  map Map matrix
+     * @return Map matrix with crystals
+     */
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -105,10 +128,14 @@ class Desert implements Theme
         return map;
     }
     
-    // Put stones in a char matrix map with
-    // 10% of probability if the terrain is
-    // a dirt and 5% of probability if its a
-    // sand
+    /**
+     * Put stones in a char matrix map with
+     * 10% of probability if the terrain is
+     * a dirt and 5% of probability if its a
+     * sand.
+     * @param  map Map matrix
+     * @return Map matrix with stones
+     */
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -122,8 +149,12 @@ class Desert implements Theme
         return map;
     }
     
-    // Put two bases in a char matrix map 
-    // in the opposity corners
+    /**
+     * Put two bases in a char matrix map 
+     * in the opposity corners.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
@@ -137,15 +168,18 @@ class Desert implements Theme
         return map;
     }
    
-   //Returns a double rand number in [0,1]
-   //with less variance 
-   private double balancedRand()
-   {
+    /**
+     * Returns a double rand number in [0,1]
+     * with less variance.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
+    private double balancedRand()
+    {
         double a = rand.nextFloat();
         double b = rand.nextFloat();
         double c = rand.nextFloat();
-        
+
         return (a+b+c)/3;
-   }
-    
+    }
 }
