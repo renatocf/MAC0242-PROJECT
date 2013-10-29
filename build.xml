@@ -165,7 +165,9 @@
                  encoding    = "utf8"
                  doctitle    = "${ant.project.name}"
                  destdir     = "${doc.javadoc.dir}"
-                 windowtitle = "${ant.project.name}"/>
+                 windowtitle = "${ant.project.name}">
+               <classpath refid="libraries.path"/>
+         </javadoc>
     </target>
 
     <target name="publish" depends="javadoc">
