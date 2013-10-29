@@ -2,8 +2,8 @@ package stackable;
 
 /**
  * <b>Stackable - Text</b><br>
- * This class packs strings inside a 
- * simple container, allowing them to
+ * Packs strings inside a simple 
+ * container, allowing them to
  * be identified as stackables.
  * 
  * @author Karina Awoki

@@ -9,10 +9,9 @@ import stackable.item.*;
 
 /**
  * <b>Stackable - Around</b><br>
- * This class provides a set of terrains
- * with the neighborhoods of a given 
- * terrain.
- * @see robot.Check.SEEK
+ * Provides the neighborhoods (set
+ * of terreins) for a given terrain.
+ * @see robot.Check#SEEK
  *
  * @author Karina Awoki
  * @author Vinicius Silva

@@ -5,9 +5,9 @@ import exception.*;
 
 /**
  * <b>Stackable - Direction</b><br>
- * This class stores the numerical 
- * representation of a direction, as
- * used by the map to update positions.
+ * Stores the numerical representation 
+ * of a direction, as used by the map 
+ * to update positions.
  *
  * @author Karina Awoki
  * @author Renato Cordeiro Ferreira

@@ -5,9 +5,9 @@ import exception.*;
 
 /**
  * <b>Stackable - Attack</b><br>
- * This class provides the types of
- * attacks supported by the game,
- * encapsulating them in a stackable.
+ * Store one of the valid types of attacks 
+ * supported by the game, encapsulating 
+ * them in a stackable.
  *
  * @author Karina Awoki
  * @author Renato Cordeiro Ferreira

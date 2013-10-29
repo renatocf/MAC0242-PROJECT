@@ -2,9 +2,9 @@ package stackable;
 
 /**
  * <b>Stackable - Num</b><br>
- * This class packs numbers inside a 
- * simple container, allowing them to
- * be identified as stackables.
+ * Packs numbers inside a simple 
+ * container, allowing them to be 
+ * identified as stackables.
  * 
  * @author Karina Awoki
  * @author Renato Cordeiro Ferreira

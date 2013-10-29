@@ -2,11 +2,11 @@ package stackable;
 
 /**
  * <b>Stackable - Addr</b><br>
- * This class packs a number in an 
- * imutable way to be used as an 
- * address for jumps and function
- * calls. Its structure is very 
- * similar to Num's.
+ * Packs a number in an imutable 
+ * way to be used as an address 
+ * for jumps and function calls. 
+ * Its structure is very similar 
+ * to Num's.
  * 
  * @author Renato Cordeiro Ferreira
  */
