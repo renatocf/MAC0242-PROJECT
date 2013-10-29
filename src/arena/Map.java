@@ -4,7 +4,6 @@ package arena;
 import java.io.*;
 import java.util.Vector;
 import java.lang.reflect.*;
-import java.lang.ProcessBuilder;
 
 // Libraries
 import robot.*;
@@ -24,11 +23,22 @@ public class Map implements Game
     // Weather
     final private Weather w;
     
+    /**
+     * Default constructor.
+     * @param w Weather of the map
+     */
     public Map(Weather w)
     {
         this.w = w;
     }
     
+    /**
+     * Create map to 'n' players.
+     * @param  nPlayers Number of players
+     * @return Matrix of robots, with 'n' 
+     *         players of height, and 
+     *         ROBOTS_NUM_INITIAL of lenght
+     */
     public Robot[][] genesis(int nPlayers)
         throws InvalidOperationException
     {
@@ -47,7 +57,21 @@ public class Map implements Game
         
         return initial;
     }
-
+    
+    /**
+     * Create a new robot in the map.
+     * Make a new robot to the player 'player',
+     * with name 'name', putting it in the 
+     * position (i,j) of the map, programmed 
+     * with the assembly program defined by 
+     * the file in 'pathToProg'.
+     * 
+     * @param player     Robot owner
+     * @param name       Name of the new robot
+     * @param i          Vertical position
+     * @param j          Horizontal position
+     * @param pathToProg Robot assembly program
+     */
     public Robot insertArmy(String name, int player, int ID, 
                             int i, int j, String pathToProg)
         throws SegmentationFaultException
@@ -85,11 +109,23 @@ public class Map implements Game
         return null;
     }
     
+    /**
+     * Remove a given robot from the map.
+     * Take out the robot from the map.
+     * 
+     * @param i Vertical position
+     * @param j Horizontal position
+     */
     public Scenario removeScenario(int i, int j)
     {
         return map[i][j].removeScenario();
     }
-
+    
+    /** 
+     * Changes path to make the program name.<br>
+     * Given a strinfg makes tha path a valid name
+     * for the program to be loaded.
+     */
     private static String processInput(String input)
     {
         // Process input

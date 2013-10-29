@@ -1,5 +1,6 @@
 package arena;
 
+// Libraries
 import scenario.*;
 import stackable.*;
 import exception.*;
@@ -8,6 +9,18 @@ import operation.Operation;
 
 public class Action implements Game
 {      
+    /**
+     * Given a map, a robot and an operation,
+     * calls the method for this operation to
+     * the correspondent robot and map, returning
+     * the answer to the caller. 
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     *
+     * @throws InvalidOperationException
+     */
     static Stackable[] ctrl (Map map, Robot turn, Operation op)
        throws InvalidOperationException
     {
@@ -33,6 +46,16 @@ public class Action implements Game
         return stackable;
     }
     
+    /**
+     * Operation MOVE.<br>
+     * Move, if possible, the robot to the selected
+     * position in the map.
+     * @see robot.Syst#MOVE
+     *
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static boolean MOVE (Map map, Robot turn, Operation op) 
     {
         // Extract direction info from operation
@@ -62,6 +85,17 @@ public class Action implements Game
         return true;
     }
     
+    /**
+     * Operation DRAG.<br>
+     * Drag, if possible, an item in the selected
+     * position in the map, storing it inside the 
+     * robot.
+     * @see robot.Syst#DRAG
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static boolean DRAG (Map map, Robot turn, Operation op)
     { 
          // Extract direction info from operation
@@ -92,6 +126,17 @@ public class Action implements Game
         return true;
     }
     
+    /**
+     * Operation DROP.<br>
+     * Drop, if possible, an item in the selected
+     * position in the map, taking it from inside
+     * robot.
+     * @see robot.Syst#DROP
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static boolean DROP (Map map, Robot turn, Operation op)
     {  
         Stackable[] s = op.getArgument();
@@ -124,6 +169,17 @@ public class Action implements Game
         return true;
     }
     
+    /**
+     * Operation HIT.<br>
+     * Hit, if exists, the scenario in the selected
+     * position in the map, making the damage of the
+     * atack made by the robot.
+     * @see robot.Syst#HIT
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static boolean HIT  (Map map, Robot turn, Operation op)
     {
         String pre = "    [HIT]";
@@ -201,6 +257,16 @@ public class Action implements Game
         return true;
     }
     
+    /**
+     * Operation LOOK.<br>
+     * Scans the terrain in a given position, to be
+     * analysed by the robot virtual machine.
+     * @see robot.Syst#LOOK
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static Stackable[] LOOK (Map map, Robot turn, Operation op)
     { 
          // Extract direction info from operation
@@ -237,6 +303,18 @@ public class Action implements Game
         return st;
     }
     
+    /**
+     * Operation SEE.<br>
+     * Scans the neighborhood of the robot (accordingly
+     * to its position in the map and its sight).
+     * @see robot.Syst#SEE
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     *
+     * @throws InvalidOperationException
+     */
     static Stackable[] SEE (Map map, Robot turn, Operation op)
         throws InvalidOperationException
     {
@@ -291,7 +369,17 @@ public class Action implements Game
         st[0] = (Stackable) a;
         return st;
     }
-
+    
+    /**
+     * Operation ASK.<br>
+     * Passes an information to the robot, about
+     * its own 'body' placed in the world (position).
+     * @see robot.Syst#ASK
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
     static Stackable[] ASK (Map map, Robot turn, Operation op)
     {  
         Stackable[] s = op.getArgument();

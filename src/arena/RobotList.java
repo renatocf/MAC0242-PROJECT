@@ -10,31 +10,58 @@ import java.util.Comparator;
 /* Libraries */
 import parameters.*;
 
+/**
+ * Auxiliar class RobotList<br>
+ * Impelments a list to be used within
+ * the World to control the arena.
+ *
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
+ */
 public class RobotList implements Game, Iterable<Robot>
 {
+    // Robot's list and info
     private Robot[] armies;
     private HashMap <Integer,Double> speedy 
         = new HashMap <Integer,Double>();
+    
+    // Random number generator
     final private Random rand = new Random();
     
-    int nextRobot  = -1;
+    // Last empty space
     int emptySpace = 0;
     
+    /**
+     * Default Constructor<br>
+     * Create a list of robots for 'n' players,
+     * with ROBOTS_NUM_MAX robots for each.
+     * 
+     * @param nPlayers Number of players
+     */
     RobotList(int nPlayers) 
     {
         Debugger.say("[RobotList] Builded");
         armies = new Robot[nPlayers * ROBOTS_NUM_MAX];
     }
     
-    void add(Robot r)
+    /** 
+     * Add a robot in the list.
+     * @param robot Reference to a robot
+     */
+    void add(Robot robot)
     {
         /* TODO: When the three initial are created,
          *       we will not need this test any more */
-        if(r == null) return;
-        armies[emptySpace++] = r;
-        speedy.put(r.ID, 1.0 * r.speed);
+        if(robot == null) return;
+        armies[emptySpace++] = robot;
+        speedy.put(robot.ID, 1.0 * robot.speed);
     }
     
+    /**
+     * Remove a robot from the list.
+     * @param robot Reference to the robot 
+     *              up to be removed
+     */
     public void remove(Robot robot)
     {
         for(int i = 0; i < emptySpace; i++) 
@@ -49,6 +76,20 @@ public class RobotList implements Game, Iterable<Robot>
         }
     }
     
+    /**
+     * Generate a new iterator.
+     * @return Iterator to the robot list
+     */
+    public Iterator<Robot> iterator()
+    {
+        return new RobotListIterator(emptySpace);
+    }
+    
+    /**
+     * Sort the robot list accordingly to 
+     * the robots speed. If there are conflicts,
+     * solve the randomically.
+     */
     void sort()
     {
         for(Robot r: armies)
@@ -88,11 +129,12 @@ public class RobotList implements Game, Iterable<Robot>
         Debugger.say();
     }
     
-    public Iterator<Robot> iterator()
-    {
-        return new RobotListIterator(emptySpace);
-    }
-    
+    /**
+     * Quicksort implementation to be
+     * used over the Robot List.
+     * @param begin Start of the subarray
+     * @param end   End of the subarray
+     */
     private void quickSort(int begin, int end)
     {
         if(begin < end)
@@ -103,7 +145,12 @@ public class RobotList implements Game, Iterable<Robot>
         }
     }
     
-    private int divide(int begin,int end)
+    /**
+     * Auxiliar funcion for quicksort 
+     * @param begin Start of the subarray
+     * @param end   End of the subarray
+     */
+    private int divide(int begin, int end)
     {
         int     i = begin -1;
         Robot   x = armies[end];
@@ -119,6 +166,11 @@ public class RobotList implements Game, Iterable<Robot>
         return i;
     }
     
+    /**
+     * Comparison function used for quicksort
+     * @param robotA First robot
+     * @param robotB Second robot
+     */
     private boolean cmpLessRobot(Robot robotA, Robot robotB)
     {
         /* Comparison function */
@@ -130,11 +182,22 @@ public class RobotList implements Game, Iterable<Robot>
         return (costA <= costB);
     }
     
+    /** 
+     * <b>Inner class for iterator</b><br>
+     * Inner class implementing interface 
+     * Iterator to run over the Robot List.
+     */
     private class RobotListIterator implements Iterator<Robot>
     {
         private int nextRobot = -1;
         final private int emptySpace;
-
+        
+        /**
+         * Default constructor<br>
+         * @param emptySpace Position untill which
+         *                   it is possible to find
+         *                   robots
+         */
         public RobotListIterator(int emptySpace)
         {
             this.emptySpace = emptySpace;

@@ -1,8 +1,9 @@
 package arena;
 
-import stackable.Stackable;
+// Libraries
 import scenario.*;
 import stackable.item.*;
+import stackable.Stackable;
 
 public class Terrain implements Stackable
 {    
@@ -17,6 +18,15 @@ public class Terrain implements Stackable
     // War fog
     boolean[] fog;
     
+    /** 
+     * Default constructor<br>
+     * Creates a terrain with a given appearence,
+     * defining its type accordingly to it. Also,
+     * keeps a bitmap with the war fog.
+     * 
+     * @param nPlayers   Number of players
+     * @param appearence Terrain appearence
+     */
     public Terrain(int nPlayers, Appearence appearence)
     {
         this.fog        = new boolean[nPlayers];
@@ -39,64 +49,59 @@ public class Terrain implements Stackable
         fog[0] = fog[1] = true; 
     }
     
+    /** 
+     * Secondary constructor<br>
+     * Does the same as the default, aditionaly 
+     * putting a scenario on the terrain.
+     * 
+     * @param nPlayers Number of players
+     * @param a        Terrain appearence
+     * @param s        Scenario
+     */
     public Terrain(int nPlayers, Appearence a, Scenario s)
     {
         this(nPlayers, a);
         this.scenario = s;
     }
     
+    /** 
+     * Secondary constructor<br>
+     * Does the same as the default, aditionaly 
+     * putting an item on the terrain.
+     * 
+     * @param nPlayers Number of players
+     * @param a        Terrain appearence
+     * @param item     Item
+     */
     public Terrain(int nPlayers, Appearence a, Item item)
     {
         this(nPlayers, a);
         this.item = item;
     }
     
+    /** 
+     * Secondary constructor<br>
+     * Does the same as the default, aditionaly 
+     * putting a scenario and an item on the 
+     * terrain.
+     * 
+     * @param nPlayers Number of players
+     * @param a        Terrain appearence
+     * @param s        Scenario
+     * @param i        Item
+     */
     public Terrain(int nPlayers, Appearence a, Scenario s, Item i)
     {
         this(nPlayers, a, i);
         this.scenario = s;
     }
     
-    protected boolean setScenario(Scenario scenario)
-    {
-        if(this.scenario == null)
-        { 
-            this.scenario = scenario;
-            return true;
-        }
-        return false;
-    }
-    
-    protected Scenario removeScenario()
-    {
-        Scenario sRet = this.scenario; 
-        this.scenario = null;
-        return sRet;
-    }
-    
-    public Scenario getScenario()
-    {
-        return this.scenario;
-    }
-    
-    protected Item removeItem()
-    {
-        Item iRet = this.item; 
-        this.item = null;
-        return iRet;
-      
-    }
-    
-    public Item getItem()
-    {
-        return this.item;
-    }
-    
-    public Appearence getAppearence()
-    {
-        return this.appearence;
-    }
-    
+    /** 
+     * General function to print, in a more legible
+     * format, the terrain. It is used mainly with 
+     * debug purposes.
+     * @return String representing the terrain.
+     */
     public String toString()
     {
         String sItem = (item == null) 
@@ -110,5 +115,72 @@ public class Terrain implements Stackable
         
         return "[type:" + sType + "] [appearence:" + sAppe + "] "
              + "[scenario:" + sScen + "] [item:" + sItem + "]";
+    }
+    
+    /** 
+     * Getter fot the terrain's appearence. 
+     * @return Appearence
+     */
+    public Appearence getAppearence()
+    {
+        return this.appearence;
+    }
+    
+    /** 
+     * Getter for the terrain's item. 
+     * @return Item (or null, if none)
+     */
+    public Item getItem()
+    {
+        return this.item;
+    }
+    
+    /** 
+     * Getter for the terrain's scenario.
+     * @return Scenario (or null, if none)
+     */
+    public Scenario getScenario()
+    {
+        return this.scenario;
+    }
+    
+    /** 
+     * Setter for the scenario.
+     * @param  scenario   Scenario
+     * @return Booelan to respond if the 
+     *         action was successful
+     */
+    protected boolean setScenario(Scenario scenario)
+    {
+        if(this.scenario == null)
+        { 
+            this.scenario = scenario;
+            return true;
+        }
+        return false;
+    }
+    
+    /** 
+     * Remove the terrain's scenario.
+     * @return Removed scenario
+     *         (or null, if none)
+     */
+    protected Scenario removeScenario()
+    {
+        Scenario sRet = this.scenario; 
+        this.scenario = null;
+        return sRet;
+    }
+    
+    /** 
+     * Remove the terrain's item.
+     * @return Removed item
+     *         (or null, if none)
+     */
+    protected Item removeItem()
+    {
+        Item iRet = this.item; 
+        this.item = null;
+        return iRet;
     }
 }

@@ -22,7 +22,7 @@ public class Robot implements Scenario
     protected int j; // Column
     
     // Hardware
-    Item[] slots;
+    protected Item[] slots;
     protected RVM positronic;
     
     // Energy
@@ -43,6 +43,19 @@ public class Robot implements Scenario
     final protected int sight;
     final protected int costTime;
     
+    /**
+     * Default constructor.
+     * @param baptism Name of the robot
+     * @param team    Ownew of the robot
+     * @param ID      Unique identification 
+     *                for the doctor
+     * @param i       Vertical position
+     *                in the map
+     * @param j       Horizontal position 
+     *                in the map
+     * @param PROG    Program with the actions
+     *                to be done by the robot
+     */
     public Robot(String baptism, int team, int ID, 
                  int i, int j, Vector<Command> PROG)
     {
@@ -78,6 +91,12 @@ public class Robot implements Scenario
         this.costTime    = 5;
     }
     
+    /**
+     * Take out an item from inside the robot.
+     * @param position Position of the item
+     *                 up to be removed inside
+     *                 its cargo
+     */
     public Item removeSlots(int position)
     {
     	Item item = this.slots[position];
@@ -85,6 +104,10 @@ public class Robot implements Scenario
     	return item;
     }
     
+    /**
+     * Prints a detailed info about the robot.<br>
+     * Used mainly with debug purposes.
+     */
     public void identify()
     {
         System.out.print  ("[" + this.i + "," + this.j + "] ");
@@ -105,11 +128,21 @@ public class Robot implements Scenario
         System.out.println("costTime    = " + this.costTime   );
     }
     
+    /** 
+     * General function to print, in a more legible
+     * format, the robot. It is used mainly with 
+     * debug purposes.
+     * @return String representing the stackable.
+     */
     public String toString()
     {
         return this.name;
     }
     
+    /**
+     * Runs 1 cycle of processment in the 
+     * robot virtual machine program.
+     */
     public void run()
             throws SegmentationFaultException, 
                UndefinedFunctionException,
@@ -123,17 +156,29 @@ public class Robot implements Scenario
         this.positronic.run();
     }
     
+    /**
+     * Upload a new program for the robot.
+     * @param PROG Program with the actions
+     *             to be done by the robot
+     */
     public void upload(Vector<Command> PROG)
     {
         this.positronic.upload(PROG);
     }
     
+    /**
+     * Getter for the robot's ownew ID.
+     * @return Player number
+     */
+    public int getTeam () { return this.team; }
+    
+    // Interface scenario
     public int takeDamage(int damage)
     {
         this.HP -= damage - this.forceShield;
         return this.HP;
     }
     
+    // Interface scenario
     public int getHP   () { return this.HP;   }
-    public int getTeam () { return this.team; }
 }
