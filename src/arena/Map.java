@@ -55,9 +55,6 @@ public class Map implements Game
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
             throw new SegmentationFaultException();
         
-        // Precompiling
-        /* precompile(pathToProg); */
-        
         // Creates a new string
         String prog = processInput(pathToProg);
         
@@ -92,34 +89,6 @@ public class Map implements Game
     {
         return map[i][j].removeScenario();
     }
-
-    //private static void precompile(String input)
-    //{
-    //    // Generate and run process
-    //    try {
-    //        String [] params = { "perl", "bin/parser.pl", input };
-    //        Process process = new ProcessBuilder(params).start();
-    //        
-    //        if(Debbuger.info)
-    //        {
-    //            InputStream is        = process.getInputStream();
-    //            InputStreamReader isr = new InputStreamReader(is);
-    //            BufferedReader br     = new BufferedReader(isr);
-    //            
-    //            System.out.printf("Output of running %s is:\n", input);
-    //            String line;
-    //            while ((line = br.readLine()) != null) {
-    //                  System.out.println(line);
-    //            }
-    //            System.out.println();
-    //        }
-    //    }
-    //    catch(IOException e)
-    //    {
-    //        System.err.print("[MAP] Impossible to print output ");
-    //        System.err.print("of Parser.xml\n");
-    //    }
-    //}
 
     private static String processInput(String input)
     {
