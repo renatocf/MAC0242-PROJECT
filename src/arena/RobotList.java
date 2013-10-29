@@ -10,6 +10,17 @@ import java.util.Comparator;
 /* Libraries */
 import parameters.*;
 
+
+/**
+ * <b>In this class, we create and use the armies functions,
+ * like insert a new robot in an arm or remove it.
+ * We have the vector of robots and the function sort to
+ * manipulating the movement order of robots.</b>
+ * @author Karina Suemi Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Nascimento Silva
+ */
+
 public class RobotList implements Game, Iterable<Robot>
 {
     private Robot[] armies;
