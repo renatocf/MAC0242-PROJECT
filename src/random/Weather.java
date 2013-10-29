@@ -1,4 +1,4 @@
-package arena;
+package random;
 
 public enum Weather
 {

@@ -3,7 +3,6 @@ package random;
 // Libraries
 import scenario.*;
 import arena.Terrain;
-import arena.Weather;
 import arena.Appearence;
 import stackable.item.*;
 

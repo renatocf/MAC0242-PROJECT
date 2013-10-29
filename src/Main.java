@@ -9,6 +9,7 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
+import random.Weather;
 
 // External Libraries (.jar)
 import gnu.getopt.Getopt;
