@@ -2,7 +2,7 @@
 # reload.sh
 
 if [ $# -eq 0 ]; then
-    echo "Usage reload.sh program.txt"
+    echo "USAGE: sh reload.sh program1.asm program2.asm ..."
     exit
 fi
 
