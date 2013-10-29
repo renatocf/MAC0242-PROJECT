@@ -1,3 +1,5 @@
+package main;
+
 // Default Libraries
 import java.io.*;
 import java.util.Vector;
@@ -15,6 +17,11 @@ import random.Weather;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
+/**
+ * <b>Main class</b><br>
+ * Controls all the user interactions,
+ * the start and end of the program.
+ */
 class Main 
 {
     final private static String USAGE = 
@@ -25,6 +32,11 @@ class Main
     static private boolean usage;
     static private Weather weather = Weather.TROPICAL;
     
+    /**
+     * <b>Main method</b><br>
+     * Gets options from command line, interacts
+     * with user and starts the game.
+     */
     public static void main(String[] argv)
         throws InvalidOperationException
     {
@@ -37,7 +49,6 @@ class Main
         // Generate map
         World.genesis(2, weather); 
        
-
         // Menu
         // TODO: automate inserction of programs
         try{
@@ -54,6 +65,12 @@ class Main
             World.timeStep();
     }
     
+    /**
+     * Encapsulates the use of the library
+     * GetOpt to get the options for the program.
+     * @param  argv Argument vector (with options)
+     * @return Argument vector without options (args)
+     */
     private static String[] getopt(String[] argv)
     {
         LongOpt[] longopts = 
@@ -103,6 +120,9 @@ class Main
         return Arrays.copyOfRange(argv, g.getOptind(), argv.length);
     }
     
+    /** 
+     * Execute man page to show the help
+     */
     private static void help()
     {
         // Generate and run process
