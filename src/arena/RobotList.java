@@ -55,105 +55,42 @@ public class RobotList implements Game, Iterable<Robot>
         {
             if(r == null) continue;
             speedy.put(r.ID, rand.nextDouble() + r.speed);
-            Debugger.say("[SPEED][",r,"] ", speedy.get(r.ID));
+            Debugger.say("[SPEED][", r, "] ", speedy.get(r.ID));
         }
         
-        quickSort(0, emptySpace-1);
-        //Arrays.<Robot>sort(armies, 0, emptySpace,
-        //    new Comparator<Robot>() {
-        //        public int compare(Robot robotA, Robot robotB)
-        //        {
-        //            /* Comparison function */
-        //            double costA = speedy.get(robotA.ID);
-        //            double costB = speedy.get(robotB.ID);
-        //            
-        //            Debugger.say("[CMP] costA: ", costA);
-        //            Debugger.say("[CMP] costB: ", costB);
-        //             
-        //            if(speedy.get(robotA) == null) 
-        //                costA = Double.POSITIVE_INFINITY;
-        //            if(speedy.get(robotB) == null) 
-        //                costB = Double.POSITIVE_INFINITY;
-        //            
-        //            /* Compare */
-        //            if(costA < costB) return -1;
-        //            if(costA > costB) return 1;
-        //            return 0;
-        //        }
-        //        
-        //        public boolean equals(Object r)
-        //        {
-        //            return this.equals(r);
-        //        }
-        //    }
-        //);
-        
-        Debugger.say  ("[SORT]");
-        Debugger.print("    ");
-        for(Robot r: armies) 
-            if(r != null) Debugger.print(r, ", ");
+        // Debug (unordered array)
+        Debugger.print("[INIT] ");
+        for(int i = 0; i < emptySpace; i++) 
+        {
+            Robot r = armies[i];
+            Debugger.print( (r != null) ? r : "null" );
+            if(i != emptySpace-1) Debugger.print(", ");
+        }
         Debugger.say();
         
-        int emptySpace = 1;
+        // Sorts array untill the first known empty space
+        quickSort(0, emptySpace-1);
+        
+        // Updates first empty space position
+        int emptySpace = 0;
         for(Robot r: armies) 
             if(r == null) break; 
             else emptySpace++;
+        
+        // Debug (sorted array)
+        Debugger.print("[SORT] ");
+        for(int i = 0; i < emptySpace; i++) 
+        {
+            Robot r = armies[i];
+            Debugger.print( (r != null) ? r : "null" );
+            if(i != emptySpace-1) Debugger.print(", ");
+        }
+        Debugger.say();
     }
     
-    //private Robot next()
-    //{
-    //    nextRobot++;
-    //    if(nextRobot == emptySpace) 
-    //    { 
-    //        nextRobot = -1; 
-    //        return null;
-    //    }
-    //    return armies[nextRobot];
-    //}
-
     public Iterator<Robot> iterator()
     {
         return new RobotListIterator(emptySpace);
-    }
-    
-    private void mergeSort(int begin, int end)
-    {
-        Debugger.say("[MERGESORT][begin: ", begin, "]");
-        Debugger.say("[MERGESORT][end:   ", end  , "]");
-        if(begin < end)
-        {
-            Debugger.say("[MERGESORT][IN]");
-            int middle = (begin + end)/2;
-            mergeSort(begin, middle);
-            mergeSort(middle+1, end);
-            merge(begin, middle+1, end);
-        }
-    }
-    
-    private void merge(int begin, int middle, int end)
-    {
-        int i, j, k;
-        Robot[] aux = new Robot[end-begin+1];
-        
-        // Copy first part untill the middle in the right order
-        for(i = 0, k = begin; k < middle; i++, k++)
-            aux[i] = armies[k];
-        
-        // copy the second part in the recerse order
-        for(j = end-middle+1; k < end; j--, k++)
-            aux[j] = armies[k];
-        i = 0; j = end-begin-1;
-        
-        // Compares the elements and exchange them
-        for(k = begin; k < end; k++)
-            if(cmpLessRobot(aux[i], aux[j]))
-                armies[k] = aux[i++];
-            else armies[k] = aux[j--];
-        
-        Debugger.print("        ");
-        for(Robot r: armies)
-            Debugger.print(r, ", ");
-        Debugger.say();
     }
     
     private void quickSort(int begin, int end)
@@ -188,9 +125,6 @@ public class RobotList implements Game, Iterable<Robot>
         double costA = speedy.get(robotA.ID);
         double costB = speedy.get(robotB.ID);
         
-        /* Debugger.say("[CMP] costA: ", costA); */
-        /* Debugger.say("[CMP] costB: ", costB); */
-         
         if(robotA == null) return true;
         if(robotB == null) return false;
         return (costA <= costB);
