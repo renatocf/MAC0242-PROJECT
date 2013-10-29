@@ -11,18 +11,16 @@ import stackable.item.Item;
 import scenario.Scenario;
 
 /**
- * <b> Here, we have the features of the robots, like
- * the power, the life, the name, and others.
- * We have functions that print this characteristics 
- * according to each robot and control the delections
- * of robots in terrain.
- * </b>
+ * <b>Robot</b><br>
+ * Function with the general 
+ * characteristics of a robot, 
+ * providing the weakest and most
+ * general type to the player.
+ * 
  * @author Karina Suemi Awoki
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Nascimento Silva
  */
-
-
 public class Robot implements Scenario
 {
     // ID
