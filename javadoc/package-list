@@ -1,6 +1,7 @@
 arena
 exception
 gui
+main
 operation
 parameters
 parser
