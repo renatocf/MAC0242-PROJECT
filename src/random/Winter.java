@@ -8,6 +8,8 @@ class Winter implements Theme
 {
     private Random rand = new Random();
     
+    // Generate random char matrix of the
+    // Winter theme for RandomMap  
     public char[][] generateMatrix(int side)
     {    
         char[][] map = new char[side][side];
@@ -64,6 +66,8 @@ class Winter implements Theme
         return map;
     }
     
+    //Generate randomly the coordinates for the 
+    //border of the frozen lake
     private int[][] generateLakeBorder(int side)
     {
         int[][] points = new int[2][1000];
@@ -96,6 +100,8 @@ class Winter implements Theme
         return coord;
     }   
     
+    // Put trees in a char matrix map with
+    // 2% of probability
     private char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -105,6 +111,8 @@ class Winter implements Theme
         return map;
     }
     
+    // Put rocks in a char matrix map with
+    // 0.5% of probability
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -114,6 +122,9 @@ class Winter implements Theme
         return map;
     }
     
+    // Put crystals in a char matrix map with
+    // probability accordingly with the map size
+    // (bigger map, lesser crystals probability)     
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -129,6 +140,8 @@ class Winter implements Theme
         return map;
     }
 
+    // Put stones in a char matrix map with
+    // 0.5% of probability
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -138,6 +151,8 @@ class Winter implements Theme
         return map;
     }
     
+    // Put two bases in a char matrix map 
+    // in the opposity corners
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
@@ -151,16 +166,23 @@ class Winter implements Theme
         return map;
     }
     
+    // Calculates the x coortinate accordingly
+    // the polar coordinates
     private static int coordX(int rad, double ang)
     {
         return (int) (rad*Math.cos(ang) + 0.5);
     }
-    
+
+    // Calculates the y coortinate accordingly
+    // the polar coordinates    
     private static int coordY(int rad, double ang)
     {
         return (int) (rad*Math.sin(ang) + 0.5);
     }
 
+    // Updates the modificator of probabilities 
+    // accordingly the border of the lake is
+    // closing
     private int updateMod(int mod, int remain, int rad, int side)
     {
         double probPlus  = (double) (remain - mod);

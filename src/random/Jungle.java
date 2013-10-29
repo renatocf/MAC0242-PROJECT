@@ -8,6 +8,8 @@ class Jungle implements Theme
 {
     private Random rand = new Random(42);
     
+    // Generate random char matrix of the
+    // Jungle theme for RandomMap  
     public char[][] generateMatrix(int side)
     {    
         char[][] map        = new char[side][side];
@@ -51,7 +53,8 @@ class Jungle implements Theme
         return map;
     }
     
-    
+    //Generate randomly the coordinates for the 
+    //river in the jungle
     int[][] generateRiver(int side)
     {
         int leftMargin  = (int) (side/12 + rand.nextFloat()*(side/12) + 0.5); 
@@ -92,6 +95,8 @@ class Jungle implements Theme
         return river;
     }   
     
+    // Put trees in a char matrix map with
+    // 20% of probability
     private char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -101,6 +106,8 @@ class Jungle implements Theme
         return map;
     }
     
+    // Put Rocks in a char matrix map with
+    // 0.1% of probability
     private char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -110,6 +117,9 @@ class Jungle implements Theme
         return map;
     }
     
+    // Put crystals in a char matrix map with
+    // probability accordingly with the map size
+    // (bigger map, lesser crystals probability)     
     private char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -127,6 +137,8 @@ class Jungle implements Theme
         return map;
     }
 
+    // Put stones in a char matrix map with
+    // 1% of probability
     private char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
@@ -136,6 +148,8 @@ class Jungle implements Theme
         return map;
     }
     
+    // Put two bases in a char matrix map 
+    // in the opposity corners    
     private char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
@@ -149,6 +163,8 @@ class Jungle implements Theme
         return map;
     }
     
+    //Give a new random value for a narrow margin
+    //tending to the flat margin 
     private int updateNarrowMargin(int margin, int remain, int side)
     {   
         
@@ -171,7 +187,9 @@ class Jungle implements Theme
         return margin;
     }
     
-       private int updateFlatMargin(int margin, int remain, int side)
+    //Give a new random value for a flat margin
+    //tending to the narrow margin 
+    private int updateFlatMargin(int margin, int remain, int side)
     {   
         double probMinus = (margin - remain + side/6 + 2);
         double probPlus  = (remain - margin + side/6)*4;
