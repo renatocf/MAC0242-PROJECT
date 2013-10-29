@@ -3,6 +3,7 @@ package arena;
 // Libraries
 import gui.*;
 import robot.*;
+import random.*;
 import scenario.*;
 import operation.*;
 import exception.*;
@@ -10,13 +11,14 @@ import stackable.*;
 import parameters.*;
 
 /**
- * World - general game configuration.
- * Manages the time, players and scenario
- * of the game.
+ * <b>World - general game configuration.</b><br>
+ * Manages the time, players and the
+ * arena of the game.
  *
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
- * @author Vinícius Silva
+ * @author Vinicius Silva
+ * 
  * @see Action
  * @see gui.Textual
  */
@@ -28,8 +30,8 @@ public class World implements Game
     private static int nPlayers;
     
     // Global characteristics
-    private static Map       map;
-    private static Robot     turn;
+    private static Map   map;
+    private static Robot turn;
     
     /* Robot list */
     private static RobotList armies;
@@ -37,6 +39,12 @@ public class World implements Game
     // Graphical User Interface (GUI)
     private static Textual GUI;
     
+    /**
+     * Builds a new arena with n players and
+     * a given weather.
+     * @param np Number of players
+     * @param w  Weather
+     */
     public static void genesis(int np, Weather w)
         throws InvalidOperationException
     {
@@ -63,6 +71,13 @@ public class World implements Game
         if(Debugger.info) GUI.printMiniMap();
     }
     
+    /**
+     * Runs one game time step. On each
+     * turn, sort the robots accordingly
+     * to their priorities, solving conflicts
+     * randomically. Then, executes their
+     * actions and attend their requests.
+     */
     public static void timeStep()
     {
         time++; // On each time step, increments time
@@ -89,35 +104,43 @@ public class World implements Game
                     ("[World]["+ turn.toString() +"] " + e);
             }
         }
-        //for(int i = 0; i < nPlayers; i++)
-        //{
-        //    for(int j = 0; j < ROBOTS_NUM_MAX; j++)
-        //    {
-        //        // No army found in the list: continue
-        //        if(armies[i][j] == null) continue;
-        //        else turn = armies[i][j];
-        //        
-        //        // Debug
-        //        Debugger.print("\n[" + turn.toString() + "]");
-        //        Debugger.say  ("[" + time + "ts]");
-        //        
-        //        try { turn.run(); }
-        //        catch (Exception e) 
-        //        {
-        //            System.out.println
-        //                ("[World]["+ turn.toString() +"] " + e);
-        //        }
-        //    }
-        //}
         if(!(Debugger.info)) GUI.paint();
     }
     
+    /**
+     * Receive the robot's syscalls.
+     * Uses an object with type 'operation'
+     * to execute some action, which could
+     * be an attack (HIT), an iteraction 
+     * with the environment (DRAG/DROP),
+     * a displacement (MOVE) or even to get
+     * visual info (SEE/LOOK).
+     * 
+     * @param  op Operation
+     * @return Stackable with the answer
+     *         (or Num 0 if the system 
+     *         refused the operation).
+     */
     public static Stackable[] ctrl(Operation op)
        throws InvalidOperationException
     {
         return Action.ctrl(map, turn, op);
     }
     
+    /**
+     * Create a new robot in the map.
+     * Make a new robot to the player 'player',
+     * with name 'name', putting it in the 
+     * position (i,j) of the map, programmed 
+     * with the assembly program defined by 
+     * the file in 'pathToProg'.
+     * 
+     * @param player     Robot owner
+     * @param name       Name of the new robot
+     * @param i          Vertical position
+     * @param j          Horizontal position
+     * @param pathToProg Robot assembly program
+     */
     public static void insertArmy
         (int player, String name, int i, int j, String pathToProg)
         throws SegmentationFaultException
@@ -127,6 +150,13 @@ public class World implements Game
         armies.add(r);
     }
     
+    /**
+     * Remove a given robot from the map.
+     * Take out the robot from the map and
+     * remove it from the Robot List. 
+     * 
+     * @param dead Robot to be removed.
+     */
     public static void removeArmy(Robot dead)
         throws SegmentationFaultException
     {
@@ -134,6 +164,14 @@ public class World implements Game
         armies.remove(dead);
     }
     
+    /**
+     * Remove a given scenario from the map.
+     * Take out a scenario from the position
+     * (i,j) of the map.
+     * 
+     * @param i Vertical position
+     * @param j Horizontal position
+     */
     public static void destroy(int i, int j)
     {
         // Remove all scenarios, but robots.
@@ -147,7 +185,7 @@ public class World implements Game
         } 
         catch(SegmentationFaultException e) 
         {
-            System.out.println(
+            System.err.println(
                "[World] Destroying in invalid " +
                "position (" + i + "," + j + ")");
         }
