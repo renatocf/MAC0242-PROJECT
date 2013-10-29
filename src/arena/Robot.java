@@ -80,7 +80,6 @@ public class Robot implements Scenario
     
     public Item removeSlots(int position)
     {
-    //*
     	Item item = this.slots[position];
     	slots[position] = null;
     	return item;

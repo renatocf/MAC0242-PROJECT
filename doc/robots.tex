@@ -390,11 +390,24 @@
 		necessitam da consultoria da arena para serem executadas.
 		
 		\subsubsection{ Action.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
 		    Aqui é onde encontramos a implementação das funções
 		    utilizadas diretamente pelos robôs, tais como 
 		    {\textcolor{NavyBlue}{HIT},
-		    {\textcolor{NavyBlue}{}
+		    {\textcolor{NavyBlue}{DRAG},
+		    {\textcolor{NavyBlue}{DROP},
+		    {\textcolor{NavyBlue}{MOVE},
+		    {\textcolor{NavyBlue}{SEE} e 
+		    {\textcolor{NavyBlue}{LOOK}.
+		    
+		    e tratamos a saída de modo que os dados que sejam 
+		    emitidos na pilha ao usar a função, são devolvidos em
+		    um vetor de Stackables. 
+		    Caso a função só lance uma String como saída, essa 
+		    String será passada para tipo Text e preencherá a 
+		    primeira casa do vetor de Stackables.
+		    
+		    O restante das funções são auxiliares, que devolvem
+		    os respectivos resultados de cada função
 		    
 		\subsubsection{ Appearence.java }
 		    É uma estrutura chamada Enum, onde dizemos que as
@@ -435,7 +448,32 @@
             um Scenario nas coordenadas indicadas da arena.
 		    
 		\subsubsection{ Robot.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+			Essa classe é a que define as características dos robôs
+			em geral, como velocidade ro robô, vida, quantos danos ele
+			causa, entre outras.
+			
+			Dentre suas funções, temos o contrutor que recebe determinadas
+			características e cria um robô, têm também a
+			 
+			{\textcolor{NavyBlue}{public Item removeSlots(int position)}
+			que remove o robô de determinado terreno, a
+			
+			{\textcolor{NavyBlue}{public void identify()}
+			que imprime as características principais do robô,
+			
+			{\textcolor{NavyBlue}{public void run()}
+			executa o programa, acrescentando 1 no PC,
+			
+			{\textcolor{NavyBlue}{public void upload(Vector<Command> PROG)}
+			carrega um novo programa e 
+			
+			{\textcolor{NavyBlue}{public int takeDamage(int damage)}
+			que, por ser um Scenario, remove das vidas do robô o dano 
+			sofrido.
+			
+			E quando imprimimos um determinado robô, é devolvida uma
+			String com o nome dele. Além de possuir também os getters
+			e setters de determinadas características.
 		
 		\subsubsection{ Terrain.java }
 		    Cada terrain é um empilhável e possui um tipo de 
@@ -494,7 +532,10 @@
 		
 	\subsection{Parameters}
 		\subsubsection{ Debugger.java }
-		%%%%%%%%*********&&&&&&&&&&&&&&&&&------------xxxxxxxxxxxxxx
+			Essa classe irá auxiliar no encontro dos erros do cógigo,
+			pois mostra passo a passo, como o programa do usuário
+			está sendo lido e interpretado.
+			
 		
 		\subsubsection{ Game.java     }
 		    É uma interface que detém as características do jogo 
