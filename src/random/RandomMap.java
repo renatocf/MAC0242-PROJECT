@@ -32,7 +32,7 @@ public class RandomMap
      * @param nPlayer Number of players
      * @param side    Size of the side of the 
      *                matrix
-     * @see arena.Weather
+     * @see Weather
      */
     public RandomMap(Weather style, int nPlayer, int side)
     {

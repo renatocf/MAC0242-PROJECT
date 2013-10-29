@@ -3,8 +3,6 @@
  * Defines a set of themes for the maps
  * in the arena.<br>
  * </b>
- * The themes follow the definitions
- * made by the weather interface.
  * 
  * <p>
  * The themes are:
@@ -15,6 +13,6 @@
  *      <li> Tropical
  * </ul>
  *
- * @see arena.Weather
+ * @see Weather
  */
 package random;
