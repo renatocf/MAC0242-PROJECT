@@ -12,7 +12,5 @@
  *      <li> Desertic
  *      <li> Tropical
  * </ul>
- *
- * @see Weather
  */
 package random;
