@@ -12,7 +12,7 @@ import stackable.item.*;
  * This class provides a set of terrains
  * with the neighborhoods of a given 
  * terrain.
- * @see robot.Syst.CHECK
+ * @see robot.Check.SEEK
  *
  * @author Karina Awoki
  * @author Vinicius Silva
