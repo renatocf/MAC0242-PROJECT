@@ -331,6 +331,16 @@
 		
 		As classes desse package são chamadas pelas outras classes
 		que utilizam essa forma de mandar exceção.
+		
+	\subsection{Exception}
+		A classe para modo texto da GUI percorre a matriz hexagonal 
+		observando as características presentes em cada um dos terrenos 
+		(tipo, itens e cenários). Então, realiza a impressão desses 
+		elementos conforme símbolos pré-definidos dentro do módulo, 
+		simulando visualmente o jogo no terminal.
+		Todas as cores são feitas com o uso de \emph{Ansi Escape Codes}, 
+		e o módulo só deve ser usado em terminais que suportem a impressão 
+		destas sequências de escape.
 		 
 	\subsection{Operation}
 		\subsubsection{ Operation.java }
