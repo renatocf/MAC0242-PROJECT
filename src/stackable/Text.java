@@ -1,20 +1,24 @@
 package stackable;
 
 /**
- * <b>Stackable Text</b><br>
- * This class controls the type of
- * stackables that represents words,
- * more specifically, Strings.
+ * <b>Stackable - Text</b><br>
+ * This class packs strings inside a 
+ * simple container, allowing them to
+ * be identified as stackables.
  * 
- * @author Karina Awoki, Renato Cordeiro, Vinicius Silva
+ * @author Karina Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
  */
 public class Text implements Stackable
 {
     private final String text;
+    
     /** 
-     * Is the constructor of the type Text, it
-     * needs Strings format parameters to
-     * construct it.
+     * Default constructor.
+     * @param text String with a text to be
+     *             packed inside this container
+     *             class.
      */
     public Text(String text)
     {
@@ -22,14 +26,11 @@ public class Text implements Stackable
     }
     
     /** 
-     * This function return the Text in String format.
+     * Getter for the string packed inside the
+     * class.
+     * @return String with the text.
      */
     public String getText()  { return this.text; }
     
-    /** 
-     * This function return the Text in String format
-     * and in case of use IO functions, it prints
-     * the text in String formar.
-     */
     public String toString() { return this.text; }
 }
