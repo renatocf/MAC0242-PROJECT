@@ -4,7 +4,6 @@ gui
 main
 operation
 parameters
-parser
 random
 robot
 scenario
