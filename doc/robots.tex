@@ -295,16 +295,6 @@
 		    {\textcolor{NavyBlue}{NORMAL} e 
             {\textcolor{NavyBlue}{ROUGH}.
 		
-		\subsubsection{ Weather.java }						
-		    Assim como Appearence e Type, Weather é do tipo Enum,
-		    representando desta vez. os vários tipos de clima da
-		    arena. Sendo eles:
-		    
-		    {\textcolor{NavyBlue}{CONTINENTAL},
-            {\textcolor{NavyBlue}{ARTICAL},
-            {\textcolor{NavyBlue}{DESERTIC} e
-            {\textcolor{NavyBlue}{TROPICAL}.
-		
 		\subsubsection{ World.java }				
 			World é uma parte mais global do programa que cuida das 
 			características do jogo em geral, como número de 
@@ -332,15 +322,31 @@
 		As classes desse package são chamadas pelas outras classes
 		que utilizam essa forma de mandar exceção.
 		
-	\subsection{Exception}
+	\subsection{GUI}
 		A classe para modo texto da GUI percorre a matriz hexagonal 
 		observando as características presentes em cada um dos terrenos 
 		(tipo, itens e cenários). Então, realiza a impressão desses 
 		elementos conforme símbolos pré-definidos dentro do módulo, 
 		simulando visualmente o jogo no terminal.
+        
 		Todas as cores são feitas com o uso de \emph{Ansi Escape Codes}, 
 		e o módulo só deve ser usado em terminais que suportem a impressão 
 		destas sequências de escape.
+    
+	\subsection{Main}
+        O package main contém a classe de mesmo nome, com o método
+        main como principal. Esta classe é a responsável por receber
+        informações do usuário, via linha de comando, e processá-los.
+
+        Também nela, está o loop principal de executção dos 
+        \emph{timesteps} da arena. Por padrão, o programa para de
+        executar após 370 \emph{timesteps}.
+
+        Para receber as opções, a classe Main utiliza duas bibliotecas
+        externas, cujo download é realizado pelo programa Ivy dentro 
+        do Ant. Ambas as bibliotecas são distribuídas com a licensa
+        GNU GLP v3.0, e são o porte para Java da biblioteca getopt
+        do C.
 		 
 	\subsection{Operation}
 		\subsubsection{ Operation.java }
@@ -372,14 +378,17 @@
 		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
-		    O parser recebe um vetor de trincas (comando, argumento,
-		    label), analisa as variáveis conforme o tipo correspondente 
-		    no java e monta uma classe com o mesmo nome do programa em 
-		    assembly.
+		    Os parser em Perl recebe um vetor de trincas (comando,
+            argumento, label), analisa as variáveis conforme o tipo
+            correspondente no java e monta uma classe com o mesmo nome 
+            do programa em assembly passado como argumento.
 		    
 		    Adicionalmente, o programa cria um arquivo "Parser.xml"
 		    para ser rodado pelo Ant e compilar todos os códigos no
 		    diretório do package.
+
+            Estes parsers criados, então, ficam armazenados como 
+            parte do package Parser.
 				
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -426,6 +435,15 @@
 		    Esse tipo de dado possui uma função específica
 		    que retorna uma matriz representando o mapa
 		    criado. 
+		
+		\subsubsection{ Weather.java }						
+		    Weather é um tipo enum, representando os diversos,
+		    tipos de cenário disponíveis para a arena. São eles:
+		    
+		    {\textcolor{NavyBlue}{CONTINENTAL},
+            {\textcolor{NavyBlue}{ARTICAL},
+            {\textcolor{NavyBlue}{DESERTIC} e
+            {\textcolor{NavyBlue}{TROPICAL}.
 		
 		\subsubsection{ Winter.java }
 		    Gera um cenário com árvores, rochas, pedras, 
@@ -909,11 +927,6 @@
     		{\textcolor{NavyBlue}{ public String toString()}
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
-			
-		\subsubsection { Stack.java }
-			Essa classe administra as pilhas do programa,
-			controlando informações sobre onde está o seu 
-			topo ou qual o seu tamanho.
 			
 		\subsubsection { Stackable.java }
 			É a interface Stackable que se responsabiliza
