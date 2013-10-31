@@ -31,6 +31,7 @@ public class Action implements Game
             case "MOVE" : can = MOVE (map, turn, op); break;
             case "DRAG" : can = DRAG (map, turn, op); break;    
             case "DROP" : can = DROP (map, turn, op); break;
+            case "SKIP" : can = SKIP (map, turn, op); break;
             case "HIT"  : can = HIT  (map, turn, op); break;
             
             case "LOOK" : stackable = LOOK (map, turn, op); break;
@@ -166,6 +167,21 @@ public class Action implements Game
         
         Debugger.say("    [DROP]", map.map[lookI][lookJ].toString());
         
+        return true;
+    }
+    
+    /**
+     * Operation SKIP.<br>
+     * Make no operation (skip turn).
+     * @see robot.Syst#SKIP
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
+    static boolean SKIP (Map map, Robot turn, Operation op)
+    {  
+        Debugger.say("    [SKIP]"); // Debug
         return true;
     }
     
@@ -405,7 +421,7 @@ public class Action implements Game
         }
         
         // Debug
-        Debugger.say("    [ASK]", t);
+        Debugger.say("    [ASK] ", t);
         
         return s;
     }
