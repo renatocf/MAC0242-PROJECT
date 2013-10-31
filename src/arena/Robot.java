@@ -54,6 +54,9 @@ public class Robot implements Scenario
     final protected int sight;
     final protected int costTime;
     
+    // Robot ON/OFF
+    private boolean connection = true;
+    
     /**
      * Default constructor.
      * @param baptism Name of the robot
@@ -175,6 +178,26 @@ public class Robot implements Scenario
     public void upload(Vector<Command> PROG)
     {
         this.positronic.upload(PROG);
+    }
+    
+    /**
+     * Activate the robot.
+     * @see robot.RVM
+     */
+    public void ON()
+    {
+        connection = true;
+        RVM.wake(positronic);
+    }
+    
+    /**
+     * Desactivate the robot.
+     * @see robot.RVM
+     */
+    public void OFF()
+    {
+        connection = false;
+        RVM.sleep(positronic);
     }
     
     /**
