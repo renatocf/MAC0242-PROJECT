@@ -28,6 +28,7 @@ public class RVM implements Game
     int PC = 0;
 
     boolean syscall = false;
+    State activity = State.ACTIVE;
 
     /**
      * Class constructor specifying a 'program' (vector of
@@ -110,15 +111,53 @@ public class RVM implements Game
                OutOfBoundsException,
                WrongTypeException
     {
-        this.syscall = false; int c = 0;
-        while(!this.syscall && c < ASM_MAX_RUN) { exec(); this.PC++; c++; }
+        switch(activity)
+        {
+            case ACTIVE:
+                // Case 1: Active
+                // Execute ASM_MAX_RUN assembly lines
+                // OR a syscall.
+                
+                this.syscall = false; int c = 0; 
+                while(!this.syscall && c < ASM_MAX_RUN) 
+                { 
+                    Debugger.printf("[PC:%3d]", this.PC); 
+                    exec(); this.PC++; c++; 
+                }
+                Debugger.printf("[PC:%3d]", this.PC);
+                break;
+            
+            case SLEEP: 
+                // Case 1: Sleep
+                // Execute one single assembly line 
+                // (usually, a single syscall to wait
+                // for its answer).
 
+                this.PC--; exec(); this.PC++; 
+                break;
+        }
+
+        // Debug
         Debugger.say  ("[STACK]");
         Debugger.print("    ");
         for(Stackable stk: this.DATA)
             Debugger.print(stk.toString() + ", ");
         Debugger.say  ();
     }
+    
+    /** 
+     * Set the robot's state to ACTIVE.
+     * @param rvm Virtual Machine
+     * @see State
+     */
+    public static void wake(RVM rvm)  { rvm.activity = State.ACTIVE; }
+    
+    /** 
+     * Set the robot's state to SLEEP.
+     * @param rvm Virtual Machine
+     * @see State
+     */
+    public static void sleep(RVM rvm) { rvm.activity = State.SLEEP; }
     
     /**
      * Function responsible for uploading the labels of PROG,

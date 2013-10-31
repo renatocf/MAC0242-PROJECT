@@ -50,12 +50,13 @@ public class Operation
             case "LOOK" : rightType = LOOK(); break;
             case "SEE"  : rightType = SEE (); break;
             case "ASK"  : rightType = ASK (); break; 
+            case "SKIP" : rightType = SKIP(); break; 
             default     : throw new InvalidOperationException(this.action);
         }
         if(!rightType)
         {
-            throw new WrongTypeException("argument to operation " + 
-                this.action + ", but argument was " + arg.toString());
+            throw new WrongTypeException("[OPERATION] Argument to operation "
+                + this.action + ", but argument was " + arg.toString());
         }
     }
     
@@ -74,6 +75,7 @@ public class Operation
     
     // Verify arguments
     private boolean SEE  () { return true;                             }
+    private boolean SKIP () { return true;                             }
     private boolean MOVE () { return this.arg[0] instanceof Direction; }
     private boolean DRAG () { return this.arg[0] instanceof Direction; }
     private boolean DROP () { return this.arg[0] instanceof Direction; }

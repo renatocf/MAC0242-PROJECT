@@ -41,17 +41,20 @@ final public class Syst
      * @throws WrongTypeException
      * @throws InvalidOperationException 
      */
-    private static void action(RVM rvm, String type)
+    private static void action(RVM rvm, String type, int nPops)
         throws WrongTypeException,
                InvalidOperationException 
     {
-        Stackable arg = null;
-        if(!(type.equals("SEE")))
-            arg = rvm.DATA.pop();
+        /* Stackable arg = null; */
+        /* if(!(type.equals("SEE"))) */
+        /* if(pop) arg = rvm.DATA.pop(); */
+        Stackable[] args = new Stackable[nPops];
+        for(int i = 0; i < nPops; i++) 
+            args[i] = rvm.DATA.pop();
         Operation op;
         
         try { 
-            op = new Operation(rvm, type, arg);
+            op = new Operation(rvm, type, args);
         }
         catch (InvalidOperationException e) {
             throw new WrongTypeException(type);
@@ -75,7 +78,7 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "MOVE");
+        action(rvm, "MOVE", 1);
     }
     
     /**
@@ -91,7 +94,7 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "DRAG");
+        action(rvm, "DRAG", 1);
     }
     
     /**
@@ -108,7 +111,7 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "DROP");
+        action(rvm, "DROP", 1);
     }
     
     /**
@@ -125,29 +128,16 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        Stackable atk = null;
-        Stackable num = null;
+        Stackable atk = rvm.DATA.pop();
+        Stackable num = rvm.DATA.pop();
         
-        atk = rvm.DATA.pop();
-        num = rvm.DATA.pop();
+        /* Get number of directions */
         int ndirs = (int) ((Num)num).getNumber();
         
-        Stackable[] args = new Stackable[ndirs+2];
-        args[0] = atk; args[1] = num;
-        for(int i = 2; i < ndirs+2; i++)
-            args[i] = rvm.DATA.pop();
+        rvm.DATA.push(num);
+        rvm.DATA.push(atk);
         
-        Operation op;
-        try { 
-            op = new Operation(rvm, "HIT", args);
-        }
-        catch (InvalidOperationException e) {
-            throw new WrongTypeException("HIT");
-        }
-        
-        Stackable[] stk = World.ctrl(op);
-        for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
-        rvm.syscall = true;
+        action(rvm, "HIT", ndirs + 2);
     }
     
     /**
@@ -164,7 +154,7 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "LOOK");
+        action(rvm, "LOOK", 1);
     }
     
     /**
@@ -182,7 +172,7 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "SEE");
+        action(rvm, "SEE", 0);
     }
     
     /**
@@ -194,12 +184,32 @@ final public class Syst
      * @param  rvm Virtual Machine.
      * @throws WrongTypeException
      * @throws InvalidOperationException 
-     * @see    Check
      */
     static void ASK(RVM rvm)
         throws WrongTypeException,
                InvalidOperationException
     {
-        action(rvm, "ASK");
+        action(rvm, "ASK", 1);
+    }
+    
+    /**
+     * Assembly funcion SKIP. <br>
+     * Makes a syscall with no operations.
+     * 
+     * @param  rvm Virtual Machine.
+     */
+    static void SKIP(RVM rvm)
+    {
+        try { action(rvm, "SKIP", 0);
+        
+        } catch(WrongTypeException e) {
+            System.err.println("[SYST][SKIP] " + 
+                "This exception should never happen"
+            );
+        } catch(InvalidOperationException e) {
+            System.err.println("[SYST][SKIP] " + 
+                "This exception should never happen"
+            );
+        } // try
     }
 }
