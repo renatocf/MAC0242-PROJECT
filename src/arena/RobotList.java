@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Comparator;
 
 /* Libraries */
+import operation.*;
 import parameters.*;
 
 /**
@@ -24,6 +25,9 @@ public class RobotList implements Game, Iterable<Robot>
     private Robot[] armies;
     private HashMap <Integer,Double> speedy 
         = new HashMap <Integer,Double>();
+    
+    private HashMap <Robot,Operation> actions
+        = new HashMap <Robot,Operation>();
     
     // Random number generator
     final private Random rand = new Random();
@@ -55,6 +59,7 @@ public class RobotList implements Game, Iterable<Robot>
         if(robot == null) return;
         armies[emptySpace++] = robot;
         speedy.put(robot.ID, 1.0 * robot.speed);
+        actions.put(robot, null);
     }
     
     /**
@@ -62,7 +67,7 @@ public class RobotList implements Game, Iterable<Robot>
      * @param robot Reference to the robot 
      *              up to be removed
      */
-    public void remove(Robot robot)
+    void remove(Robot robot)
     {
         for(int i = 0; i < emptySpace; i++) 
         {
@@ -71,6 +76,7 @@ public class RobotList implements Game, Iterable<Robot>
                 Robot r = armies[i];
                 armies[i] = null;
                 speedy.remove(r.ID);
+                actions.remove(robot);
                 break;
             }
         }

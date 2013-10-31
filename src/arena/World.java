@@ -39,6 +39,10 @@ public class World implements Game
     // Graphical User Interface (GUI)
     private static Textual GUI;
     
+    // Operations
+    /* private HashMap <Robot,Operation> actions */
+        /* = new HashMap <Robot,Operation>(); */
+    
     /**
      * Builds a new arena with n players and
      * a given weather.
@@ -125,6 +129,43 @@ public class World implements Game
        throws InvalidOperationException
     {
         return Action.ctrl(map, turn, op);
+    }
+    
+    /**
+     * Receive a robot's syscalls.
+     * Uses an object with type 'operation'
+     * to store a robot action, which could
+     * be an attack (HIT), an iteraction 
+     * with the environment (DRAG/DROP),
+     * a displacement (MOVE) or even to get
+     * visual info (SEE/LOOK).
+     * 
+     * @param  op Operation
+     */
+    public static void POST(Operation op)
+       throws InvalidOperationException
+    {
+        /* this.op = op; */
+    }
+    
+    /**
+     * Answer's to a robot's syscalls.
+     * Uses an object with type 'operation'
+     * to execute some action, which could
+     * be an attack (HIT), an iteraction 
+     * with the environment (DRAG/DROP),
+     * a displacement (MOVE) or even to get
+     * visual info (SEE/LOOK).
+     * 
+     * @return Stackable with the answer
+     *         (or Num 0 if the system 
+     *         refused the operation).
+     */
+    public static Stackable[] GET()
+       throws InvalidOperationException
+    {
+        /* if */
+        return null;//Action.ctrl(map, turn, op);
     }
     
     /**
