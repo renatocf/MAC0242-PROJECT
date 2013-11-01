@@ -143,19 +143,19 @@ public class World implements Game
      * @param  op Operation
      */
     public static void POST(Operation op)
-       throws InvalidOperationException
     {
-        /* this.op = op; */
+        try { armies.setOperation(turn, op); 
+        }
+        catch (NotInitializedException e) {
+            System.err.println(e);
+        }
     }
     
     /**
      * Answer's to a robot's syscalls.
      * Uses an object with type 'operation'
-     * to execute some action, which could
-     * be an attack (HIT), an iteraction 
-     * with the environment (DRAG/DROP),
-     * a displacement (MOVE) or even to get
-     * visual info (SEE/LOOK).
+     * to execute some action, returning 
+     * to the user.
      * 
      * @return Stackable with the answer
      *         (or Num 0 if the system 
@@ -164,8 +164,14 @@ public class World implements Game
     public static Stackable[] GET()
        throws InvalidOperationException
     {
-        /* if */
-        return null;//Action.ctrl(map, turn, op);
+        try {
+            Operation op = armies.getOperation(turn);
+            return Action.ctrl(map, turn, op);
+        }
+        catch (NotInitializedException e) {
+            System.err.println(e);
+        }
+        return null;
     }
     
     /**

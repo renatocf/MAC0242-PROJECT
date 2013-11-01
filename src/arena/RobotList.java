@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Comparator;
 
 /* Libraries */
+import exception.*;
 import operation.*;
 import parameters.*;
 
@@ -80,6 +81,22 @@ public class RobotList implements Game, Iterable<Robot>
                 break;
             }
         }
+    }
+    
+    void setOperation(Robot robot, Operation op)
+        throws NotInitializedException
+    {
+        if(actions.containsKey(robot))
+            actions.put(robot, op);
+        else throw new NotInitializedException(robot.toString());
+    }
+    
+    Operation getOperation(Robot robot)
+        throws NotInitializedException
+    {
+        if(actions.containsKey(robot))
+            return actions.get(robot);
+        else throw new NotInitializedException(robot.toString());
     }
     
     /**

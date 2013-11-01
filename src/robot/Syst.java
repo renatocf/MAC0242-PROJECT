@@ -45,23 +45,32 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException 
     {
-        /* Stackable arg = null; */
-        /* if(!(type.equals("SEE"))) */
-        /* if(pop) arg = rvm.DATA.pop(); */
-        Stackable[] args = new Stackable[nPops];
-        for(int i = 0; i < nPops; i++) 
-            args[i] = rvm.DATA.pop();
-        Operation op;
-        
-        try { 
-            op = new Operation(rvm, type, args);
+        if(rvm.activity == State.ACTIVE)
+        {
+            Stackable[] args = new Stackable[nPops];
+            for(int i = 0; i < nPops; i++) 
+                args[i] = rvm.DATA.pop();
+            Operation op;
+            
+            try { 
+                op = new Operation(rvm, type, args);
+            }
+            catch (InvalidOperationException e) {
+                throw new WrongTypeException(type);
+            }
+            
+            World.POST(op);
+            Stackable[] stk = World.ctrl(op);
+            for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
+            rvm.syscall = true;
         }
-        catch (InvalidOperationException e) {
-            throw new WrongTypeException(type);
+        else if(rvm.activity == State.SLEEP)
+        {
+            Stackable[] stk = World.GET();
+            for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
         }
         
-        Stackable[] stk = World.ctrl(op);
-        for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
+        // Counts as a syscall
         rvm.syscall = true;
     }
     
