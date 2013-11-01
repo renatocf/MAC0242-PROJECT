@@ -90,20 +90,26 @@ public class World implements Game
         Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
-            // Set global turn
-            turn = r;
+            // Do nothing if the robot is still waiting
+            // for this turn to execute some action.
+            if(!r.ON) continue;
             
-            // Debug
-            Debugger.print("[" + turn.toString() + "]");
-            Debugger.say  ("[" + time + "ts]");
-            
-            try { turn.run(); turn.OFF(); }
-            catch (Exception e) 
-            {
-                System.out.println
-                    ("[World]["+ turn.toString() +"] " + e);
-            }
-            Debugger.say();
+            yourTurn(r);
+            // // Set global turn
+            // turn = r;
+            // 
+            // // Debug
+            // Debugger.print("[" + turn.toString() + "]");
+            // Debugger.say  ("[" + time + "ts]");
+            // 
+            // try { turn.run(); }
+            // catch (Exception e) 
+            // {
+            //     System.out.println
+            //         ("[World]["+ turn.toString() +"] " + e);
+            // }
+            // Debugger.say();
+            turn.OFF(); 
         }
         
         Debugger.say("[SORT] Sorting by priorities");
@@ -115,20 +121,22 @@ public class World implements Game
         Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
-            // Set global turn
-            turn = r;
-            
-            // Debug
-            Debugger.print("[" + turn.toString() + "]");
-            Debugger.say  ("[" + time + "ts]");
-            
-            try { turn.run(); turn.ON(); }
-            catch (Exception e) 
-            {
-                System.out.println
-                    ("[World]["+ turn.toString() +"] " + e);
-            }
-            Debugger.say();
+            yourTurn(r);
+            // // Set global turn
+            // turn = r;
+            // 
+            // // Debug
+            // Debugger.print("[" + turn.toString() + "]");
+            // Debugger.say  ("[" + time + "ts]");
+            // 
+            // try { turn.run(); }
+            // catch (Exception e) 
+            // {
+            //     System.out.println
+            //         ("[World]["+ turn.toString() +"] " + e);
+            // }
+            // Debugger.say();
+            turn.ON(); 
         }
         if(!(Debugger.info)) GUI.paint();
     }
@@ -259,5 +267,28 @@ public class World implements Game
                "[World] Destroying in invalid " +
                "position (" + i + "," + j + ")");
         }
+    }
+    
+    /**
+     * Auxiliar function for setting 
+     * the robot of the turn.
+     * @param r Robot
+     */
+    private static void yourTurn(Robot r)
+    {
+        // Set global turn
+        turn = r;
+        
+        // Debug
+        Debugger.print("[" + turn.toString() + "]");
+        Debugger.say  ("[" + time + "ts]");
+        
+        try { turn.run(); }
+        catch (Exception e) 
+        {
+            System.err.println
+                ("[World]["+ turn.toString() +"] " + e);
+        }
+        Debugger.say();
     }
 }
