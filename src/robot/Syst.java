@@ -59,13 +59,12 @@ final public class Syst
                 throw new WrongTypeException(type);
             }
             
+            // Request operation to the server
             World.POST(op);
-            Stackable[] stk = World.ctrl(op);
-            for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
-            rvm.syscall = true;
         }
         else if(rvm.activity == State.SLEEP)
         {
+            // Get server answer
             Stackable[] stk = World.GET();
             for(int i = 0; i < stk.length; i++) rvm.DATA.push(stk[i]);
         }

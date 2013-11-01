@@ -39,10 +39,6 @@ public class World implements Game
     // Graphical User Interface (GUI)
     private static Textual GUI;
     
-    // Operations
-    /* private HashMap <Robot,Operation> actions */
-        /* = new HashMap <Robot,Operation>(); */
-    
     /**
      * Builds a new arena with n players and
      * a given weather.
@@ -90,8 +86,6 @@ public class World implements Game
         String pre = "\n[WORLD] ====================== ";
         Debugger.say(pre + time + "ts");
         
-        armies.sort(); // Organize armies accordingly to
-                       // their priorities.
         for(Robot r: armies)
         {
             // Set global turn
@@ -101,7 +95,27 @@ public class World implements Game
             Debugger.print("\n[" + turn.toString() + "]");
             Debugger.say  ("[" + time + "ts]");
             
-            try { turn.run(); }
+            try { turn.run(); turn.OFF(); }
+            catch (Exception e) 
+            {
+                System.out.println
+                    ("[World]["+ turn.toString() +"] " + e);
+            }
+        }
+        
+        armies.sort(); // Organize armies accordingly to
+                       // their priorities.
+        
+        for(Robot r: armies)
+        {
+            // Set global turn
+            turn = r;
+            
+            // Debug
+            Debugger.print("\n[" + turn.toString() + "]");
+            Debugger.say  ("[" + time + "ts]");
+            
+            try { turn.run(); turn.ON(); }
             catch (Exception e) 
             {
                 System.out.println
