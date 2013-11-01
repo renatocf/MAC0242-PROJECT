@@ -83,6 +83,12 @@ public class RobotList implements Game, Iterable<Robot>
         }
     }
     
+    /**
+     * Upload an operation for a given robot,
+     * for being used as a sort method.
+     * @param robot Robot of the turn
+     * @param op    Operation to be stored
+     */
     void setOperation(Robot robot, Operation op)
         throws NotInitializedException
     {
@@ -91,6 +97,11 @@ public class RobotList implements Game, Iterable<Robot>
         else throw new NotInitializedException(robot.toString());
     }
     
+    /**
+     * Recover the operation for the robot
+     * of the turn.
+     * @return Stored operation
+     */
     Operation getOperation(Robot robot)
         throws NotInitializedException
     {
@@ -115,6 +126,7 @@ public class RobotList implements Game, Iterable<Robot>
      */
     void sort()
     {
+        // TODO: redefine priority method
         for(Robot r: armies)
         {
             if(r == null) continue;
