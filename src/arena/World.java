@@ -83,7 +83,7 @@ public class World implements Game
         time++; // On each time step, increments time
         
         // Debug
-        String pre = "[WORLD] ====================== ";
+        String pre = "[WORLD] ========================";
         Debugger.say(pre + time + "ts\n");
         
         Debugger.say("[POST] Receiveing requests");
