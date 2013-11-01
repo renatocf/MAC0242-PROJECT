@@ -55,7 +55,7 @@ public class Robot implements Scenario
     final protected int costTime;
     
     // Robot ON/OFF
-    private boolean connection = true;
+    protected boolean ON = true;
     
     /**
      * Default constructor.
@@ -186,7 +186,7 @@ public class Robot implements Scenario
      */
     public void ON()
     {
-        connection = true;
+        ON = true;
         RVM.wake(positronic);
     }
     
@@ -196,7 +196,7 @@ public class Robot implements Scenario
      */
     public void OFF()
     {
-        connection = false;
+        ON = false;
         RVM.sleep(positronic);
     }
     
