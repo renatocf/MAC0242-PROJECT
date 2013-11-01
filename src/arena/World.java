@@ -142,6 +142,7 @@ public class World implements Game
      * a displacement (MOVE) or even to get
      * visual info (SEE/LOOK).
      * 
+     * @deprecated
      * @param  op Operation
      * @return Stackable with the answer
      *         (or Num 0 if the system 
