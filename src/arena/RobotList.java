@@ -13,7 +13,7 @@ import operation.*;
 import parameters.*;
 
 /**
- * Auxiliar class RobotList<br>
+ * <b>Auxiliar class RobotList</b><br>
  * Impelments a list to be used within
  * the World to control the arena.
  *
