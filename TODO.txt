@@ -4,6 +4,7 @@
 [Renato]
     [X] Fix parser.pl to accept many files.
     [X] Refatorate GUI.
+    [ ] Update build.xml to ignore parser/ dir.
     
 [Vinícius]
     [X] Add new maps. 
