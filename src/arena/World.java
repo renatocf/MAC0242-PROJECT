@@ -94,22 +94,9 @@ public class World implements Game
             // for this turn to execute some action.
             if(!r.ON) continue;
             
-            yourTurn(r);
-            // // Set global turn
-            // turn = r;
-            // 
-            // // Debug
-            // Debugger.print("[" + turn.toString() + "]");
-            // Debugger.say  ("[" + time + "ts]");
-            // 
-            // try { turn.run(); }
-            // catch (Exception e) 
-            // {
-            //     System.out.println
-            //         ("[World]["+ turn.toString() +"] " + e);
-            // }
-            // Debugger.say();
-            turn.OFF(); 
+            // Otherwise, keep the robot waiting for an
+            // answer (this or in other turns).
+            yourTurn(r); turn.OFF(); 
         }
         
         Debugger.say("[SORT] Sorting by priorities");
@@ -121,22 +108,9 @@ public class World implements Game
         Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
-            yourTurn(r);
-            // // Set global turn
-            // turn = r;
-            // 
-            // // Debug
-            // Debugger.print("[" + turn.toString() + "]");
-            // Debugger.say  ("[" + time + "ts]");
-            // 
-            // try { turn.run(); }
-            // catch (Exception e) 
-            // {
-            //     System.out.println
-            //         ("[World]["+ turn.toString() +"] " + e);
-            // }
-            // Debugger.say();
-            turn.ON(); 
+            // Send the answer and set the robot to 
+            // be able to run a new set of programs
+            yourTurn(r); turn.ON(); 
         }
         if(!(Debugger.info)) GUI.paint();
     }
