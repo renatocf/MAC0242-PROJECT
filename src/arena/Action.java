@@ -7,6 +7,18 @@ import exception.*;
 import parameters.*;
 import operation.Operation;
 
+/**
+ * <b>Action</b><br>
+ * Decide when a robot may  
+ * (or not) make an action,
+ * changing the arena 
+ * accordingly to it.
+ * @see World
+ * 
+ * @author Karina Suemi Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Nascimento Silva
+ */
 public class Action implements Game
 {      
     /**

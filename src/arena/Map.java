@@ -14,6 +14,21 @@ import parameters.*;
 import stackable.item.*;
 import scenario.Scenario;
 
+/**
+ * <b>Map</b><br>
+ * Control an hexagonal matrix of
+ * terraints in which are placed 
+ * all scenarios, items and robots. 
+ * Make changes on it accordingly
+ * to requests made by the world 
+ * and robots.
+ * @see Action
+ * @see World
+ * 
+ * @author Karina Suemi Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Nascimento Silva
+ */
 public class Map implements Game
 {
     // Map Matrixes

@@ -5,6 +5,20 @@ import scenario.*;
 import stackable.item.*;
 import stackable.Stackable;
 
+/**
+ * <b>Hexagonal Terrain</b><br>
+ * Virtual hexagon defined by its type
+ * and appearence. It is able to hold 
+ * over it one scenario and one item.
+ * (May be invisible by fog war).
+ *
+ * @see scenario
+ * @see stackable.item
+ * 
+ * @author Karina Suemi Awoki
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Nascimento Silva
+ */
 public class Terrain implements Stackable
 {    
     // Unchangable characteristics
