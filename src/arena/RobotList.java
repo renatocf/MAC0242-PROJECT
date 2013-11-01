@@ -149,7 +149,7 @@ public class RobotList implements Game, Iterable<Robot>
             Debugger.print( (r != null) ? r : "null" );
             if(i != emptySpace-1) Debugger.print(", ");
         }
-        Debugger.say();
+        Debugger.say("\n");
     }
     
     /**
@@ -228,22 +228,22 @@ public class RobotList implements Game, Iterable<Robot>
         
         public boolean hasNext()
         {
-            String pre = "[Iterator] ";
-            if(nextRobot + 1 != emptySpace)
-            {
-                Debugger.say("\n", pre, "Has next!");
-                Debugger.say(pre, "[nextRobot:", 
-                             armies[nextRobot+1], "]");
-                Debugger.say(pre, "[emptySpace:", 
-                             emptySpace, "]");
-            }
-            else Debugger.say("\n", pre, "No next...");
+            //String pre = "[Iterator] ";
+            //if(nextRobot + 1 != emptySpace)
+            //{
+            //    Debugger.say("\n", pre, "Has next!");
+            //    Debugger.say(pre, "[nextRobot:", 
+            //                 armies[nextRobot+1], "]");
+            //    Debugger.say(pre, "[emptySpace:", 
+            //                 emptySpace, "]");
+            //}
+            //else Debugger.say("\n", pre, "No next...");
             return nextRobot + 1 != emptySpace;
         }
         
         public Robot next()
         {
-            Debugger.say("[Iterator] Getting next!");
+            /* Debugger.say("[Iterator] Getting next!"); */
             nextRobot++;
             return armies[nextRobot];
         }

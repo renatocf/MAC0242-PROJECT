@@ -124,7 +124,6 @@ public class RVM implements Game
                     Debugger.printf("[PC:%3d]", this.PC); 
                     exec(); this.PC++; c++; 
                 }
-                Debugger.printf("[PC:%3d]", this.PC);
                 break;
             
             case SLEEP: 
@@ -134,15 +133,15 @@ public class RVM implements Game
                 // for its answer).
 
                 this.PC--; exec(); this.PC++; 
+
+                // Debug
+                Debugger.say  ("[STACK]");
+                Debugger.print("    ");
+                for(Stackable stk: this.DATA)
+                    Debugger.print(stk.toString() + ", ");
+                Debugger.say  ();
                 break;
         }
-
-        // Debug
-        Debugger.say  ("[STACK]");
-        Debugger.print("    ");
-        for(Stackable stk: this.DATA)
-            Debugger.print(stk.toString() + ", ");
-        Debugger.say  ();
     }
     
     /** 

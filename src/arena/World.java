@@ -83,16 +83,18 @@ public class World implements Game
         time++; // On each time step, increments time
         
         // Debug
-        String pre = "\n[WORLD] ====================== ";
-        Debugger.say(pre + time + "ts");
+        String pre = "[WORLD] ====================== ";
+        Debugger.say(pre + time + "ts\n");
         
+        Debugger.say("[POST] Receiveing requests");
+        Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
             // Set global turn
             turn = r;
             
             // Debug
-            Debugger.print("\n[" + turn.toString() + "]");
+            Debugger.print("[" + turn.toString() + "]");
             Debugger.say  ("[" + time + "ts]");
             
             try { turn.run(); turn.OFF(); }
@@ -101,18 +103,23 @@ public class World implements Game
                 System.out.println
                     ("[World]["+ turn.toString() +"] " + e);
             }
+            Debugger.say();
         }
         
+        Debugger.say("[SORT] Sorting by priorities");
+        Debugger.say("--------------------------------");
         armies.sort(); // Organize armies accordingly to
                        // their priorities.
         
+        Debugger.say("[POST] Sending answers");
+        Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
             // Set global turn
             turn = r;
             
             // Debug
-            Debugger.print("\n[" + turn.toString() + "]");
+            Debugger.print("[" + turn.toString() + "]");
             Debugger.say  ("[" + time + "ts]");
             
             try { turn.run(); turn.ON(); }
@@ -121,6 +128,7 @@ public class World implements Game
                 System.out.println
                     ("[World]["+ turn.toString() +"] " + e);
             }
+            Debugger.say();
         }
         if(!(Debugger.info)) GUI.paint();
     }
