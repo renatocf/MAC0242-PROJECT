@@ -1,5 +1,5 @@
 [Karina]
-    [ ] Finish documentation (LaTeX).
+    [X] Finish documentation (LaTeX).
     
 [Renato]
     [X] Fix parser.pl to accept many files.
@@ -7,7 +7,7 @@
     
 [Vinícius]
     [X] Add new maps. 
-    [ ] Create robot behaviors.
+    [X] Create robot behaviors.
     
 [All]
     [X] Create insert Army.
@@ -23,7 +23,10 @@
     [X] Test SEE.
     [X] Test more ALOC, FREE, GET, SET.
     [X] Implements iterator.
+    [X] Finish Javadoc
     [ ] Create robots automatically.
-    [ ] Refactorate arena.Action.
+    [ ] Test new implementation design.
+    [ ] Create new system for priorities.
+    [ ] Create class for users.
+    [ ] Create LOG window with robots prints.
     [ ] Create menu.
-    [ ] Finish Javadoc
