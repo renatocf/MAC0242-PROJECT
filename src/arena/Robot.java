@@ -56,6 +56,7 @@ public class Robot implements Scenario
     
     // Robot ON/OFF
     protected boolean ON = true;
+    protected int wait = 0;
     
     /**
      * Default constructor.
@@ -194,9 +195,10 @@ public class Robot implements Scenario
      * Desactivate the robot.
      * @see robot.RVM
      */
-    public void OFF()
+    public void OFF(int wait)
     {
         ON = false;
+        this.wait = wait;
         RVM.sleep(positronic);
     }
     

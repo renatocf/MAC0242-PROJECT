@@ -96,7 +96,7 @@ public class World implements Game
             
             // Otherwise, keep the robot waiting for an
             // answer (this or in other turns).
-            yourTurn(r); turn.OFF(); 
+            yourTurn(r); turn.OFF(0); 
         }
         
         Debugger.say("[SORT] Sorting by priorities");
@@ -110,7 +110,8 @@ public class World implements Game
         {
             // Send the answer and set the robot to 
             // be able to run a new set of programs
-            yourTurn(r); turn.ON(); 
+            yourTurn(r); 
+            if(r.wait == 0) turn.ON(); else r.wait--;
         }
         if(!(Debugger.info)) GUI.paint();
     }
