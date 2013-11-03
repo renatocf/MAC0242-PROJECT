@@ -1,5 +1,8 @@
 package random;
 
+// Default library
+import java.util.ArrayList;
+
 // Libraries
 import scenario.*;
 import arena.Terrain;
@@ -21,11 +24,11 @@ import static arena.Appearence.*;
  */
 public class RandomMap
 {
-    Weather     style;
-    int         nPlayer;
-    int         side;
-    int[]       bases;
-    char[][]    matrix;
+    Weather         style;
+    int             nPlayer;
+    int             side;
+    char[][]        matrix;
+    ArrayList<Base> bases;
         
     /**
      * Default constructor.<br>
@@ -44,7 +47,8 @@ public class RandomMap
         this.nPlayer = nPlayer;
         this.side = side;
         
-        bases = new int[nPlayer];
+        // Set up a list of bases
+        bases = new ArrayList<Base>();
         
         Theme t = null;
         switch(style)
@@ -95,7 +99,8 @@ public class RandomMap
                     case 'S': app = SAND  ; break;         
                     
                     // Scenario only
-                    case 'B': app = DEF   ; sce = new Base    (); break;    
+                    case 'B': app = DEF   ; sce = new Base (i,j);
+                                            bases.add((Base)sce);       break;    
                     case 'O': app = DEF   ; sce = new Rock    (); break;
                     case '♣': app = DEF   ; sce = new Tree    (); break;
                     case '~': app = WATER ; sce = new Water   (); break;
@@ -118,10 +123,22 @@ public class RandomMap
                     // Default case
                     default : app = GRASS ;                       break;
                 }
+                
+                // Create terrain with all attributes
                 map[i][j] = new Terrain(this.nPlayer, app, sce, itm);
             }
         
         return map;
+    }
+    
+    /**
+     * Stores the bases created for this map.
+     * @return Matrix of characters representing
+     *         the entire map.
+     */
+    public ArrayList<Base> getBases()
+    {
+        return bases;
     }
     
     /**

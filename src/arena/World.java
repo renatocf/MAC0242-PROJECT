@@ -4,6 +4,7 @@ package arena;
 import gui.*;
 import robot.*;
 import random.*;
+import players.*;
 import scenario.*;
 import operation.*;
 import exception.*;
@@ -35,6 +36,7 @@ public class World implements Game
     
     /* Robot list */
     private static RobotList armies;
+    private static Player[] players;
     
     // Graphical User Interface (GUI)
     private static Textual GUI;
@@ -45,30 +47,38 @@ public class World implements Game
      * @param np Number of players
      * @param w  Weather
      */
-    public static void genesis(int np, Weather w)
+    public static Player[] genesis(int np, Weather w)
         throws InvalidOperationException
     {
         // Set game configurations
         nPlayers = np;
         map      = new Map(w);
         armies   = new RobotList(nPlayers);
+        players  = new Player[nPlayers];
         
         // Create map
         Robot[][] initial = map.genesis(nPlayers);
         
         // Set up initial robots
         for(int i = 0; i < nPlayers; i++)
+        {
+            players[i] = new Player(map.getNewBase());
             for(int j = 0; j < ROBOTS_NUM_INITIAL; j++)
             {
                 Debugger.say("[i:",i,"],[j:",j,"]");
                 if(initial[i][j] == null)
                     Debugger.say("[World] É null");
+                
+                players[i].addArmy(initial[i][j]);
                 armies.add(initial[i][j]);
             }
+        }
         
         // Initializes GUI
         GUI = new Textual(map);
         if(Debugger.info) GUI.printMiniMap();
+        
+        return players;
     }
     
     /**
@@ -195,7 +205,7 @@ public class World implements Game
      * @param pathToProg Robot assembly program
      */
     public static void insertArmy
-        (int player, String name, int i, int j, String pathToProg)
+        (Player player, String name, int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
         Robot r = map.insertArmy(name, player, id++, 
@@ -213,6 +223,9 @@ public class World implements Game
     public static void removeArmy(Robot dead)
         throws SegmentationFaultException
     {
+        int team = dead.getTeam().getID();
+        players[team].removeArmy(dead);
+        
         map.removeScenario(dead.i, dead.j);
         armies.remove(dead);
     }

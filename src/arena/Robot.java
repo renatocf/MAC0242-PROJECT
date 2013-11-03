@@ -5,6 +5,7 @@ import java.util.Vector;
 
 // Libraries
 import robot.*;
+import players.*;
 import exception.*;
 import stackable.*;
 import stackable.item.Item;
@@ -25,7 +26,7 @@ public class Robot implements Scenario
 {
     // ID
     final protected String name;
-    final protected int    team;
+    final protected Player team;
     final protected int    ID;
     
     // Position
@@ -71,7 +72,7 @@ public class Robot implements Scenario
      * @param PROG    Program with the actions
      *                to be done by the robot
      */
-    public Robot(String baptism, int team, int ID, 
+    public Robot(String baptism, Player team, int ID, 
                  int i, int j, Vector<Command> PROG)
     {
         // ID
@@ -206,7 +207,7 @@ public class Robot implements Scenario
      * Getter for the robot's ownew ID.
      * @return Player number
      */
-    public int getTeam () { return this.team; }
+    public Player getTeam () { return this.team; }
     
     // Interface scenario
     public int takeDamage(int damage)

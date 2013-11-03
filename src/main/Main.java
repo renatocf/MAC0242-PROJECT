@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 // Libraries
 import arena.*;
+import players.*;
 import exception.*;
 import stackable.*;
 import parameters.*;
@@ -47,13 +48,13 @@ class Main
         if(args.length < 2) { System.err.println(USAGE); return; }
         
         // Generate map
-        World.genesis(2, weather); 
+        Player[] p = World.genesis(2, weather); 
        
         // Menu
         // TODO: automate inserction of programs
         try{
-            World.insertArmy(1, "R2D2", 8, 9, args[0]);
-            World.insertArmy(2, "Bender"  , 9, 8, args[1]);
+            World.insertArmy(p[0], "R2D2", 8, 9, args[0]);
+            World.insertArmy(p[1], "Bender"  , 9, 8, args[1]);
         }
         catch(SegmentationFaultException e)
         {

@@ -3,14 +3,18 @@ package arena;
 // Default libraries
 import java.io.*;
 import java.util.Vector;
+import java.util.Iterator;
+import java.util.ArrayList;
 import java.lang.reflect.*;
 
 // Libraries
 import robot.*;
 import random.*;
+import players.*;
 import stackable.*;
 import exception.*;
 import parameters.*;
+import scenario.Base;
 import stackable.item.*;
 import scenario.Scenario;
 
@@ -32,8 +36,12 @@ import scenario.Scenario;
 public class Map implements Game
 {
     // Map Matrixes
-    public Terrain[][] map     = new Terrain[MAP_SIZE][MAP_SIZE];
-    public char[][]    miniMap = new char[MAP_SIZE][MAP_SIZE];
+    public char[][]        miniMap;
+    public Terrain[][]     map;
+    
+    // Base control
+    Iterator<Base>  newBase;
+    ArrayList<Base> bases;
 
     // Weather
     final private Weather w;
@@ -42,7 +50,7 @@ public class Map implements Game
      * Default constructor.
      * @param w Weather of the map
      */
-    public Map(Weather w)
+    Map(Weather w)
     {
         this.w = w;
     }
@@ -54,12 +62,14 @@ public class Map implements Game
      *         players of height, and 
      *         ROBOTS_NUM_INITIAL of lenght
      */
-    public Robot[][] genesis(int nPlayers)
+    Robot[][] genesis(int nPlayers)
         throws InvalidOperationException
     {
         RandomMap arena = new RandomMap (w, nPlayers, MAP_SIZE);
         miniMap = arena.getMatrix   (); 
         map     = arena.generateMap ();              
+        bases   = arena.getBases    ();
+        newBase = bases.iterator    ();
         
         //// TODO: receive PROG, generate robots
         //Parser user = new Parser();
@@ -71,6 +81,17 @@ public class Map implements Game
         Robot[][] initial = new Robot[nPlayers][ROBOTS_NUM_INITIAL];
         
         return initial;
+    }
+    
+    /**
+     * Gives a new base to a player. 
+     * (as long as there is bases in the map).
+     * @return Base still without owner
+     */
+    Base getNewBase()
+    {
+        if(newBase.hasNext()) return newBase.next();
+        return null;
     }
     
     /**
@@ -87,8 +108,8 @@ public class Map implements Game
      * @param j          Horizontal position
      * @param pathToProg Robot assembly program
      */
-    public Robot insertArmy(String name, int player, int ID, 
-                            int i, int j, String pathToProg)
+    Robot insertArmy(String name, Player player, int ID, 
+                     int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
@@ -131,7 +152,7 @@ public class Map implements Game
      * @param i Vertical position
      * @param j Horizontal position
      */
-    public Scenario removeScenario(int i, int j)
+    Scenario removeScenario(int i, int j)
     {
         return map[i][j].removeScenario();
     }
@@ -141,7 +162,7 @@ public class Map implements Game
      * Given a strinfg makes tha path a valid name
      * for the program to be loaded.
      */
-    private static String processInput(String input)
+    static String processInput(String input)
     {
         // Process input
         input = input.replaceFirst("^.*/"  , ""); // Takes out dir path

@@ -299,13 +299,7 @@ public class Textual
         if(s instanceof Robot)
         {
             Robot r = (Robot) s;
-            int team = r.getTeam();
-            switch(team)
-            {
-                case 1: return ON_BLACK;
-                case 2: return ON_RED;
-                default: return "";
-            }
+            return r.getTeam().color();
         }
         return "";
     }
