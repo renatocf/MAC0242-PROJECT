@@ -40,6 +40,7 @@ public class Base implements Scenario
     
     /**
      * Getter for the base owner ID.
+     * @return Player that owna the base
      */ 
     public Player getTeam() { return this.player; }
 
@@ -71,15 +72,27 @@ public class Base implements Scenario
     
     /** 
      * Throws a crystal in the base.
-     * @param r Robot attacking the base
-     *          (throwing a crystal on it)
+     * @param  r Robot attacking the base
+     *           (throwing a crystal on it)
+     * @return If the base is the robot's 
+     *         team, then does not allow it
+     *         to throw in that place.
      */
-    public void addCrystal(Robot r)
+    public boolean addCrystal(Robot r)
     { 
         // Other players will be the only to 
         // get to put a crystal in the base
-        if(r.getTeam() == this.player) return;
-        crystals++;
+        if(r.getTeam() == this.player) return false;
+        crystals++; return true;
+    }
+    
+    /**
+     * Number of crystals inside the base.
+     * @return Number of crystals in the base
+     */
+    public int getCrystals()
+    {
+        return crystals;
     }
     
     //
