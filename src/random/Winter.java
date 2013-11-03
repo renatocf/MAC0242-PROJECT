@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Vinicius Silva
  */
-class Winter implements Theme
+class Winter extends Theme
 {
     private Random rand = new Random();
     
@@ -80,6 +80,92 @@ class Winter implements Theme
     }
     
     /**
+     * Put trees in a char matrix map with
+     * 2% of probability.
+     * @param  map map matrix
+     * @return map matrix with trees
+     */
+    char[][] putTrees(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+                if(map[i][j] == '.' && this.rand.nextFloat() < 0.02  )
+                    map[i][j] = '\u2663';
+        return map;
+    }
+    
+    /**
+     * Put rocks in a char matrix map with
+     * 0.5% of probability.
+     * @param  map map matrix
+     * @return map matrix with rocks
+     */
+    char[][] putRocks(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+                if(map[i][j] == '.' && this.rand.nextFloat() < 0.005)
+                    map[i][j] = 'O';
+        return map;
+    }
+    
+    /**
+     * Put crystals in a char matrix map with
+     * probability accordingly to the map size
+     * (bigger map, lesser crystals probability).
+     * @param  map Map matrix
+     * @return Map matrix with crystals
+     */
+    char[][] putCrystals(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+            {
+                if(map[i][j] == '.' && this.rand.nextFloat() < 1.0/(map.length*1.25))
+                    map[i][j] = '\u2662';
+                if(map[i][j] == '\u2663' && this.rand.nextFloat() < 1.0/(map.length*1.5))
+                    map[i][j] = 'Y';
+                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5))
+                    map[i][j] = '@';
+            }                    
+        return map;
+    }
+
+    /**
+     * Put stones in a char matrix map with
+     * 0.5% of probability.
+     * @param  map map matrix
+     * @return map matrix with stones
+     */
+    char[][] putStones(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+                if(map[i][j] == '.' && this.rand.nextFloat() < 0.005)
+                    map[i][j] = '*';
+        return map;
+    }
+    
+    /**
+     * Put two bases in a char matrix map 
+     * in the opposity corners.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
+    char[][] putBases(char[][] map)
+    {
+        int x = (int) (map.length/10 * this.rand.nextFloat());
+        int y = (int) (map.length/10 * this.rand.nextFloat());
+        map[x][y] = 'B';
+        x = (int) (map.length/10 * this.rand.nextFloat());
+        y = (int) (map.length/10 * this.rand.nextFloat());
+        x = map.length - x - 1;
+        y = map.length - y - 1;
+        map[x][y] = 'B';
+        return map;
+    }
+    
+    /**
      * Generate randomly the coordinates for the 
      * border of the frozen lake.
      * @param  side Size of the side of the 
@@ -118,92 +204,6 @@ class Winter implements Theme
         } 
         return coord;
     }   
-    
-    /**
-     * Put trees in a char matrix map with
-     * 2% of probability.
-     * @param  map map matrix
-     * @return map matrix with trees
-     */
-    private char[][] putTrees(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-                if(map[i][j] == '.' && this.rand.nextFloat() < 0.02  )
-                    map[i][j] = '\u2663';
-        return map;
-    }
-    
-    /**
-     * Put rocks in a char matrix map with
-     * 0.5% of probability.
-     * @param  map map matrix
-     * @return map matrix with rocks
-     */
-    private char[][] putRocks(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-                if(map[i][j] == '.' && this.rand.nextFloat() < 0.005)
-                    map[i][j] = 'O';
-        return map;
-    }
-    
-    /**
-     * Put crystals in a char matrix map with
-     * probability accordingly to the map size
-     * (bigger map, lesser crystals probability).
-     * @param  map Map matrix
-     * @return Map matrix with crystals
-     */
-    private char[][] putCrystals(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-            {
-                if(map[i][j] == '.' && this.rand.nextFloat() < 1.0/(map.length*1.25))
-                    map[i][j] = '\u2662';
-                if(map[i][j] == '\u2663' && this.rand.nextFloat() < 1.0/(map.length*1.5))
-                    map[i][j] = 'Y';
-                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5))
-                    map[i][j] = '@';
-            }                    
-        return map;
-    }
-
-    /**
-     * Put stones in a char matrix map with
-     * 0.5% of probability.
-     * @param  map map matrix
-     * @return map matrix with stones
-     */
-    private char[][] putStones(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-                if(map[i][j] == '.' && this.rand.nextFloat() < 0.005)
-                    map[i][j] = '*';
-        return map;
-    }
-    
-    /**
-     * Put two bases in a char matrix map 
-     * in the opposity corners.
-     * @param  map Map matrix
-     * @return Map matrix with bases
-     */
-    private char[][] putBases(char[][] map)
-    {
-        int x = (int) (map.length/10 * this.rand.nextFloat());
-        int y = (int) (map.length/10 * this.rand.nextFloat());
-        map[x][y] = 'B';
-        x = (int) (map.length/10 * this.rand.nextFloat());
-        y = (int) (map.length/10 * this.rand.nextFloat());
-        x = map.length - x - 1;
-        y = map.length - y - 1;
-        map[x][y] = 'B';
-        return map;
-    }
     
     /**
      * Calculates the x coordinate accordingly

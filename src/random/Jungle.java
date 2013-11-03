@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Vinicius Silva
  */
-class Jungle implements Theme
+class Jungle extends Theme
 {
     private Random rand = new Random(42);
     
@@ -120,7 +120,7 @@ class Jungle implements Theme
      * @param  map map matrix
      * @return map matrix with trees
      */
-    private char[][] putTrees(char[][] map)
+    char[][] putTrees(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
             for(int j = 0; j < map.length; j++)
@@ -135,7 +135,7 @@ class Jungle implements Theme
      * @param  map map matrix
      * @return map matrix with rocks
      */
-    private char[][] putRocks(char[][] map)
+    char[][] putRocks(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
             for(int j = 0; j < map.length; j++)
@@ -151,7 +151,7 @@ class Jungle implements Theme
      * @param  map Map matrix
      * @return Map matrix with crystals
      */
-    private char[][] putCrystals(char[][] map)
+    char[][] putCrystals(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
             for(int j = 0; j < map.length; j++)
@@ -174,7 +174,7 @@ class Jungle implements Theme
      * @param  map map matrix
      * @return map matrix with stones
      */
-    private char[][] putStones(char[][] map)
+    char[][] putStones(char[][] map)
     {
         for(int i = 0; i < map.length; i++)
             for(int j = 0; j < map.length; j++)
@@ -189,7 +189,7 @@ class Jungle implements Theme
      * @param  map Map matrix
      * @return Map matrix with bases
      */
-    private char[][] putBases(char[][] map)
+    char[][] putBases(char[][] map)
     {
         int x = (int) (map.length/10 * this.rand.nextFloat());
         int y = (int) (map.length/10 * this.rand.nextFloat());

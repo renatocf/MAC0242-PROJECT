@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Vinicius Silva
  */
-class Desert implements Theme
+class Desert extends Theme
 {
     private Random rand = new Random();
     
@@ -34,13 +34,108 @@ class Desert implements Theme
     }
     
     /**
+     * Put rocks in a char matrix map with
+     * 10% of probability.
+     * @param  map Map matrix
+     * @return Map matrix with rocks
+     */
+    char[][] putRocks(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+            {
+                if(map[i][j] == ':' && this.rand.nextFloat() < 0.1)
+                    map[i][j] = 'O';
+                
+                if(map[i][j] == 'S' && this.rand.nextFloat() < 0.1)
+                    map[i][j] = '©';
+            }
+
+        return map;
+    }
+    
+    /**
+     * Put crystals in a char matrix map with
+     * probability accordingly to the map size
+     * (bigger map, lesser crystals probability).
+     * @param  map Map matrix
+     * @return Map matrix with crystals
+     */
+    char[][] putCrystals(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+            {
+                if(map[i][j] == ':' && this.rand.nextFloat() < 1.0/(map.length*1.25))
+                    map[i][j] = '\u2662';
+                if(map[i][j] == 'S' && this.rand.nextFloat() < 1.0/(map.length*1.25))
+                    map[i][j] = '$';
+                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5))
+                    map[i][j] = '@';
+            }                    
+        return map;
+    }
+    
+    /**
+     * Put stones in a char matrix map with
+     * 10% of probability if the terrain is
+     * a dirt and 5% of probability if its a
+     * sand.
+     * @param  map Map matrix
+     * @return Map matrix with stones
+     */
+    char[][] putStones(char[][] map)
+    {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map.length; j++)
+            {
+                if(map[i][j] == ' ' && this.rand.nextFloat() < 0.1)
+                    map[i][j] = '*';
+                if(map[i][j] == 'S' && this.rand.nextFloat() < 0.05)
+                    map[i][j] = '§';
+            }   
+        return map;
+    }
+    
+    /**
+     * Put two bases in a char matrix map 
+     * in the opposity corners.
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
+    char[][] putBases(char[][] map)
+    {
+        int x = (int) (map.length/10 * this.rand.nextFloat());
+        int y = (int) (map.length/10 * this.rand.nextFloat());
+        map[x][y] = 'B';
+        x = (int) (map.length/10 * this.rand.nextFloat());
+        y = (int) (map.length/10 * this.rand.nextFloat());
+        x = map.length - x - 1;
+        y = map.length - y - 1;
+        map[x][y] = 'B';
+        return map;
+    }
+    
+    /**
+     * Put no trees in this map
+     * (It's a desert!)
+     * @param  map Map matrix
+     * @return Map matrix with bases
+     */
+    char[][] putTrees(char[][] map)
+    {
+        // Put no trees
+        return map;
+    }
+    
+    /**
      * Create a char matrix representing a
      * dirty terrain with sand spots.
      * @param  side Size of the side 
      *              of the matrix
      * @return Map matrix with sands
      */
-    char[][] generateSands(int side)
+    private char[][] generateSands(int side)
     {
         char[][] spots = new char[side][side];
         int nSpots = (int) (balancedRand() * side*3);
@@ -83,89 +178,6 @@ class Desert implements Theme
             }
         }
         return spots;   
-    }
-    
-    /**
-     * Put rocks in a char matrix map with
-     * 10% of probability.
-     * @param  map Map matrix
-     * @return Map matrix with rocks
-     */
-    private char[][] putRocks(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-            {
-                if(map[i][j] == ':' && this.rand.nextFloat() < 0.1)
-                    map[i][j] = 'O';
-                
-                if(map[i][j] == 'S' && this.rand.nextFloat() < 0.1)
-                    map[i][j] = '©';
-            }
-
-        return map;
-    }
-    
-    /**
-     * Put crystals in a char matrix map with
-     * probability accordingly to the map size
-     * (bigger map, lesser crystals probability).
-     * @param  map Map matrix
-     * @return Map matrix with crystals
-     */
-    private char[][] putCrystals(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-            {
-                if(map[i][j] == ':' && this.rand.nextFloat() < 1.0/(map.length*1.25))
-                    map[i][j] = '\u2662';
-                if(map[i][j] == 'S' && this.rand.nextFloat() < 1.0/(map.length*1.25))
-                    map[i][j] = '$';
-                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5))
-                    map[i][j] = '@';
-            }                    
-        return map;
-    }
-    
-    /**
-     * Put stones in a char matrix map with
-     * 10% of probability if the terrain is
-     * a dirt and 5% of probability if its a
-     * sand.
-     * @param  map Map matrix
-     * @return Map matrix with stones
-     */
-    private char[][] putStones(char[][] map)
-    {
-        for(int i = 0; i < map.length; i++)
-            for(int j = 0; j < map.length; j++)
-            {
-                if(map[i][j] == ' ' && this.rand.nextFloat() < 0.1)
-                    map[i][j] = '*';
-                if(map[i][j] == 'S' && this.rand.nextFloat() < 0.05)
-                    map[i][j] = '§';
-            }   
-        return map;
-    }
-    
-    /**
-     * Put two bases in a char matrix map 
-     * in the opposity corners.
-     * @param  map Map matrix
-     * @return Map matrix with bases
-     */
-    private char[][] putBases(char[][] map)
-    {
-        int x = (int) (map.length/10 * this.rand.nextFloat());
-        int y = (int) (map.length/10 * this.rand.nextFloat());
-        map[x][y] = 'B';
-        x = (int) (map.length/10 * this.rand.nextFloat());
-        y = (int) (map.length/10 * this.rand.nextFloat());
-        x = map.length - x - 1;
-        y = map.length - y - 1;
-        map[x][y] = 'B';
-        return map;
     }
    
     /**

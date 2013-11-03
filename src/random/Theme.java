@@ -2,24 +2,20 @@ package random;
 
 /**
  * <b>Theme</b><br>
- * Simple interface to gather Map Themes.
- *
- * @author Vinicius Silva
- */
-public interface Theme
-{
-    char[][] generateMatrix (int side);
-}
-
-/**
- * <b>Thematic</b><br>
- * Simple interface extend Theme, demmanding
- * from the Themes having a way of putting 
- * bases when creating a map.
+ * Simple abstract class to define Map Themes.
  *
  * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
  */
-interface Thematic extends Theme
+abstract class Theme
 {
-    char[][] putBases (char[][] map);
+    // Abstract methods
+    abstract public char[][] generateMatrix (int side);
+    
+    // Package leven (only)
+    abstract char[][] putBases    (char[][] map);
+    abstract char[][] putCrystals (char[][] map);
+    abstract char[][] putRocks    (char[][] map);
+    abstract char[][] putStones   (char[][] map);
+    abstract char[][] putTrees    (char[][] map);
 }
