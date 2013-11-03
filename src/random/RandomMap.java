@@ -40,10 +40,15 @@ public class RandomMap
         this.nPlayer = nPlayer;
         this.side = side;
         Theme t = null;
-        if      (style == Weather.ARTICAL)  t = new Winter();
-        else if (style == Weather.TROPICAL) t = new Jungle();
-        else if (style == Weather.DESERTIC) t = new Desert();
-        else                                t = new CalmField();
+
+        switch(style)
+        {
+            case ARTICAL:     t = new Winter();    break;
+            case TROPICAL:    t = new Jungle();    break;
+            case DESERTIC:    t = new Desert();    break;
+            case CONTINENTAL: t = new CalmField(); break;
+            default:          t = new CalmField(); break;
+        }
         this.matrix = t.generateMatrix(this.side);        
     }
     
