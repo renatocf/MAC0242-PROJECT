@@ -1,5 +1,8 @@
 package scenario;
 
+// Libraries
+import players.Player;
+
 /**
  * <b>Scenario - Tree</b><br>
  * Just an obstacle (that may be destroyed).
@@ -15,4 +18,6 @@ public class Tree implements Scenario
     public int getHP() { return this.HP; }
     
     public String toString() { return "(♣) Tree"; }
+    
+    public Player getTeam() { return Player.Nature; }
 }
