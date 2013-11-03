@@ -164,6 +164,14 @@ public class RobotList implements Game, Iterable<Robot>
         Debugger.say("\n");
     }
     
+    public String toString()
+    {
+        String robotList = "";
+        for(Robot r: armies)
+            robotList += (r + " ");
+        return robotList;
+    }
+    
     /**
      * Quicksort implementation to be
      * used over the Robot List.
