@@ -122,7 +122,8 @@ public class Textual
                 Item     I = item(i,j);
                 
                 if      (S == null)            { scen1 = " "; scen2 = " "; }
-                else if (S instanceof Base )   { scen1 = team(i,j) + "ß"; scen2 = team(i,j) + "ß";  }
+                else if (S instanceof Base )   { Base b = (Base) S; String crs = ""+ b.getCrystals(); 
+                                                 scen1 = team(i,j) + crs; scen2 = team(i,j) + "ß";  }
                 else if (S instanceof Rock )   { scen1 = ON_BLACK  + "⌈"; scen2 = ON_BLACK  + "⌉";  }
                 else if (S instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
                 else if (S instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
