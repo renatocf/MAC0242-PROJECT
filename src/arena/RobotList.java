@@ -148,7 +148,7 @@ public class RobotList implements Game, Iterable<Robot>
         quickSort(0, emptySpace-1);
         
         // Updates first empty space position
-        int emptySpace = 0;
+        emptySpace = 0;
         for(Robot r: armies) 
             if(r == null) break; 
             else emptySpace++;
@@ -208,12 +208,12 @@ public class RobotList implements Game, Iterable<Robot>
      */
     private boolean cmpLessRobot(Robot robotA, Robot robotB)
     {
+        if(robotA == null) return false;
+        if(robotB == null) return true;
+        
         /* Comparison function */
         double costA = speedy.get(robotA.ID);
         double costB = speedy.get(robotB.ID);
-        
-        if(robotA == null) return true;
-        if(robotB == null) return false;
         return (costA <= costB);
     }
     
