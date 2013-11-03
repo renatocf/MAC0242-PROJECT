@@ -186,8 +186,9 @@ public class World implements Game
      * @param j          Horizontal position
      * @param pathToProg Robot assembly program
      */
-    public static void insertArmy
-        (Player player, String name, int i, int j, String pathToProg)
+    public static void 
+    insertArmy(Player player, String name, 
+               int i, int j, String pathToProg)
         throws SegmentationFaultException
     {
         Robot r = map.insertArmy(name, player, id++, 

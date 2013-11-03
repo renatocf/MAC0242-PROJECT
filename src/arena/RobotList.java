@@ -164,6 +164,12 @@ public class RobotList implements Game, Iterable<Robot>
         Debugger.say("\n");
     }
     
+    /**
+     * Prints in a more legible format the
+     * list with the robots (mainly with 
+     * debug purposes).
+     * @return List with robots
+     */
     public String toString()
     {
         String robotList = "";
