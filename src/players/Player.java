@@ -14,7 +14,10 @@ public class Player
 {
     // Counter with the amount of
     // players created (to ID's)
-    static int total = 0;
+    static int total = -1;
+    
+    // Default player: Mother Nature
+    public static Player Nature = new Player(null);
     
     // Internal variables
     private int    ID;
@@ -37,7 +40,7 @@ public class Player
         this.color = setColor(this.ID);
         
         // Sets the base as his
-        base.own(this);
+        if(base != null) base.own(this);
     }
     
     /** 
@@ -86,6 +89,7 @@ public class Player
     {
         switch(plID)
         {
+            case 0:  return "";
             case 1:  return ON_BLACK;
             case 2:  return ON_RED;
             case 3:  return ON_GREEN;
