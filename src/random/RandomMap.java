@@ -3,8 +3,11 @@ package random;
 // Libraries
 import scenario.*;
 import arena.Terrain;
-import arena.Appearence;
 import stackable.item.*;
+import arena.Appearence;
+
+// Static symbols
+import static arena.Appearence.*;
 
 /**
  * <b>Random Map Generator</b><br>
@@ -21,6 +24,7 @@ public class RandomMap
     Weather     style;
     int         nPlayer;
     int         side;
+    int[]       bases;
     char[][]    matrix;
         
     /**
@@ -39,15 +43,17 @@ public class RandomMap
         this.style = style;
         this.nPlayer = nPlayer;
         this.side = side;
+        
+        bases = new int[nPlayer];
+        
         Theme t = null;
-
         switch(style)
         {
-            case ARTICAL:     t = new Winter();    break;
-            case TROPICAL:    t = new Jungle();    break;
-            case DESERTIC:    t = new Desert();    break;
-            case CONTINENTAL: t = new CalmField(); break;
-            default:          t = new CalmField(); break;
+            case ARTICAL     : t = new Winter();    break;
+            case TROPICAL    : t = new Jungle();    break;
+            case DESERTIC    : t = new Desert();    break;
+            case CONTINENTAL : t = new CalmField(); break;
+            default          : t = new CalmField(); break;
         }
         this.matrix = t.generateMatrix(this.side);        
     }
@@ -61,39 +67,60 @@ public class RandomMap
     {
         Terrain[][] map = new Terrain[this.side][this.side];
         
-        Appearence a = null;
-        
-        if      (style == Weather.ARTICAL)  a = Appearence.TUNDRA;
-        else if (style == Weather.TROPICAL) a = Appearence.GRASS;
-        else if (style == Weather.DESERTIC) a = Appearence.DIRT; 
-        else                                a = Appearence.GRASS;
+        Appearence DEF;
+        switch(style)
+        {
+            case ARTICAL     : DEF = TUNDRA ; break;
+            case TROPICAL    : DEF = GRASS  ; break;
+            case DESERTIC    : DEF = DIRT   ; break; 
+            case CONTINENTAL : DEF = GRASS  ; break;
+            default          : DEF = GRASS  ;
+        }
         
         for(int i = 0; i < this.side; i++)
             for(int j = 0; j < this.side; j++)
             {
+                Appearence app = null; 
+                Scenario   sce = null;
+                Item       itm = null; 
+                
                 switch (this.matrix[i][j])
                 {
-                    case ' '     : map[i][j] = new Terrain(this.nPlayer, Appearence.GRASS);                             break;
-                    case '.'     : map[i][j] = new Terrain(this.nPlayer, Appearence.TUNDRA);                            break;
-                    case ':'     : map[i][j] = new Terrain(this.nPlayer, Appearence.DIRT);                              break;
-                    case '#'     : map[i][j] = new Terrain(this.nPlayer, Appearence.ICE);                               break;
-                    case '≈'     : map[i][j] = new Terrain(this.nPlayer, Appearence.WATER);                             break;
-                    case 'S'     : map[i][j] = new Terrain(this.nPlayer, Appearence.SAND) ;                             break;         
-                    case '~'     : map[i][j] = new Terrain(this.nPlayer, Appearence.WATER , new Water());               break;
-                    case '\u2662': map[i][j] = new Terrain(this.nPlayer, a                , new Crystal());             break;
-                    case '$'     : map[i][j] = new Terrain(this.nPlayer, Appearence.SAND  , new Crystal());             break;
-                    case '\u2663': map[i][j] = new Terrain(this.nPlayer, a                , new Tree());                break;
-                    case 'O'     : map[i][j] = new Terrain(this.nPlayer, a                , new Rock());                break;
-                    case '*'     : map[i][j] = new Terrain(this.nPlayer, a                , new Stone());               break;
-                    case '§'     : map[i][j] = new Terrain(this.nPlayer, Appearence.SAND  , new Stone());               break;
-                    case 'B'     : map[i][j] = new Terrain(this.nPlayer, a                , new Base());                break;    
-                    case 'Y'     : map[i][j] = new Terrain(this.nPlayer, a                , new Tree(), new Crystal()); break;
-                    case '@'     : map[i][j] = new Terrain(this.nPlayer, a                , new Rock(), new Crystal()); break;
-                    case '©'     : map[i][j] = new Terrain(this.nPlayer, Appearence.SAND  , new Rock(), new Crystal()); break;
-                    case 'õ'     : map[i][j] = new Terrain(this.nPlayer, Appearence.WATER , new Crystal());             break;
-                    default      : map[i][j] = new Terrain(this.nPlayer, Appearence.GRASS);                             break;
+                    // No items or scenario
+                    case ' ': app = GRASS ; break;
+                    case '.': app = TUNDRA; break;
+                    case ':': app = DIRT  ; break;
+                    case '#': app = ICE   ; break;
+                    case '≈': app = WATER ; break;
+                    case 'S': app = SAND  ; break;         
+                    
+                    // Scenario only
+                    case 'B': app = DEF   ; sce = new Base    (); break;    
+                    case 'O': app = DEF   ; sce = new Rock    (); break;
+                    case '♣': app = DEF   ; sce = new Tree    (); break;
+                    case '~': app = WATER ; sce = new Water   (); break;
+                    
+                    // Item only
+                    case '♢': app = DEF   ; itm = new Crystal (); break;
+                    case '$': app = SAND  ; itm = new Crystal (); break;
+                    case 'õ': app = WATER ; itm = new Crystal (); break;
+                    case '*': app = DEF   ; itm = new Stone   (); break;
+                    case '§': app = SAND  ; itm = new Stone   (); break;
+                    
+                    // Scenario and item
+                    case 'Y': app = DEF   ; itm = new Crystal (); 
+                                            sce = new Tree    (); break;
+                    case '@': app = DEF   ; itm = new Crystal (); 
+                                            sce = new Rock    (); break;
+                    case '©': app = SAND  ; itm = new Crystal (); 
+                                            sce = new Rock    (); break;
+                    
+                    // Default case
+                    default : app = GRASS ;                       break;
                 }
+                map[i][j] = new Terrain(this.nPlayer, app, sce, itm);
             }
+        
         return map;
     }
     
