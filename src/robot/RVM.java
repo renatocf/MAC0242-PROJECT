@@ -84,7 +84,11 @@ public class RVM implements Game
         if(function != null)
         {
             try { Ctrl.ctrl(this, function, arg);}
-            catch (Exception e) { System.out.print(e); }
+            catch (Exception e) 
+            { 
+                System.out.print("[RVM] " + e); 
+                e.printStackTrace();
+            }
         }
     }
 
