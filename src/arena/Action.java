@@ -278,6 +278,14 @@ public class Action implements Game
             thing = map.map[lookI][lookJ].getScenario();
             if(thing != null)
             {
+                // No attacks agains allies!
+                if(thing.getTeam() == turn.getTeam())
+                {
+                    Debugger.say("    [HIT]", "[NONE]");
+                    Debugger.say("    [HIT] ", thing, " is an ally");
+                    return false;
+                }
+                
                 int done = thing.takeDamage(damage);
                 Debugger.say("    [HIT]", "[FIGHT]");
                 Debugger.say("         [DAMAGE:", damage, "]");
