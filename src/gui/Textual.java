@@ -4,6 +4,7 @@ package gui;
 import arena.*;
 import scenario.*;
 import parameters.*;
+import players.Base;
 import stackable.item.*;
 
 /**
@@ -117,16 +118,19 @@ public class Textual
                 String item1 = " ", item2 = " ";
                 String scen1 = " ", scen2 = " ";
                 
-                if      (scen(i,j) == null)            { scen1 = " "; scen2 = " "; }
-                else if (scen(i,j) instanceof Base )   { scen1 = ON_RED    + "ß"; scen2 = ON_RED    + "ß";  }
-                else if (scen(i,j) instanceof Rock )   { scen1 = ON_BLACK  + "⌈"; scen2 = ON_BLACK  + "⌉";  }
-                else if (scen(i,j) instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
-                else if (scen(i,j) instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
-                else if (scen(i,j) instanceof Robot)   { scen1 = team(i,j) + "("; scen2 = team(i,j) + ")";  }
+                Scenario S = scen(i,j); 
+                Item     I = item(i,j);
                 
-                if      (item(i,j) == null)            { item1 = " "; item2 = " "; }
-                else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "/"; item2 = ON_YELLOW + "\\"; }
-                else if (item(i,j) instanceof Stone)   { item1 = ON_BLACK  + "."; item2 = ON_BLACK  + ".";  }
+                if      (S == null)            { scen1 = " "; scen2 = " "; }
+                else if (S instanceof Base )   { scen1 = team(i,j) + "ß"; scen2 = team(i,j) + "ß";  }
+                else if (S instanceof Rock )   { scen1 = ON_BLACK  + "⌈"; scen2 = ON_BLACK  + "⌉";  }
+                else if (S instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
+                else if (S instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
+                else if (S instanceof Robot)   { scen1 = team(i,j) + "("; scen2 = team(i,j) + ")";  }
+                
+                if      (I == null)            { item1 = " "; item2 = " "; }
+                else if (I instanceof Crystal) { item1 = ON_YELLOW + "/"; item2 = ON_YELLOW + "\\"; }
+                else if (I instanceof Stone)   { item1 = ON_BLACK  + "."; item2 = ON_BLACK  + ".";  }
                 
                 item1 += colorof(i,j);
                 item2 += colorof(i,j);
@@ -145,16 +149,19 @@ public class Textual
                 String item1 = " ", item2 = " ";
                 String scen1 = " ", scen2 = " ";
                 
-                if      (scen(i,j) == null)            { scen1 = " "; scen2 = " "; }
-                else if (scen(i,j) instanceof Base )   { scen1 = ON_RED    + "ß"; scen2 = ON_RED    + "ß";  }
-                else if (scen(i,j) instanceof Rock )   { scen1 = ON_BLACK  + "⌊"; scen2 = ON_BLACK  + "⌋";  }
-                else if (scen(i,j) instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
-                else if (scen(i,j) instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
-                else if (scen(i,j) instanceof Robot)   { scen1 = team(i,j) + "/"; scen2 = team(i,j) + "\\"; }
+                Scenario S = scen(i,j); 
+                Item     I = item(i,j);
                 
-                if      (item(i,j) == null)            { item1 = " "; item2 = " "; }
-                else if (item(i,j) instanceof Crystal) { item1 = ON_YELLOW + "\\"; item2 = ON_YELLOW + "/"; }
-                else if (item(i,j) instanceof Stone)   { item1 = ON_BLACK  + "¨";  item2 = ON_BLACK  + "¨"; }
+                if      (S == null)            { scen1 = " "; scen2 = " "; }
+                else if (S instanceof Base )   { scen1 = team(i,j) + "ß"; scen2 = team(i,j) + "ß";  }
+                else if (S instanceof Rock )   { scen1 = ON_BLACK  + "⌊"; scen2 = ON_BLACK  + "⌋";  }
+                else if (S instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
+                else if (S instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
+                else if (S instanceof Robot)   { scen1 = team(i,j) + "/"; scen2 = team(i,j) + "\\"; }
+                
+                if      (I == null)            { item1 = " "; item2 = " "; }
+                else if (I instanceof Crystal) { item1 = ON_YELLOW + "\\"; item2 = ON_YELLOW + "/"; }
+                else if (I instanceof Stone)   { item1 = ON_BLACK  + "¨";  item2 = ON_BLACK  + "¨"; }
                 
                 item1 += colorof(i,j);
                 item2 += colorof(i,j);
@@ -300,6 +307,11 @@ public class Textual
         {
             Robot r = (Robot) s;
             return r.getTeam().color();
+        }
+        if(s instanceof Base)
+        {
+            Base b = (Base) s;
+            return b.getTeam().color();
         }
         return "";
     }
