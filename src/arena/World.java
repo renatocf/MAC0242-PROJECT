@@ -100,6 +100,7 @@ public class World implements Game
         Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
+            if(r == null) continue;
             // Do nothing if the robot is still waiting
             // for this turn to execute some action.
             if(!r.ON) continue;
@@ -118,33 +119,13 @@ public class World implements Game
         Debugger.say("--------------------------------");
         for(Robot r: armies)
         {
+            if(r == null) continue;
             // Send the answer and set the robot to 
             // be able to run a new set of programs
             yourTurn(r); 
             if(r.wait == 0) turn.ON(); else r.wait--;
         }
         if(!(Debugger.info)) GUI.paint();
-    }
-    
-    /**
-     * Receive the robot's syscalls.
-     * Uses an object with type 'operation'
-     * to execute some action, which could
-     * be an attack (HIT), an iteraction 
-     * with the environment (DRAG/DROP),
-     * a displacement (MOVE) or even to get
-     * visual info (SEE/LOOK).
-     * 
-     * @deprecated
-     * @param  op Operation
-     * @return Stackable with the answer
-     *         (or Num 0 if the system 
-     *         refused the operation).
-     */
-    public static Stackable[] ctrl(Operation op)
-       throws InvalidOperationException
-    {
-        return Action.ctrl(map, turn, op);
     }
     
     /**
@@ -164,6 +145,7 @@ public class World implements Game
         }
         catch (NotInitializedException e) {
             System.err.println(e);
+            e.printStackTrace();
         }
     }
     
@@ -223,10 +205,16 @@ public class World implements Game
     public static void removeArmy(Robot dead)
         throws SegmentationFaultException
     {
+        String pre = "         [DESTROY] ";
         int team = dead.getTeam().getID();
-        players[team].removeArmy(dead);
         
+        Debugger.say(pre, "Player lost 1 robot");
+        players[team-1].removeArmy(dead);
+        
+        Debugger.say(pre, "Taking out of map");
         map.removeScenario(dead.i, dead.j);
+        
+        Debugger.say(pre, "Removing from the list");
         armies.remove(dead);
     }
     
@@ -268,8 +256,8 @@ public class World implements Game
         turn = r;
         
         // Debug
-        Debugger.print("[" + turn.toString() + "]");
-        Debugger.say  ("[" + time + "ts]");
+        Debugger.print("[", turn, "]");
+        Debugger.say  ("[", time, "ts]");
         
         try { turn.run(); }
         catch (Exception e) 
@@ -278,5 +266,26 @@ public class World implements Game
                 ("[World]["+ turn.toString() +"] " + e);
         }
         Debugger.say();
+    }
+    
+    /**
+     * Receive the robot's syscalls.
+     * Uses an object with type 'operation'
+     * to execute some action, which could
+     * be an attack (HIT), an iteraction 
+     * with the environment (DRAG/DROP),
+     * a displacement (MOVE) or even to get
+     * visual info (SEE/LOOK).
+     * 
+     * @deprecated
+     * @param  op Operation
+     * @return Stackable with the answer
+     *         (or Num 0 if the system 
+     *         refused the operation).
+     */
+    public static Stackable[] ctrl(Operation op)
+       throws InvalidOperationException
+    {
+        return Action.ctrl(map, turn, op);
     }
 }
