@@ -5,6 +5,7 @@ import scenario.*;
 import stackable.*;
 import exception.*;
 import parameters.*;
+import players.Base;
 import operation.Operation;
 
 /**
@@ -173,13 +174,27 @@ public class Action implements Game
         for(int i = 0; i < turn.slots.length && robot.slots[i] != null; i++) cont++;
         if(cont == 0) return false;
             
-        Debugger.say("    [DROP]", map.map[lookI][lookJ].toString());
+        Debugger.say("    [DROP]", map.map[lookI][lookJ]);
         
-        map.map[lookI][lookJ].item = robot.removeSlots(cont - 1);
+        boolean allow = false;
+        if(map.map[lookI][lookJ].scenario instanceof Base)
+        {
+            // If the scenario is a base, throw the crystal on it
+            Base b = (Base) map.map[lookI][lookJ].scenario;
+            robot.removeSlots(cont - 1); allow = b.addCrystal(turn);
+        }
+        else 
+        {
+            // Otherwise, just throws the item (if possible)
+            if(map.map[lookI][lookJ].item != null)
+            {
+                robot.removeSlots(cont - 1);
+                allow = true;
+            }
+        }
         
-        Debugger.say("    [DROP]", map.map[lookI][lookJ].toString());
-        
-        return true;
+        Debugger.say("    [DROP]", map.map[lookI][lookJ]);
+        return allow;
     }
     
     /**
@@ -270,8 +285,8 @@ public class Action implements Game
                 
                 if(thing.getHP() <= 0) 
                 {                 
-                    World.destroy(lookI, lookJ);
                     Debugger.say("    [HIT]", "[DESTROYED]");
+                    World.destroy(lookI, lookJ);
                 }
                 break;
             }
