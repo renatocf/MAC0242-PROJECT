@@ -6,7 +6,6 @@ import java.util.ArrayList;
 // Libraries
 import gui.Colors;
 import arena.Robot;
-import scenario.Base;
 
 // Static symbols
 import static gui.Colors.*;

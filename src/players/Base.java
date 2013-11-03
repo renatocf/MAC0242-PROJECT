@@ -1,8 +1,8 @@
-package scenario;
+package players;
 
 // Libraries
-import players.*;
 import arena.Robot;
+import scenario.Scenario;
 
 /**
  * <b>Scenario - Base</b><br>
@@ -41,7 +41,7 @@ public class Base implements Scenario
     /**
      * Getter for the base owner ID.
      */ 
-    public Player getPlayer() { return this.player; }
+    public Player getTeam() { return this.player; }
 
     /**
      * Getter for the base horizontal position.

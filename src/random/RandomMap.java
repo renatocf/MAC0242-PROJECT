@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 // Libraries
 import scenario.*;
+import players.Base;
 import arena.Terrain;
 import stackable.item.*;
 import arena.Appearence;

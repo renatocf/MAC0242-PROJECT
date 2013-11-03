@@ -14,7 +14,6 @@ import players.*;
 import stackable.*;
 import exception.*;
 import parameters.*;
-import scenario.Base;
 import stackable.item.*;
 import scenario.Scenario;
 
