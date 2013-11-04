@@ -56,6 +56,19 @@ public class Base implements Scenario
         if(r.getTeam() != this.player) return -1;
         return this.posX;   
     }
+
+    /**
+     * Getter for the base horizontal position.
+     * @param  p Player asking for info
+     * @return Base horizontal position
+     */    
+    public int getPosX(Player p)   
+    { 
+        // The player will be the only to 
+        // know how to get the base pos.
+        if(this.player != p) return -1;
+        return this.posX;   
+    }
     
     /**
      * Getter for the base vertical position.
@@ -67,7 +80,20 @@ public class Base implements Scenario
         // The player will be the only to 
         // know how to get the base pos.
         if(r.getTeam() != this.player) return -1;
-        return this.posX;   
+        return this.posY;   
+    }
+
+    /**
+     * Getter for the base vertical position.
+     * @param  p Player asking for info
+     * @return Base vertical position
+     */
+    public int getPosY(Player p)
+    { 
+        // The player will be the only to 
+        // know how to get the base pos.
+        if(this.player != p) return -1;
+        return this.posY;   
     }
     
     /** 
