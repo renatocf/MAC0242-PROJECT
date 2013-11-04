@@ -26,7 +26,7 @@ import gnu.getopt.LongOpt;
 class Main 
 {
     final private static String USAGE = 
-        "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> [-v]";
+        "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> <prog3> [-v|-d]";
 
     // Options
     static private boolean help;
@@ -45,16 +45,21 @@ class Main
         
         // Help and Usage
         if(help)            { help();                    return; }
-        if(args.length < 2) { System.err.println(USAGE); return; }
+        if(args.length < 3) { System.err.println(USAGE); return; }
         
         // Generate map
         Player[] p = World.genesis(2, weather); 
-       
+               
         // Menu
         // TODO: automate inserction of programs
         try{
-            World.insertArmy(p[0], "R2D2", 8, 9, args[0]);
-            World.insertArmy(p[1], "Bender"  , 9, 8, args[1]);
+            World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
+            World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
+            World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+            
+            //World.insertArmy(p[1], "Boomer"         , args[0]);
+            //World.insertArmy(p[1], "Number Eighteen", args[1]);
+            //World.insertArmy(p[1], "Optimus Prime"  , args[2]);
         }
         catch(SegmentationFaultException e)
         {
