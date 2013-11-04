@@ -253,12 +253,12 @@ public class Action implements Game
         String directions = "";
         for(Direction d: dirs) directions += d.toString() + " ";
         
-        Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
-        Debugger.say("    [HIT]", " ", directions);
-        
         int lookI = turn.i;
         int lookJ = turn.j;
         Scenario thing = null;
+        
+        Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
+        Debugger.say("    [HIT]", " ", directions);
 
         for(Direction d: dirs)
         {
