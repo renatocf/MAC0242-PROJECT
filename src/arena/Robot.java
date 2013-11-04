@@ -93,7 +93,7 @@ public class Robot implements Scenario
         this.power      = 12;
         
         // Combat
-        this.damageMelee = 1;
+        this.damageMelee = 4;
         this.damageRange = 0;
         this.maxRange    = 0;
         this.forceShield = 0;
