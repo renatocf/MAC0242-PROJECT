@@ -142,8 +142,8 @@ public class RVM implements Game
                 Debugger.say  ("[STACK]");
                 Debugger.print("    ");
                 for(Stackable stk: this.DATA)
-                    Debugger.print(stk.toString() + ", ");
-                Debugger.say  ();
+                    Debugger.print(stk, ", ");
+                Debugger.say();
                 break;
         }
     }
