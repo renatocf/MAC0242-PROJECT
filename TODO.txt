@@ -1,14 +1,18 @@
 [Karina]
-    [X] Finish documentation (LaTeX).
+    [X] Finish documentation (LaTeX). (PHASE 2)
+    [ ] Create game_over function.
+    [ ] Correct documentations. (PHASE 3)
     
 [Renato]
     [X] Fix parser.pl to accept many files.
     [X] Refatorate GUI.
-    [ ] Update build.xml to ignore parser/ dir.
+    [X] Update build.xml to ignore parser/ dir.
+    [ ] Implement ASK base position
     
 [Vinícius]
     [X] Add new maps. 
     [X] Create robot behaviors.
+    [ ] Fix carrier to get player's base position.
     
 [All]
     [X] Create insert Army.
@@ -24,10 +28,11 @@
     [X] Test SEE.
     [X] Test more ALOC, FREE, GET, SET.
     [X] Implements iterator.
-    [X] Finish Javadoc
-    [ ] Create robots automatically.
-    [ ] Test new implementation design.
+    [X] Finish Javadoc (PHASE 2)
+    [X] Create robots automatically.
+    [X] Test new implementation design.
+    [X] Create class for users.
+    [ ] Verify ASK base.
     [ ] Create new system for priorities.
-    [ ] Create class for users.
     [ ] Create LOG window with robots prints.
     [ ] Create menu.
