@@ -327,12 +327,6 @@ public class Action implements Game
         int lookI = turn.i + update[0];
         int lookJ = turn.j + update[1];
         
-        if(lookI > MAP_SIZE) lookI %= MAP_SIZE;
-        else if(lookI < 0) lookI += MAP_SIZE;
-        
-        if(lookJ > MAP_SIZE) lookJ %= MAP_SIZE;
-        else if(lookJ < 0) lookJ += MAP_SIZE;
-        
         // Debug
         Debugger.say("    [LOOK] ", "dir: "   , d);
         Debugger.say("    [LOOK] ", "pos: I: ", lookI);
