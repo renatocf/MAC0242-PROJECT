@@ -24,7 +24,8 @@ public class Debugger
     public static void print(Object ... strings)
     {
         if(!info) return;
-        for(Object s: strings) System.out.print(s.toString());
+        for(Object s: strings) 
+            System.err.print((s != null) ? s.toString() : "null");
     }
 
     /** 
@@ -37,7 +38,7 @@ public class Debugger
     {
         if(!info) return;
         print(strings);
-        System.out.println();
+        System.err.println();
     }
     
     /** 
@@ -51,6 +52,6 @@ public class Debugger
     public static void printf(String format, Object ... args)
     {
         if(!info) return;
-        System.out.printf(format, args);
+        System.err.printf(format, args);
     }
 }
