@@ -426,8 +426,11 @@ public class Action implements Game
      */
     static Stackable[] ASK (Map map, Robot turn, Operation op)
     {  
-        Stackable[] s = op.getArgument();
-        Text t = (Text) s[0];
+        Stackable[] stk = op.getArgument();
+        Text t = (Text) stk[0];
+        
+        // Debug
+        Debugger.say("    [ASK] ", t);
         
         switch (t.getText())
         {
@@ -436,21 +439,34 @@ public class Action implements Game
                 Num one  = new Num(1);
                 Num x    = new Num(turn.i);
                 Num y    = new Num(turn.j);
-                s        = new Stackable[3];
-                s[2]     = one; 
-                s[1]     = x; 
-                s[0]     = y;
+                stk      = new Stackable[3];
+                stk[2]   = one; 
+                stk[1]   = x; 
+                stk[0]   = y;
                 break;
+            
+            case "base":
+            case "Base":
+                Base b   = turn.getTeam().getBase();
+                Num posX = new Num(b.getPosX(turn));
+                Num posY = new Num(b.getPosY(turn));
+                stk      = new Stackable[2];
+                stk[0]   = posX;
+                stk[1]   = posY;
+                break;
+            
             default:
                 Num zero = new Num(0);
-                s        = new Stackable[1];
-                s[0]     = zero;
-                break;
+                stk      = new Stackable[1];
+                stk[0]   = zero;
         }
         
         // Debug
-        Debugger.say("    [ASK] ", t);
+        Debugger.print("    [ASK] ");
+        for(Stackable s: stk)
+            Debugger.print(s, ", ");
+        Debugger.say();
         
-        return s;
+        return stk;
     }
 }
