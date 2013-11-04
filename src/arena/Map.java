@@ -56,10 +56,9 @@ public class Map implements Game
     
     /**
      * Create map to 'n' players.
-     * @param  nPlayers Number of players
-     * @return Matrix of robots, with 'n' 
-     *         players of height, and 
-     *         ROBOTS_NUM_INITIAL of lenght
+     * @param  players List of players
+     * @return List of bases to be given
+     *         to the players
      */
     ArrayList<Base> genesis(Player[] players)
         throws InvalidOperationException

@@ -30,7 +30,7 @@ public class Base implements Scenario
     
     /**
      * Sets who owns this base.
-     * @param ownew Player who owns the base
+     * @param owner Player who owns the base
      */ 
     public void own(Player owner)
     {
