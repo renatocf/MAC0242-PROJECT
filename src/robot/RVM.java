@@ -125,6 +125,7 @@ public class RVM implements Game
                 this.syscall = false; int c = 0; 
                 while(!this.syscall && c < ASM_MAX_RUN) 
                 { 
+                    if(this.PROG.elementAt(this.PC) == null) this.PC = 0;
                     Debugger.printf("[PC:%3d]", this.PC); 
                     exec(); this.PC++; c++; 
                 }
