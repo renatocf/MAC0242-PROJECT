@@ -57,9 +57,9 @@ class Main
             World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
             World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
             
-            //World.insertArmy(p[1], "Boomer"         , args[0]);
-            //World.insertArmy(p[1], "Number Eighteen", args[1]);
-            //World.insertArmy(p[1], "Optimus Prime"  , args[2]);
+            World.insertArmy(p[1], "Boomer"         , args[0]);
+            World.insertArmy(p[1], "Number Eighteen", args[1]);
+            World.insertArmy(p[1], "Optimus Prime"  , args[2]);
         }
         catch(SegmentationFaultException e)
         {
