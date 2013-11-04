@@ -7,11 +7,12 @@
     [X] Fix parser.pl to accept many files.
     [X] Refatorate GUI.
     [X] Update build.xml to ignore parser/ dir.
-    [ ] Implement ASK base position
+    [X] Implement ASK base position
     
 [Vinícius]
     [X] Add new maps. 
     [X] Create robot behaviors.
+    [ ] Test new ASK with base.
     [ ] Fix carrier to get player's base position.
     
 [All]
@@ -32,7 +33,6 @@
     [X] Create robots automatically.
     [X] Test new implementation design.
     [X] Create class for users.
-    [ ] Verify ASK base.
     [ ] Create new system for priorities.
     [ ] Create LOG window with robots prints.
     [ ] Create menu.
