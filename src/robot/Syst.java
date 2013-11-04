@@ -136,16 +136,21 @@ final public class Syst
         throws WrongTypeException,
                InvalidOperationException
     {
-        Stackable atk = rvm.DATA.pop();
-        Stackable num = rvm.DATA.pop();
-        
-        /* Get number of directions */
-        int ndirs = (int) ((Num)num).getNumber();
-        
-        rvm.DATA.push(num);
-        rvm.DATA.push(atk);
-        
-        action(rvm, "HIT", ndirs + 2);
+        if(rvm.activity == State.ACTIVE)
+        {
+            Stackable atk = rvm.DATA.pop();
+            Stackable num = rvm.DATA.pop();
+            
+            /* Get number of directions */
+            int ndirs = (int) ((Num)num).getNumber();
+            
+            rvm.DATA.push(num);
+            rvm.DATA.push(atk);
+            
+            action(rvm, "HIT", ndirs + 2);
+        }
+        // No pushes will be done in the return 
+        else action(rvm, "HIT", 0);
     }
     
     /**
