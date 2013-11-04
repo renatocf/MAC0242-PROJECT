@@ -4,6 +4,7 @@ gui
 main
 operation
 parameters
+players
 random
 robot
 scenario
