@@ -100,6 +100,20 @@ public class World implements Game
             yourTurn(r); turn.OFF(0); 
         }
         
+        //TODO:
+        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        
+        // Game Over - Verify
+        //for(int i = 0; i < map.players.length; i++)
+        //{
+        //    if( map.bases.get(i).crystals >= 5 )
+        //        System.out.println("GAME OVER!!");
+        //}
+        
+        
+        
+        
+        
         Debugger.say("[SORT] Sorting by priorities");
         Debugger.say("--------------------------------");
         armies.sort(); // Organize armies accordingly to
