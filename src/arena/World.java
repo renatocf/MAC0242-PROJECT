@@ -1,5 +1,7 @@
 package arena;
 
+import java.util.ArrayList;
+
 // Libraries
 import gui.*;
 import robot.*;
@@ -57,23 +59,11 @@ public class World implements Game
         players  = new Player[nPlayers];
         
         // Create map
-        Robot[][] initial = map.genesis(nPlayers);
+        ArrayList<Base> bases = map.genesis(players);
         
-        // Set up initial robots
-        for(int i = 0; i < nPlayers; i++)
-        {
-            players[i] = new Player(map.getNewBase());
-            for(int j = 0; j < ROBOTS_NUM_INITIAL; j++)
-            {
-                Debugger.say("[i:",i,"],[j:",j,"]");
-                if(initial[i][j] == null)
-                    Debugger.say("[World] É null");
-                
-                players[i].addArmy(initial[i][j]);
-                armies.add(initial[i][j]);
-            }
-        }
-        
+        for(int i = 0; i < 2; i++)
+            players[i] = new Player(bases.get(i));
+            
         // Initializes GUI
         GUI = new Textual(map);
         if(Debugger.info) GUI.printMiniMap();
@@ -84,7 +74,7 @@ public class World implements Game
     /**
      * Runs one game time step. On each
      * turn, sort the robots accordingly
-     * to their priorities, solving conflicts
+     * to their priorities, solving conflictsimport java.util.ArrayList;
      * randomically. Then, executes their
      * actions and attend their requests.
      */
@@ -182,17 +172,15 @@ public class World implements Game
      * 
      * @param player     Robot owner
      * @param name       Name of the new robot
-     * @param i          Vertical position
-     * @param j          Horizontal position
      * @param pathToProg Robot assembly program
      */
     public static void 
-    insertArmy(Player player, String name, 
-               int i, int j, String pathToProg)
+    insertArmy(Player player, String name, String pathToProg)
         throws SegmentationFaultException
     {
-        Robot r = map.insertArmy(name, player, id++, 
-                                 i, j, pathToProg);
+        Robot r = map.insertArmy(
+            name, player, id++, pathToProg
+        );
         armies.add(r);
     }
     
