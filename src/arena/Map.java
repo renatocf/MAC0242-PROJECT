@@ -61,25 +61,15 @@ public class Map implements Game
      *         players of height, and 
      *         ROBOTS_NUM_INITIAL of lenght
      */
-    Robot[][] genesis(int nPlayers)
+    ArrayList<Base> genesis(Player[] players)
         throws InvalidOperationException
     {
-        RandomMap arena = new RandomMap (w, nPlayers, MAP_SIZE);
-        miniMap = arena.getMatrix   (); 
-        map     = arena.generateMap ();              
-        bases   = arena.getBases    ();
-        newBase = bases.iterator    ();
-        
-        //// TODO: receive PROG, generate robots
-        //Parser user = new Parser();
-        //Vector<Command> PROG = user.upload();
-        //
-        //Robot bender = new Robot("Bender", 8, 9, PROG);
-        //Robot c3po   = new Robot("C3PO"  , 9, 8, PROG);
-        //
-        Robot[][] initial = new Robot[nPlayers][ROBOTS_NUM_INITIAL];
-        
-        return initial;
+        RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE);
+        miniMap         = arena.getMatrix   (); 
+        map             = arena.generateMap ();              
+        bases           = arena.getBases    ();
+        newBase         = bases.iterator    ();
+        return bases; 
     }
     
     /**
@@ -103,14 +93,15 @@ public class Map implements Game
      * 
      * @param player     Robot owner
      * @param name       Name of the new robot
-     * @param i          Vertical position
-     * @param j          Horizontal position
      * @param pathToProg Robot assembly program
      */
     Robot insertArmy(String name, Player player, int ID, 
-                     int i, int j, String pathToProg)
+                String pathToProg)
         throws SegmentationFaultException
     {
+        int[] coords = populate(player);
+        int i = coords[0], j = coords[1];
+        
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
             throw new SegmentationFaultException();
         
@@ -120,7 +111,6 @@ public class Map implements Game
         try { 
             Class<?> Parser = Class.forName("parser." + prog); 
             Method   upload = Parser.getMethod("upload");
-            
             // Suppress warning of converting from Object class
             // to Vector<Command> (unhappily, it cannot be solved
             // due to the characteristics of generic types).
@@ -141,6 +131,35 @@ public class Map implements Game
         catch(NoSuchMethodException     e) {}
         catch(IllegalAccessException    e) {}
         catch(InvocationTargetException e) {}
+        return null;
+    }
+    
+   /**
+     * This method returns the coordinates of an
+     * empty space around a given player's base.
+     *
+     * @param   p Player
+     * @return  An integer array with the x 
+     *          and the y coordinates close 
+     *          to the base
+     */  
+    public int[] populate(Player p)
+    {
+        int x = p.base.getPosX(p), 
+            y = p.base.getPosX(p);
+        
+        
+        Debugger.say(x,", ",y);   
+        for(int r = 1; r < 3; r++)
+            for(int i = x-r; i <= x+r; i++)
+                for(int j =y-r; j <= y+r; j++)
+                    if(i >= 0       && j >= 0    
+                    && i < MAP_SIZE && j < MAP_SIZE
+                    && map[i][j].scenario == null)
+                    {   
+                        Debugger.say(i,", ",j);
+                        return new int[]{i, j};
+                    }
         return null;
     }
     
