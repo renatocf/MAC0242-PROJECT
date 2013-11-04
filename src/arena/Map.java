@@ -37,9 +37,6 @@ public class Map implements Game
     // Map Matrixes
     public char[][]        miniMap;
     public Terrain[][]     map;
-    
-    // Base control
-    private ArrayList<Base> bases;
 
     // Weather
     final private Weather w;
@@ -56,17 +53,16 @@ public class Map implements Game
     /**
      * Create map to 'n' players.
      * @param  players List of players
-     * @return List of bases to be given
-     *         to the players
+     * @return List with nPlayer bases to 
+     *         be given to the players
      */
-    ArrayList<Base> genesis(Player[] players)
+    Base[] genesis(Player[] players)
         throws InvalidOperationException
     {
         RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE);
         miniMap         = arena.getMatrix   (); 
         map             = arena.generateMap ();              
-        bases           = arena.getBases    ();
-        return bases; 
+        return arena.getBases();
     }
     
     /**

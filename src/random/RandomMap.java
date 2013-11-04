@@ -137,9 +137,9 @@ public class RandomMap
      * @return Matrix of characters representing
      *         the entire map.
      */
-    public ArrayList<Base> getBases()
+    public Base[] getBases()
     {
-        return bases;
+        return bases.toArray(new Base[0]);
     }
     
     /**

@@ -1,7 +1,5 @@
 package arena;
 
-import java.util.ArrayList;
-
 // Libraries
 import gui.*;
 import robot.*;
@@ -59,11 +57,11 @@ public class World implements Game
         players  = new Player[nPlayers];
         
         // Create map
-        ArrayList<Base> bases = map.genesis(players);
+        Base[] bases = map.genesis(players);
         
         // Create new players
         for(int i = 0; i < 2; i++)
-            players[i] = new Player(bases.get(i));
+            players[i] = new Player(bases[i]);
             
         // Initializes GUI
         GUI = new Textual(map);
