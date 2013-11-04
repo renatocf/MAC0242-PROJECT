@@ -39,8 +39,7 @@ public class Map implements Game
     public Terrain[][]     map;
     
     // Base control
-    Iterator<Base>  newBase;
-    ArrayList<Base> bases;
+    private ArrayList<Base> bases;
 
     // Weather
     final private Weather w;
@@ -67,19 +66,7 @@ public class Map implements Game
         miniMap         = arena.getMatrix   (); 
         map             = arena.generateMap ();              
         bases           = arena.getBases    ();
-        newBase         = bases.iterator    ();
         return bases; 
-    }
-    
-    /**
-     * Gives a new base to a player. 
-     * (as long as there is bases in the map).
-     * @return Base still without owner
-     */
-    Base getNewBase()
-    {
-        if(newBase.hasNext()) return newBase.next();
-        return null;
     }
     
     /**
