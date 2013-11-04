@@ -21,7 +21,7 @@ public class Player
     
     // Internal variables
     private int    ID;
-    public  Base   base;
+    private Base   base;
     private String color;
     private int[]  basePos;
     
@@ -76,6 +76,15 @@ public class Player
     public void removeArmy(Robot deadRobot)
     {
         this.armies.remove(deadRobot);
+    }
+    
+    /** 
+     * Returns the player's base.
+     * @return Player's base
+     */
+    public Base getBase()
+    {
+        return this.base;
     }
     
     /** 

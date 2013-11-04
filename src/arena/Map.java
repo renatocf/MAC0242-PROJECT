@@ -144,9 +144,8 @@ public class Map implements Game
      */  
     public int[] populate(Player p)
     {
-        int x = p.base.getPosX(p), 
-            y = p.base.getPosX(p);
-        
+        int x = p.getBase().getPosX(p), 
+            y = p.getBase().getPosX(p);
         
         Debugger.say(x,", ",y);   
         for(int r = 1; r < 3; r++)
