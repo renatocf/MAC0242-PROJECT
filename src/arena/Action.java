@@ -86,7 +86,6 @@ public class Action implements Game
         || newJ < 0  
         || map.map[newI][newJ].scenario != null) return false;
         
-        
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].removeScenario();
         
@@ -240,7 +239,7 @@ public class Action implements Game
         // need to change this +2.
         for(int i = 0; i < distance; i++)
             dirs[i] = (Direction) s[i + 2];
-
+        
         switch (atk.getAttack())
         {
             case "MELEE" : damage = turn.damageMelee; 
@@ -267,13 +266,13 @@ public class Action implements Game
             lookI += update[0];
             lookJ += update[1];
             
-            // Debug
-            Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
-            
             if(lookI >= MAP_SIZE
             || lookJ >= MAP_SIZE
             || lookI < 0
             || lookJ < 0) return false;
+            
+            // Debug
+            Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
                         
             thing = map.map[lookI][lookJ].getScenario();
             if(thing != null)
