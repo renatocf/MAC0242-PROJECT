@@ -21,7 +21,7 @@ public class Player
     
     // Internal variables
     private int    ID;
-    private Base   base;
+    public  Base   base;
     private String color;
     private int[]  basePos;
     
