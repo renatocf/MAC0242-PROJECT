@@ -61,6 +61,7 @@ public class World implements Game
         // Create map
         ArrayList<Base> bases = map.genesis(players);
         
+        // Create new players
         for(int i = 0; i < 2; i++)
             players[i] = new Player(bases.get(i));
             
@@ -74,7 +75,7 @@ public class World implements Game
     /**
      * Runs one game time step. On each
      * turn, sort the robots accordingly
-     * to their priorities, solving conflictsimport java.util.ArrayList;
+     * to their priorities, solving conflicts
      * randomically. Then, executes their
      * actions and attend their requests.
      */
@@ -100,20 +101,6 @@ public class World implements Game
             yourTurn(r); turn.OFF(0); 
         }
         
-        //TODO:
-        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        
-        // Game Over - Verify
-        //for(int i = 0; i < map.players.length; i++)
-        //{
-        //    if( map.bases.get(i).crystals >= 5 )
-        //        System.out.println("GAME OVER!!");
-        //}
-        
-        
-        
-        
-        
         Debugger.say("[SORT] Sorting by priorities");
         Debugger.say("--------------------------------");
         armies.sort(); // Organize armies accordingly to
@@ -129,6 +116,17 @@ public class World implements Game
             yourTurn(r); 
             if(r.wait == 0) turn.ON(); else r.wait--;
         }
+        
+        //TODO:
+        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        
+        // Game Over - Verify
+        //for(int i = 0; i < map.players.length; i++)
+        //{
+        //    if( map.bases.get(i).crystals >= 5 )
+        //        System.out.println("GAME OVER!!");
+        //}
+        
         if(!(Debugger.info)) GUI.paint();
     }
     
