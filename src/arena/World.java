@@ -39,7 +39,7 @@ public class World implements Game
     private static Player[] players;
     
     // Graphical User Interface (GUI)
-    private static Textual GUI;
+    private static Graphical GUI;
     
     /**
      * Builds a new arena with n players and
@@ -64,7 +64,9 @@ public class World implements Game
             players[i] = new Player(bases[i]);
             
         // Initializes GUI
-        GUI = new Textual(map);
+        //GUI = new Textual(map);
+        GUI = new Graphical();
+        GUI.createWindow();
         if(Debugger.info) GUI.printMiniMap();
         
         return players;
