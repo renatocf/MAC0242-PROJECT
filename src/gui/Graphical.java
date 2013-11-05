@@ -1,5 +1,6 @@
 package gui;
 
+// Default libraries
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.TexturePaint;
@@ -8,56 +9,53 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import javax.swing.SwingUtilities;
 
+// Libraries
 import parameters.*;
 import arena.Map;
 
-
-
-public class Graphical extends JPanel implements GUI,Game
+public class Graphical extends Frame implements GUI,Game
 {
-    public void createWindow()
+    private boolean firstTime = true;
+    private Map map;
+
+    public Graphical(Map map)
     {
-        JFrame frame = new JFrame();
-        frame.setTitle("A Robot Game"); 
-        
-	    frame.setSize(800, 800);
-	    
-        frame.addWindowListener(new WindowAdapter() 
-        { 
-		    public void windowClosing(WindowEvent e) 
-	        { 
-				System.exit(0); 
-		    }
-	    });
-	    Container contentPane = frame.getContentPane();
-	    contentPane.add(new Graphical());
-	    frame.setVisible(true);     
+        this.map = map;
+        setTitle("Polygon");
+		setSize(600, 600);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		add(new Panel(30, 600, 600));
+		setVisible(true);
     }
     
     public void printMap()
     {
-        
+        if(firstTime)
+        {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    //Graphical ar = this
+                    //ar.setVisible(true);
+                    setVisible(true);
+                }
+            });
+            firstTime = false;
+        }
     }
     
     public void paint()
     {
-        try { Thread.sleep(SPEED); } 
-        catch (Exception e) 
-        {
-            System.out.println("Thread Error");
-        }
-        
-        try { printMap(); } 
-        catch (Exception e) 
-        {
-            System.out.println("Print Error");
-        }
-        
-        System.out.println("Saiu!!\n\n\n");
+        printMap();
     }
     
     public void printMiniMap(){}
-
 }
 
 
