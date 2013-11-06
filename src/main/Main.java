@@ -12,6 +12,9 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
+
+// Configs interfaces
+import gui.Interfaces;
 import random.Weather;
 
 // External Libraries (.jar)
@@ -32,6 +35,7 @@ class Main
     static private boolean help;
     static private boolean usage;
     static private Weather weather = Weather.TROPICAL;
+    static private Interfaces GUI  = Interfaces.GRAPHICAL;
     
     /**
      * <b>Main method</b><br>
@@ -48,7 +52,7 @@ class Main
         if(args.length < 3) { System.err.println(USAGE); return; }
         
         // Generate map
-        Player[] p = World.genesis(2, weather); 
+        Player[] p = World.genesis(2, weather, GUI);
                
         // Menu
         // TODO: automate inserction of programs
@@ -91,9 +95,12 @@ class Main
             new LongOpt("desertic"    , LongOpt.NO_ARGUMENT, null, 2),
             new LongOpt("tropical"    , LongOpt.NO_ARGUMENT, null, 3),
             new LongOpt("continental" , LongOpt.NO_ARGUMENT, null, 4),
+            
+            // Interfaces
+            new LongOpt("textual", LongOpt.NO_ARGUMENT, null, 't'),
         };
         //
-        Getopt g = new Getopt("MAC0242-Project", argv, "hdv", longopts);
+        Getopt g = new Getopt("MAC0242-Project", argv, "hdvt", longopts);
         
         int c;
         while ((c = g.getopt()) != -1)
@@ -113,6 +120,10 @@ class Main
                 case 2: weather = Weather.DESERTIC;    break;
                 case 3: weather = Weather.TROPICAL;    break;
                 case 4: weather = Weather.CONTINENTAL; break;
+                //
+                case 't':
+                    GUI = Interfaces.TEXTUAL;
+                    break;
                 //
                 case '?': // getopt() will print the error
                     break;

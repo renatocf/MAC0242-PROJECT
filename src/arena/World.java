@@ -41,13 +41,16 @@ public class World implements Game
     // Graphical User Interface (GUI)
     private static GUI GUI;
     
+    // No instances of this class allowed
+    private World() {}
+    
     /**
      * Builds a new arena with n players and
      * a given weather.
      * @param np Number of players
      * @param w  Weather
      */
-    public static Player[] genesis(int np, Weather w)
+    public static Player[] genesis(int np, Weather w, Interfaces gui)
         throws InvalidOperationException
     {
         // Set game configurations
@@ -64,8 +67,12 @@ public class World implements Game
             players[i] = new Player(bases[i]);
             
         // Initializes GUI
-        //GUI = new Textual(map);
-        GUI = new Graphical(map);
+        switch(gui)
+        {
+            case TEXTUAL   : GUI = new Textual   (map); break;
+            case GRAPHICAL : GUI = new Graphical (map); break;
+            default:         GUI = new Graphical (map);
+        }
         
         if(Debugger.info) GUI.printMiniMap();
         
