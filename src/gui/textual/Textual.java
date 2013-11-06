@@ -1,6 +1,7 @@
-package gui;
+package gui.textual;
 
 // Libraries
+import gui.*;
 import arena.*;
 import scenario.*;
 import parameters.*;

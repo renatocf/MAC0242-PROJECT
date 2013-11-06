@@ -1,4 +1,4 @@
-package gui;
+package gui.textual;
 
 /**
  * <b>Interfaces</b><br>

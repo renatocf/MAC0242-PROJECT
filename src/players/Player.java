@@ -4,11 +4,11 @@ package players;
 import java.util.ArrayList;
 
 // Libraries
-import gui.Colors;
 import arena.Robot;
+import gui.textual.Colors;
 
 // Static symbols
-import static gui.Colors.*;
+import static gui.textual.Colors.*;
 
 public class Player
 {
