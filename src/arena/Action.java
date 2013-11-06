@@ -432,11 +432,14 @@ public class Action implements Game
         // Debug
         Debugger.say("    [ASK] ", t);
         
+        // Return values
+        Num one  = new Num(1);
+        Num zero = new Num(0);
+        
         switch (t.getText())
         {
             case "position":
             case "Position":
-                Num one  = new Num(1);
                 Num x    = new Num(turn.i);
                 Num y    = new Num(turn.j);
                 stk      = new Stackable[3];
@@ -450,13 +453,13 @@ public class Action implements Game
                 Base b   = turn.getTeam().getBase();
                 Num posX = new Num(b.getPosX(turn));
                 Num posY = new Num(b.getPosY(turn));
-                stk      = new Stackable[2];
-                stk[0]   = posX;
-                stk[1]   = posY;
+                stk      = new Stackable[3];
+                stk[2]   = one; 
+                stk[1]   = posX;
+                stk[0]   = posY;
                 break;
             
             default:
-                Num zero = new Num(0);
                 stk      = new Stackable[1];
                 stk[0]   = zero;
         }
