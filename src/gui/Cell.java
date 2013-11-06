@@ -1,6 +1,6 @@
 package gui;
 
-// Default libraries
+// Graphical Libraries
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.TexturePaint;

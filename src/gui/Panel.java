@@ -1,6 +1,6 @@
 package gui;
 
-// Default libraries
+// Graphical Libraries
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.TexturePaint;
@@ -8,53 +8,63 @@ import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import javax.swing.SwingUtilities;
+import java.io.IOException;
 
 // Libraries
-import parameters.*;
 import arena.Map;
+import parameters.*;
 
-public class Panel extends JPanel
+public class Panel extends JPanel 
+    implements Game
 {
-    Cell[][] cell = new Cell[10][10]; 
-	int Larg, Alt, Dx, Dy; 
-	BufferedImage grama, terra, agua; 
-	
-	int[][] Terreno = { 
-		{ 0, 0, 0, 1, 2, 2, 2, 2, 1, 1},
-		 { 0, 0, 1, 1, 2, 2, 2, 2, 1, 1},
-		{ 0, 0, 1, 2, 2, 2, 0, 2, 1, 1},
-		 { 0, 0, 1, 1, 1, 2, 2, 2, 2, 2},
-		{ 0, 0, 0, 0, 1, 2, 2, 2, 2, 2},
-		 { 0, 0, 0, 1, 0, 2, 2, 2, 2, 2},
-		{ 0, 0, 1, 1, 0, 0, 0, 2, 2, 1},
-		 { 0, 0, 1, 1, 0, 0, 2, 2, 2, 1},
-		{ 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
-		 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	};
+    int MAP_SIZE = 16;
+    private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
+    private int width, height, Dx, Dy; 
+    
+    Panel(int R, int width, int height) 
+    {
+        this.width = width; 
+        this.height = height;
+        
+        Dx = (int) (2 * R * Math.sin(2 * Math.PI / 6)); 
+        Dy = 3* R/2;
 
-	Panel(int L, int W, int H) {
-		Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); 
-		Dy = 3* L/2;
-		Larg = W; Alt = H;
+        /* TODO: Create an interface for images addresses/names */
+        BufferedImage grass = load("/img/Grass.png");
+        BufferedImage[] types = { grass }; 
 
-		try {
-			grama = ImageIO.read(this.getClass().getResource("../data/img/Grass.png"));
-		}
-		catch (Exception e) {
-		    System.out.println("Image not found!");
-			System.exit(1);
-		}
-
-		BufferedImage[] types = {grama}; 
-
-		int Δ  = 0;
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++) 
-			{
-				cell[i][j] = new Cell(Δ  + L + i*Dx, 
-				                       L + j*Dy, L,
-				                       types[0]); 
-				Δ  = Δ  == 0 ? Dx/2 : 0;				
-			}
-	}
+        int Δ  = 0;
+        for (int i = 0; i < MAP_SIZE; i++)
+            for (int j = 0; j < MAP_SIZE; j++) 
+            {
+                cell[i][j] = new Cell(
+                    Δ + R + i*Dx, R + j*Dy, R, types[0]
+                ); 
+                Δ = (Δ == 0) ? Dx/2 : 0;
+            }
+    }
+    
+    public void paintComponent(Graphics g) 
+    {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        for (int i = 0; i < MAP_SIZE; i++) 
+            for (int j = 0; j < MAP_SIZE; j++)
+                cell[i][j].draw(g); 
+    }
+    
+    private BufferedImage load(String path)
+    {
+        try { return ImageIO.read(this.getClass().getResource(path)); 
+        
+        } catch (IOException e) {
+            System.err.println("Error while reading!");
+            e.printStackTrace();
+        
+        } catch (IllegalArgumentException e) {
+            System.err.println("Image not found!");
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
