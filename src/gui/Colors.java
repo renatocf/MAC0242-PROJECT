@@ -1,5 +1,16 @@
 package gui;
 
+/**
+ * <b>Interfaces</b><br>
+ * Holds the default <em>ANSI Escape Colors</em>,
+ * supported in Unix-alike shells and others.
+ * <p>
+ * It is used in the Textual interface for 
+ * implementing prints with colors.
+ * 
+ * @see Textual
+ * @author Renato Cordeiro Ferreira
+ */
 public interface Colors
 {
     // Restore default
