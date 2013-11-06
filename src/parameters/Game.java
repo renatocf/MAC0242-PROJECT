@@ -31,7 +31,7 @@ public interface Game
      * Dimensions for the map. In a common
      * screen, 15x15 is a good size.
      */
-    public static int MAP_SIZE = 15;
+    public static int MAP_SIZE = 16;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------
