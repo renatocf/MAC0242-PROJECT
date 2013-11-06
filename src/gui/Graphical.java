@@ -45,7 +45,6 @@ public class Graphical extends Frame implements GUI,Game
 		});
 		
 		add(new Panel(30, 600, 600));
-		setVisible(true);
     }
     
     /**
@@ -56,7 +55,11 @@ public class Graphical extends Frame implements GUI,Game
     public void paint()
     {
         /* TODO: Set up printing time */
-        printMap();
+        if(firstTime)
+        {
+            printMap();
+            firstTime = false;
+        }
     }
     
     /**
@@ -66,14 +69,9 @@ public class Graphical extends Frame implements GUI,Game
      */
     public void printMap()
     {
-        /* Just start once (and then stop) */
-        if(firstTime)
-        {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() { setVisible(true); }
-            });
-            firstTime = false;
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() { setVisible(true); }
+        });
     }
     
     /** 
