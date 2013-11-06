@@ -7,5 +7,6 @@ package stackable.item;
  */
 public class Crystal implements Item 
 { 
+    public String name()     { return "CRYSTAL";   }
     public String toString() { return "{Crystal}"; }
 }

@@ -1,6 +1,7 @@
 package stackable.item;
 
 // Libraries
+import gui.Printable;
 import stackable.Stackable;
 
 /** 
@@ -14,4 +15,4 @@ import stackable.Stackable;
  * a 'software concept') and inside the robot
  * itself (as a 'real' catchable item).
  */
-public interface Item extends Stackable { }
+public interface Item extends Stackable, Printable { }
