@@ -45,6 +45,7 @@ limitations under the License.
     <property name="lib.dir"           location="lib"    />
     <property name="src.dir"           location="src"    />
     <property name="doc.dir"           location="doc"    />
+    <property name="data.dir"          location="data"   />
     <property name="dist.dir"          location="dist"   />
     <property name="build.dir"         location="build"  />
     <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
@@ -59,7 +60,7 @@ limitations under the License.
             <include name="**/*.jar"/>
         </fileset>
     </path>
-
+    
     <!-- 
     ===================================================================
     ==                             USAGE                             ==
@@ -159,8 +160,10 @@ limitations under the License.
         </copy>
 
         <jar destfile = "${jar.file}" 
-             basedir  = "${build.classes.dir}" 
              manifest = "${build.dir}/MANIFEST.MF">
+            <!-- Base directories -->
+            <fileset dir  = "${build.classes.dir}"/>
+            <fileset dir  = "${data.dir}"/>
         </jar>
         <echo>.jar Build Completed Successfully</echo>
     </target>
@@ -168,7 +171,7 @@ limitations under the License.
     <target name="all" depends="dist" />
     
     <!-- 
-    ================================G===================================
+    ===================================================================
     ==                         DOCUMENTATION                         ==
     ===================================================================
     -->
