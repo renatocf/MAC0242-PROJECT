@@ -1,5 +1,8 @@
 package arena;
 
+// Libraries
+import gui.Printable;
+
 /**
  * <b>Appearence</b><br>
  * Enumeration for all types of 
@@ -10,7 +13,7 @@ package arena;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public enum Appearence
+public enum Appearence implements Printable
 {
     DIRT,
     GRASS,
@@ -19,5 +22,5 @@ public enum Appearence
     WATER,
     SAND,
     JUNGLE,
-    TUNDRA
+    TUNDRA;
 }
