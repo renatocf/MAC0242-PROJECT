@@ -1,13 +1,16 @@
-package gui;
+package gui.graphical;
 
-// Graphical Libraries
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+// Graphical Libraries (AWT)
+import java.awt.Dimension;
+
+// Graphical Libraries (Swing)
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 // Libraries
-import parameters.*;
+import gui.*;
 import arena.Map;
+import parameters.*;
 
 /**
  * <b>GUI - Graphical Mode</b><br>
@@ -19,7 +22,7 @@ import arena.Map;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class Graphical extends Frame implements GUI,Game
+public class Graphical extends JFrame implements GUI,Game
 {
     /* Auxiliar variables for keeping interface GUI */
     private boolean firstTime = true;
@@ -33,18 +36,18 @@ public class Graphical extends Frame implements GUI,Game
     public Graphical(Map map)
     {
         this.map = map;
+        
         /* TODO: Take out hardcoded strings */
         setTitle("Robot's Battle");
-		setSize(600, 600);
+		setSize(718, 635);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        Images test = Images.valueOf("CRYSTAL");
+        test.img();
 		
-        /* TODO: Fix listener (not working) */
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		
-		add(new Panel(30, 600, 600));
+        Panel screen = new Panel(25, 600, 600, map);
+        add(screen);
     }
     
     /**
@@ -70,6 +73,7 @@ public class Graphical extends Frame implements GUI,Game
     public void printMap()
     {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() { setVisible(true); }
         });
     }

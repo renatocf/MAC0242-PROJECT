@@ -1,7 +1,11 @@
 package arena;
 
-// Libraries
+// Graphical Libraries (Internal)
 import gui.*;
+import gui.textual.*;
+import gui.graphical.*;
+
+// Libraries
 import robot.*;
 import random.*;
 import players.*;

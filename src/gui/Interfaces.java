@@ -1,5 +1,9 @@
 package gui;
 
+// Graphical Libraries (Internal)
+import gui.textual.Textual;
+import gui.graphical.Graphical;
+
 /**
  * <b>Interfaces</b><br>
  * Simple interface for all avaiable types
