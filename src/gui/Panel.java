@@ -1,5 +1,8 @@
 package gui;
 
+// Default Libraries
+import java.lang.reflect.Field;
+
 // Graphical Libraries
 import java.awt.*;
 import java.awt.event.*;
@@ -29,10 +32,14 @@ public class Panel extends JPanel
         Dx = (int) (2 * R * Math.sin(2 * Math.PI / 6)); 
         Dy = 3* R/2;
 
-        /* TODO: Create an interface for images addresses/names */
+        /* TODO: Finish automatic inserction of images*/
+        Field[] app = Appearences.class.getFields();
+        BufferedImage[] appearences = new BufferedImage[app.length];
+       
         BufferedImage grass = load("/img/Grass.png");
         BufferedImage[] types = { grass }; 
 
+        // Put images in the screen
         int Δ  = 0;
         for (int i = 0; i < MAP_SIZE; i++)
             for (int j = 0; j < MAP_SIZE; j++) 
@@ -52,7 +59,15 @@ public class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++)
                 cell[i][j].draw(g); 
     }
-    
+
+    /** 
+     * Auxiliar method for loaging an image to be 
+     * put inside the graphical interface.
+     * @param  path String with the path relative to
+     *              the classpath (must be backslashed
+     *              separated).
+     * @return Buffered image
+     */
     private BufferedImage load(String path)
     {
         try { return ImageIO.read(this.getClass().getResource(path)); 
