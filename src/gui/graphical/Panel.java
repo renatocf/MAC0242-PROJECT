@@ -42,7 +42,7 @@ public class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++) 
             {
                 cell[i][j] = new Cell(
-                    Δ + R + i*Dx, R + j*Dy, R, map.map[i][j]
+                    Δ + R + i*Dx, R + j*Dy, R, map.map[j][i]
                 ); 
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
