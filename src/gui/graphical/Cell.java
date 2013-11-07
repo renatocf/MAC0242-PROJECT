@@ -26,7 +26,7 @@ class Cell
     final private Polygon hex = new Polygon();
     /* final private Graphics2D GImg; */
     
-    private Terrain terrain;
+    private Terrain terrain; private int x, y;
     private BufferedImage appearence;
     
     /**
@@ -39,6 +39,7 @@ class Cell
      */
     Cell(int x, int y, int r, Terrain terrain) 
     {
+        this.x = x; this.y = y;
         this.terrain = terrain;
         this.appearence = Cell.appearence(terrain);
         
@@ -61,10 +62,16 @@ class Cell
     { 
         /* TODO: Take out hardcoded numbers */
         Graphics2D g2d = (Graphics2D) g;
-        /* g2d.drawImage(this.appearence, 0, 0, null); */
+        
         Rectangle rec = new Rectangle(0,0,32,32);
         g2d.setPaint (new TexturePaint(appearence, rec));
         g2d.fill     (hex);
+        
+        if(terrain.getItem() != null)
+        {
+            Images test = Images.valueOf(terrain.getItem().name());
+            g2d.drawImage(test.img(), x-11, y-13, null);
+        }
     }   
 
     /**
