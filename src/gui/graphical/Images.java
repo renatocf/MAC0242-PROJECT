@@ -33,9 +33,12 @@ interface ROOT
  * @author Renato Cordeiro Ferreira
  */
 enum Images implements ROOT
-{
+{   
+    ROCK    ( "Rock.png"    ),
+    
     // Images
     CRYSTAL ( "Crystal.png" ),
+    STONE   ( "Stone.png"   ),
     
     /* TODO: complete appearences */
     DIRT    ( "Dirt.png"    ),
