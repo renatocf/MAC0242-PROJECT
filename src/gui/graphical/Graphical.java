@@ -43,9 +43,7 @@ public class Graphical extends JFrame implements GUI,Game
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Images test = Images.valueOf("CRYSTAL");
-        test.img();
-		
+        
         Panel screen = new Panel(25, 600, 600, map);
         add(screen);
     }
