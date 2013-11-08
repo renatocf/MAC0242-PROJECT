@@ -26,8 +26,9 @@ class Cell
     final private Polygon hex = new Polygon();
     /* final private Graphics2D GImg; */
     
-    private Terrain terrain; private int x, y;
     private BufferedImage appearence;
+    Terrain terrain; 
+    int x, y;
     
     /**
      * Default constructor.<br>
@@ -66,12 +67,6 @@ class Cell
         Rectangle rec = new Rectangle(0,0,32,32);
         g2d.setPaint (new TexturePaint(appearence, rec));
         g2d.fill     (hex);
-        
-        if(terrain.getItem() != null)
-        {
-            Images test = Images.valueOf(terrain.getItem().name());
-            g2d.drawImage(test.img(), x-11, y-13, null);
-        }
     }   
 
     /**
