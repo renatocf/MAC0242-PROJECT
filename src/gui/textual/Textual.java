@@ -209,16 +209,18 @@ public class Textual
         }
             
         // Print map bottom
-        print(" " + hexBot(1, colorof(MAP_SIZE-1,0)) );
+        String pre = (MAP_SIZE % 2 == 0) ? "   " : "";
+        print(pre + " " + hexBot(1, colorof(MAP_SIZE-1,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
             print(" " + hexBot(1, colorof(MAP_SIZE-1,j)) );
         println(RESTORE);
         
-        print("  " + hexBot(2, colorof(MAP_SIZE-1,0)) );
+        print(pre + "  " + hexBot(2, colorof(MAP_SIZE-1,0)) );
         for(int j = 1; j < MAP_SIZE; j++)
             print("   " + hexBot(2, colorof(MAP_SIZE-1,j)) );
         println(RESTORE);
         
+        print(pre);
         for(int j = 0; j < MAP_SIZE-1; j++)
             print("   '  ");
         println("   '");
@@ -305,17 +307,16 @@ public class Textual
     final private String team(int i, int j)
     {
         Scenario s = scen(i, j);
-        if(s instanceof Robot)
+        String color = s.getTeam().color();
+        switch(color)
         {
-            Robot r = (Robot) s;
-            return r.getTeam().color();
+            case ""       : return "";
+            case "BLACK"  : return ON_BLACK;
+            case "RED"    : return ON_RED;
+            case "GREEN"  : return ON_GREEN;
+            case "YELLOW" : return ON_YELLOW;
+            default       : return "";
         }
-        if(s instanceof Base)
-        {
-            Base b = (Base) s;
-            return b.getTeam().color();
-        }
-        return "";
     }
     
     /**
