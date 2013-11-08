@@ -61,6 +61,19 @@ public class Panel extends JPanel
         Graphics2D g2d = (Graphics2D) g;
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
+            {
                 cell[i][j].draw(g); 
+                if(cell[i][j].terrain.getItem() != null)
+                {
+                    Images test = Images.valueOf(cell[i][j].terrain.getItem().name());
+                    g2d.drawImage(test.img(), cell[i][j].x-13, cell[i][j].y-13, null);
+                }
+                
+                if(cell[i][j].terrain.getScenario() != null)
+                {
+                    Images test = Images.valueOf(cell[i][j].terrain.getScenario().name());
+                    g2d.drawImage(test.img(), cell[i][j].x-13, cell[i][j].y-13, null);
+                }
+            }
     }
 }
