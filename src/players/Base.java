@@ -133,4 +133,6 @@ public class Base implements Scenario
     
     public int getHP()       { return 42; }
     public String toString() { return "(ß) Base"; }
+    
+    public String name() { return "BASE"; }
 }

@@ -20,4 +20,6 @@ public class Rock implements Scenario
     public String toString() { return "(O) Rock"; }
     
     public Player getTeam() { return Player.Nature; }
+    
+    public String name() { return "ROCK"; }
 }

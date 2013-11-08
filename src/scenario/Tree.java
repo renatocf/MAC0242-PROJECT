@@ -20,4 +20,6 @@ public class Tree implements Scenario
     public String toString() { return "(♣) Tree"; }
     
     public Player getTeam() { return Player.Nature; }
+    
+    public String name() { return "TREE"; }
 }

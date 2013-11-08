@@ -1,6 +1,7 @@
 package scenario;
 
 // Libraries
+import gui.Printable;
 import players.Player;
 
 /** 
@@ -8,7 +9,7 @@ import players.Player;
  * General interface for scenarios that
  * appear in the arena.
  */
-public interface Scenario
+public interface Scenario extends Printable
 {
     /**
      * Remaining HP to the scenario 
