@@ -38,11 +38,10 @@ public class Graphical extends JFrame implements GUI,Game
         this.map = map;
         
         /* TODO: Take out hardcoded strings */
-        setTitle("Robot's Battle");
-		setSize(718, 635);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+        this.setTitle("Robot's Battle");
+		this.setSize(718, 635);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Panel screen = new Panel(25, 600, 600, map);
         add(screen);
@@ -55,12 +54,10 @@ public class Graphical extends JFrame implements GUI,Game
      */
     public void paint()
     {
-        /* TODO: Set up printing time */
-        if(firstTime)
-        {
-            printMap();
-            firstTime = false;
-        }
+        try { Thread.sleep(SPEED); } 
+        catch (Exception e) { }
+        
+        this.printMap();
     }
     
     /**
@@ -70,10 +67,15 @@ public class Graphical extends JFrame implements GUI,Game
      */
     public void printMap()
     {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() { setVisible(true); }
-        });
+        if(this.firstTime)
+        {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() { setVisible(true); }
+            });
+            this.firstTime = false;
+        }
+        screen.repaint();
     }
     
     /** 
