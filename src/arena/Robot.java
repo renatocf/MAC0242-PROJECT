@@ -8,8 +8,9 @@ import robot.*;
 import players.*;
 import exception.*;
 import stackable.*;
-import stackable.item.Item;
+import gui.Printable;
 import scenario.Scenario;
+import stackable.item.Item;
 
 /**
  * <b>Robot</b><br>
@@ -22,7 +23,7 @@ import scenario.Scenario;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Nascimento Silva
  */
-public class Robot implements Scenario
+public class Robot implements Scenario, Printable
 {
     // ID
     final protected String name;
@@ -218,4 +219,7 @@ public class Robot implements Scenario
     
     // Interface scenario
     public int getHP   () { return this.HP;   }
+    
+    // Printable interface
+    public String name() { return "ROBOT"; }
 }
