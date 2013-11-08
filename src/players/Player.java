@@ -5,19 +5,26 @@ import java.util.ArrayList;
 
 // Libraries
 import arena.Robot;
-import gui.textual.Colors;
 
-// Static symbols
-import static gui.textual.Colors.*;
-
+/**
+ * Create a general player, used to
+ * identify the Team of all the scenarios
+ * avaiable in the map.
+ * @see arena.Robot
+ * @see scenario.Scenario
+ *
+ * @author Renato Cordeiro Ferreira
+ */
 public class Player
 {
+    /**
+     * Default player: Mother Nature
+     */
+    public static Player Nature = new Player(null);
+    
     // Counter with the amount of
     // players created (to ID's)
-    static int total = -1;
-    
-    // Default player: Mother Nature
-    public static Player Nature = new Player(null);
+    private static int total = -1;
     
     // Internal variables
     private int    ID;

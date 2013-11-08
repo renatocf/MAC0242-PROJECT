@@ -18,26 +18,51 @@ import javax.swing.SwingUtilities;
 import arena.Map;
 import parameters.*;
 
+/**
+ * <b>Graphical - Panel</b><br>
+ * Creates the main panel to exhibit 
+ * the map.
+ * @see Graphical
+ * @see arena.Map
+ * @see arena.World
+ * 
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
+ */
 public class Panel extends JPanel 
     implements Game
 {
-    int MAP_SIZE = 16;
+    // Map made with cells
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
+    
+    // Local variables
     private Map map;
+    private int width;
+    private int height;
     
-    private int widthPanel;
-    private int heightPanel;
-    
+    /**
+     * Create a Panel with dimensions width x height,
+     * containing MAP_SIZE² hexagons (built from a map).
+     * @see Cell
+     * @see Graphical
+     *
+     * @param R      radius
+     * @param width  Desired width of the screen
+     * @param height Desired height of the screen
+     * @param map    Map over which the panel will
+     *               create the GUI hexagons
+     */
     Panel(int R, int width, int height, Map map) 
     {
         this.map = map;
         
-        this.widthPanel = width;
-    	this.heightPanel = height;
+        // Dimensions
+        this.width = width;
+    	this.height = height;
         
         // Preferences
-        setBackground(Color.black);
-        setPreferredSize(new Dimension(width, height));
+        this.setBackground(Color.black);
+        this.setPreferredSize(new Dimension(width, height));
         
         int Dx = (int) ( 2*R * Math.sin(Math.PI/3) ); 
         int Dy = 3 * R/2;
@@ -54,15 +79,11 @@ public class Panel extends JPanel
             }
     }
     
-    
     void clean(Graphics g)
 	{
-		//Graphics2D g=(Graphics2D) jPanel1.getGraphics();  
-		//Graphics2D g2d = (Graphics2D) g;
 		g.setColor(Color.black) ;
-		g.fillRect( 0, 0, widthPanel, heightPanel);  		
+		g.fillRect(0, 0, width, height);  		
 	}
-    
     
     /**
      * Paint hexagons on the screen.<br>

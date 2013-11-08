@@ -4,7 +4,6 @@ package gui.textual;
 import gui.*;
 import arena.*;
 import scenario.*;
-import parameters.*;
 import players.Base;
 import stackable.item.*;
 
@@ -20,7 +19,7 @@ import stackable.item.*;
  * @author Renato Cordeiro Ferreira
  */
 public class Textual 
-    implements Game, Colors, GUI
+    implements Colors, GUI
 {
     private Map map;
 

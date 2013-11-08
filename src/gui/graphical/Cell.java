@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import arena.Terrain;
 
 /** 
- * <b>Graphical Element - Cell</b><br>
+ * <b>Graphical - Cell</b><br>
  * Encapsulates the creation of the hexagonal
  * terrains of the map.
  * @see Panel
@@ -23,34 +23,30 @@ import arena.Terrain;
  */
 class Cell 
 { 
+    // Characteristics
     final private Polygon hex = new Polygon();
-    /* final private Graphics2D GImg; */
-    
-    private BufferedImage appearence;
-    Terrain terrain; 
-    int x, y;
+    final Terrain terrain; 
+    final int x, y;
     
     /**
      * Default constructor.<br>
-     * @param x   Horizontal position where the cell 
-     *            center will be set
-     * @param y   Vertical position whee the cell 
-     *            center will be set
-     * @param img Texture for the cell
+     * @param x       Horizontal position where the cell 
+     *                center will be set
+     * @param y       Vertical position whee the cell 
+     *                center will be set
+     * @param terrain Terrain to build the cell
      */
     Cell(int x, int y, int r, Terrain terrain) 
     {
         this.x = x; this.y = y;
         this.terrain = terrain;
-        this.appearence = Cell.appearence(terrain);
         
+        // Create the hexagon with points
         for(int i = 0; i < 6; i++)
             hex.addPoint(
                 x + (int) (r * Math.sin(i * Math.PI/3)),
                 y + (int) (r * Math.cos(i * Math.PI/3))
             );
-        
-        /* GImg = img.createGraphics(); */
     }
 
     /**
@@ -64,7 +60,14 @@ class Cell
         /* TODO: Take out hardcoded numbers */
         Graphics2D g2d = (Graphics2D) g;
         
+        // Get appearence
+        String app = terrain.getAppearence().name();
+        BufferedImage appearence = Images.valueOf(app).img();
+        
+        // Get rectangle to size qhe appearence
         Rectangle rec = new Rectangle(0,0,32,32);
+        
+        // Paint the background
         g2d.setPaint (new TexturePaint(appearence, rec));
         g2d.fill     (hex);
     }   
@@ -77,11 +80,5 @@ class Cell
     void trans(int dx, int dy) 
     {
         hex.translate(dx, dy);
-    }
-        
-    private static BufferedImage appearence(Terrain t)
-    {
-        String app = t.getAppearence().name();
-        return Images.valueOf(app).img();
     }
 }

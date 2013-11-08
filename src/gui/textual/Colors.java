@@ -11,7 +11,7 @@ package gui.textual;
  * @see Textual
  * @author Renato Cordeiro Ferreira
  */
-public interface Colors
+interface Colors
 {
     // Restore default
     String CLEAR      = "\033[2J\033[;H";

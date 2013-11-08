@@ -25,7 +25,7 @@ import parameters.*;
  * @author Vinicius Silva
  * 
  * @see Action
- * @see gui.Textual
+ * @see gui
  */
 public class World implements Game
 {

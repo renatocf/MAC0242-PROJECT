@@ -19,12 +19,21 @@ import javax.swing.SwingUtilities;
 import arena.Appearence;
 import stackable.item.Item;
 
+/**
+ * <b>Graphical - ROOT</b><br>
+ * Defines a path relative to the jar 
+ * to find the images.
+ * @see Images
+ *
+ * @author Renato Cordeiro Ferreira
+ */
 interface ROOT
 {
     final String ROOT = "/img/";
 }    
 
 /**
+ * <b>Graphical - Images</b><br>
  * Set up the paths for all images used in the
  * graphical user interface, allowing to load 
  * the buffered image from the enum value.
