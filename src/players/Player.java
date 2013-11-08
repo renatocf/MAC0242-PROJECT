@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 // Libraries
 import arena.Robot;
-import gui.textual.Colors;
 
 // Static symbols
 import static gui.textual.Colors.*;
@@ -99,10 +98,10 @@ public class Player
         switch(plID)
         {
             case 0:  return "";
-            case 1:  return ON_BLACK;
-            case 2:  return ON_RED;
-            case 3:  return ON_GREEN;
-            case 4:  return ON_YELLOW;
+            case 1:  return "BLACK";
+            case 2:  return "RED";
+            case 3:  return "GREEN";
+            case 4:  return "YELLOW";
             default: return "";
         }
     }
