@@ -40,7 +40,7 @@ public class Graphical extends JFrame implements GUI,Game
         
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-		this.setSize(718, 635);
+		this.setSize(725, 655);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -79,6 +79,12 @@ public class Graphical extends JFrame implements GUI,Game
         screen.repaint();
     }
     
+    
+    public void cleanScreen()
+    {
+        screen.finalOfGame();
+    }
+    
     /** 
      * Shows Mini Map.<br>
      * Creates a Mini Map with dimensions MAP_SIZE
@@ -86,4 +92,5 @@ public class Graphical extends JFrame implements GUI,Game
      * of each scenario/item in the map.
      */
     public void printMiniMap() { }
+    
 }

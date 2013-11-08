@@ -41,6 +41,8 @@ public class Map implements Game
     // Weather
     final private Weather w;
     
+    private Player[] bases;
+    
     /**
      * Default constructor.
      * @param w Weather of the map
@@ -59,6 +61,7 @@ public class Map implements Game
     Base[] genesis(Player[] players)
         throws InvalidOperationException
     {
+        this.bases = players;
         RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE);
         miniMap         = arena.getMatrix   (); 
         map             = arena.generateMap ();              
@@ -180,5 +183,15 @@ public class Map implements Game
             Debugger.say();
         }
         return prog;
+    }
+    
+    public Player getBases(int address)
+    {
+        return this.bases[address];
+    }
+    
+    public int getNumberOfBases()
+    {
+        return this.bases.length;
     }
 }

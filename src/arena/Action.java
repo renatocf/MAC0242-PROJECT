@@ -181,6 +181,7 @@ public class Action implements Game
             // If the scenario is a base, throw the crystal on it
             Base b = (Base) map.map[lookI][lookJ].scenario;
             robot.removeSlots(cont - 1); allow = b.addCrystal(turn);
+            allow = true;
         }
         else 
         {
