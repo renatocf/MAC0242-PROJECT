@@ -25,9 +25,15 @@ public class Panel extends JPanel
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
     private Map map;
     
+    private int widthPanel;
+    private int heightPanel;
+    
     Panel(int R, int width, int height, Map map) 
     {
         this.map = map;
+        
+        this.widthPanel = width;
+    	this.heightPanel = height;
         
         // Preferences
         setBackground(Color.black);
@@ -47,6 +53,16 @@ public class Panel extends JPanel
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
     }
+    
+    
+    void clean(Graphics g)
+	{
+		//Graphics2D g=(Graphics2D) jPanel1.getGraphics();  
+		//Graphics2D g2d = (Graphics2D) g;
+		g.setColor(Color.black) ;
+		g.fillRect( 0, 0, widthPanel, heightPanel);  		
+	}
+    
     
     /**
      * Paint hexagons on the screen.<br>
