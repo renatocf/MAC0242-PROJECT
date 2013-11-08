@@ -17,14 +17,14 @@ import arena.Robot;
  */
 public class Player
 {
+    // Counter with the amount of
+    // players created (to ID's)
+    private static int total = -1;
+    
     /**
      * Default player: Mother Nature
      */
     public static Player Nature = new Player(null);
-    
-    // Counter with the amount of
-    // players created (to ID's)
-    private static int total = -1;
     
     // Internal variables
     private int    ID;
