@@ -34,18 +34,23 @@ interface ROOT
  */
 enum Images implements ROOT
 {   
-    ROCK    ( "Rock.png"    ),
-    
-    // Images
-    CRYSTAL ( "Crystal.png" ),
-    STONE   ( "Stone.png"   ),
-    
-    /* TODO: complete appearences */
+    /* Appearences */
     DIRT    ( "Dirt.png"    ),
     GRASS   ( "Grass.png"   ),
     SAND    ( "Sand.png"    ),
     TUNDRA  ( "Snow.png"    ),
-    ICE     ( "Ice.png"     );
+    ICE     ( "Ice.png"     ),
+    
+    // Items
+    CRYSTAL ( "Crystal.png" ),
+    STONE   ( "Stone.png"   ),
+    
+    // Scenarios
+    ROCK    ( "Rock.png"    ),
+    BASE    ( "Default.png" ),
+    TREE    ( "Default.png" ),
+    WATER   ( "Default.png" ),
+    ROBOT   ( "Robot_1.png" );
     
     /* Auxiliar private variables */
     private BufferedImage img;
