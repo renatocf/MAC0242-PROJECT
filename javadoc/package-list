@@ -1,6 +1,8 @@
 arena
 exception
 gui
+gui.graphical
+gui.textual
 main
 operation
 parameters
