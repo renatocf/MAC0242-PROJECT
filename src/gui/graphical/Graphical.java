@@ -40,7 +40,7 @@ public class Graphical extends JFrame implements GUI,Game
         
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-		this.setSize(718, 635);
+		this.setSize(725, 655);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

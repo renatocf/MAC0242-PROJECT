@@ -15,6 +15,10 @@
         DIV
         ADD
         SET     [I]
+        GET     [DIRECTION]
+        PUSH     3
+        DIV
+        ADD
         SET     [J]
         PUSH    0
         SET     [VERT]
@@ -80,7 +84,6 @@ run:
         CALL    arrive
         JIF     callAlmostThereII
         CALL    dropTheCrystal
-        DROP    
         JIF     run
         JMP     goBack
         
@@ -100,12 +103,17 @@ goBack:
         GET     [BASE]
         DUP
         GET     [DIRECTION]
-        PUSH     3
+        PUSH    3
         DIV
         ADD
         SET     [I]
+        GET     [DIRECTION]
+        PUSH    3
+        DIV
+        ADD
         SET     [J]
-
+        PUSH    0
+        SET     [VERT]
 goingBack:    
         GET     [J]
         GET     [I]        
@@ -908,7 +916,7 @@ upperBase:
 dropTheCrystal:
         GET     [DIRECTION]
         PUSH    0
-        GT
+        LT
         JIT     dropSE
         PUSH    ->NW
         JMP     dropNow
