@@ -65,7 +65,7 @@ public class Panel extends JPanel
         this.setPreferredSize(new Dimension(width, height));
         
         int Dx = (int) ( 2*R * Math.sin(Math.PI/3) ); 
-        int Dy = 3 * R/2;
+        int Dy = 3 * R/2 +1;
        
         // Put images in the screen
         int Δ  = 0;
