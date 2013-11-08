@@ -121,11 +121,11 @@ class Winter extends Theme
         for(int i = 0; i < map.length; i++)
             for(int j = 0; j < map.length; j++)
             {
-                if(map[i][j] == '.' && this.rand.nextFloat() < 1.0/(map.length*1.25))
+                if(map[i][j] == '.' && this.rand.nextFloat() < 1.0/(map.length*1.25)*2)
                     map[i][j] = '\u2662';
-                if(map[i][j] == '\u2663' && this.rand.nextFloat() < 1.0/(map.length*1.5))
+                if(map[i][j] == '\u2663' && this.rand.nextFloat() < 1.0/(map.length*1.5)*2)
                     map[i][j] = 'Y';
-                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5))
+                if(map[i][j] == 'O' && this.rand.nextFloat() < 1.0/(map.length*1.5)*2)
                     map[i][j] = '@';
             }                    
         return map;
