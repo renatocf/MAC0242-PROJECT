@@ -44,11 +44,13 @@ interface ROOT
 enum Images implements ROOT
 {   
     /* Appearences */
+    DEEP    ( "Deep.png"    ),
     DIRT    ( "Dirt.png"    ),
     GRASS   ( "Grass.png"   ),
+    ICE     ( "Ice.png"     ),
     SAND    ( "Sand.png"    ),
     TUNDRA  ( "Snow.png"    ),
-    ICE     ( "Ice.png"     ),
+    WATER   ( "Water.png"   ),
     
     // Items
     CRYSTAL ( "Crystal.png" ),
@@ -56,9 +58,8 @@ enum Images implements ROOT
     
     // Scenarios
     ROCK    ( "Rock.png"    ),
-    BASE    ( "Default.png" ),
-    TREE    ( "Default.png" ),
-    WATER   ( "Default.png" ),
+    BASE    ( "Base.png"    ),
+    TREE    ( "Tree.png"    ),
     ROBOT   ( "Robot_1.png" );
     
     /* Auxiliar private variables */
