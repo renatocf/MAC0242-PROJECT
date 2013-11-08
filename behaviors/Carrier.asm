@@ -2,19 +2,28 @@
         ALOC    [ROBOTJ]
         ALOC    [I]
         ALOC    [J]
+        ALOC    [BASE]
+        ALOC    [ENEMYBASE]
+        ALOC    [DIRECTION]
+        CALL    askBase
         ALOC    [VERT]
         ALOC    [Walk]
-        PUSH    1
+        GET     [BASE]
+        DUP
+        GET     [DIRECTION]
+        PUSH     3
+        DIV
+        ADD
         SET     [I]
-        PUSH    13
         SET     [J]
-        PUSH    1
+        PUSH    0
         SET     [VERT]
         PUSH    position
         ASK
         POP
         SET     [ROBOTI]
         SET     [ROBOTJ]
+
         
 start:
         GET     [J]
@@ -48,8 +57,12 @@ callEvade:
         JMP     start
 
 goToTheBase:
-        PUSH    13
+        GET     [ENEMYBASE]
         DUP
+        GET     [DIRECTION]
+        PUSH     3
+        DIV
+        SUB
         SET     [I]
         SET     [J]
 
@@ -66,7 +79,7 @@ run:
         JIT     run
         CALL    arrive
         JIF     callAlmostThereII
-        PUSH    ->SE
+        CALL    dropTheCrystal
         DROP    
         JIF     run
         JMP     goBack
@@ -84,8 +97,12 @@ callEvadeII:
         JMP     run
         
 goBack:
-        PUSH    1
+        GET     [BASE]
         DUP
+        GET     [DIRECTION]
+        PUSH     3
+        DIV
+        ADD
         SET     [I]
         SET     [J]
 
@@ -138,7 +155,7 @@ left:
         JMP     start
         
 right:
-        PUSH    13
+        PUSH    14
         SET     [J]
         PUSH    1
         SET     [VERT]
@@ -146,7 +163,7 @@ right:
 
 up:
         GET     [I]
-        PUSH    3
+        GET     [DIRECTION]
         ADD
         SET     [I]
         PUSH    0
@@ -866,4 +883,41 @@ attackDestinyR:
         POP
         RET         
 
-                
+askBase:
+        PUSH    base
+        ASK
+        JIF     askBase
+        JIF     upperBase
+        SET     [BASE]
+        PUSH    0
+        SET     [ENEMYBASE]
+        PUSH    0
+        PUSH    3
+        SUB
+        SET     [DIRECTION]
+        RET
+
+upperBase:
+        SET     [BASE]
+        PUSH    15
+        SET     [ENEMYBASE]
+        PUSH    3
+        SET     [DIRECTION]
+        RET
+
+dropTheCrystal:
+        GET     [DIRECTION]
+        PUSH    0
+        GT
+        JIT     dropSE
+        PUSH    ->NW
+        JMP     dropNow
+dropSE:        
+        PUSH    ->SE
+        JMP     dropNow
+dropNow:
+        DROP
+        JIF     dropTheCrystal
+        PUSH    1
+        RET
+            
