@@ -42,6 +42,7 @@
  *      <li> SEEK
  *      <li> STO
  *      <li> SUB
+ *      <li> SWAP
  * </ul>
  */
 package robot;

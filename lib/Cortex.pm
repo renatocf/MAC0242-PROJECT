@@ -13,7 +13,7 @@ use warnings;
 my @ins1 = ('ADD' , 'DIV' , 'DUP' , 'END' , 'EQ'  , 'GE'  , 'GT'  , 
             'MOD' , 'LE'  , 'LT'  , 'MUL' , 'NE'  , 'POP' , 'PRN' , 
             'SUB' , 'RET' , 'MOVE', 'DRAG', 'DROP', 'HIT' , 'LOOK', 
-            'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP'); # arg: none
+            'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP' , 'SWAP'); # arg: none
 my @ins2 = ('RCL' , 'STO');                  # arg: numeric  (only)
 my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL'); # arg: address/string
 my @ins4 = ('ALOC', 'FREE', 'GET' , 'SET' ); # arg: var name (only)
@@ -63,7 +63,7 @@ sub parse
                     (?:
                         \s+          # Spaces
                         (
-                            \d+      # NUMBER    }
+                            [+-]?\d+ # NUMBER    }
                             |        #           }
                             \[\w+\]  # VARIABLE  }
                             |        #           }
@@ -88,7 +88,7 @@ sub parse
             # If there is any command
             if($com eq "PUSH")
             {
-                if    ($arg =~ m/^\d+$/)                {} # Numeric
+                if    ($arg =~ m/^[+-]?\d+$/)           {} # Numeric
                 elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {} # Direction
                 elsif ($arg =~ m/^"(\w+)"$/) { $arg = $1 } # String
                 elsif ($arg =~ m/^{(\w+)}$/)               # Stackable
@@ -113,7 +113,7 @@ sub parse
                 given($com)
                 {                   
                     when(@ins1) { $err = 2 if defined $arg                }
-                    when(@ins2) { $err = 3 if $arg !~ m/^\d+$/            }
+                    when(@ins2) { $err = 3 if $arg !~ m/^[+-]?\d+$/       }
                     when(@ins3) { $err = 4 if $arg !~ m/^(\d+)|\w+$/;    
                                   $arg = "ADDRESS($arg)" if defined $1    }
                     when(@ins4) { $err = 5 if $arg !~ m/^\[\w+\]$/        }

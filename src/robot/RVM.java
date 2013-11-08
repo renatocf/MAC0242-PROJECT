@@ -136,9 +136,14 @@ public class RVM implements Game
                 // Execute one single assembly line 
                 // (usually, a single syscall to wait
                 // for its answer).
-
-                this.PC--; exec(); this.PC++; 
-
+                //
+                // If PC is 0, there it would be nowhere
+                // to go. Therefore, let's get out.
+                if(this.PC != 0)
+                {
+                    this.PC--; exec(); this.PC++; 
+                }
+                
                 // Debug
                 Debugger.say  ("[STACK]");
                 Debugger.print("    ");
