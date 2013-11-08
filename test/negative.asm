@@ -1,0 +1,5 @@
+PUSH -7
+PUSH -3
+ADD
+PRN
+END
