@@ -79,7 +79,7 @@ public class Panel extends JPanel
             }
     }
     
-    void clean(Graphics g)
+    void blackPanel(Graphics g)
 	{
 		g.setColor(Color.black) ;
 		g.fillRect(0, 0, width, height);  		

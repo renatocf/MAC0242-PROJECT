@@ -17,9 +17,11 @@ import parameters.*;
 
 /**
  * <b>World - general game configuration.</b><br>
- * Manages the time, players and the
+ * Manages the time, players a
+nd the
  * arena of the game.
  *
+
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
@@ -31,7 +33,8 @@ public class World implements Game
 {
     // Global settings
     private static int id = 1;
-    private static int time = 0;
+    private static int time 
+= 0;
     private static int nPlayers;
     
     // Global characteristics
@@ -51,7 +54,8 @@ public class World implements Game
     /**
      * Builds a new arena with n players and
      * a given weather.
-     * @param np Number of players
+     * @param np Number of p
+layers
      * @param w  Weather
      */
     public static Player[] genesis(int np, Weather w, Interfaces gui)
@@ -84,6 +88,7 @@ public class World implements Game
     }
     
     /**
+
      * Runs one game time step. On each
      * turn, sort the robots accordingly
      * to their priorities, solving conflicts
@@ -112,8 +117,12 @@ public class World implements Game
             yourTurn(r); turn.OFF(0); 
         }
         
-        Debugger.say("[SORT] Sorting by priorities");
-        Debugger.say("--------------------------------");
+        Debugger.say("[SORT] Sorting");
+    /**
+
+     * Create a new robot in the map. by priorities");
+     */
+       Debugger.say("--------------------------------");
         armies.sort(); // Organize armies accordingly to
                        // their priorities.
         
@@ -132,11 +141,12 @@ public class World implements Game
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         
         // Game Over - Verify
-        //for(int i = 0; i < map.players.length; i++)
-        //{
-        //    if( map.bases.get(i).crystals >= 5 )
-        //        System.out.println("GAME OVER!!");
-        //}
+        for(int i = 0; i < map.getNumberOfBases(); i++)
+        {
+            if( map.getBases(i).getBase().getCrystals() >= 5 )
+                
+                System.out.println("GAME OVER!!");
+        }
         
         if(!(Debugger.info)) GUI.paint();
     }
