@@ -65,6 +65,7 @@ final public class Ctrl
             case "POP" : Stk.POP    (rvm);      break;
             case "PUSH": Stk.PUSH   (rvm, arg); break;
             case "DUP" : Stk.DUP    (rvm);      break;
+            case "SWAP": Stk.SWAP   (rvm);      break;
                                     
             // Arithmetic functions 
             case "ADD" : Arit.ADD   (rvm);      break;

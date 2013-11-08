@@ -58,4 +58,21 @@ final public class Stk
         rvm.DATA.push(st);
         rvm.DATA.push(st);
     }
+    
+    /**
+     * Assembly funcion SWAP. <br>
+     * Swaps the top of the main stack.
+     * 
+     * @param  rvm Virtual Machine
+     * @throws StackUnderflowException
+     * @see    Stackable
+     */
+    static void SWAP(RVM rvm) throws StackUnderflowException
+    {
+        Stackable top = rvm.DATA.pop(); 
+        Stackable sl  = rvm.DATA.pop(); 
+        
+        rvm.DATA.push(top);
+        rvm.DATA.push(sl);
+    }
 }
