@@ -48,6 +48,8 @@ public class Terrain implements Stackable
         
         switch (appearence)
         {
+            case DEEP   : this.type = Type.BLOCKED; break;
+            
             case DIRT   : this.type = Type.NORMAL; break;
             case GRASS  : this.type = Type.NORMAL; break;
             case TUNDRA : this.type = Type.NORMAL; break;
@@ -57,6 +59,7 @@ public class Terrain implements Stackable
             case JUNGLE : this.type = Type.ROUGH;  break;
             case WATER  : this.type = Type.ROUGH;  break;
             case SAND   : this.type = Type.ROUGH;  break;
+            
             default     : this.type = Type.NORMAL; break;
         }
         

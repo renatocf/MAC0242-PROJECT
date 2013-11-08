@@ -281,13 +281,14 @@ public class Textual
         switch (ap)
         {
             case DIRT   : return ON_BLACK; 
+            case DEEP   : return ON_BLUE;  
             case GRASS  : return ON_IGREEN;
+            case WATER  : return ON_IBLUE;  
             case TUNDRA : return ON_WHITE; 
             
             case ROCKY  : return ON_IBLACK;
             case ICE    : return ON_CYAN;  
             case JUNGLE : return ON_IGREEN;
-            case WATER  : return ON_BLUE;  
             case SAND   : return ON_YELLOW;
             default     : return RESTORE;  
         }

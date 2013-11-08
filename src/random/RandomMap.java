@@ -74,7 +74,7 @@ public class RandomMap
         
         Appearence DEF;
         switch(style)
-        {
+        {      
             case ARTICAL     : DEF = TUNDRA ; break;
             case TROPICAL    : DEF = GRASS  ; break;
             case DESERTIC    : DEF = DIRT   ; break; 
@@ -96,15 +96,15 @@ public class RandomMap
                     case '.': app = TUNDRA; break;
                     case ':': app = DIRT  ; break;
                     case '#': app = ICE   ; break;
-                    case '≈': app = WATER ; break;
                     case 'S': app = SAND  ; break;         
+                    case '~': app = DEEP  ; break;
+                    case '≈': app = WATER ; break;
                     
                     // Scenario only
                     case 'B': app = DEF   ; sce = new Base (i,j);
-                                            bases.add((Base)sce);       break;    
+                                            bases.add((Base)sce); break;    
                     case 'O': app = DEF   ; sce = new Rock    (); break;
                     case '♣': app = DEF   ; sce = new Tree    (); break;
-                    case '~': app = WATER ; sce = new Water   (); break;
                     
                     // Item only
                     case '♢': app = DEF   ; itm = new Crystal (); break;

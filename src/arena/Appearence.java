@@ -15,6 +15,7 @@ import gui.Printable;
  */
 public enum Appearence implements Printable
 {
+    DEEP,
     DIRT,
     GRASS,
     ROCKY,
