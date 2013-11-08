@@ -26,6 +26,7 @@ public class Graphical extends JFrame implements GUI,Game
 {
     /* Auxiliar variables for keeping interface GUI */
     private boolean firstTime = true;
+    private Panel screen;
     private Map map;
     
     /** 
@@ -43,8 +44,8 @@ public class Graphical extends JFrame implements GUI,Game
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Panel screen = new Panel(25, 600, 600, map);
-        add(screen);
+        this.screen = new Panel(25, 600, 600, map);
+        add(this.screen);
     }
     
     /**
