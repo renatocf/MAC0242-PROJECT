@@ -87,7 +87,9 @@ public class Panel extends JPanel
     
     public void finalOfGame()
 	{
-	    activeGame = false;	 		
+	    
+	    this.activeGame = false;
+	    	 		
 	}
 	
     
@@ -100,8 +102,10 @@ public class Panel extends JPanel
      */
     public void paintComponent(Graphics g) 
     {
-        if(activeGame)
+    System.out.println(activeGame);
+        if(this.activeGame)
         {
+        
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             for (int i = 0; i < MAP_SIZE; i++) 
@@ -123,12 +127,11 @@ public class Panel extends JPanel
         }
         else
         {
-            //g.setColor(Color.black) ;
-		    //g.fillRect(0, 0, width, height); 
-        
             Graphics2D g2d = (Graphics2D) g;
 	        Image img = Toolkit.getDefaultToolkit().getImage("data/img/gameOver.png");
 	        g2d.drawImage(img, (width/2) - 250, (height/2) - 62, null);
+	        
+	        this.repaint();
         }
     }
 

@@ -144,6 +144,9 @@ layers
                 Graphical gr = (Graphical)GUI;
                 gr.cleanScreen();
                 GUI.paint();
+                
+                try{ Thread.sleep(10000); }
+                    catch (InterruptedException e) {}
                 System.exit(0);
             }
         }
