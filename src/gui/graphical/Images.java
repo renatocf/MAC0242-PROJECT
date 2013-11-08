@@ -61,7 +61,7 @@ enum Images implements ROOT
     BASE    ( "Base.png"    ),
     TREE    ( "Tree.png"    ),
     ROBOT   ( "Robot_1.png" );
-    
+        
     /* Auxiliar private variables */
     private BufferedImage img;
     

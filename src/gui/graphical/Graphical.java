@@ -79,6 +79,12 @@ public class Graphical extends JFrame implements GUI,Game
         screen.repaint();
     }
     
+    
+    public void cleanScreen()
+    {
+        screen.finalOfGame();
+    }
+    
     /** 
      * Shows Mini Map.<br>
      * Creates a Mini Map with dimensions MAP_SIZE
@@ -86,4 +92,5 @@ public class Graphical extends JFrame implements GUI,Game
      * of each scenario/item in the map.
      */
     public void printMiniMap() { }
+    
 }

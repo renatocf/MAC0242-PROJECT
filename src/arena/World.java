@@ -33,8 +33,7 @@ public class World implements Game
 {
     // Global settings
     private static int id = 1;
-    private static int time 
-= 0;
+    private static int time = 0;
     private static int nPlayers;
     
     // Global characteristics
@@ -137,15 +136,16 @@ layers
             if(r.wait == 0) turn.ON(); else r.wait--;
         }
         
-        //TODO:
-        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        
-        // Game Over - Verify
+        // Game Over
         for(int i = 0; i < map.getNumberOfBases(); i++)
         {
             if( map.getBases(i).getBase().getCrystals() >= 5 )
-                
-                System.out.println("GAME OVER!!");
+            {
+                Graphical gr = (Graphical)GUI;
+                gr.cleanScreen();
+                GUI.paint();
+                System.exit(0);
+            }
         }
         
         if(!(Debugger.info)) GUI.paint();
