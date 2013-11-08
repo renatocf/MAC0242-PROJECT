@@ -13,7 +13,7 @@ import java.util.Random;
  */
 class Jungle extends Theme
 {
-    private Random rand = new Random(42);
+    private Random rand = new Random();
     
     /**
      * Generate random char matrix of the
