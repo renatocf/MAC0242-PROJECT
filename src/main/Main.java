@@ -26,7 +26,7 @@ import gnu.getopt.LongOpt;
  * Controls all the user interactions,
  * the start and end of the program.
  */
-class Main 
+public class Main 
 {
     final private static String USAGE = 
         "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> <prog3> [-v|-d]";
