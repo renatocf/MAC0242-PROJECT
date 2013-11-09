@@ -24,30 +24,37 @@ limitations under the License.
     
     <!-- 
     ===================================================================
-    ==                      DIRECTORY STRUCTURE                      ==
+    ==                   DIRECTORIES AND LIBRARIES                   ==
     ===================================================================
     -->
     
     <property file="build.properties"/>
     <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
-    
-    <!-- Jar File: Configure the path to the jar and it will set the
-                   relative paths to all its dependencies            -->
-    <property name="jar.file" value="${project.name}.jar"/>
-    <property name="jar.path" value="${dist.dir}/${jar.file}"/>
 
     <path id="libraries.path">    
         <fileset dir="${lib.dir}">
             <include name="**/*.jar"/>
         </fileset>
     </path>
+    
+    <!-- 
+    ===================================================================
+    ==                      PACKING PROPERTIES                       ==
+    ===================================================================
+    -->
+    
+    <!-- Jar File: Configure the path to the jar and it will set the
+                   relative paths to all its dependencies            -->
+    <property name="jar.file" value="${project.name}.jar"/>
+    <property name="jar.path" value="${dist.dir}/${jar.file}"/>
        
     <property name="one-jar.dir" value="./one-jar"/>   
     <property name="one-jar.version"  value="0.97"/>
     <property 
         name="one-jar.ant.jar"  
-        value="${one-jar.dir}/one-jar-ant-task-${one-jar.version}.jar"/>
+        value="${one-jar.dir}/one-jar-ant-task-${one-jar.version}.jar"
+    />
     
     <taskdef name="one-jar" 
         classname="com.simontuffs.onejar.ant.OneJarTask" 
@@ -149,7 +156,7 @@ limitations under the License.
 
     <!-- 
     ===================================================================
-    ==                            PACK                               ==
+    ==                            PACKING                            ==
     ===================================================================
     -->
     
@@ -223,6 +230,7 @@ limitations under the License.
         </target>
 
     <target name="publish" depends="javadoc">
+        <description>Publish documentation</description>
         <exec executable="/bin/bash">
             <arg value="publish.sh"/>
         </exec>
