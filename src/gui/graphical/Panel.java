@@ -85,13 +85,29 @@ public class Panel extends JPanel
             }
     }
     
-    public void finalOfGame()
-	{
-	    
-	    this.activeGame = false;
-	    	 		
-	}
+    
+   /**
+   * activeGame is accountable for the printing
+   * of images on the screen. When this function
+   * is called, it desables this data
+   * making the function paintComponent print
+   * Game Over on the screen.
+   */
+    public void finalOfGame()  {  this.activeGame = false;  }
 	
+	
+   /**
+	* When the function is called, the image  
+	* gameOver is printed at the screen's center.
+	*/
+	private void gameOver(Graphics g)
+	{
+		Graphics2D g2d = (Graphics2D) g;
+	    Image img = Toolkit.getDefaultToolkit().getImage("data/img/gameOver.png");
+	    g2d.drawImage(img, (width/2) - 250, (height/2) - 62, null);
+	        
+	    this.repaint();
+	}	
     
     /**
      * Paint hexagons on the screen.<br>
@@ -124,13 +140,7 @@ public class Panel extends JPanel
                 }
         }
         else
-        {
-            Graphics2D g2d = (Graphics2D) g;
-	        Image img = Toolkit.getDefaultToolkit().getImage("data/img/gameOver.png");
-	        g2d.drawImage(img, (width/2) - 250, (height/2) - 62, null);
-	        
-	        this.repaint();
-        }
+ 			gameOver(g);           
     }
 
 }
