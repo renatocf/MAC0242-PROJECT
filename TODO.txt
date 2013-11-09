@@ -1,6 +1,6 @@
 [Karina]
     [X] Finish documentation (LaTeX). (PHASE 2)
-    [ ] Create game_over function.
+    [X] Create game_over function.
     [ ] Correct documentations. (PHASE 3)
     
 [Renato]
@@ -8,13 +8,14 @@
     [X] Refatorate GUI.
     [X] Update build.xml to ignore parser/ dir.
     [X] Implement ASK base position
-    [ ] Correct Ant to store new files.
+    [X] Correct Ant to store new files.
     
 [Vinícius]
     [X] Add new maps. 
     [X] Create robot behaviors.
-    [ ] Test new ASK with base.
-    [ ] Fix carrier to get player's base position.
+    [X] Test new ASK with base.
+    [X] Fix carrier to get player's base position.
+    [ ] Separate robot's images.
     
 [All]
     [X] Create insert Army.
@@ -34,8 +35,8 @@
     [X] Create robots automatically.
     [X] Test new implementation design.
     [X] Create class for users.
+    [X] Find an image to Water.
     [ ] Finish GUI.
-    [ ] Find an image to Water.
     [ ] Create new system for priorities.
     [ ] Create LOG window with robots prints.
     [ ] Create menu.
