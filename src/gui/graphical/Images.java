@@ -43,7 +43,7 @@ interface ROOT
  */
 enum Images implements ROOT
 {   
-    /* Appearences */
+    // Appearences
     DEEP    ( "Deep.png"    ),
     DIRT    ( "Dirt.png"    ),
     GRASS   ( "Grass.png"   ),
@@ -60,7 +60,10 @@ enum Images implements ROOT
     ROCK    ( "Rock.png"    ),
     BASE    ( "Base.png"    ),
     TREE    ( "Tree.png"    ),
-    ROBOT   ( "Robot_1.png" );
+    ROBOT   ( "Robot_1.png" ),
+    
+    // General
+    GAME_OVER ( "gameOver.png" );
         
     /* Auxiliar private variables */
     private BufferedImage img;

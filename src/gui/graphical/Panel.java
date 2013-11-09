@@ -40,7 +40,8 @@ public class Panel extends JPanel
     private int width;
     private int height;
     
-    private boolean activeGame;
+    // Game status
+    private boolean activeGame = true;
     
     /**
      * Create a Panel with dimensions width x height,
@@ -54,8 +55,6 @@ public class Panel extends JPanel
      * @param map    Map over which the panel will
      *               create the GUI hexagons
      */
-     
-     
     Panel(int R, int width, int height, Map map) 
     {
         this.map = map;
@@ -63,17 +62,15 @@ public class Panel extends JPanel
         // Dimensions
         this.width = width;
     	this.height = height;
-    	
-    	this.activeGame = true;
         
         // Preferences
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(width, height));
         
+        // Put images in the screen
         int Dx = (int) ( 2*R * Math.sin(Math.PI/3) ); 
         int Dy = 3 * R/2 +1;
        
-        // Put images in the screen
         int Δ  = 0;
         for (int i = 0; i < MAP_SIZE; i++)
             for (int j = 0; j < MAP_SIZE; j++) 
@@ -85,13 +82,16 @@ public class Panel extends JPanel
             }
     }
     
-    public void finalOfGame()
+    /** 
+     * Finishes the game.
+     * @return Result of ending the game
+     */
+    boolean gameOver()
 	{
-	    
 	    this.activeGame = false;
-	    	 		
+        this.repaint();
+        return true;
 	}
-	
     
     /**
      * Paint hexagons on the screen.<br>
@@ -100,37 +100,44 @@ public class Panel extends JPanel
      * @param g Graphic object with all context 
      *          needed to render the image
      */
-    public void paintComponent(Graphics g) 
+    protected void paintComponent(Graphics g) 
     {
-        if(this.activeGame)
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        
+        if(!this.activeGame)
         {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            for (int i = 0; i < MAP_SIZE; i++) 
-                for (int j = 0; j < MAP_SIZE; j++)
+	        Image img = Images.GAME_OVER.img();
+	        g2d.drawImage(img, (width/2)-250, (height/2)-62, null);
+            return;
+        }
+        
+        for (int i = 0; i < MAP_SIZE; i++) 
+            for (int j = 0; j < MAP_SIZE; j++)
+            {
+                Cell hex = cell[i][j]; hex.draw(g); 
+                
+                // Print items
+                if(hex.terrain.getItem() != null)
                 {
-                    cell[i][j].draw(g); 
-                    if(cell[i][j].terrain.getItem() != null)
-                    {
-                        Images test = Images.valueOf(cell[i][j].terrain.getItem().name());
-                        g2d.drawImage(test.img(), cell[i][j].x-13, cell[i][j].y-13, null);
-                    }
-                    
-                    if(cell[i][j].terrain.getScenario() != null)
-                    {
-                        Images test = Images.valueOf(cell[i][j].terrain.getScenario().name());
-                        g2d.drawImage(test.img(), cell[i][j].x-13, cell[i][j].y-13, null);
-                    }
+                    Images item = Images.valueOf(
+                        hex.terrain.getItem().name()
+                    );
+                    g2d.drawImage(
+                        item.img(), hex.x-13, hex.y-13, null
+                    );
                 }
-        }
-        else
-        {
-            Graphics2D g2d = (Graphics2D) g;
-	        Image img = Toolkit.getDefaultToolkit().getImage("data/img/gameOver.png");
-	        g2d.drawImage(img, (width/2) - 250, (height/2) - 62, null);
-	        
-	        this.repaint();
-        }
+                
+                // Print scenarios
+                if(hex.terrain.getScenario() != null)
+                {
+                    Images scen = Images.valueOf(
+                        hex.terrain.getScenario().name()
+                    );
+                    g2d.drawImage(
+                        scen.img(), hex.x-13, hex.y-13, null
+                    );
+                }
+            }
     }
-
 }

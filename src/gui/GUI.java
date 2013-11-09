@@ -34,4 +34,10 @@ public interface GUI extends Game
      * of each scenario/item in the map.
      */
     public void printMiniMap();
+    
+    /** 
+     * Finishes the game.
+     * @return Result of ending the game
+     */
+    public boolean gameOver();
 }

@@ -48,11 +48,7 @@ public class Graphical extends JFrame implements GUI,Game
         add(this.screen);
     }
     
-    /**
-     * Paint 1 frame of the game.<br>
-     * Exhibits a new frame in the main
-     * window created in the game.
-     */
+    /* Implementing interface GUI */
     public void paint()
     {
         try { Thread.sleep(SPEED); } 
@@ -61,11 +57,7 @@ public class Graphical extends JFrame implements GUI,Game
         this.printMap();
     }
     
-    /**
-     * Shows Map.<br>
-     * Creates a Map with more details of each element
-     * of the scenarios and items in the map.
-     */
+    /* Implementing interface GUI */
     public void printMap()
     {
         if(this.firstTime)
@@ -76,21 +68,15 @@ public class Graphical extends JFrame implements GUI,Game
             });
             this.firstTime = false;
         }
-        screen.repaint();
+        this.screen.repaint();
     }
     
-    
-    public void cleanScreen()
-    {
-        screen.finalOfGame();
-    }
-    
-    /** 
-     * Shows Mini Map.<br>
-     * Creates a Mini Map with dimensions MAP_SIZE
-     * x MAP_SIZE, with a one-character representation
-     * of each scenario/item in the map.
-     */
+    /* Implementing interface GUI */
     public void printMiniMap() { }
     
+    /* Implementing interface GUI */
+    public boolean gameOver()
+    {
+        return this.screen.gameOver();
+    }
 }

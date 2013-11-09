@@ -17,11 +17,9 @@ import parameters.*;
 
 /**
  * <b>World - general game configuration.</b><br>
- * Manages the time, players a
-nd the
+ * Manages the time, players and the
  * arena of the game.
  *
-
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
@@ -37,8 +35,9 @@ public class World implements Game
     private static int nPlayers;
     
     // Global characteristics
-    private static Map   map;
-    private static Robot turn;
+    private static Map    map;
+    private static Robot  turn;
+    private static Base[] bases;
     
     /* Robot list */
     private static RobotList armies;
@@ -53,8 +52,7 @@ public class World implements Game
     /**
      * Builds a new arena with n players and
      * a given weather.
-     * @param np Number of p
-layers
+     * @param np Number of players
      * @param w  Weather
      */
     public static Player[] genesis(int np, Weather w, Interfaces gui)
@@ -67,7 +65,7 @@ layers
         players  = new Player[nPlayers];
         
         // Create map
-        Base[] bases = map.genesis(players);
+        bases = map.genesis(players);
         
         // Create new players
         for(int i = 0; i < 2; i++)
@@ -82,7 +80,6 @@ layers
         }
         
         if(Debugger.info) GUI.printMiniMap();
-        
         return players;
     }
     
@@ -117,11 +114,7 @@ layers
         }
         
         Debugger.say("[SORT] Sorting");
-    /**
-
-     * Create a new robot in the map. by priorities");
-     */
-       Debugger.say("--------------------------------");
+        Debugger.say("--------------------------------");
         armies.sort(); // Organize armies accordingly to
                        // their priorities.
         
@@ -137,13 +130,11 @@ layers
         }
         
         // Game Over
-        for(int i = 0; i < map.getNumberOfBases(); i++)
+        for(Base base: bases)
         {
-            if( map.getBases(i).getBase().getCrystals() >= 5 )
+            if(base.getCrystals() >= 5)
             {
-                Graphical gr = (Graphical)GUI;
-                gr.cleanScreen();
-                GUI.paint();
+                GUI.gameOver();
                 
                 try{ Thread.sleep(10000); }
                     catch (InterruptedException e) {}

@@ -33,12 +33,6 @@ public class Textual
         this.map = map;
     }
     
-    /**
-     * Paint 1 frame of the game.<br>
-     * Depending on the speedy attribute,
-     * from interface Game, exhibits a frame
-     * in the program's standart output.
-     */
     public void paint()
     {
         try { Thread.sleep(SPEED); } 
@@ -49,12 +43,6 @@ public class Textual
         printMap();
     }
     
-    /** 
-     * Shows Mini Map.<br>
-     * Creates a Mini Map with dimensions MAP_SIZE
-     * x MAP_SIZE, with a one-character representation
-     * of each scenario/item in the map.
-     */
     public void printMiniMap()
     {
         for(int i = 0; i < MAP_SIZE; i++)
@@ -67,12 +55,6 @@ public class Textual
         }
     }
     
-    /**
-     * Shows Map.<br>
-     * Creates a Map with more details of each element
-     * of the scenarios and items in the map. Each 
-     * hexagon represents one title. 
-     */
     /*
      *  .--------------------------------------------.
      *  |                   INDEX                    |
@@ -223,6 +205,28 @@ public class Textual
         for(int j = 0; j < MAP_SIZE-1; j++)
             print("   '  ");
         println("   '");
+    }
+    
+    public boolean gameOver()
+    {
+        System.out.print(CLEAR);
+        System.out.println(
+            "                                             "
+            +"  ######### ######### ##      ## ########## "
+            +"  ##        ###   ### ###    ### ###        "
+            +"  ##   #### ###   ### ####  #### ########## "
+            +"  ##     ## ######### ## #### ## ###        "
+            +"  ######### ###   ### ##  ##  ## ###        "
+            +"  ######### ###   ### ##      ## ########## "
+            +"                                            "
+            +"  ######### ##     ## ########## #########  "
+            +"  ##     ## ##     ## ###        ###   ###  "
+            +"  ##     ##  ##   ##  ########## ###   ###  "
+            +"  ##     ##   #####   ###        #########  "
+            +"  ##     ##    ###    ###        ###   ###  "
+            +"  #########     #     ########## ###    ### "
+        );
+        return true;
     }
     
     /**
