@@ -15,6 +15,9 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>World - general game configuration.</b><br>
  * Manages the time, players and the
@@ -27,7 +30,7 @@ import parameters.*;
  * @see Action
  * @see gui
  */
-public class World implements Game
+public class World
 {
     // Global settings
     private static int id = 1;

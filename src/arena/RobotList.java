@@ -12,6 +12,9 @@ import exception.*;
 import operation.*;
 import parameters.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>Auxiliar class RobotList</b><br>
  * Impelments a list to be used within
@@ -20,7 +23,7 @@ import parameters.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class RobotList implements Game, Iterable<Robot>
+public class RobotList implements Iterable<Robot>
 {
     // Robot's list and info
     private Robot[] armies;

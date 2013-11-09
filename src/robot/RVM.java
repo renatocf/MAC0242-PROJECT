@@ -13,11 +13,14 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>Main package class with the constructor of the robot and its data.</b>
  * @author Renato Cordeiro Ferreira
  */
-public class RVM implements Game
+public class RVM
 {
     Vector  <Command>   PROG;
     Stack   <Integer>   CTRL = new Stack <Integer>   ();

@@ -9,7 +9,7 @@ import parameters.Game;
  * work with the game characteristics.
  * @see parameters.Game
  */
-public interface GUI extends Game
+public interface GUI
 {
     /**
      * Shows Map.<br>

@@ -2,10 +2,10 @@ package parameters;
 
 /** 
  * <b>Game</b><br>
- * General interface with parameters used to
+ * General class with parameters used to
  * configure the general behaviors of the game.
  */
-public interface Game
+public class Game
 {
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------

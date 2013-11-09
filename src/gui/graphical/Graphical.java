@@ -12,6 +12,9 @@ import gui.*;
 import arena.Map;
 import parameters.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>GUI - Graphical Mode</b><br>
  * Makes an implementation of the interface
@@ -22,7 +25,7 @@ import parameters.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class Graphical extends JFrame implements GUI,Game
+public class Graphical extends JFrame implements GUI
 {
     /* Auxiliar variables for keeping interface GUI */
     private boolean firstTime = true;

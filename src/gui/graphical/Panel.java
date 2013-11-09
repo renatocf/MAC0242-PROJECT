@@ -18,6 +18,9 @@ import javax.swing.SwingUtilities;
 import arena.Map;
 import parameters.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>Graphical - Panel</b><br>
  * Creates the main panel to exhibit 
@@ -30,7 +33,6 @@ import parameters.*;
  * @author Vinicius Silva
  */
 public class Panel extends JPanel 
-    implements Game
 {
     // Map made with cells
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];

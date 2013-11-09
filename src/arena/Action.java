@@ -8,6 +8,9 @@ import parameters.*;
 import players.Base;
 import operation.Operation;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>Action</b><br>
  * Decide when a robot may  
@@ -20,7 +23,7 @@ import operation.Operation;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Nascimento Silva
  */
-public class Action implements Game
+public class Action
 {      
     /**
      * Given a map, a robot and an operation,

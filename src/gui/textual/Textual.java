@@ -7,6 +7,9 @@ import scenario.*;
 import players.Base;
 import stackable.item.*;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>GUI - Textual Mode</b><br>
  * Makes an implementation of the interface
@@ -18,8 +21,7 @@ import stackable.item.*;
  * 
  * @author Renato Cordeiro Ferreira
  */
-public class Textual 
-    implements Colors, GUI
+public class Textual implements Colors, GUI
 {
     private Map map;
 

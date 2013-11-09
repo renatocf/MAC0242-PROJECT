@@ -17,6 +17,9 @@ import parameters.*;
 import stackable.item.*;
 import scenario.Scenario;
 
+// Import links
+import static parameters.Game.*;
+
 /**
  * <b>Map</b><br>
  * Control an hexagonal matrix of
@@ -32,7 +35,7 @@ import scenario.Scenario;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Nascimento Silva
  */
-public class Map implements Game
+public class Map
 {
     // Map Matrixes
     public char[][]        miniMap;
