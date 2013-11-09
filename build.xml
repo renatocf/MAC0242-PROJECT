@@ -21,19 +21,6 @@ limitations under the License.
     <description>
         A Real Time Strategy game - with Robots
     </description>
-
-    <!-- 
-    ===================================================================
-    ==                         PROJECT INFO                          ==
-    ===================================================================
-    -->
-    <property name  = "mf.created.by"   value = 
-        "Karina Suemi, Renato Cordeiro, Vinicius Silva"    />
-    <property name  = "mf.spec.title"   value = "Project"  />
-    <property name  = "mf.spec.vendor"  value = "MAC0242"  />
-    <property name  = "mf.impl.title"   value = "MAC0242"  />
-    <property name  = "mf.impl.vertion" value = "MAC0242"  />
-    <property name  = "mf.main.class"   value = "main.Main"/>
     
     <!-- 
     ===================================================================
@@ -41,25 +28,31 @@ limitations under the License.
     ===================================================================
     -->
     
-    <property name="bin.dir"           location="bin"    />
-    <property name="lib.dir"           location="lib"    />
-    <property name="src.dir"           location="src"    />
-    <property name="doc.dir"           location="doc"    />
-    <property name="data.dir"          location="data"   />
-    <property name="dist.dir"          location="dist"   />
-    <property name="build.dir"         location="build"  />
+    <property file="build.properties"/>
     <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     
     <!-- Jar File: Configure the path to the jar and it will set the
                    relative paths to all its dependencies            -->
-    <property name="jar.file" value="${dist.dir}/${ant.project.name}.jar"/>
+    <property name="jar.file" value="${project.name}.jar"/>
+    <property name="jar.path" value="${dist.dir}/${jar.file}"/>
 
     <path id="libraries.path">    
         <fileset dir="${lib.dir}">
             <include name="**/*.jar"/>
         </fileset>
     </path>
+       
+    <property name="one-jar.dir" value="./one-jar"/>   
+    <property name="one-jar.version"  value="0.97"/>
+    <property 
+        name="one-jar.ant.jar"  
+        value="${one-jar.dir}/one-jar-ant-task-${one-jar.version}.jar"/>
+    
+    <taskdef name="one-jar" 
+        classname="com.simontuffs.onejar.ant.OneJarTask" 
+        classpath="${one-jar.ant.jar}" onerror="report"
+    />
     
     <!-- 
     ===================================================================
@@ -77,21 +70,24 @@ limitations under the License.
     ===================================================================
     -->
 
-    <!-- Create MANIFEST.MF file for .jar -->
+    <!-- Create MANIFEST.MF file for the main .jar -->
     <target name="manifest">
         <echo>Creating MANIFEST.MF file</echo>
         
-        <manifestclasspath property="mf.classpath" 
-                           jarfile="${jar.file}">
+        <manifestclasspath property="mf.classpath" jarfile="${jar.path}">
             <classpath refid="libraries.path"/>
         </manifestclasspath> 
-
+        
         <manifest file="${build.dir}/MANIFEST.MF">
-            <attribute name="Built-By"   value="${user.name}"/>
-            <attribute name="Created-By" value="${mf.created.by}"/>
-            <attribute name="Main-Class" value="${mf.main.class}"/>
-            <attribute name="Class-Path" value="${mf.classpath}"/>
-            <section name="common">
+            <attribute name="Main-Class" value="${mf.main.class}" />
+            <attribute name="Class-Path" value="${mf.classpath}"  />
+            
+            <section name="Info">
+                <attribute name="Built-By"   value="${user.name}"     />
+                <attribute name="Created-By" value="${mf.created.by}" />
+            </section>
+            
+            <section name="Common">
                 <attribute name  = "Specification-Title"
                            value = "${mf.spec.title}"       />
                 <attribute name  = "Specification-Vendor"
@@ -115,7 +111,7 @@ limitations under the License.
     <target name="resolve">
         <echo>Resolving dependencies</echo>
         <ivy:retrieve/>
-        <echo>Dependencies Resolver Successfully</echo>
+        <echo>Dependencies Resolved Successfully</echo>
     </target>    
     
     <!-- Resolve and list dependencies -->
@@ -150,24 +146,54 @@ limitations under the License.
         </javac>
         <echo>Compilation Completed Successfully</echo>
     </target>
-    
-    <!-- Compressing files and saving .jar in dist bin -->
-    <target name="dist" depends="compile,manifest">
-        <echo>Building .jar file</echo>
-        <echo>${lib.dir}</echo>
-        <copy todir="${build.classes.dir}/lib" flatten="true">
-            <path refid="libraries.path"/>
-        </copy>
 
-        <jar destfile = "${jar.file}" 
+    <!-- 
+    ===================================================================
+    ==                            PACK                               ==
+    ===================================================================
+    -->
+    
+    <!-- Compressing files and saving main .jar in dist bin -->
+    <target name="dist" depends="compile,manifest">
+        <echo>Building main .jar file</echo>
+        <echo>Dependencies: ${lib.dir}</echo>
+        
+        <!-- Jar main file with data and .class files -->
+        <jar destfile = "${jar.path}" 
              manifest = "${build.dir}/MANIFEST.MF">
             <!-- Base directories -->
             <fileset dir  = "${build.classes.dir}"/>
             <fileset dir  = "${data.dir}"/>
         </jar>
-        <echo>.jar Build Completed Successfully</echo>
+        
+        <echo>Main .jar Build Successfully Completed</echo>
     </target>
+    
+    <!-- Compress all files and dependencies with One-Jar -->
+    <import file="${one-jar.dir}/one-jar-ant-task.xml" optional="true"/>
+    <target name="jar" depends="dist">
+        <echo>Packing distribution to .jar file</echo>
+        
+        <one-jar destfile="dist/Robot-Battle.jar">
+            
+            <!-- Create a Manifest.mf to One-Jar -->
+            <manifest>
+                <attribute name="Main-Class" value="main.Main"/>
+                <attribute name="One-Jar-Main-Class" value="${jar.path}"/>
+            </manifest>
+ 
+            <!-- Load the main Jar -->
+            <main jar="${jar.path}"/>
 
+            <!-- Get Jar dependencies -->
+            <lib>
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            </lib>
+            
+        </one-jar>
+        <echo>Distribution .jar Pack Successfully Completed</echo>
+    </target>
+    
     <target name="all" depends="dist" />
     
     <!-- 
@@ -178,14 +204,13 @@ limitations under the License.
     <!-- Generate javadocs for current project into ${doc.dir} -->
     <target name="javadoc" depends="init">
         <description>Generate documentation</description>
-        <!--sourcepath  = "${src.dir}"--> 
             <javadoc 
                 author      = "yes"
                 package     = "yes"
                 encoding    = "utf8"
-                doctitle    = "${ant.project.name}"
+                doctitle    = "${project.name}"
                 destdir     = "${doc.javadoc.dir}"
-                windowtitle = "${ant.project.name}">
+                windowtitle = "${project.name}">
                 
                 <!-- Packages to be included/excluded -->
                 <packageset dir="${src.dir}" defaultexcludes="yes">
