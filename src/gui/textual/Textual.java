@@ -64,10 +64,10 @@ public class Textual implements Colors, GUI
      *  | Items:        | Scenarios:                 |
      *  |===============|============================|
      *  |               |                            |
-     *  | - Crystal: /\ | - Base:  ßß   - Water: ≈≈  |
-     *  |            \/ |          ßß            ≈≈  |
-     *  | - Stone:   .. | - Rock:  ⌈⌉   - Robot: ()  |
-     *  |            ¨¨ |          ⌊⌋            /\  |
+     *  | - Crystal: /\ | - Base:  ßß   - Robot: ()  |
+     *  |            \/ |          ßß            /\  |
+     *  | - Stone:   .. | - Rock:  ⌈⌉                |
+     *  |            ¨¨ |          ⌊⌋                |
      *  |               | - Trees: ☘☘                |
      *  |               |          ☘☘                |
      *  '---------------'----------------------------'
@@ -110,7 +110,6 @@ public class Textual implements Colors, GUI
                                                  scen1 = team(i,j) + crs; scen2 = team(i,j) + "ß";  }
                 else if (S instanceof Rock )   { scen1 = ON_BLACK  + "⌈"; scen2 = ON_BLACK  + "⌉";  }
                 else if (S instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
-                else if (S instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
                 else if (S instanceof Robot)   { scen1 = team(i,j) + "("; scen2 = team(i,j) + ")";  }
                 
                 if      (I == null)            { item1 = " "; item2 = " "; }
@@ -141,7 +140,6 @@ public class Textual implements Colors, GUI
                 else if (S instanceof Base )   { scen1 = team(i,j) + "ß"; scen2 = team(i,j) + "ß";  }
                 else if (S instanceof Rock )   { scen1 = ON_BLACK  + "⌊"; scen2 = ON_BLACK  + "⌋";  }
                 else if (S instanceof Tree )   { scen1 = ON_GREEN  + "☘"; scen2 = ON_GREEN  + "☘";  }
-                else if (S instanceof Water)   { scen1 = ON_BLUE   + "≈"; scen2 = ON_BLUE   + "≈";  }
                 else if (S instanceof Robot)   { scen1 = team(i,j) + "/"; scen2 = team(i,j) + "\\"; }
                 
                 if      (I == null)            { item1 = " "; item2 = " "; }
