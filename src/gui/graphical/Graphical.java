@@ -2,9 +2,13 @@ package gui.graphical;
 
 // Graphical Libraries (AWT)
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
 // Graphical Libraries (Swing)
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 // Libraries
@@ -43,12 +47,21 @@ public class Graphical extends JFrame implements GUI
         
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-		this.setSize(725, 655);
+        this.setSize(725, 655);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        this.screen = new Panel(25, 600, 600, map);
-        add(this.screen);
+        this.screen = new Panel(25, 
+            (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
+            (int)(25.5*3*MAP_SIZE/2), map);
+        
+        JScrollPane scrollPane = new JScrollPane(
+            screen,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+        );
+        
+        this.add(scrollPane);
     }
     
     /* Implementing interface GUI */
