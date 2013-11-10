@@ -35,7 +35,10 @@ if [ -n "$(git diff --exit-code)" ]; then
 elif [ -n "$(git diff --cached --exit-code)" ]; then
     echo "${RED}Local staged changes! Check git status for more info.${RES}"
     exit
-elif [ -n "$(git pull origin gh-page)" ]; then
+fi
+
+# Before other things, pull from the origin to avoid conflicts
+if [ -n "$(git pull origin gh-page)" ]; then
     echo "${RED}Problems on pull! Check git status for more info.${RES}"
     exit
 fi
