@@ -38,10 +38,12 @@ elif [ -n "$(git diff --cached --exit-code)" ]; then
 fi
 
 # Before other things, pull from the origin to avoid conflicts
+git checkout gh-pages || exit $?
 if [ -n "$(git pull origin gh-pages)" ]; then
     echo "${RED}Problems on pull! Check git status for more info.${RES}"
     exit
 fi
+git checkout $OLD_BRANCH || exit $?
 
 # Adding and stashing javadoc
 cp -pr doc/javadoc javadoc/ \
