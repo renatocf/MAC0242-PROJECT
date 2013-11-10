@@ -39,7 +39,7 @@ fi
 
 # Before other things, pull from the origin to avoid conflicts
 git checkout gh-pages || exit $?
-if [ $(git pull origin gh-pages) -ne 0 ]; then
+if [ -z "$(git pull origin gh-pages)" ]; then
     echo "${RED}Problems on pull! Check git status for more info.${RES}"
     exit
 fi
