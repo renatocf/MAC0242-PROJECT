@@ -1,6 +1,8 @@
 [Karina]
     [X] Finish documentation (LaTeX). (PHASE 2)
     [X] Create game_over function.
+    [ ] Paint who was the winner.
+    [ ] Paint additional info in the end of the game.
     [ ] Correct documentations. (PHASE 3)
     
 [Renato]
@@ -9,6 +11,7 @@
     [X] Update build.xml to ignore parser/ dir.
     [X] Implement ASK base position
     [X] Correct Ant to store new files.
+    [ ] Scroll with keys.
     
 [Vinícius]
     [X] Add new maps. 
@@ -36,6 +39,8 @@
     [X] Test new implementation design.
     [X] Create class for users.
     [X] Find an image to Water.
+    [ ] Divide images by theme.
+    [ ] Divide robots' images by team.
     [ ] Finish GUI.
     [ ] Create new system for priorities.
     [ ] Create LOG window with robots prints.
