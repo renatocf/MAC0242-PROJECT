@@ -34,7 +34,6 @@ public class Main
     // Options
     static private boolean help;
     static private boolean usage;
-    static private Weather weather = Weather.TROPICAL;
     static private Interfaces GUI  = Interfaces.GRAPHICAL;
     
     /**
@@ -52,7 +51,7 @@ public class Main
         if(args.length < 3) { System.err.println(USAGE); return; }
         
         // Generate map
-        Player[] p = World.genesis(2, weather, GUI);
+        Player[] p = World.genesis(2, Game.WEATHER, GUI);
                
         // Menu
         // TODO: automate inserction of programs
@@ -98,9 +97,13 @@ public class Main
             
             // Interfaces
             new LongOpt("textual", LongOpt.NO_ARGUMENT, null, 't'),
+            
+            // Size
+            new LongOpt("small", LongOpt.NO_ARGUMENT, null, 's'),
+            new LongOpt("large", LongOpt.NO_ARGUMENT, null, 'l'),
         };
         //
-        Getopt g = new Getopt("MAC0242-Project", argv, "hdvt", longopts);
+        Getopt g = new Getopt("MAC0242-Project", argv, "hdvtsl", longopts);
         
         int c;
         while ((c = g.getopt()) != -1)
@@ -116,14 +119,17 @@ public class Main
                     Debugger.info = true;
                     break;
                 //
-                case 1: weather = Weather.ARTICAL;     break;
-                case 2: weather = Weather.DESERTIC;    break;
-                case 3: weather = Weather.TROPICAL;    break;
-                case 4: weather = Weather.CONTINENTAL; break;
+                case 1: Game.WEATHER = Weather.ARTICAL;     break;
+                case 2: Game.WEATHER = Weather.DESERTIC;    break;
+                case 3: Game.WEATHER = Weather.TROPICAL;    break;
+                case 4: Game.WEATHER = Weather.CONTINENTAL; break;
                 //
                 case 't':
                     GUI = Interfaces.TEXTUAL;
                     break;
+                //
+                case 's': Game.MAP_SIZE = 16; break;
+                case 'l': Game.MAP_SIZE = 50; break;
                 //
                 case '?': // getopt() will print the error
                     break;

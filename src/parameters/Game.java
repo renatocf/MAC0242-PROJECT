@@ -1,5 +1,8 @@
 package parameters;
 
+// Libraries
+import random.Weather;
+
 /** 
  * <b>Game</b><br>
  * General class with parameters used to
@@ -29,9 +32,16 @@ public class Game
     /**
      * <b>Map: size</b><br>
      * Dimensions for the map. In a common
-     * screen, 15x15 is a good size.
+     * screen, 16x16 is a good size.
      */
     public static int MAP_SIZE = 16;
+    
+    /**
+     * <b>Map: weather</b><br>
+     * Weather for the map. 
+     * By default, tropical.
+     */
+    public static Weather WEATHER = Weather.TROPICAL;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------
