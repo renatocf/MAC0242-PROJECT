@@ -153,6 +153,15 @@ public class Terrain implements Stackable
     }
     
     /** 
+     * Getter for the terrain's type. 
+     * @return Terrain's type
+     */
+    public Type getType()
+    {
+        return this.type;
+    }
+    
+    /** 
      * Getter for the terrain's scenario.
      * @return Scenario (or null, if none)
      */
