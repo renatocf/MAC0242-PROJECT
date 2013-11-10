@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 // Graphical Libraries (Swing)
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.*;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,10 @@ public class Graphical extends JFrame implements GUI
         this.screen = new Panel(25, 
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
             (int)(25.5*3*MAP_SIZE/2), map);
+        
+        /* Border border = screen.getBorder(); */
+        /* Border margin = new EmptyBorder(10,10,10,10); */
+        /* screen.setBorder(new CompoundBorder(border, margin)); */
         
         JScrollPane scrollPane = new JScrollPane(
             screen,

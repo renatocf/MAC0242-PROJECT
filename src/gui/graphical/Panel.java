@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 // Graphical Libraries (Swing)
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
@@ -60,6 +61,8 @@ public class Panel extends JPanel
     Panel(int R, int width, int height, Map map) 
     {
         this.map = map;
+        /* this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100)); */
+        /* this.setBorder(BorderFactory.createLineBorder(Color.white,100,100,100,100)); */
         
         // Dimensions
         this.width = width;
@@ -114,10 +117,17 @@ public class Panel extends JPanel
             return;
         }
         
+        // First, draw all the background
+        for (int i = 0; i < MAP_SIZE; i++) 
+            for (int j = 0; j < MAP_SIZE; j++)
+                cell[i][j].draw(g); 
+                
+        // After, draw items and scenarios
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
-                Cell hex = cell[i][j]; hex.draw(g); 
+                Cell hex = cell[i][j];
+                int x = hex.x, y = hex.y;
                 
                 // Print items
                 if(hex.terrain.getItem() != null)
@@ -126,7 +136,7 @@ public class Panel extends JPanel
                         hex.terrain.getItem().name()
                     );
                     g2d.drawImage(
-                        item.img(), hex.x-13, hex.y-13, null
+                        item.img(), x-item.dx(), y-item.dy(), null
                     );
                 }
                 
@@ -137,7 +147,7 @@ public class Panel extends JPanel
                         hex.terrain.getScenario().name()
                     );
                     g2d.drawImage(
-                        scen.img(), hex.x-13, hex.y-13, null
+                        scen.img(), x-scen.dx(), y-scen.dy(), null
                     );
                 }
             }

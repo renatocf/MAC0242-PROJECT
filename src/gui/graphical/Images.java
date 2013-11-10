@@ -44,41 +44,60 @@ interface ROOT
 enum Images implements ROOT
 {   
     // Appearences
-    DEEP    ( "Deep.png"    ),
-    DIRT    ( "Dirt.png"    ),
-    GRASS   ( "Grass.png"   ),
-    ICE     ( "Ice.png"     ),
-    SAND    ( "Sand.png"    ),
-    TUNDRA  ( "Snow.png"    ),
-    WATER   ( "Water.png"   ),
+    DEEP    ( "Deep.png",      0, 0   ),
+    DIRT    ( "Dirt.png",      0, 0   ),
+    GRASS   ( "Grass.png",     0, 0   ),
+    ICE     ( "Ice.png",       0, 0   ),
+    SAND    ( "Sand.png",      0, 0   ),
+    TUNDRA  ( "Snow.png",      0, 0   ),
+    WATER   ( "Water.png",     0, 0   ),
     
     // Items
-    CRYSTAL ( "Crystal.png" ),
-    STONE   ( "Stone.png"   ),
+    CRYSTAL ( "Crystal.png",  13, 13  ),
+    STONE   ( "Stone.png",    13, 13  ),
     
     // Scenarios
-    ROCK    ( "Rock.png"    ),
-    BASE    ( "Base.png"    ),
-    TREE    ( "Tree.png"    ),
-    ROBOT   ( "Robot_1.png" ),
+    ROCK    ( "Rock.png",     13, 13  ),
+    BASE    ( "Base.png",     18, 50  ),
+    TREE    ( "Tree.png",     25, 50  ),
+    ROBOT   ( "Robot_1.png",  15, 15  ),
     
     // General
-    GAME_OVER ( "gameOver.png" );
+    GAME_OVER ( "GameOver.png" , 0, 0 );
         
     /* Auxiliar private variables */
     private BufferedImage img;
+    private int dx = 0, dy = 0;
     
     /** 
      * Default Constructor.<br>
      * @param value Path for the image
      */
-    private Images(String path) { this.img = load(ROOT + path); }
+    private Images(String path, int dx, int dy) 
+    { 
+        this.img = load(ROOT + path); 
+        this.dx = dx; this.dy = dy;
+    }
     
     /**
      * Getter for the internal image.<br>
      * @return Buffered image for the element
      */
     BufferedImage img() { return this.img; }
+    
+    /**
+     * Getter for the horizontal variation
+     * when drawing the image.<br>
+     * @return Horizontal variation for drawing
+     */
+    int dx() { return this.dx; }
+    
+    /**
+     * Getter for the vertical variation
+     * when drawing the image.<br>
+     * @return Vertical variation for drawing
+     */
+    int dy() { return this.dy; }
     
     /** 
      * Auxiliar method for loaging an image to be 
@@ -97,7 +116,8 @@ enum Images implements ROOT
             e.printStackTrace();
         
         } catch (IllegalArgumentException e) {
-            System.err.println("Image not found!");
+            String pre = "[GRAPHICAL][IMAGE]";
+            System.err.println(pre + "Image" + path + " not found!");
             e.printStackTrace();
         }
         return null;
