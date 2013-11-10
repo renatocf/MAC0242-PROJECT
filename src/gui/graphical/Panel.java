@@ -126,7 +126,7 @@ public class Panel extends JPanel
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
-                Cell hex = cell[i][j];
+                Cell hex = cell[j][i];
                 int x = hex.x, y = hex.y;
                 
                 // Print items
@@ -144,7 +144,8 @@ public class Panel extends JPanel
                 if(hex.terrain.getScenario() != null)
                 {
                     Images scen = Images.valueOf(
-                        hex.terrain.getScenario().name()
+                        hex.terrain.getScenario().name(),
+                        hex.terrain.getScenario().getTeam()
                     );
                     g2d.drawImage(
                         scen.img(), x-scen.dx(), y-scen.dy(), null
