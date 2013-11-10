@@ -8,6 +8,7 @@ import players.Player;
  * Take care with the water: it cannot be
  * destroyed, but can stuck robots.
  */
+@Deprecated
 public class Water implements Scenario 
 {
     public int takeDamage(int damage) 
