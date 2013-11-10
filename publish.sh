@@ -38,7 +38,7 @@ elif [ -n "$(git diff --cached --exit-code)" ]; then
 fi
 
 # Before other things, pull from the origin to avoid conflicts
-if [ -n "$(git pull origin gh-pages --exit-code)" ]; then
+if [ -n "$(git pull origin gh-pages)" ]; then
     echo "${RED}Problems on pull! Check git status for more info.${RES}"
     exit
 fi
