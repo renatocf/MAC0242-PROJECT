@@ -89,6 +89,13 @@ public class Action
         || newJ < 0  
         || map.map[newI][newJ].scenario != null) return false;
         
+        Type type = map.map[newI][newJ].type;
+        switch(type)
+        {
+            /* TODO: Add energy/time costs for NORMAL/ROUGHT */
+            case BLOCKED: return false;
+        }
+        
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].removeScenario();
         
@@ -251,7 +258,7 @@ public class Action
             case "RANGED": damage = turn.damageRange; 
                            if(distance > turn.maxRange) return false; break;
         }
-                
+        
         // Debug
         String directions = "";
         for(Direction d: dirs) directions += d.toString() + " ";
@@ -262,7 +269,7 @@ public class Action
         
         Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
         Debugger.say("    [HIT]", " ", directions);
-
+        
         for(Direction d: dirs)
         {
             int[] update = d.get(lookI);
@@ -281,7 +288,7 @@ public class Action
             thing = map.map[lookI][lookJ].getScenario();
             if(thing != null)
             {
-                // No attacks agains allies!
+                // No attacks against allies!
                 if(thing.getTeam() == turn.getTeam())
                 {
                     Debugger.say("    [HIT]", "[NONE]");
