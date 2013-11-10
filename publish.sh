@@ -35,8 +35,8 @@ if [ -n "$(git diff --exit-code)" ]; then
 elif [ -n "$(git diff --cached --exit-code)" ]; then
     echo "${RED}Local staged changes! Check git status for more info.${RES}"
     exit
-elif [ ! -d "doc/javadoc/" ]; then
-    echo "${RED}Create javadoc first!${RES}" 
+elif [ -n "$(git pull origin gh-page)" ]; then
+    echo "${RED}Problems on pull! Check git status for more info.${RES}"
     exit
 fi
 
