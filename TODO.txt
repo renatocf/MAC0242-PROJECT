@@ -39,8 +39,9 @@
     [X] Test new implementation design.
     [X] Create class for users.
     [X] Find an image to Water.
-    [ ] Divide images by theme.
-    [ ] Divide robots' images by team.
+    [X] Divide images by theme.
+    [X] Divide robots' images by team.
+    [ ] Find more theme-specific images.
     [ ] Finish GUI.
     [ ] Create new system for priorities.
     [ ] Create LOG window with robots prints.
