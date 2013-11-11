@@ -18,6 +18,7 @@
     [X] Create robot behaviors.
     [X] Test new ASK with base.
     [X] Fix carrier to get player's base position.
+    [ ] Fix the behaviors.
     [ ] Separate robot's images.
     
 [All]
