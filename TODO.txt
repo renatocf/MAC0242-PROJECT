@@ -41,8 +41,11 @@
     [X] Find an image to Water.
     [X] Divide images by theme.
     [X] Divide robots' images by team.
+    [ ] Make run-loop infinite.
     [ ] Find more theme-specific images.
     [ ] Finish GUI.
     [ ] Create new system for priorities.
+    [ ] Add option for playing again.
+    [ ] Add lateral bar to put new robots.
     [ ] Create LOG window with robots prints.
     [ ] Create menu.
