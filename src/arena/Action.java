@@ -42,7 +42,20 @@ public class Action
     {
         Stackable[] stackable = null;
         boolean can = false;
-        switch(op.getAction())
+        String action = op.getAction();
+        
+        
+        // Try to collect the power to do the action.
+        // If the robot do not have it, returns -1 to
+        // the RVM.
+        if (!turn.spendPower(action)) 
+        {
+            stackable = new Stackable[1]; 
+            stackable[0] = new Num(0);
+            return stackable;
+        }
+        
+        switch(action)
         {
             case "MOVE" : can = MOVE (map, turn, op); break;
             case "DRAG" : can = DRAG (map, turn, op); break;    
@@ -95,6 +108,8 @@ public class Action
         // Update robot attributes
         turn.i = newI; 
         turn.j = newJ;
+        
+        turn.terrain = map.map[turn.i][turn.j];
         
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
@@ -368,7 +383,7 @@ public class Action
     {
         Direction d;
         
-        Stackable[] st = new Stackable[1];
+        Stackable[] st = new Stackable[2];
         
         int nTerrain; 
         if(turn.sight == 1) nTerrain = 7;
@@ -414,7 +429,8 @@ public class Action
             }
         }
         Around a = new Around(ter);
-        st[0] = (Stackable) a;
+        st[0] = (Stackable) a; 
+        st[1] = new Num (1);
         return st;
     }
     

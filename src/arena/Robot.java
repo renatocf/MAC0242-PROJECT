@@ -12,6 +12,9 @@ import gui.Printable;
 import scenario.Scenario;
 import stackable.item.Item;
 
+// Import links
+import static parameters.Costs.*;
+
 /**
  * <b>Robot</b><br>
  * Function with the general 
@@ -31,8 +34,9 @@ public class Robot implements Scenario, Printable
     final protected int    ID;
     
     // Position
-    protected int i; // Line
-    protected int j; // Column
+    protected int     i; // Line
+    protected int     j; // Column
+    protected Terrain terrain;
     
     // Hardware
     protected Item[] slots;
@@ -52,9 +56,18 @@ public class Robot implements Scenario, Printable
     final protected int speed;
     final protected int maxHP;
     final protected int maxPower;
-    final protected int costMove;
     final protected int sight;
     final protected int costTime;
+    
+    // Costs
+    
+    final protected int costMove;
+    final protected int costAttack;
+    final protected int costLook;
+    final protected int costSee;
+    final protected int costAsk;
+    final protected int costDrag;
+    final protected int costDrop;
     
     // Robot ON/OFF
     protected boolean ON = true;
@@ -74,7 +87,7 @@ public class Robot implements Scenario, Printable
      *                to be done by the robot
      */
     public Robot(String baptism, Player team, int ID, 
-                 int i, int j, Vector<Command> PROG)
+                 int i, int j, Terrain terrain, Vector<Command> PROG)
     {
         // ID
         this.name = baptism;
@@ -82,8 +95,9 @@ public class Robot implements Scenario, Printable
         this.ID   = ID;
         
         // Position
-        this.i = i;
-        this.j = j;
+        this.i       = i;
+        this.j       = j;
+        this.terrain = terrain;
         
         // Hardware
         this.slots = new Item[1];
@@ -91,10 +105,10 @@ public class Robot implements Scenario, Printable
         
         // Energy
         this.HP         = 12;
-        this.power      = 12;
+        this.power      = 16;
         
         // Combat
-        this.damageMelee = 4;
+        this.damageMelee = 3;
         this.damageRange = 0;
         this.maxRange    = 0;
         this.forceShield = 0;
@@ -102,10 +116,18 @@ public class Robot implements Scenario, Printable
         // Capacities
         this.speed       = 10;
         this.maxHP       = 12;
-        this.maxPower    = 24;
-        this.costMove    = 3;
+        this.maxPower    = 32;
         this.sight       = 1;
         this.costTime    = 5;
+        
+        // Costs
+        this.costMove    = ENERGY_MEDIUM;
+        this.costAttack  = ENERGY_MEDIUM;
+        this.costLook    = ENERGY_LOW;
+        this.costSee     = ENERGY_HIGH;
+        this.costAsk     = ENERGY_LOW;
+        this.costDrag    = ENERGY_MEDIUM;
+        this.costDrop    = ENERGY_LOW;
     }
     
     /**
@@ -205,10 +227,51 @@ public class Robot implements Scenario, Printable
     }
     
     /**
+     * Recharges the power 
+     * (limited to maxPower).
+     */
+    public void recharges()
+    {
+        this.power += ENERGY_CHARGE;
+        if(this.power > this.maxPower)
+            this.power = this.maxPower;
+    }
+    
+    /**
+     * Spend the amount of power required by 
+     * a certain action, if there is enought.
+     * 
+     * @param  action String with the action
+     *                to be done
+     * @return Boolean saying if the power 
+     *         was successfully spent 
+     */
+    public boolean spendPower(String action)
+    {
+        int cost = 0;
+        
+        switch(action)
+        {
+            case "MOVE"       : cost = move();            break;
+            case "DRAG"       : cost = this.costDrag;     break;    
+            case "DROP"       : cost = this.costDrop;     break;
+            case "HIT"        : cost = this.costAttack;   break;
+            case "LOOK"       : cost = this.costLook;     break;
+            case "SEE"        : cost = this.costSee;      break;
+            case "ASK"        : cost = this.costAsk;      break;
+        }
+        
+        if(cost > this.power) return false;
+        this.power -= cost;
+        return true;
+    }
+    
+    /**
      * Getter for the robot's ownew ID.
      * @return Player number
      */
     public Player getTeam () { return this.team; }
+    
     
     // Interface scenario
     public int takeDamage(int damage)
@@ -222,4 +285,13 @@ public class Robot implements Scenario, Printable
     
     // Printable interface
     public String name() { return "ROBOT"; }
+    
+    protected int move()
+    {
+        switch (this.terrain.type)
+        {
+            case ROUGH : return this.costMove*2;
+            default    : return this.costMove;
+        }
+    }
 }
