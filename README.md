@@ -22,7 +22,28 @@ Para a página do projeto:
 
 #### INSTALAÇÃO ####
                                             
-Para compilar o jogo, digite:    
+Para  compilar o  jogo  a partir  do  código 
+fonte, são necessários dois programas:
+* Apache Ant™;
+* Apache Ivy™;
+
+Caso o Ant não esteja disponível  no sistema,
+instale-o com:
+
+    $ sudo apt-get install ant
+
+Ou outro gerenciador de pacotes utilizado no
+sistema.
+
+Para instalar o Ivy,  foi disponibilizado um 
+script em *Bash*:
+
+* Para a instalação de sistema, utilize:    
+  `sudo bash install_ivy.bash`
+* Para a instalação local:    
+  `bash install_ivy.bash`
+
+Por fim, para compilar o jogo, digite:    
                                             
     $ ant                                   
 
@@ -47,11 +68,23 @@ Para  utilizá-los  como  programas  para  os
 robôs, compile-os com:
 
     $ sh reload.sh path/para/o/arquivo.asm
+
+Para  comportamentos  mais   elaborados  dos 
+robôs,  utilize  os  scripts  disponíveis na 
+pasta `behaviors/`.
                                             
-E para iniciar o jogo: 
+Para iniciar o jogo: 
                                             
     $ java -jar dist/MAC0242-Project.jar \
-      programa_jogador_1 programa_jogador_2 
+      prog1.asm prog2.asm prog3.asm 
+
+Sendo cada um dos programas um arquivo com o
+código  *Assembly*  para  os  três  robôs do 
+jogador.  Eles serão  usados para o  jogador
+competir contra os três robôs da máquina.
+
+Vence  o jogador  que  conseguir  coletar  5 
+cristais e depositá-los na base inimiga.
 
 #### DOCUMENTAÇÃO ####
 
