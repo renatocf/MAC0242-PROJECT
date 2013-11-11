@@ -91,6 +91,14 @@ cristais e depositá-los na base inimiga.
 A   documentação    do   código-fonte   está 
 disponível no formato [Javadoc][4].
 
+Para informações  sobre a utilização do jogo
+via  interface  de linha de comando,  rode-o
+com a opção **--help**.
+
+Informações  adicionais estão disponíveis na
+documentação  em *LaTeX*, presente  na pasta 
+`doc/` do código-fonte.
+
 [1]: https://github.com/renatocf
 [2]: https://github.com/karinaawoki
 [3]: https://github.com/Dhinihan
