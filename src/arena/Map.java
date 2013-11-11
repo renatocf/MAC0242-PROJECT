@@ -105,7 +105,7 @@ public class Map
             @SuppressWarnings("unchecked")
             Vector<Command> PROG = (Vector<Command>) upload.invoke(null);
             
-            Robot r = new Robot(name, player, ID, i, j, PROG);
+            Robot r = new Robot(name, player, ID, i, j, map[i][j],  PROG);
             this.map[i][j].setScenario(r);
             return r;
         }

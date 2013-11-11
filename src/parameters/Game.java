@@ -8,7 +8,7 @@ import random.Weather;
  * General class with parameters used to
  * configure the general behaviors of the game.
  */
-public class Game
+public final class Game
 {
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------

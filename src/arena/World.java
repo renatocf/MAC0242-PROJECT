@@ -107,13 +107,17 @@ public class World
         for(Robot r: armies)
         {
             if(r == null) continue;
+            
+            // Partially recharges the robot
+            r.recharges();
+            
             // Do nothing if the robot is still waiting
             // for this turn to execute some action.
             if(!r.ON) continue;
             
             // Otherwise, keep the robot waiting for an
             // answer (this or in other turns).
-            yourTurn(r); turn.OFF(0); 
+            yourTurn(r); turn.OFF(0);
         }
         
         Debugger.say("[SORT] Sorting");
@@ -278,12 +282,15 @@ public class World
         Debugger.print("[", turn, "]");
         Debugger.say  ("[", time, "ts]");
         
+        Debugger.say  ("    [", "energy before: ", r.power, "]");
+        
         try { turn.run(); }
         catch (Exception e) 
         {
             System.err.println
                 ("[World]["+ turn.toString() +"] " + e);
         }
+        Debugger.say  ("    [", "energy after : ", r.power, "]");
         Debugger.say();
     }
     

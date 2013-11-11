@@ -79,7 +79,8 @@ goLeft:
 
 lookForRobot:
         ALOC    [nRobot]
-        SEE
+trySee: SEE
+        JIF     trySee
         PUSH    Robot
         SEEK
         DUP
