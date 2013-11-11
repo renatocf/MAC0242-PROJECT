@@ -41,13 +41,17 @@
     [X] Find an image to Water.
     [X] Divide images by theme.
     [X] Divide robots' images by team.
-    [ ] Energy system.
-    [ ] Movement cost energy.
+    [X] Energy system.
+    [X] Movement cost energy.
+    [ ] Create table for returns in 'robot' package.
+    [ ] Treat movement return differently.
     [ ] Make run-loop infinite.
     [ ] Find more theme-specific images.
     [ ] Finish GUI.
     [ ] Create new system for priorities.
     [ ] Add option for playing again.
     [ ] Add lateral bar to put new robots.
+    [ ] Add number of crystals counter.
+    [ ] Add life bar.
     [ ] Create LOG window with robots prints.
     [ ] Create menu.
