@@ -9,17 +9,20 @@ MAC0242-Project.jar - Programming for Fight!
 .SH SYNOPSIS
 ."---------------------------------------------------------------------
 MAC0242-Project.jar
-.B [-h] [-d|-v] [--artical|--desertic|--tropical|--continental]
-.I prog_p1.asm prog_p2.asm
+.B  [-h] [-d|-v] [-t|-s|-l] 
+.BR [--artical|--desertic|--tropical|--continental] 
+.I prog1.asm prog2.asm prog3.asm
 
 Program your robots, drag the unstable crystals and throw them 
 in the enemy base!
 
 .P
-To run the program, resize your term screen to a better
-resolution. As default, a 15x15 arena will be created, but
-our algorithms are optimazed for more (wait for future phases!).
+The program can be run in 3 modes:
+.TP Textual, with a 16x16 arena running in a terminal;
+.TP Small Graphical, with a 16x16 arena in a Java swing based GUI;
+.TP Large Graphical, with a 50x50 arena of the same type as above.
 
+As default, the program starts with the small graphical user interface.
 See 
 .B OPTIONS 
 for more details.
@@ -35,6 +38,23 @@ for each robot, timestep by timestep.
 .TP 
 .BR \-h,\ --help
 Display the help message.
+
+.TP 
+.BR \-l,\ --large
+Runs with a Java Swing based GUI, 
+with a 50x50 arena.
+
+.TP 
+.BR \-s,\ --small
+Runs with a Java Swing based GUI, 
+with a 16x16 arena. This is the default
+User Interface (UI) mode.
+
+.TP 
+.BR \-t,\ --textual
+Runs with a textual user interface, designed
+to the terms wich accept 
+.I Ansi Escape Codes.
 
 .TP
 .BR \-v,\ --verbose
@@ -65,6 +85,10 @@ are avaiable in the directory test/. No special
 extension is required, but we recommend using .asm 
 as default.
 
+The complete behaviors used by the AI are stored
+in the directory behaviors/, and also can be used
+by the player as a base to program its robots.
+
 To upload a program, run:
 
     $ sh reload.sh path/to/your/prog.asm
@@ -72,19 +96,25 @@ To upload a program, run:
 Finally, to execute, run:
 
     $ java -jar dist/MAC0242-Project.jar \\
-      program_player1 programa_player2 
+      prog1.asm prog2.asm prog3.asm
 
 .B IMPORTANT: 
-Do not to move the .jar file from its directory, 
-or the dependencies may do the program not work.
+If the program is not a stand-alone compiled 
+version of the program, do not to move the .jar 
+file from its directory, or the dependencies may 
+do the program not work.
 
 .SS OUTPUT
 ."------------------------
 
-In this phase, a textual user interface will 
-display the game. The draws will be shown in
-an animation. Each player has its own color:
-black for p1, red for pl2.
+In this phase, both a textual and a graphical
+user interfaces are avaiable for the user. He
+will play  against the AI,  in order to throw 
+5  crystals in  the  enemy base  as faster as 
+possible.
+
+The human team has color read, and IA's color 
+is black.
 
 In order to debug, just run with the flag 
 .B '-d'.
@@ -95,6 +125,11 @@ In order to debug, just run with the flag
 A brief description of the directory structure and files.
 For more info about the source code, see the online javadoc.
 For general explanations about the program, see the LaTeX doc.
+
+.TP 
+.I behaviors/
+Main programs written in assembly, with the best behaviors
+specially programmed to the robots.
 
 .TP 
 .I bin/parser.pl
@@ -109,18 +144,35 @@ Old executable version of the project, to test the
 prototyped Robot Virtual Machine (RVM).
 
 .TP 
+.I build.properties
+Used by Apache™ Ant to define all the properties 
+(analogous to constant variables) to build.xml.
+
+.TP 
 .I build.xml
 Used by Apache™ Ant in order to compile the program. 
 
-.TP 
-.I doc/
+.tp 
+.i data/
+All kinds of data needed by the program (as images 
+used to print the GUI).
+
+.tp 
+.i doc/
 All documentation files, including javadoc, LaTeX and
-this Man page.
+this man page.
 
 .TP 
 .I install_ivy.bash
 Bash script for installing Apache™ Ivy, either locally
 or in the system (if ran as root or 'sudo').
+
+.TP 
+.I install_one-jar.bash
+Bash script for installing One-Jar™ locally. With it,
+Ant's task 'jar' is enabled and it's possible to generate
+a stand-alone .jar which works idependently of its 
+directory.
 
 .TP 
 .I ivy.xml

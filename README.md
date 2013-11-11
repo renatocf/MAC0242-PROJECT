@@ -47,6 +47,17 @@ Por fim, para compilar o jogo, digite:
                                             
     $ ant                                   
 
+Para  criar uma  aplicação sem  dependências, 
+que  possa ser  rodada independentemente  do 
+diretório, é  necessário instalar localmente 
+oprograma [One-Jar™][5]. Para fazê-lo, rode:
+
+    $ bash install_one-jar.bash
+
+Em seguida, compile com:
+
+    $ ant jar
+
 #### JOGO ####
 
 O  jogo consiste  em programar uma  série de 
@@ -103,3 +114,4 @@ documentação  em *LaTeX*, presente  na pasta
 [2]: https://github.com/karinaawoki
 [3]: https://github.com/Dhinihan
 [4]: http://renatocf.github.io/MAC0242-PROJECT/javadoc/index.html
+[5]: http://one-jar.sourceforge.net/
