@@ -495,7 +495,8 @@ lookForCrystal:
         ALOC    [lookJ]
         SET     [lookI]
         SET     [lookJ]        
-        SEE
+trySee: SEE
+        JIF     trySee
         PUSH    {crystal}
         SEEK
         DUP
