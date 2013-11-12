@@ -1,16 +1,11 @@
 package gui.graphical;
 
 // Graphical Libraries (AWT)
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.awt.*;
 
 // Graphical Libraries (Swing)
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.*;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+
 
 // Libraries
 import gui.*;
@@ -46,19 +41,21 @@ public class Graphical extends JFrame implements GUI
     {
         this.map = map;
         
+        
+        
+        
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-        this.setSize(725, 655);
         this.setLocationRelativeTo(null);
+        this.setSize(725,887);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         this.screen = new Panel(25, 
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-            (int)(25.5*3*MAP_SIZE/2), map);
-        
-        /* Border border = screen.getBorder(); */
-        /* Border margin = new EmptyBorder(10,10,10,10); */
-        /* screen.setBorder(new CompoundBorder(border, margin)); */
+            (int)(25.5*3*MAP_SIZE/2), 32, map);
+            
+        screen.setSize(725, 687);
+            
         
         JScrollPane scrollPane = new JScrollPane(
             screen,
@@ -66,7 +63,18 @@ public class Graphical extends JFrame implements GUI
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
         );
         
-        this.add(scrollPane);
+        //this.add(scrollPane);
+        
+        JTextArea log = new JTextArea(5, 72);
+        log.setFont(new Font("Comics Sans", Font.BOLD, 12));
+        log.setText("Hello World!");
+        log.setSize(725,200);
+        
+        
+        JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, false, scrollPane , log);
+        split.setDividerLocation(687);
+        
+        this.add(split);
     }
     
     /* Implementing interface GUI */

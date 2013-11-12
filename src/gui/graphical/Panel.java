@@ -55,14 +55,16 @@ public class Panel extends JPanel
      * @param R      radius
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
+     * @param y0     Desired vertical shift
      * @param map    Map over which the panel will
      *               create the GUI hexagons
      */
-    Panel(int R, int width, int height, Map map) 
+    Panel(int R, int width, int height, int y0, Map map) 
     {
         this.map = map;
-        /* this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100)); */
-        /* this.setBorder(BorderFactory.createLineBorder(Color.white,100,100,100,100)); */
+        //this.setMargin(new Insets(5,5,5,5));
+         //this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100)); 
+        // this.setBorder(BorderFactory.createLineBorder(Color.white,100,100,100,100)); 
         
         // Dimensions
         this.width = width;
@@ -81,7 +83,7 @@ public class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++) 
             {
                 cell[i][j] = new Cell(
-                    Δ + R + i*Dx, R + j*Dy, R, map.map[j][i]
+                    Δ + R + i*Dx, R + j*Dy + y0, R, map.map[j][i]
                 ); 
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
