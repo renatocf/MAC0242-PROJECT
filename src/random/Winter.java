@@ -13,7 +13,12 @@ import java.util.Random;
  */
 class Winter extends Theme
 {
-    private Random rand = new Random();
+    private Random rand;
+    
+    Winter(Random rand)
+    {
+        this.rand = rand;
+    }
     
     /**
      * Generate random char matrix of the

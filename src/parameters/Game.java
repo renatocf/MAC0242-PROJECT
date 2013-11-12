@@ -1,5 +1,8 @@
 package parameters;
 
+// Default libraries
+import java.util.Random;
+
 // Libraries
 import random.Weather;
 
@@ -16,11 +19,19 @@ public final class Game
     // ----------------------------------------------------------------
     // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     
+     /** 
+     * <b>Animation: RAND</b><br>
+     * Random number generator for the map genesis.
+     */
+    
+    public static Random RAND = new Random();
+    
     /** 
      * <b>Animation: speed</b><br>
      * Number of miliseconds before painting
      * a new screen.
      */
+     
     public static int SPEED = 300;
     
     // /////////////////////////////////////////////////////////////////
@@ -73,4 +84,6 @@ public final class Game
      * by a program that makes no syscall.
      */
     public static int ASM_MAX_RUN = 300;
+    
+    
 }

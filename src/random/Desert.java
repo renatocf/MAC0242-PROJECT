@@ -13,8 +13,12 @@ import java.util.Random;
  */
 class Desert extends Theme
 {
-    private Random rand = new Random();
+    private Random rand;
     
+    Desert(Random rand)
+    {
+        this.rand = rand;
+    }    
     /**
      * Generate random char matrix of the
      * Desert theme for RandomMap.

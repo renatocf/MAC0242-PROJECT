@@ -1,5 +1,8 @@
 package arena;
 
+// Default libraries
+import java.util.Random;
+
 // Graphical Libraries (Internal)
 import gui.*;
 import gui.textual.*;
@@ -58,7 +61,7 @@ public class World
      * @param np Number of players
      * @param w  Weather
      */
-    public static Player[] genesis(int np, Weather w, Interfaces gui)
+    public static Player[] genesis(int np, Weather w, Interfaces gui, Random rand)
         throws InvalidOperationException
     {
         // Set game configurations
@@ -68,7 +71,7 @@ public class World
         players  = new Player[nPlayers];
         
         // Create map
-        bases = map.genesis(players);
+        bases = map.genesis(players, rand);
         
         // Create new players
         for(int i = 0; i < 2; i++)

@@ -6,6 +6,7 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.lang.reflect.*;
+import java.util.Random;
 
 // Libraries
 import robot.*;
@@ -61,11 +62,11 @@ public class Map
      * @return List with nPlayer bases to 
      *         be given to the players
      */
-    Base[] genesis(Player[] players)
+    Base[] genesis(Player[] players, Random rand)
         throws InvalidOperationException
     {
         this.bases = players;
-        RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE);
+        RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE, rand);
         miniMap         = arena.getMatrix   (); 
         map             = arena.generateMap ();              
         return arena.getBases();

@@ -4,6 +4,7 @@ package main;
 import java.io.*;
 import java.util.Vector;
 import java.util.Arrays;
+import java.util.Random;
 
 // Libraries
 import arena.*;
@@ -51,7 +52,7 @@ public class Main
         if(args.length < 3) { System.err.println(USAGE); return; }
         
         // Generate map
-        Player[] p = World.genesis(2, Game.WEATHER, GUI);
+        Player[] p = World.genesis(2, Game.WEATHER, GUI, Game.RAND);
                
         // Menu
         // TODO: automate inserction of programs
@@ -82,6 +83,9 @@ public class Main
      */
     private static String[] getopt(String[] argv)
     {
+        
+        String arg;
+                
         LongOpt[] longopts = 
         {
             // Help and Debug
@@ -101,6 +105,10 @@ public class Main
             // Size
             new LongOpt("small", LongOpt.NO_ARGUMENT, null, 's'),
             new LongOpt("large", LongOpt.NO_ARGUMENT, null, 'l'),
+            
+            // Seed
+            new LongOpt("seed", LongOpt.REQUIRED_ARGUMENT, null, 5),
+            
         };
         //
         Getopt g = new Getopt("MAC0242-Project", argv, "hdvtsl", longopts);
@@ -123,6 +131,12 @@ public class Main
                 case 2: Game.WEATHER = Weather.DESERTIC;    break;
                 case 3: Game.WEATHER = Weather.TROPICAL;    break;
                 case 4: Game.WEATHER = Weather.CONTINENTAL; break;
+                //
+                case 5: 
+                    arg = g.getOptarg();
+                    System.out.println(Integer.valueOf(arg));
+                    Game.RAND = new Random(Integer.valueOf(arg)); 
+                    break;
                 //
                 case 't':
                     GUI = Interfaces.TEXTUAL;

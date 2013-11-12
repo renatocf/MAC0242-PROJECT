@@ -13,8 +13,13 @@ import java.util.Random;
  */
 class Jungle extends Theme
 {
-    private Random rand = new Random();
+    private Random rand;
     
+    Jungle(Random rand)
+    {
+        this.rand = rand;
+    }  
+      
     /**
      * Generate random char matrix of the
      * Jungle theme for RandomMap.

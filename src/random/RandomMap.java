@@ -2,6 +2,7 @@ package random;
 
 // Default library
 import java.util.ArrayList;
+import java.util.Random;
 
 // Libraries
 import scenario.*;
@@ -42,7 +43,7 @@ public class RandomMap
      *                matrix
      * @see Weather
      */
-    public RandomMap(Weather style, int nPlayer, int side)
+    public RandomMap(Weather style, int nPlayer, int side, Random rand)
     {
         this.style = style;
         this.nPlayer = nPlayer;
@@ -54,11 +55,11 @@ public class RandomMap
         Theme t = null;
         switch(style)
         {
-            case ARTICAL     : t = new Winter();    break;
-            case TROPICAL    : t = new Jungle();    break;
-            case DESERTIC    : t = new Desert();    break;
-            case CONTINENTAL : t = new CalmField(); break;
-            default          : t = new CalmField(); break;
+            case ARTICAL     : t = new Winter(rand);    break;
+            case TROPICAL    : t = new Jungle(rand);    break;
+            case DESERTIC    : t = new Desert(rand);    break;
+            case CONTINENTAL : t = new CalmField(rand); break;
+            default          : t = new CalmField(rand); break;
         }
         this.matrix = t.generateMatrix(this.side);        
     }

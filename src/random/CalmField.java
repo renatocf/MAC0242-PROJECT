@@ -13,8 +13,12 @@ import java.util.Random;
  */
 class CalmField extends Theme
 {
-    private Random rand = new Random();
+    private Random rand;
     
+    CalmField(Random rand)
+    {
+        this.rand = rand;
+    }    
     /**
      * Generate random char matrix of the
      * CalmField theme for RandomMap.
