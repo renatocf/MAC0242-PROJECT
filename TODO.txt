@@ -44,7 +44,8 @@
     [X] Divide robots' images by team.
     [X] Energy system.
     [X] Movement cost energy.
-    [ ] Test MOVE with BLOCKED terrains.
+    [X] Create the --seed switch.
+    [X] Test MOVE with BLOCKED terrains.
     [ ] Create table for returns in 'robot' package.
     [ ] Treat movement return differently.
     [ ] Make run-loop infinite.
