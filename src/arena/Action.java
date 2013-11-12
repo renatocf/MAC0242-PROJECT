@@ -10,6 +10,7 @@ import operation.Operation;
 
 // Import links
 import static parameters.Game.*;
+import static robot.Returns.*;
 
 /**
  * <b>Action</b><br>
@@ -41,7 +42,6 @@ public class Action
        throws InvalidOperationException
     {
         Stackable[] stackable = null;
-        boolean can = false;
         String action = op.getAction();
         
         
@@ -51,18 +51,17 @@ public class Action
         if (!turn.spendPower(action)) 
         {
             stackable = new Stackable[1]; 
-            stackable[0] = new Num(0);
+            stackable[0] = new Num(NO_ENERGY);
             return stackable;
         }
         
         switch(action)
         {
-            case "MOVE" : can = MOVE (map, turn, op); break;
-            case "DRAG" : can = DRAG (map, turn, op); break;    
-            case "DROP" : can = DROP (map, turn, op); break;
-            case "SKIP" : can = SKIP (map, turn, op); break;
-            case "HIT"  : can = HIT  (map, turn, op); break;
-            
+            case "MOVE" : stackable = MOVE (map, turn, op); break;
+            case "DRAG" : stackable = DRAG (map, turn, op); break;    
+            case "DROP" : stackable = DROP (map, turn, op); break;
+            case "SKIP" : stackable = SKIP (map, turn, op); break;
+            case "HIT"  : stackable = HIT  (map, turn, op); break;
             case "LOOK" : stackable = LOOK (map, turn, op); break;
             case "SEE"  : stackable = SEE  (map, turn, op); break;
             case "ASK"  : stackable = ASK  (map, turn, op); break;
@@ -71,7 +70,7 @@ public class Action
         if(stackable == null) 
         {
             stackable = new Stackable[1]; 
-            stackable[0] = new Num( (can) ? 1 : 0 );
+            stackable[0] = new Num(INVALID_ACTION);
         }
         return stackable;
     }
@@ -86,10 +85,11 @@ public class Action
      * @param turn Robot that may do the action
      * @param op   Operation to be executed (or not)
      */
-    static boolean MOVE (Map map, Robot turn, Operation op) 
+    static Stackable[] MOVE (Map map, Robot turn, Operation op) 
     {
         // Extract direction info from operation
         Stackable[] s = op.getArgument();
+        Stackable[] ret = new Stackable[1];
         Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
@@ -100,13 +100,17 @@ public class Action
         || newJ >= MAP_SIZE  
         || newI < 0  
         || newJ < 0  
-        || map.map[newI][newJ].scenario != null) return false;
+        || map.map[newI][newJ].scenario != null)
+        {
+            ret[0] = new Num(END_OF_MAP);
+            return ret;
+        }
         
         Type type = map.map[newI][newJ].type;
         switch(type)
         {
             /* TODO: Add energy/time costs for NORMAL/ROUGHT */
-            case BLOCKED: return false;
+            case BLOCKED: ret[0] = new Num(BLOCKED); return ret;
         }
         
         // Takes out from original position
@@ -120,7 +124,8 @@ public class Action
         
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
-        return true;
+        ret[0] = new Num(SUCCEDED);
+        return ret;
     }
     
     /**
@@ -134,10 +139,11 @@ public class Action
      * @param turn Robot that may do the action
      * @param op   Operation to be executed (or not)
      */
-    static boolean DRAG (Map map, Robot turn, Operation op)
+    static Stackable[] DRAG (Map map, Robot turn, Operation op)
     { 
          // Extract direction info from operation
         Stackable[] s = op.getArgument();
+        Stackable[] ret = new Stackable[1];
         Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
@@ -150,10 +156,18 @@ public class Action
         || lookJ >= MAP_SIZE  
         || lookI < 0  
         || lookJ < 0  
-        || map.map[lookI][lookJ].item == null) return false;
+        || map.map[lookI][lookJ].item == null)
+        {
+            ret[0] = new Num(END_OF_MAP);
+            return ret;
+        }
 
         for(int i = 0; i < turn.slots.length && turn.slots[i] != null; i++) cont++;
-        if(cont >= turn.slots.length) return false;
+        if(cont >= turn.slots.length)
+        {
+            ret[0] = new Num(FULL_SLOTS);
+            return ret;
+        }
             
         Debugger.say("    [DRAG]", map.map[lookI][lookJ] );
         
@@ -161,7 +175,8 @@ public class Action
         
         Debugger.say("    [DRAG]", map.map[lookI][lookJ] );
         
-        return true;
+        ret[0] = new Num(SUCCEDED);
+        return ret;
     }
     
     /**
@@ -175,9 +190,11 @@ public class Action
      * @param turn Robot that may do the action
      * @param op   Operation to be executed (or not)
      */
-    static boolean DROP (Map map, Robot turn, Operation op)
+    static Stackable[] DROP (Map map, Robot turn, Operation op)
     {  
         Stackable[] s = op.getArgument();
+        Stackable[] ret = new Stackable[1];
+        boolean allow;
         Direction d = (Direction) s[0];
         int[] update = d.get(turn.i);
         
@@ -190,23 +207,31 @@ public class Action
         || lookJ >= MAP_SIZE  
         || lookI < 0  
         || lookJ < 0  
-        || map.map[lookI][lookJ].item != null) return false;
+        || map.map[lookI][lookJ].item != null)
+        {
+            ret[0] = new Num(END_OF_MAP);
+            return ret;
+        }
         
         // Takes out from original position
         Robot robot = (Robot) map.map[turn.i][turn.j].scenario;
         
         for(int i = 0; i < turn.slots.length && robot.slots[i] != null; i++) cont++;
-        if(cont == 0) return false;
+        if(cont == 0)
+        {
+            ret[0] = new Num(EMPTY_SLOTS);
+            return ret;
+        }
             
         Debugger.say("    [DROP]", map.map[lookI][lookJ]);
         
-        boolean allow = false;
+        ret[0] = new Num(NOT_SUCCEDED);
         if(map.map[lookI][lookJ].scenario instanceof Base)
         {
             // If the scenario is a base, throw the crystal on it
             Base b = (Base) map.map[lookI][lookJ].scenario;
             robot.removeSlots(cont - 1); allow = b.addCrystal(turn);
-            allow = true;
+            ret[0] = new Num((allow)? SUCCEDED : NOT_SUCCEDED);
         }
         else 
         {
@@ -214,12 +239,12 @@ public class Action
             if(map.map[lookI][lookJ].item != null)
             {
                 robot.removeSlots(cont - 1);
-                allow = true;
+                ret[0] = new Num(SUCCEDED);
             }
         }
         
         Debugger.say("    [DROP]", map.map[lookI][lookJ]);
-        return allow;
+        return ret;
     }
     
     /**
@@ -231,10 +256,12 @@ public class Action
      * @param turn Robot that may do the action
      * @param op   Operation to be executed (or not)
      */
-    static boolean SKIP (Map map, Robot turn, Operation op)
+    static Stackable[] SKIP (Map map, Robot turn, Operation op)
     {  
+        Stackable[] ret = new Stackable[1];
         Debugger.say("    [SKIP]"); // Debug
-        return true;
+        ret[0] = new Num(SUCCEDED);
+        return ret;
     }
     
     /**
@@ -248,9 +275,10 @@ public class Action
      * @param turn Robot that may do the action
      * @param op   Operation to be executed (or not)
      */
-    static boolean HIT  (Map map, Robot turn, Operation op)
+    static Stackable[] HIT  (Map map, Robot turn, Operation op)
     {
         String pre = "    [HIT]";
+        Stackable[] ret = new Stackable[1];
         Stackable[] s = op.getArgument();
         
         Attack      atk  = (Attack) s[0];
@@ -269,9 +297,19 @@ public class Action
         switch (atk.getAttack())
         {
             case "MELEE" : damage = turn.damageMelee; 
-                           if(distance > 1)             return false; break;
+                           if(distance > 1)
+                           {
+                                ret[0] = new Num(OUT_OF_RANGE);
+                                return ret;
+                           }    
+                           break;
             case "RANGED": damage = turn.damageRange; 
-                           if(distance > turn.maxRange) return false; break;
+                           if(distance > turn.maxRange)
+                           {
+                                ret[0] = new Num(OUT_OF_RANGE);
+                                return ret;
+                           }    
+                           break;
         }
         
         // Debug
@@ -295,7 +333,11 @@ public class Action
             if(lookI >= MAP_SIZE
             || lookJ >= MAP_SIZE
             || lookI < 0
-            || lookJ < 0) return false;
+            || lookJ < 0)
+            {
+                ret[0] = new Num(END_OF_MAP);
+                return ret;
+            }    
             
             // Debug
             Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
@@ -308,7 +350,8 @@ public class Action
                 {
                     Debugger.say("    [HIT]", "[NONE]");
                     Debugger.say("    [HIT] ", thing, " is an ally");
-                    return false;
+                    ret[0] = new Num(END_OF_MAP);
+                    return ret; 
                 }
                 
                 int done = thing.takeDamage(damage);
@@ -328,9 +371,11 @@ public class Action
         if(thing == null) 
         {
             Debugger.say("    [HIT]", "[EMPTY]");
-            return false;
+            ret[0] = new Num(NO_TARGET);
+            return ret;
         }
-        return true;
+        ret[0] = new Num(SUCCEDED);
+        return ret;
     }
     
     /**
