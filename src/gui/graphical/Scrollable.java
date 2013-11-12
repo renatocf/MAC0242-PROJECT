@@ -34,7 +34,7 @@ public class Scrollable extends JPanel
     {
         screen = new Panel(25,
             (int)(25*MAP_SIZE*Math.sqrt(3)+MAP_SIZE*Math.sqrt(3)/2), 
-            (int)(25*1.5*MAP_SIZE), map
+            (int)(25*1.5*MAP_SIZE), 32, map
         );
         
         JScrollPane scrollPane2 = new JScrollPane(
