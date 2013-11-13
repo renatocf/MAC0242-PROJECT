@@ -3,6 +3,8 @@
     [X] Create game_over function.
     [ ] Paint who was the winner.
     [ ] Paint additional info in the end of the game.
+    [ ] Put the phases of game in the correct time.
+    [ ] Count the number of robots that were created.
     [ ] Correct documentations. (PHASE 3)
     
 [Renato]
