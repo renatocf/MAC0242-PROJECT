@@ -71,8 +71,8 @@ public class Main
         }
         
         // Game main loop
-        for(int t = 0; t < 370; t++)
-            World.timeStep();
+        // for(int t = 0; t < 370; t++)
+        while(true) World.timeStep();
     }
     
     /**
