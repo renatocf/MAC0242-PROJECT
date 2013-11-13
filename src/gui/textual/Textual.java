@@ -372,4 +372,8 @@ public class Textual implements Colors, GUI
     {
         System.out.println(s);
     }
+    
+    public void printText()
+    { }
+    
 }

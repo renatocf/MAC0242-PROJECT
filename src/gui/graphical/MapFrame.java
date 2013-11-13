@@ -12,7 +12,6 @@ import java.awt.*;
 import javax.swing.*;
 
 // Libraries
-import gui.*;
 import arena.Map;
 import parameters.*;
 
@@ -49,9 +48,11 @@ class MapFrame extends JFrame
         
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-        this.setLocationRelativeTo(null);
         this.setSize(725,787);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.validate();
+        this.setLocationRelativeTo(null);
+        
         
         this.screen = new Panel(25, 
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
@@ -134,6 +135,7 @@ class MapFrame extends JFrame
         });
     }
     
+   
     void paintMap()
     {
         this.screen.repaint();
@@ -148,6 +150,7 @@ class MapFrame extends JFrame
     {
  		return this.screen.theWinner(i);   
     }
+   
 
     
 }

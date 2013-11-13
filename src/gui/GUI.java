@@ -35,6 +35,8 @@ public interface GUI
      */
     public void printMiniMap();
     
+    public void printText();
+    
     /** 
      * Finishes the game.
      * @return Result of ending the game

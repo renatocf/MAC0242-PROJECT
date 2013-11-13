@@ -11,10 +11,17 @@ import static parameters.Game.*;
 public class Graphical implements GUI
 {
     MapFrame mapFrame;
+    EditorFrame editorFrame;
     
     public Graphical(Map map)
     {
-        this.mapFrame = new MapFrame(map);
+        this.editorFrame    = new EditorFrame();
+        this.mapFrame       = new MapFrame(map);
+    }
+    
+    public void printText()
+    {
+        System.out.println(this.editorFrame.getText());
     }
 
     /* Implementing interface GUI */
@@ -46,6 +53,8 @@ public class Graphical implements GUI
     {
  		return this.mapFrame.whoWins(i);   
     }
+    
+    
 
 }
 
