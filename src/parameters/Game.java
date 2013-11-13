@@ -31,8 +31,14 @@ public final class Game
      * Number of miliseconds before painting
      * a new screen.
      */
-     
     public static int SPEED = 300;
+    
+    /** 
+     * <b>Crystals: max_crystals</b><br>
+     * Maximum number of crystals to have
+     * a base destroyed.
+     */
+    public static int MAX_CRYSTALS = 1;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------

@@ -140,21 +140,35 @@ public class World
         }
         
         // Game Over
-        for(int i = 0; i < map.getNumberOfBases(); i++)
+        int numActivePlayers = 0;
+        Player p = null;
+        
+        for(int i = 0; i < players.length; i++)
         {
-            if( map.getBases(i).getBase().getCrystals() >= 5 )
+            if(players[i] == null) continue;
+                                                
+            if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
             {
-            	Graphical gr = (Graphical)GUI;
-                gr.gameOver();
-                
-                try{ Thread.sleep(10000); }
-                    catch (InterruptedException e) {}
-                
-                gr.whoWins(i);
-                
-                System.exit(0);
+                GUI.looser(players[i]);
+                players[i] = null;
+            }
+            else 
+            { 
+                numActivePlayers++;
+                p = players[i];
             }
         }
+        
+        // TODO: Add counter of number of robots created
+        if(numActivePlayers == 1)
+        {
+            GUI.winner(p, time, nPlayers, 6);
+            
+            try { Thread.sleep(5000); }
+            catch (InterruptedException e) {}
+            
+            System.exit(0);
+        }           
         
         if(!(Debugger.info)) GUI.paint();
     }
