@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 // Libraries
 import arena.Map;
 import parameters.*;
+import players.Player;
 
 // Import links
 import static parameters.Game.*;
@@ -33,21 +34,17 @@ import static parameters.Game.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class Panel extends JPanel 
+class Panel extends JPanel 
 {
     // Map made with cells
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
     
     // Local variables
     private Map map;
-    private int width;
-    private int height;
     
     // Game status
     //The phases os this data are "active", "over" and "winner".
     private String gamePhase = "active";
-    
-
     
     /**
      * Create a Panel with dimensions width x height,
@@ -68,11 +65,7 @@ public class Panel extends JPanel
         //this.setMargin(new Insets(5,5,5,5));
          //this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100)); 
         // this.setBorder(BorderFactory.createLineBorder(Color.white,100,100,100,100)); 
-        
-        // Dimensions
-        this.width = width;
-    	this.height = height;
-        
+           
         // Preferences
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(width, height));
@@ -121,17 +114,6 @@ public class Panel extends JPanel
     {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        
-        if(this.gamePhase == "over")
-        {
-	        Image img = Images.GAME_OVER.img();
-	        g2d.drawImage(img, (width/2)-250, (height/2)-62, null);
-            return;
-        }
-        else if(this.gamePhase == "winner")
-        {
-        	//TODO: print the images
-        }
         
         // First, draw all the background
         for (int i = 0; i < MAP_SIZE; i++) 

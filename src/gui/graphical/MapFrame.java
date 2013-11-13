@@ -14,7 +14,7 @@ import javax.swing.*;
 // Libraries
 import arena.Map;
 import parameters.*;
-
+import players.Player;
 
 // Import links
 import static parameters.Game.*;
@@ -37,6 +37,10 @@ class MapFrame extends JFrame
     private Map map;
     private JTextArea log;
     
+    // Screen dimensions
+    private int SCREEN_WIDTH  = 725;    
+    private int SCREEN_HEIGHT = 787;
+    
     /** 
      * Default constructor.<br>
      * @param map Object of the class map
@@ -52,8 +56,7 @@ class MapFrame extends JFrame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.validate();
         this.setLocationRelativeTo(null);
-        
-        
+                
         this.screen = new Panel(25, 
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
             (int)(25.5*3*MAP_SIZE/2), 32, map);
@@ -135,22 +138,22 @@ class MapFrame extends JFrame
         });
     }
     
-   
     void paintMap()
     {
         this.screen.repaint();
     }
     
-    boolean gameOver()
+    void winner(Player p, int nTS, int nPlayers, int nRobots)
     {
-        return this.screen.gameOver();
+        JLabel textLabel = new JLabel("I'm a label in the window",SwingConstants.CENTER);
+        textLabel.setPreferredSize(new Dimension(300, 100)); 
+        this.getContentPane().add(textLabel, BorderLayout.CENTER); 
+        this.repaint();
     }
     
-     boolean whoWins(int i)
+    /* Implementing interface GUI */
+    void looser(Player p)
     {
- 		return this.screen.theWinner(i);   
+        //TODO: JLayeredPane
     }
-   
-
-    
 }

@@ -1,6 +1,7 @@
 package gui;
 
 // Libraries
+import players.Player;
 import parameters.Game;
 
 /**
@@ -39,7 +40,16 @@ public interface GUI
     
     /** 
      * Finishes the game.
-     * @return Result of ending the game
+     * @param p         The winner player
+     * @param nTS       Number of timesteps 
+     * @param nPlayers  Number of players
+     * @param nRobots   Number of robot created along the game
      */
-    public boolean gameOver();
+    public void winner(Player p, int nTS, int nPlayers, int nRobots);
+    
+    /** 
+     * Remove the looser and exhibit the message.
+     * @param p The looser player
+     */
+    public void looser(Player p);
 }

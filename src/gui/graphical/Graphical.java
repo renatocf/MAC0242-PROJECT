@@ -4,10 +4,21 @@ package gui.graphical;
 import gui.*;
 import arena.Map;
 import parameters.*;
+import players.Player;
 
 // Import links
 import static parameters.Game.*;
 
+/**
+ * <b>GUI - Graphical Mode</b><br>
+ * Makes an implementation of the interface
+ * GUI for exhibiting the game, using Java's
+ * default graphic libraries (AWT and Swing).
+ * 
+ * @author Karina Suemi
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
+ */
 public class Graphical implements GUI
 {
     MapFrame mapFrame;
@@ -43,19 +54,16 @@ public class Graphical implements GUI
     public void printMiniMap() { }
     
     /* Implementing interface GUI */
-    public boolean gameOver()
+    public void winner(Player p, int nTS, int nPlayers, int nRobots)
     {
-        return this.mapFrame.gameOver();
+        mapFrame.winner(p, nTS, nPlayers, nRobots);
     }
     
     /* Implementing interface GUI */
-    public boolean whoWins(int i)
+    public void looser(Player p)
     {
- 		return this.mapFrame.whoWins(i);   
+        mapFrame.looser(p);
     }
-    
-    
-
 }
 
 

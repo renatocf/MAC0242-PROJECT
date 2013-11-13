@@ -3,8 +3,8 @@ package gui.textual;
 // Libraries
 import gui.*;
 import arena.*;
+import players.*;
 import scenario.*;
-import players.Base;
 import stackable.item.*;
 
 // Import links
@@ -35,6 +35,7 @@ public class Textual implements Colors, GUI
         this.map = map;
     }
     
+    /* Implementing interface GUI */
     public void paint()
     {
         try { Thread.sleep(SPEED); } 
@@ -45,6 +46,7 @@ public class Textual implements Colors, GUI
         printMap();
     }
     
+    /* Implementing interface GUI */
     public void printMiniMap()
     {
         for(int i = 0; i < MAP_SIZE; i++)
@@ -72,6 +74,7 @@ public class Textual implements Colors, GUI
      *  |               |          ☘☘                |
      *  '---------------'----------------------------'
      */
+    /* Implementing interface GUI */
     public void printMap()
     {
         // Print map top
@@ -207,26 +210,33 @@ public class Textual implements Colors, GUI
         println("   '");
     }
     
-    public boolean gameOver()
+    /* Implementing interface GUI */
+    public void winner(Player p, int nTS, int nPlayers, int nRobots)
     {
         System.out.print(CLEAR);
         System.out.println(
-            "                                             "
-            +"  ######### ######### ##      ## ########## "
-            +"  ##        ###   ### ###    ### ###        "
-            +"  ##   #### ###   ### ####  #### ########## "
-            +"  ##     ## ######### ## #### ## ###        "
-            +"  ######### ###   ### ##  ##  ## ###        "
-            +"  ######### ###   ### ##      ## ########## "
-            +"                                            "
-            +"  ######### ##     ## ########## #########  "
-            +"  ##     ## ##     ## ###        ###   ###  "
-            +"  ##     ##  ##   ##  ########## ###   ###  "
-            +"  ##     ##   #####   ###        #########  "
-            +"  ##     ##    ###    ###        ###   ###  "
-            +"  #########     #     ########## ###    ### "
+            "                                             \n"
+            +"  ######### ######### ##      ## ########## \n"
+            +"  ##        ###   ### ###    ### ###        \n"
+            +"  ##   #### ###   ### ####  #### ########## \n"
+            +"  ##     ## ######### ## #### ## ###        \n"
+            +"  ######### ###   ### ##  ##  ## ###        \n"
+            +"  ######### ###   ### ##      ## ########## \n"
+            +"                                            \n"
+            +"  ######### ##     ## ########## #########  \n"
+            +"  ##     ## ##     ## ###        ###   ###  \n"
+            +"  ##     ##  ##   ##  ########## ###   ###  \n"
+            +"  ##     ##   #####   ###        #########  \n"
+            +"  ##     ##    ###    ###        ###   ###  \n"
+            +"  #########     #     ########## ###    ### \n"
         );
-        return true;
+    }
+    
+        
+    /* Implementing interface GUI */
+    public void looser(Player p)
+    {
+        
     }
     
     /**
