@@ -108,4 +108,10 @@ public class Graphical extends JFrame implements GUI
     {
         return this.screen.gameOver();
     }
+    
+    /* Implementing interface GUI */
+    public boolean whoWins(int i)
+    {
+ 		return this.screen.theWinner(i);   
+    }
 }

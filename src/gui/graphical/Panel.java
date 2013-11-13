@@ -44,7 +44,10 @@ public class Panel extends JPanel
     private int height;
     
     // Game status
-    private boolean activeGame = true;
+    //The phases os this data are "active", "over" and "winner".
+    private String gamePhase = "active";
+    
+
     
     /**
      * Create a Panel with dimensions width x height,
@@ -95,9 +98,16 @@ public class Panel extends JPanel
      */
     boolean gameOver()
 	{
-	    this.activeGame = false;
+	    this.gamePhase = "over";
         this.repaint();
         return true;
+	}
+	
+	boolean theWinner(int i)
+	{
+		this.gamePhase = "winner";
+		this.repaint();
+		return true;
 	}
     
     /**
@@ -112,11 +122,15 @@ public class Panel extends JPanel
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
-        if(!this.activeGame)
+        if(this.gamePhase == "over")
         {
 	        Image img = Images.GAME_OVER.img();
 	        g2d.drawImage(img, (width/2)-250, (height/2)-62, null);
             return;
+        }
+        else if(this.gamePhase == "winner")
+        {
+        	//TODO: print the images
         }
         
         // First, draw all the background

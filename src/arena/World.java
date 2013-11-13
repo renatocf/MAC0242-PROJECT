@@ -140,14 +140,18 @@ public class World
         }
         
         // Game Over
-        for(Base base: bases)
+        for(int i = 0; i < map.getNumberOfBases(); i++)
         {
-            if(base.getCrystals() >= 5)
+            if( map.getBases(i).getBase().getCrystals() >= 5 )
             {
-                GUI.gameOver();
+            	Graphical gr = (Graphical)GUI;
+                gr.gameOver();
                 
                 try{ Thread.sleep(10000); }
                     catch (InterruptedException e) {}
+                
+                gr.whoWins(i);
+                
                 System.exit(0);
             }
         }
