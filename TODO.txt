@@ -58,6 +58,7 @@
     [X] Create LOG window with robots prints.
     [X] Add life bar.
     [X] Add energy bar.
+    [ ] Add LaTeX images on git again.
     [ ] Finish text editor.
     [ ] Add buttons to put new robots.
     [ ] Create a mini-map graphical representation.
