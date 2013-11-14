@@ -127,15 +127,11 @@ class Panel extends JPanel
                 Scenario s = hex.terrain.getScenario();
                 if(s != null)
                 {
-                
                     Images scen = Images.valueOf(s.name(), s.getTeam());
-                    
                     g2d.drawImage(
                         scen.img(), x-scen.dx(), y-scen.dy(), null
                     );
                 
-                    /* TODO: Find a way to throw away all the unused
-                     * robots */
                     if(s instanceof Robot)
                     {
                         Robot r = (Robot) s;
@@ -147,13 +143,7 @@ class Panel extends JPanel
                         jr.add();
                     }
                 }
-                //System.out.println("chegou");
-                validate();
-                JLabel l = new JLabel("Oi", JLabel.CENTER);
-                l.setText("lalalalal");
-                validate();
             }
-            
     }
     
     /**
@@ -239,14 +229,18 @@ class Panel extends JPanel
             pb.setForeground(c);
         }
         
+        /**
+         * Add bars in the Panel.<br>
+         */
         protected void add()
         {
-            // Add bars in the Panel
             Panel.super.add(this.hp);
             Panel.super.add(this.power);
-
         }
         
+        /**
+         * Remove bars from the Panel.<br>
+         */
         protected void finalize()
         {
             Panel.super.remove(this.hp);
