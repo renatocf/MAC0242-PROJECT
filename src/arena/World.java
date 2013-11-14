@@ -159,10 +159,9 @@ public class World
             }
         }
         
-        // TODO: Add counter of number of robots created
         if(numActivePlayers == 1)
         {
-            GUI.winner(p, time, nPlayers, 6);
+            GUI.winner(p, time, nPlayers, map.getNumberOfArmies());
             
             try { Thread.sleep(5000); }
             catch (InterruptedException e) {}

@@ -93,7 +93,7 @@ class Panel extends JPanel
      *          needed to render the image
      */
     protected void paintComponent(Graphics g) 
-    {
+    { 
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
@@ -141,7 +141,13 @@ class Panel extends JPanel
                         jr.update(x-scen.dx(), y-scen.dy());
                     }
                 }
+                //System.out.println("chegou");
+                validate();
+                JLabel l = new JLabel("Oi", JLabel.CENTER);
+                l.setText("lalalalal");
+                validate();
             }
+            
     }
     
     /**

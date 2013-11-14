@@ -47,6 +47,8 @@ public class Map
     
     private Player[] bases;
     
+    private int numArmy = 0;
+    
     /**
      * Default constructor.
      * @param w Weather of the map
@@ -88,6 +90,8 @@ public class Map
                 String pathToProg)
         throws SegmentationFaultException
     {
+    	this.numArmy++;
+    
         int[] coords = populate(player);
         int i = coords[0], j = coords[1];
         
@@ -197,5 +201,10 @@ public class Map
     public int getNumberOfBases()
     {
         return this.bases.length;
+    }
+    
+    public int getNumberOfArmies()
+    {
+    	return this.numArmy;
     }
 }

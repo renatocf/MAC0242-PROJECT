@@ -114,15 +114,18 @@ class MapFrame extends JFrame
     /* Implementing interface GUI */
     void winner(Player p, int nTS, int nPlayers, int nRobots)
     {
+    validate();
         JLabel textLabel = new JLabel("I'm a label in the window",SwingConstants.CENTER);
         textLabel.setPreferredSize(new Dimension(300, 100)); 
         this.getContentPane().add(textLabel, BorderLayout.CENTER); 
-        this.repaint();
+        validate();
+        System.out.println(nRobots);
     }
     
     /* Implementing interface GUI */
     void looser(Player p)
     {
+    validate();
         //TODO: JLayeredPane
     }
     
