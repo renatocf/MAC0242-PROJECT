@@ -14,7 +14,7 @@
     [X] Implement ASK base position
     [X] Correct Ant to store new files.
     [X] Scroll with keys.
-    [ ] Add/Correct javadoc in package gui.graphical.
+    [X] Add/Correct javadoc in package gui.graphical.
     [ ] Update website info. (PHASE 3)
     [ ] Create a system for removing player.
     [ ] Add player nickname.
@@ -58,7 +58,7 @@
     [X] Create LOG window with robots prints.
     [X] Add life bar.
     [X] Add energy bar.
-    [ ] Add LaTeX images on git again.
+    [X] Add LaTeX images on git again.
     [ ] Finish text editor.
     [ ] Add buttons to put new robots.
     [ ] Create a mini-map graphical representation.

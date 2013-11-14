@@ -1,0 +1,8 @@
+PUSH 0
+PUSH 1
+GT
+JIF  test
+PUSH maior
+PRN  
+END
+

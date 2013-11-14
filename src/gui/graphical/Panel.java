@@ -156,7 +156,7 @@ class Panel extends JPanel
                         
                 // After, draw items and scenarios
                 for (int i = 0; i < MAP_SIZE; i++) 
-                    for (int j = 0; j < MAP_SIZE; j++)
+                    for (int j = 0; j < MAP_SIZE; j++) 
                     {
                         Cell hex = cell[j][i];
                         int x = hex.x, y = hex.y;
@@ -171,6 +171,7 @@ class Panel extends JPanel
                                 item.img(), x-item.dx(), y-item.dy(), null
                             );
                         }
+                
                         // Print scenarios
                         Scenario s = hex.terrain.getScenario();
                         if(s != null)
@@ -179,9 +180,7 @@ class Panel extends JPanel
                             g2d.drawImage(
                                 scen.img(), x-scen.dx(), y-scen.dy(), null
                             );
-                            
-                            /* TODO: Find a way to throw away all the unused
-                             * robots */
+                        
                             if(s instanceof Robot)
                             {
                                 Robot r = (Robot) s;
@@ -190,10 +189,11 @@ class Panel extends JPanel
                                 
                                 JRobot jr = robots.get(r);
                                 jr.update(x-scen.dx(), y-scen.dy());
+                                jr.add();
                             }
                         }
                     }
-                    break;
+                break;
              case 1: looser(g); break;
              case 2: winner(g);
          }
@@ -239,9 +239,6 @@ class Panel extends JPanel
             this.power.setPreferredSize       (this.size     );
             this.hp.setForeground             (Color.GREEN   );
             
-            // Add bars in the Panel
-            Panel.super.add(this.hp);
-            Panel.super.add(this.power);
         }
         
         /**
@@ -283,6 +280,24 @@ class Panel extends JPanel
             if(per > 2.0/3 * max) c = Color.GREEN;
             if(per < 1.0/3 * max) c = Color.RED;
             pb.setForeground(c);
+        }
+        
+        /**
+         * Add bars in the Panel.<br>
+         */
+        protected void add()
+        {
+            Panel.super.add(this.hp);
+            Panel.super.add(this.power);
+        }
+        
+        /**
+         * Remove bars from the Panel.<br>
+         */
+        protected void finalize()
+        {
+            Panel.super.remove(this.hp);
+            Panel.super.remove(this.power);
         }
     }
 }
