@@ -97,6 +97,9 @@ class Panel extends JPanel
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
+        for (java.util.Map.Entry<Robot, JRobot> entry : robots.entrySet())
+            entry.getValue().finalize();
+        
         // First, draw all the background
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
@@ -124,11 +127,13 @@ class Panel extends JPanel
                 Scenario s = hex.terrain.getScenario();
                 if(s != null)
                 {
+                
                     Images scen = Images.valueOf(s.name(), s.getTeam());
+                    
                     g2d.drawImage(
                         scen.img(), x-scen.dx(), y-scen.dy(), null
                     );
-                    
+                
                     /* TODO: Find a way to throw away all the unused
                      * robots */
                     if(s instanceof Robot)
@@ -139,6 +144,7 @@ class Panel extends JPanel
                         
                         JRobot jr = robots.get(r);
                         jr.update(x-scen.dx(), y-scen.dy());
+                        jr.add();
                     }
                 }
                 //System.out.println("chegou");
@@ -190,9 +196,6 @@ class Panel extends JPanel
             this.power.setPreferredSize       (this.size     );
             this.hp.setForeground             (Color.GREEN   );
             
-            // Add bars in the Panel
-            Panel.super.add(this.hp);
-            Panel.super.add(this.power);
         }
         
         /**
@@ -234,6 +237,20 @@ class Panel extends JPanel
             if(per > 2.0/3 * max) c = Color.GREEN;
             if(per < 1.0/3 * max) c = Color.RED;
             pb.setForeground(c);
+        }
+        
+        protected void add()
+        {
+            // Add bars in the Panel
+            Panel.super.add(this.hp);
+            Panel.super.add(this.power);
+
+        }
+        
+        protected void finalize()
+        {
+            Panel.super.remove(this.hp);
+            Panel.super.remove(this.power);
         }
     }
 }
