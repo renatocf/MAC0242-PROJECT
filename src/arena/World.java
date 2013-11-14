@@ -88,7 +88,6 @@ public class World
         if(Debugger.info) GUI.printMiniMap();
         return players;
     }
-    
     /**
 
      * Runs one game time step. On each
@@ -150,6 +149,8 @@ public class World
             if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
             {
                 GUI.looser(players[i]);
+                try { Thread.sleep(5000); }
+                catch (InterruptedException e) {}
                 players[i] = null;
             }
             else 
