@@ -272,7 +272,6 @@ public class Robot implements Scenario, Printable
      */
     public Player getTeam () { return this.team; }
     
-    
     // Interface scenario
     public int takeDamage(int damage)
     {
@@ -281,7 +280,11 @@ public class Robot implements Scenario, Printable
     }
     
     // Interface scenario
-    public int getHP   () { return this.HP;   }
+    public int getHP       () { return this.HP;       }
+    public int getMaxHP    () { return this.maxHP;    }
+    
+    public int getPower    () { return this.power;    }
+    public int getMaxPower () { return this.maxPower; }
     
     // Printable interface
     public String name() { return "ROBOT"; }
