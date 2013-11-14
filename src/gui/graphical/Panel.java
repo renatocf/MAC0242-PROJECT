@@ -47,6 +47,18 @@ class Panel extends JPanel
     private Insets insets;
     private WeakHashMap<Robot,JRobot> robots = new WeakHashMap<Robot,JRobot>();
     
+    
+    // Paint auxiliary
+    private int gamePhase;
+    Player p;
+    int nTS;
+    int nPlayers;
+    int nRobots;
+    // 0 -> active game
+    // 1 -> looser
+    // 2 -> winner
+
+
     /**
      * Create a Panel with dimensions width x height,
      * containing MAP_SIZE² hexagons (built from a map).
@@ -70,6 +82,8 @@ class Panel extends JPanel
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(width, height));
         
+        this.gamePhase = 0;
+        
         // Put images in the screen
         int Dx = (int) ( 2*R * Math.sin(Math.PI/3) ); 
         int Dy = 3 * R/2 +1;
@@ -85,6 +99,41 @@ class Panel extends JPanel
             }
     }
     
+    private void looser(Graphics g)
+    {
+        BufferedImage bufferedImage = new BufferedImage(170, 30, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = bufferedImage.getGraphics();
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial Black", Font.BOLD, 50));
+        g.drawString(this.p + ", YOU LOOSE!", getWidth()/2, 10);
+        repaint();
+    }
+    
+    private void winner(Graphics g)
+    {
+        BufferedImage bufferedImage = new BufferedImage(170, 30, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = bufferedImage.getGraphics();
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial Black", Font.BOLD, 50));
+        g.drawString(this.p + ", YOU WIN!", getWidth()/2, 10);
+        
+        repaint();
+    }
+    
+    public void setGamePhase(int nGF, Player p, int nTS, int nPlayers, int nRobots)
+    {
+        this.gamePhase = nGF;
+        this.p = p;
+        this.nTS = nTS;
+        this.nPlayers = nPlayers;
+        this.nRobots = nRobots;
+    }
+    
+    
     /**
      * Paint hexagons on the screen.<br>
      * At each step, repaint the cells
@@ -94,60 +143,60 @@ class Panel extends JPanel
      */
     protected void paintComponent(Graphics g) 
     { 
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        
-        // First, draw all the background
-        for (int i = 0; i < MAP_SIZE; i++) 
-            for (int j = 0; j < MAP_SIZE; j++)
-                cell[i][j].draw(g); 
+        switch(this.gamePhase)
+        {
+            case 0:
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
                 
-        // After, draw items and scenarios
-        for (int i = 0; i < MAP_SIZE; i++) 
-            for (int j = 0; j < MAP_SIZE; j++)
-            {
-                Cell hex = cell[j][i];
-                int x = hex.x, y = hex.y;
-                
-                // Print items
-                if(hex.terrain.getItem() != null)
-                {
-                    Images item = Images.valueOf(
-                        hex.terrain.getItem().name()
-                    );
-                    g2d.drawImage(
-                        item.img(), x-item.dx(), y-item.dy(), null
-                    );
-                }
-                
-                // Print scenarios
-                Scenario s = hex.terrain.getScenario();
-                if(s != null)
-                {
-                    Images scen = Images.valueOf(s.name(), s.getTeam());
-                    g2d.drawImage(
-                        scen.img(), x-scen.dx(), y-scen.dy(), null
-                    );
-                    
-                    /* TODO: Find a way to throw away all the unused
-                     * robots */
-                    if(s instanceof Robot)
-                    {
-                        Robot r = (Robot) s;
-                        if(!this.robots.containsKey(r)) 
-                            this.robots.put(r, new JRobot(r));
+                // First, draw all the background
+                for (int i = 0; i < MAP_SIZE; i++) 
+                    for (int j = 0; j < MAP_SIZE; j++)
+                        cell[i][j].draw(g); 
                         
-                        JRobot jr = robots.get(r);
-                        jr.update(x-scen.dx(), y-scen.dy());
+                // After, draw items and scenarios
+                for (int i = 0; i < MAP_SIZE; i++) 
+                    for (int j = 0; j < MAP_SIZE; j++)
+                    {
+                        Cell hex = cell[j][i];
+                        int x = hex.x, y = hex.y;
+                        
+                        // Print items
+                        if(hex.terrain.getItem() != null)
+                        {
+                            Images item = Images.valueOf(
+                                hex.terrain.getItem().name()
+                            );
+                            g2d.drawImage(
+                                item.img(), x-item.dx(), y-item.dy(), null
+                            );
+                        }
+                        // Print scenarios
+                        Scenario s = hex.terrain.getScenario();
+                        if(s != null)
+                        {
+                            Images scen = Images.valueOf(s.name(), s.getTeam());
+                            g2d.drawImage(
+                                scen.img(), x-scen.dx(), y-scen.dy(), null
+                            );
+                            
+                            /* TODO: Find a way to throw away all the unused
+                             * robots */
+                            if(s instanceof Robot)
+                            {
+                                Robot r = (Robot) s;
+                                if(!this.robots.containsKey(r)) 
+                                    this.robots.put(r, new JRobot(r));
+                                
+                                JRobot jr = robots.get(r);
+                                jr.update(x-scen.dx(), y-scen.dy());
+                            }
+                        }
                     }
-                }
-                //System.out.println("chegou");
-                validate();
-                JLabel l = new JLabel("Oi", JLabel.CENTER);
-                l.setText("lalalalal");
-                validate();
-            }
-            
+                    break;
+             case 1: looser(g); break;
+             case 2: winner(g);
+         }
     }
     
     /**
