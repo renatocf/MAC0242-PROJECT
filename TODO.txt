@@ -14,7 +14,7 @@
     [X] Implement ASK base position
     [X] Correct Ant to store new files.
     [X] Scroll with keys.
-    [ ] Add/Correct javadoc in package gui.graphical.
+    [X] Add/Correct javadoc in package gui.graphical.
     [ ] Update website info. (PHASE 3)
     [ ] Create a system for removing player.
     [ ] Add player nickname.
