@@ -13,6 +13,13 @@ import random.Weather;
  */
 public final class Game
 {
+    /** 
+     * <b>Game: maximum of crystals</b><br>
+     * Maximum number of crystals to have
+     * a base destroyed.
+     */
+    public static int MAX_CRYSTALS = 5;
+    
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------
     //                            ANIMATION                              
@@ -20,10 +27,9 @@ public final class Game
     // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     
      /** 
-     * <b>Animation: RAND</b><br>
+     * <b>Animation: rand</b><br>
      * Random number generator for the map genesis.
      */
-    
     public static Random RAND = new Random();
     
     /** 
@@ -32,13 +38,6 @@ public final class Game
      * a new screen.
      */
     public static int SPEED = 300;
-    
-    /** 
-     * <b>Crystals: max_crystals</b><br>
-     * Maximum number of crystals to have
-     * a base destroyed.
-     */
-    public static int MAX_CRYSTALS = 1;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------
@@ -90,6 +89,4 @@ public final class Game
      * by a program that makes no syscall.
      */
     public static int ASM_MAX_RUN = 300;
-    
-    
 }
