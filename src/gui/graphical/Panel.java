@@ -107,7 +107,7 @@ class Panel extends JPanel
         g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
-        g.drawString(this.p + ", YOU LOOSE!", getWidth()/2, 10);
+        g.drawString(this.p + ", YOU LOOSE!", 10, getWidth()/2);
         repaint();
     }
     
@@ -119,7 +119,7 @@ class Panel extends JPanel
         g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
-        g.drawString(this.p + ", YOU WIN!", getWidth()/2, 10);
+        g.drawString(this.p + ", YOU WIN!", 10, getWidth()/2);
         
         repaint();
     }
@@ -128,6 +128,7 @@ class Panel extends JPanel
     {
         this.gamePhase = nGF;
         this.p = p;
+
         this.nTS = nTS;
         this.nPlayers = nPlayers;
         this.nRobots = nRobots;
@@ -142,64 +143,71 @@ class Panel extends JPanel
      *          needed to render the image
      */
     protected void paintComponent(Graphics g) 
-    { 
+    {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        
+        
+            
+        if(this.gamePhase == 1) { looser(g);  }
+        else if(this.gamePhase == 2) {winner(g); }
+        
         switch(this.gamePhase)
-        {
+        {//---->
             case 0:
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                
-                // First, draw all the background
-                for (int i = 0; i < MAP_SIZE; i++) 
-                    for (int j = 0; j < MAP_SIZE; j++)
-                        cell[i][j].draw(g); 
-                        
-                // After, draw items and scenarios
-                for (int i = 0; i < MAP_SIZE; i++) 
-                    for (int j = 0; j < MAP_SIZE; j++) 
+            
+            for(java.util.Map.Entry<Robot, JRobot> entry : robots.entrySet())
+                entry.getValue().remove();
+            // First, draw all the background
+            for (int i = 0; i < MAP_SIZE; i++) 
+                for (int j = 0; j < MAP_SIZE; j++)
+                    cell[i][j].draw(g); 
+
+            // After, draw items and scenarios
+            for (int i = 0; i < MAP_SIZE; i++) 
+                for (int j = 0; j < MAP_SIZE; j++) 
+                {
+                    Cell hex = cell[j][i];
+                    int x = hex.x, y = hex.y;
+
+                    // Print items
+                    if(hex.terrain.getItem() != null)
                     {
-                        Cell hex = cell[j][i];
-                        int x = hex.x, y = hex.y;
-                        
-                        // Print items
-                        if(hex.terrain.getItem() != null)
-                        {
-                            Images item = Images.valueOf(
+                        Images item = Images.valueOf(
                                 hex.terrain.getItem().name()
-                            );
-                            g2d.drawImage(
+                        );
+                        g2d.drawImage(
                                 item.img(), x-item.dx(), y-item.dy(), null
-                            );
-                        }
-                
-                        // Print scenarios
-                        Scenario s = hex.terrain.getScenario();
-                        if(s != null)
-                        {
-                            Images scen = Images.valueOf(s.name(), s.getTeam());
-                            g2d.drawImage(
+                        );
+                    }
+
+                    // Print scenarios
+                    Scenario s = hex.terrain.getScenario();
+                    if(s != null)
+                    {
+                        Images scen = Images.valueOf(s.name(), s.getTeam());
+                        g2d.drawImage(
                                 scen.img(), x-scen.dx(), y-scen.dy(), null
-                            );
-                        
-                            if(s instanceof Robot)
-                            {
-                                Robot r = (Robot) s;
-                                if(!this.robots.containsKey(r)) 
-                                    this.robots.put(r, new JRobot(r));
-                                
-                                JRobot jr = robots.get(r);
-                                jr.update(x-scen.dx(), y-scen.dy());
-                                jr.add();
-                            }
+                        );
+
+                        if(s instanceof Robot)
+                        {
+                            Robot r = (Robot) s;
+                            if(!this.robots.containsKey(r)) 
+                                this.robots.put(r, new JRobot(r));
+
+                            JRobot jr = robots.get(r);
+                            jr.update(x-scen.dx(), y-scen.dy());
+                            jr.add();
                         }
                     }
-                break;
-             case 1: looser(g); break;
-             case 2: winner(g);
-         }
+            
+                }
+          }
     }
     
     /**
+
      * <b>JRobot - Robot with more than images</b><br>
      * Print a robot exhibiting a status bar and other
      * useful info for the player.
@@ -212,6 +220,7 @@ class Panel extends JPanel
         private int maxHP;
         private int maxPower;
         
+
         // Progress Bars
         private JProgressBar hp;
         private JProgressBar power;
@@ -235,14 +244,16 @@ class Panel extends JPanel
             // Creates and sets Power bar
             this.maxPower = robot.getMaxPower ();
             this.power = new JProgressBar     ();
-            this.power.setMaximum             (this.maxPower );
+            this.power.setMaximum       
+      (this.maxPower );
             this.power.setPreferredSize       (this.size     );
             this.hp.setForeground             (Color.GREEN   );
             
         }
         
         /**
-         * Update infos exhibited by a robot.
+         * Update infos exhibited by a r
+obot.
          * @param x0 Initial horizontal position to paint 
          *           info bars
          * @param y0 Initial vertical position to paint 
@@ -254,7 +265,8 @@ class Panel extends JPanel
             int power = this.robot.getPower ();
             
             // Update Color Scheme
-            this.updateColorScheme(this.hp, this.maxHP);
+            this.updateColorScheme(this.
+hp, this.maxHP);
             
             // Configure and paint hp bar
             this.hp.setBounds    (x0, y0-15, size.width, size.height);
@@ -294,7 +306,7 @@ class Panel extends JPanel
         /**
          * Remove bars from the Panel.<br>
          */
-        protected void finalize()
+        protected void remove()
         {
             Panel.super.remove(this.hp);
             Panel.super.remove(this.power);
