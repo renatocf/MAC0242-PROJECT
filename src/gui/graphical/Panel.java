@@ -2,7 +2,7 @@ package gui.graphical;
 
 // Default Libraries
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.util.WeakHashMap;
 
 // Graphical Libraries (AWT)
 import java.awt.*;
@@ -18,7 +18,10 @@ import javax.swing.SwingUtilities;
 // Libraries
 import arena.Map;
 import parameters.*;
+import arena.Robot;
 import players.Player;
+import scenario.Scenario;
+import stackable.item.Item;
 
 // Import links
 import static parameters.Game.*;
@@ -41,10 +44,8 @@ class Panel extends JPanel
     
     // Local variables
     private Map map;
-    
-    // Game status
-    //The phases os this data are "active", "over" and "winner".
-    private String gamePhase = "active";
+    private Insets insets;
+    private WeakHashMap<Robot,JRobot> robots = new WeakHashMap<Robot,JRobot>();
     
     /**
      * Create a Panel with dimensions width x height,
@@ -62,11 +63,10 @@ class Panel extends JPanel
     Panel(int R, int width, int height, int y0, Map map) 
     {
         this.map = map;
-        //this.setMargin(new Insets(5,5,5,5));
-         //this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100)); 
-        // this.setBorder(BorderFactory.createLineBorder(Color.white,100,100,100,100)); 
            
         // Preferences
+        this.insets = this.getInsets();
+        this.setLayout(null);
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(width, height));
         
@@ -84,24 +84,6 @@ class Panel extends JPanel
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
     }
-    
-    /** 
-     * Finishes the game.
-     * @return Result of ending the game
-     */
-    boolean gameOver()
-	{
-	    this.gamePhase = "over";
-        this.repaint();
-        return true;
-	}
-	
-	boolean theWinner(int i)
-	{
-		this.gamePhase = "winner";
-		this.repaint();
-		return true;
-	}
     
     /**
      * Paint hexagons on the screen.<br>
@@ -139,16 +121,113 @@ class Panel extends JPanel
                 }
                 
                 // Print scenarios
-                if(hex.terrain.getScenario() != null)
+                Scenario s = hex.terrain.getScenario();
+                if(s != null)
                 {
-                    Images scen = Images.valueOf(
-                        hex.terrain.getScenario().name(),
-                        hex.terrain.getScenario().getTeam()
-                    );
+                    Images scen = Images.valueOf(s.name(), s.getTeam());
                     g2d.drawImage(
                         scen.img(), x-scen.dx(), y-scen.dy(), null
                     );
+                    
+                    /* TODO: Find a way to throw away all the unused
+                     * robots */
+                    if(s instanceof Robot)
+                    {
+                        Robot r = (Robot) s;
+                        if(!this.robots.containsKey(r)) 
+                            this.robots.put(r, new JRobot(r));
+                        
+                        JRobot jr = robots.get(r);
+                        jr.update(x-scen.dx(), y-scen.dy());
+                    }
                 }
             }
+    }
+    
+    /**
+     * <b>JRobot - Robot with more than images</b><br>
+     * Print a robot exhibiting a status bar and other
+     * useful info for the player.
+     */
+    private class JRobot 
+    {
+        private Robot robot;
+        private Dimension size = new Dimension(30,5); // Bar size
+        
+        private int maxHP;
+        private int maxPower;
+        
+        // Progress Bars
+        private JProgressBar hp;
+        private JProgressBar power;
+        
+        /**
+         * Default Constructor.
+         * @param robot Robot to be stored
+         */
+        JRobot(Robot robot)
+        {
+            // Stores parameters in attributes
+            this.robot = robot;
+
+            // Creates and sets HP bar
+            this.maxHP = robot.getMaxHP       ();
+            this.hp = new JProgressBar        ();
+            this.hp.setMaximum                (this.maxHP    );
+            this.hp.setPreferredSize          (this.size     );
+            this.hp.setForeground             (Color.BLUE    );
+            
+            // Creates and sets Power bar
+            this.maxPower = robot.getMaxPower ();
+            this.power = new JProgressBar     ();
+            this.power.setMaximum             (this.maxPower );
+            this.power.setPreferredSize       (this.size     );
+            this.hp.setForeground             (Color.GREEN   );
+            
+            // Add bars in the Panel
+            Panel.super.add(this.hp);
+            Panel.super.add(this.power);
+        }
+        
+        /**
+         * Update infos exhibited by a robot.
+         * @param x0 Initial horizontal position to paint 
+         *           info bars
+         * @param y0 Initial vertical position to paint 
+         *           info bars
+         */
+        void update(int x0, int y0)
+        {
+            int hp    = this.robot.getHP    ();
+            int power = this.robot.getPower ();
+            
+            // Update Color Scheme
+            this.updateColorScheme(this.hp, this.maxHP);
+            
+            // Configure and paint hp bar
+            this.hp.setBounds    (x0, y0-15, size.width, size.height);
+            this.hp.setValue     (hp);
+            
+            // Configure and paint power bar
+            this.power.setBounds (x0, y0-10, size.width, size.height);
+            this.power.setValue  (power);
+        }
+        
+        /**
+         * Updates the color of a given bar.<br>
+         * If greater than 2/3, paint in GREEN. If lower
+         * than 1/3, paint RED. Otherwise, use YELLOW.
+         * @param pb  JProgressBar
+         * @param max Maximum value to be used as parameter
+         *            to the tresholds of each color region
+         */
+        private void updateColorScheme(JProgressBar pb, int max)
+        {
+            double per = max * pb.getPercentComplete();
+            Color c = Color.YELLOW;
+            if(per > 2.0/3 * max) c = Color.GREEN;
+            if(per < 1.0/3 * max) c = Color.RED;
+            pb.setForeground(c);
+        }
     }
 }
