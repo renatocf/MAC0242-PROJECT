@@ -20,10 +20,10 @@ import players.Player;
 import static parameters.Game.*;
 
 /**
- * <b>GUI - MapFrame Mode</b><br>
- * Makes an implementation of the interface
- * GUI for exhibiting the game, using Java's
- * default graphic libraries (AWT and Swing).
+ * <b>Graphical - MapFrame Mode</b><br>
+ * Creates a panel with the main workflow
+ * for the game, as the complete arena and
+ * a log-message with robot info.
  * 
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
@@ -61,22 +61,21 @@ class MapFrame extends JFrame
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
             (int)(25.5*3*MAP_SIZE/2), 32, map);
             
-        screen.setSize(725, 687);
+        this.screen.setSize(725, 687);
         
-        screen.setFocusable(true);
+        this.screen.setFocusable(true);
             
-        
         JScrollPane scrollPane = new JScrollPane(
-            screen,
+            this.screen,
             JScrollPane.VERTICAL_SCROLLBAR_NEVER,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
         
-        log = new JTextArea(5, 72);
-        log.setFont(new Font("Comics Sans", Font.BOLD, 12));
-        log.setText("Hello World!");
-        log.setSize(725,200);
-        log.setFocusable(true);
+        this.log = new JTextArea(5, 72);
+        this.log.setFont(new Font("Comics Sans", Font.BOLD, 12));
+        this.log.setText("Hello World!");
+        this.log.setSize(725,200);
+        this.log.setFocusable(true);
         
         JScrollPane scrollLog = new JScrollPane(
             log,
@@ -84,23 +83,56 @@ class MapFrame extends JFrame
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
         
+        this.redirectSystemStreams();
         
-        redirectSystemStreams();
-        
-        JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, false, scrollPane , scrollLog);
+        JSplitPane split = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT, false, scrollPane, scrollLog
+        );
         split.setDividerLocation(0.8);
         split.setResizeWeight(0.8);
         
         this.add(split);
         
         SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() { setVisible(true); }
-            });
+            @Override
+            public void run() { setVisible(true); }
+        });
     }
     
+    /**
+     * Auxiliar method to repaint frame.
+     */
+    void paintMap()
+    {
+        this.screen.repaint();
+    }
+    
+    /*
+     * Interface GUI
+     */
+    
+    /* Implementing interface GUI */
+    void winner(Player p, int nTS, int nPlayers, int nRobots)
+    {
+        JLabel textLabel = new JLabel("I'm a label in the window",SwingConstants.CENTER);
+        textLabel.setPreferredSize(new Dimension(300, 100)); 
+        this.getContentPane().add(textLabel, BorderLayout.CENTER); 
+        this.repaint();
+    }
+    
+    /* Implementing interface GUI */
+    void looser(Player p)
+    {
+        //TODO: JLayeredPane
+    }
+    
+    /**
+     * Redefines the system output to go entirely
+     * to the GUI's output stream.
+     */
     private void redirectSystemStreams() 
     {
+        // Implementation of interface OutputStrem
         OutputStream out = new OutputStream() 
         {
             @Override
@@ -122,10 +154,16 @@ class MapFrame extends JFrame
             }
         };
         
+        // Substitute system streams for Graphical's one
         System.setOut(new PrintStream(out, true));
         System.setErr(new PrintStream(out, true));
     }
     
+    /**
+     * Append text to log message area.
+     * @param text String to be appended in the
+     *             log window
+     */
     private void updateTextArea(final String text) 
     {
         SwingUtilities.invokeLater(new Runnable() 
@@ -136,24 +174,5 @@ class MapFrame extends JFrame
                 log.setCaretPosition(log.getText().length() - 1);
             }
         });
-    }
-    
-    void paintMap()
-    {
-        this.screen.repaint();
-    }
-    
-    void winner(Player p, int nTS, int nPlayers, int nRobots)
-    {
-        JLabel textLabel = new JLabel("I'm a label in the window",SwingConstants.CENTER);
-        textLabel.setPreferredSize(new Dimension(300, 100)); 
-        this.getContentPane().add(textLabel, BorderLayout.CENTER); 
-        this.repaint();
-    }
-    
-    /* Implementing interface GUI */
-    void looser(Player p)
-    {
-        //TODO: JLayeredPane
     }
 }
