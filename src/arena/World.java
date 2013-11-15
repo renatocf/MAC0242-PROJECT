@@ -33,7 +33,7 @@ import static parameters.Game.*;
  * @see Action
  * @see gui
  */
-public class World
+final public class World
 {
     // Global settings
     private static int id = 1;
@@ -88,8 +88,8 @@ public class World
         if(Debugger.info) GUI.printMiniMap();
         return players;
     }
+    
     /**
-
      * Runs one game time step. On each
      * turn, sort the robots accordingly
      * to their priorities, solving conflicts
@@ -162,7 +162,8 @@ public class World
         
         if(numActivePlayers == 1)
         {
-            GUI.winner(p, time, nPlayers, map.getNumberOfArmies());
+            GUI.winner(p, time, nPlayers, armies.getPopulation());
+            System.out.println(armies.getPopulation());
             
             try { Thread.sleep(5000); }
             catch (InterruptedException e) {}
@@ -186,8 +187,7 @@ public class World
      */
     public static void POST(Operation op)
     {
-        try { armies.setOperation(turn, op); 
-        }
+        try { armies.setOperation(turn, op); }
         catch (NotInitializedException e) {
             System.err.println(e);
             e.printStackTrace();

@@ -149,15 +149,19 @@ class Panel extends JPanel
         
         
             
-        if(this.gamePhase == 1) { looser(g);  }
+        if(this.gamePhase == 1) 
+        { 
+        	looser(g); 
+        	for(java.util.Map.Entry<Robot, JRobot> entry : robots.entrySet())
+            	entry.getValue().remove(); 
+        }
         else if(this.gamePhase == 2) {winner(g); }
         
         switch(this.gamePhase)
         {//---->
             case 0:
             
-            for(java.util.Map.Entry<Robot, JRobot> entry : robots.entrySet())
-                entry.getValue().remove();
+ 
             // First, draw all the background
             for (int i = 0; i < MAP_SIZE; i++) 
                 for (int j = 0; j < MAP_SIZE; j++)

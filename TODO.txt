@@ -1,10 +1,10 @@
 [Karina]
     [X] Finish documentation (LaTeX). (PHASE 2)
     [X] Create game_over function.
+    [X] Count the number of robots that were created.
     [ ] Paint who was the winner.
     [ ] Paint additional info in the end of the game.
     [ ] Put the phases of game in the correct time.
-    [ ] Count the number of robots that were created.
     [ ] Correct documentations. (PHASE 3)
     
 [Renato]
@@ -59,6 +59,8 @@
     [X] Add life bar.
     [X] Add energy bar.
     [X] Add LaTeX images on git again.
+    [X] Create relative-address Jump.
+    [X] Add counter for number of robots.
     [ ] Finish text editor.
     [ ] Add buttons to put new robots.
     [ ] Create a mini-map graphical representation.
@@ -66,5 +68,4 @@
     [ ] Finish GUI.
     [ ] Create new system for priorities.
     [ ] Add option for playing again.
-    [ ] Add counter for number of robots.
     [ ] Create menu.
