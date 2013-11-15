@@ -71,8 +71,10 @@ public class Main
         }
         
         // Game main loop
-        // for(int t = 0; t < 370; t++)
-        while(true) World.timeStep();
+        if(Debugger.info) 
+            for(int t = 0; t < 370; t++) World.timeStep();
+        else
+            while(true) World.timeStep();
     }
     
     /**
@@ -83,7 +85,6 @@ public class Main
      */
     private static String[] getopt(String[] argv)
     {
-        
         String arg;
                 
         LongOpt[] longopts = 
