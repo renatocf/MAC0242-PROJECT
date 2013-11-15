@@ -11,12 +11,12 @@
         GET     [BASE]
         DUP
         GET     [DIRECTION]
-        PUSH     3
+        PUSH    3
         DIV
         ADD
         SET     [I]
         GET     [DIRECTION]
-        PUSH     3
+        PUSH    3
         DIV
         ADD
         SET     [J]
@@ -215,9 +215,7 @@ almostI:
         GET     [ROBOTJ]
         GET     [J]
         SUB
-        PUSH    0
-        PUSH    1
-        SUB
+        PUSH    -1
         EQ
         JIT     nearE
         JMP     far
@@ -232,9 +230,7 @@ almostJ:
         GET     [ROBOTI]
         GET     [I]
         SUB
-        PUSH    0
-        PUSH    1
-        SUB
+        PUSH    -1
         EQ
         JIT     nearS
         JMP     far
@@ -491,10 +487,6 @@ CorrectSE:
 
 lookForCrystal:
         ALOC    [nCrystal]
-        ALOC    [lookI]
-        ALOC    [lookJ]
-        SET     [lookI]
-        SET     [lookJ]        
 trySee: SEE
         JIF     trySee
         PUSH    {crystal}
@@ -510,6 +502,8 @@ catch:  POP
         PUSH    1
         SUB
         DUP
+        PUSH    1
+        GE        
         JIF     notFinded
         SET     [nCrystal]
         JMP     catch
@@ -537,8 +531,6 @@ notFinded:
 
 freeLFC:
         FREE    [nCrystal]
-        FREE    [lookI]
-        FREE    [lookJ]
         RET
 
 

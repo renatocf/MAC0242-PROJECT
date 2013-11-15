@@ -530,10 +530,19 @@ public class Action
                 stk[1]   = posX;
                 stk[0]   = posY;
                 break;
+                
+            case "edge":
+            case "Edge":
+                stk      = new
+                 Stackable[2];
+                stk[1]   = one;
+                stk[0]   = new Num(MAP_SIZE );
+                break;                
             
             default:
                 stk      = new Stackable[1];
                 stk[0]   = zero;
+                
         }
         
         // Debug

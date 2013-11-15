@@ -82,11 +82,13 @@ sub parse
                         (
                             [+-]?\d+ # NUMBER    }
                             |        #           }
+                            &\d+     # ADDRESS   }
+                            |        #           }
                             \[\w+\]  # VARIABLE  }
                             |        #           }
-                            \(x\)\w+ # ATTACK    }
+                            \(x\)\w+ # ATTACK    } ARGUMENT
                             |        #           }
-                            ->\w*    # DIRECTION } ARGUMENT
+                            ->\w*    # DIRECTION }
                             |        #           }
                             "\w+"    # STRING    } 
                             |        #           }
@@ -131,7 +133,7 @@ sub parse
                 {                   
                     when(@ins1) { $err = 2 if defined $arg                }
                     when(@ins2) { $err = 3 if $arg !~ m/^[+-]?\d+$/       }
-                    when(@ins3) { $err = 4 if $arg !~ m/^(\d+)|\w+$/;    
+                    when(@ins3) { $err = 4 if $arg !~ m/(&)?\d+|\w+$/;
                                   $arg = "ADDRESS($arg)" if defined $1    }
                     when(@ins4) { $err = 5 if $arg !~ m/^\[\w+\]$/        }
                     default     { $err = 6                                }

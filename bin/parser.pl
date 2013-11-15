@@ -130,7 +130,7 @@ for my $line (@prog)
     if(defined $arg)
     {
         # Address argument
-        if($arg =~ /^ADDRESS\((\d+)\)/)
+        if($arg =~ /^ADDRESS\(&(\d+)\)/)
         {
             $arg = $1;
             if(not exists $address{$arg})

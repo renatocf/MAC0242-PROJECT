@@ -39,15 +39,11 @@ import static parameters.Game.*;
 public class Map
 {
     // Map Matrixes
-    public char[][]        miniMap;
-    public Terrain[][]     map;
+    public char[][]    miniMap;
+    public Terrain[][] map;
 
     // Weather
     final private Weather w;
-    
-    private Player[] bases;
-    
-    private int numArmy = 0;
     
     /**
      * Default constructor.
@@ -67,7 +63,6 @@ public class Map
     Base[] genesis(Player[] players, Random rand)
         throws InvalidOperationException
     {
-        this.bases = players;
         RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE, rand);
         miniMap         = arena.getMatrix   (); 
         map             = arena.generateMap ();              
@@ -90,8 +85,6 @@ public class Map
                 String pathToProg)
         throws SegmentationFaultException
     {
-    	this.numArmy++;
-    
         int[] coords = populate(player);
         int i = coords[0], j = coords[1];
         
@@ -191,20 +184,5 @@ public class Map
             Debugger.say();
         }
         return prog;
-    }
-    
-    public Player getBases(int address)
-    {
-        return this.bases[address];
-    }
-    
-    public int getNumberOfBases()
-    {
-        return this.bases.length;
-    }
-    
-    public int getNumberOfArmies()
-    {
-    	return this.numArmy;
     }
 }

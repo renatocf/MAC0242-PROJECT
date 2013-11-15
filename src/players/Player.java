@@ -94,6 +94,11 @@ public class Player
         return this.base;
     }
     
+    public String toString()
+    {
+        return ("Player " + this.ID);
+    }
+    
     /** 
      * Auxiliar method to define a new 
      * player's color.

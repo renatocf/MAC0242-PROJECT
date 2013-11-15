@@ -48,8 +48,9 @@ public class Main
         String[] args = getopt(argv); // Get options
         
         // Help and Usage
-        if(help)            { help();                    return; }
-        if(args.length < 3) { System.err.println(USAGE); return; }
+        if(help) { help(); return; }
+        if(args.length > Game.ROBOTS_NUM_INITIAL) 
+        { System.err.println(USAGE); return; }
         
         // Generate map
         Player[] p = World.genesis(2, Game.WEATHER, GUI, Game.RAND);
@@ -57,13 +58,16 @@ public class Main
         // Menu
         // TODO: automate inserction of programs
         try{
-            World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
-            World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
-            World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+            /* if(!Debugger.info) */
+            /* { */
+                World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
+                World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
+                World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+            /* } */
             
-            World.insertArmy(p[1], "Boomer"         , args[0]);
-            World.insertArmy(p[1], "Number Eighteen", args[1]);
-            World.insertArmy(p[1], "Optimus Prime"  , args[2]);
+            String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
+            for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
+                World.insertArmy(p[1], names[i], args[i]);
         }
         catch(SegmentationFaultException e)
         {
@@ -71,8 +75,15 @@ public class Main
         }
         
         // Game main loop
-        // for(int t = 0; t < 370; t++)
-        while(true) World.timeStep();
+        if(Debugger.info) 
+        {
+            for(int t = 0; t < 1000; t++) World.timeStep();
+            /* System.exit(0); // Closes the program */
+            return;
+        }
+        
+        // Run ad infinitum if not debugging
+        while(World.timeStep());
     }
     
     /**
@@ -83,7 +94,6 @@ public class Main
      */
     private static String[] getopt(String[] argv)
     {
-        
         String arg;
                 
         LongOpt[] longopts = 
@@ -134,7 +144,6 @@ public class Main
                 //
                 case 5: 
                     arg = g.getOptarg();
-                    System.out.println(Integer.valueOf(arg));
                     Game.RAND = new Random(Integer.valueOf(arg)); 
                     break;
                 //

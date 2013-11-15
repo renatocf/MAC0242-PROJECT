@@ -33,7 +33,7 @@ import static parameters.Game.*;
  * @see Action
  * @see gui
  */
-public class World
+final public class World
 {
     // Global settings
     private static int id = 1;
@@ -90,14 +90,14 @@ public class World
     }
     
     /**
-
      * Runs one game time step. On each
      * turn, sort the robots accordingly
      * to their priorities, solving conflicts
      * randomically. Then, executes their
      * actions and attend their requests.
+     * @return End of Game
      */
-    public static void timeStep()
+    public static boolean timeStep()
     {
         time++; // On each time step, increments time
         
@@ -150,6 +150,8 @@ public class World
             if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
             {
                 GUI.looser(players[i]);
+                try { Thread.sleep(5000); }
+                catch (InterruptedException e) {}
                 players[i] = null;
             }
             else 
@@ -161,15 +163,22 @@ public class World
         
         if(numActivePlayers == 1)
         {
-            GUI.winner(p, time, nPlayers, map.getNumberOfArmies());
+            GUI.winner(p, time, nPlayers, armies.getPopulation());
+            System.out.println(armies.getPopulation());
+            
+            Debugger.say("===================");
+            Debugger.say("===[ GAME OVER ]===");
+            Debugger.say("===================");
+            Debugger.close();
             
             try { Thread.sleep(5000); }
             catch (InterruptedException e) {}
             
             System.exit(0);
-        }           
+        }
         
-        if(!(Debugger.info)) GUI.paint();
+        GUI.paint();
+        return true;
     }
     
     /**
@@ -185,8 +194,7 @@ public class World
      */
     public static void POST(Operation op)
     {
-        try { armies.setOperation(turn, op); 
-        }
+        try { armies.setOperation(turn, op); }
         catch (NotInitializedException e) {
             System.err.println(e);
             e.printStackTrace();
