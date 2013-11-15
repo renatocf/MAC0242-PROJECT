@@ -101,27 +101,84 @@ class Panel extends JPanel
     
     private void looser(Graphics g)
     {
-        BufferedImage bufferedImage = new BufferedImage(170, 30, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = bufferedImage.getGraphics();
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
-        g.setColor(Color.BLACK);
+    
+	    for (int i = 0; i < MAP_SIZE; i++) 
+        	for (int j = 0; j < MAP_SIZE; j++)
+            	cell[i][j].draw(g); 
+                          
+        // Painting strip
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, getHeight()/2 - 80, getWidth(), 150);
+        
+        // Painting label
+        g.setColor(Color.RED);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
-        g.drawString(this.p + ", YOU LOOSE!", 10, getWidth()/2);
+        g.drawString(this.p + ", YOU LOOSE!", getWidth()/2 - 300, getHeight()/2-5);
+
+		paintEdge(g);
+
         repaint();
     }
     
     private void winner(Graphics g)
     {
-        BufferedImage bufferedImage = new BufferedImage(170, 30, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = bufferedImage.getGraphics();
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, getHeight()/2 - 100, getWidth(), 200);
+    	// Painting the map
+    	for (int i = 0; i < MAP_SIZE; i++) 
+            for (int j = 0; j < MAP_SIZE; j++)
+                cell[i][j].draw(g); 
+    	
+    	// Painting the strip
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, getHeight()/2 - 80, getWidth(), 230);
+        
+        //Painting the label
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
-        g.drawString(this.p + ", YOU WIN!", 10, getWidth()/2);
-        
+        g.drawString(this.p + ", YOU WIN!", getWidth()/2 - 280, getHeight()/2-15);
+		
+		
+        //g.setColor(Color.GREEN);
+        g.setFont(new Font("Arial Black", Font.BOLD, 30));
+        g.drawString("Number of Times:   " + this.nTS     , getWidth()/2 - 280, getHeight()/2 + 35);
+        g.drawString("Number of Players: " + this.nPlayers, getWidth()/2 - 280, getHeight()/2 + 66);
+        g.drawString("Number of Robots:: " + this.nRobots , getWidth()/2 - 280, getHeight()/2 + 97);
+       	
+       	paintEdge(g);
+       	
         repaint();
+    }
+    
+    private void paintEdge(Graphics g)
+    {
+    	        // Painting the border
+        Graphics2D g2d = (Graphics2D) g;
+        Image img = Toolkit.getDefaultToolkit().getImage("data/img/scenario/tech/red/Robot.png");
+        	g2d.drawImage(img, 28, getHeight()/2 - 65, null);
+        	g2d.drawImage(img, 28, getHeight()/2 + 5 , null);
+        	g2d.drawImage(img, 28, getHeight()/2 + 75, null);
+        
+        	g2d.drawImage(img, getWidth() - 60, getHeight()/2 - 65, null);
+        	g2d.drawImage(img, getWidth() - 60, getHeight()/2 + 5 , null);
+        	g2d.drawImage(img, getWidth() - 60, getHeight()/2 + 75, null);
+        	g2d.drawImage(img, getWidth() - 60, getHeight()/2 + 145, null);
+        	
+       	
+       	Image imga = Toolkit.getDefaultToolkit().getImage("data/img/scenario/tech/black/Robot.png");
+       		
+       		g2d.drawImage(imga, 28, getHeight()/2 - 30, null);
+        	g2d.drawImage(imga, 28, getHeight()/2 + 40, null);
+        	g2d.drawImage(imga, 28, getHeight()/2 + 110, null);
+       		
+       		g2d.drawImage(imga, getWidth() - 60, getHeight()/2 - 100, null);
+       		g2d.drawImage(imga, getWidth() - 60, getHeight()/2 - 30, null);
+        	g2d.drawImage(imga, getWidth() - 60, getHeight()/2 + 40, null);
+        	g2d.drawImage(imga, getWidth() - 60, getHeight()/2 + 110, null);
+       	
+       	for(int i = 28; i < getWidth() - 28; i = i + 35)
+       	{
+			g2d.drawImage(imga, i, getHeight()/2 - 100, null);
+   			g2d.drawImage(img , i, getHeight()/2 + 145, null);	
+       	}
     }
     
     public void setGamePhase(int nGF, Player p, int nTS, int nPlayers, int nRobots)
