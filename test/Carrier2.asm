@@ -6,151 +6,105 @@
         ALOC    [BASEJ]
         ALOC    [ENEMYBASEI]
         ALOC    [ENEMYBASEJ]
+        ALOC    [MAPSIZE]
         ALOC    [DIRECTION]
-        ALOC    [LastCrystalI]
-        ALOC    [LastCrystalJ]
-        CALL    askBase
         ALOC    [VERT]
+        ALOC    [HORI]
         ALOC    [Walk]
+        ALOC    [upperBase]
+        PUSH    0
+        SET     [VERT]
+        CALL    askEdge
+        CALL    askBase
         GET     [BASEI]
         SET     [I]
         GET     [BASEJ]
         SET     [J]
-        PUSH    0
-        SET     [VERT]
+askPosition:        
         PUSH    position
         ASK
-        POP
+        JIF     askPosition
         SET     [ROBOTI]
         SET     [ROBOTJ]
-
+looking:
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     WhatNow
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     looking
         
+WhatNow:
+        POP
+        POP
+        CALL    arrive
+        JIT     start
+        CALL    almostThere
+        JIT     popStart
+        CALL    evade
+        JIT     looking
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    attackDestiny
+        JMP     looking
+        
+popStart:
+        POP
 start:
-        CALL    lookForCrystal
-        JIT     goToTheBase        
-        GET     [J]
+        GET     [upperBase]
+        JIT     isUpperBase
+        GET     [MAPSIZE]
+        PUSH    1
+        SUB
         DUP
-        PRN
-        GET     [I]
-        DUP
-        PRN
-        PUSH     llllllll
-        PRN
-        GET     [ROBOTJ]                
-        GET     [ROBOTI]
-        CALL    mvtw
-        SET     [Walk]
-        SET     [ROBOTI]                
-        SET     [ROBOTJ]
-        GET     [Walk]
-        JIT     start
-        CALL    arrive
-        JIF     callAlmostThere
-        JMP     next
-
-callAlmostThere:
-        CALL    almostThere
-        JIF     callEvade
-        JMP     next
-
-callEvade:
-        CALL    evade
-        JIT     start
-        CALL    attack
-        JMP     start
-
-goToTheBase:
-        GET     [ROBOTJ]                
-        GET     [ROBOTI]
-        SET     [LastCrystalI]
-        SET     [LastCrystalJ]
-        GET     [ENEMYBASEI]
         SET     [I]
-        GET     [ENEMYBASEJ]
         SET     [J]
-
-run:    
+        JMP     keepLooking
+        
+isUpperBase:        
+        PUSH    1
+        DUP
+        SET     [I]
+        SET     [J]
+        
+keepLooking:
         GET     [J]
-        GET     [I]        
+        GET     [I]         
         GET     [ROBOTJ]                
         GET     [ROBOTI]        
         CALL    mvtw
-        SET     [Walk]
-        SET     [ROBOTI]                
+        JIF     WhatNowII
+        SET     [ROBOTI]
         SET     [ROBOTJ]
-        GET     [Walk]
-        JIT     run
+        JMP     keepLooking
+
+WhatNowII:
+        POP
+        POP
         CALL    arrive
-        JIF     callAlmostThereII
-        CALL    dropTheCrystal
-        JIF     run
-        JMP     goBack
-        
-callAlmostThereII:
+        JIT     next
         CALL    almostThere
-        JIF     callEvadeII
-        CALL    attackDestiny
-        JMP     run        
-        
-callEvadeII:
+        JIT     popNext
         CALL    evade
-        JIT     run
-        CALL    attack
-        JMP     run
-        
-goBack:
-        GET     [BASE]
-        DUP
-        GET     [DIRECTION]
-        PUSH    3
-        DIV
-        ADD
-        SET     [I]
-        GET     [DIRECTION]
-        PUSH    3
-        DIV
-        ADD
-        SET     [J]
-        PUSH    0
-        SET     [VERT]
-goingBack:    
+        JIT     keepLooking
         GET     [J]
-        GET     [I]        
+        GET     [I]         
         GET     [ROBOTJ]                
         GET     [ROBOTI]        
-        CALL    mvtw
-        SET     [Walk]
-        SET     [ROBOTI]                
-        SET     [ROBOTJ]
-        GET     [Walk]
-        JIT     goBack
-        CALL    arrive
-        JIF     callAlmostThereIII
-        PUSH    0
-        SET     [VERT]
-        JMP     start
-        
-callAlmostThereIII:
-        CALL    almostThere
-        JIF     callEvadeIII
         CALL    attackDestiny
-        JMP     goingBack      
+        JMP     keepLooking
         
-callEvadeIII:
-        CALL    evade
-        JIT     goingBack
-        CALL    attack
-        JMP     goingBack
-        
-end:    NOP
-        JMP     end
-        
+popNext:
+        POP
 next:
         GET     [VERT]
         JIT     up
-        GET     [J]
-        PUSH    1
-        EQ
+        GET     [HORI]
         JIT     right
         JMP     left
         
@@ -159,14 +113,16 @@ left:
         SET     [J]
         PUSH    1
         SET     [VERT]
-        JMP     start
+        JMP     keepLooking
         
 right:
-        PUSH    14
+        GET     [MAPSIZE]
+        PUSH    1
+        SUB
         SET     [J]
         PUSH    1
         SET     [VERT]
-        JMP     start
+        JMP     keepLooking
 
 up:
         GET     [I]
@@ -175,9 +131,14 @@ up:
         SET     [I]
         PUSH    0
         SET     [VERT]
-        JMP     start
-        
-       
+        GET     [HORI]
+        PUSH    1
+        ADD
+        PUSH    2
+        MOD
+        SET     [HORI]
+        JMP     keepLooking 
+           
 
 arrive:
         GET     [I]
@@ -192,348 +153,55 @@ arrive:
         RET
 fal:    PUSH    0
         RET
-
-almostThere:
-        GET     [ROBOTI]
-        GET     [I]
-        EQ
-        JIT     almostI
-        GET     [ROBOTJ]
-        GET     [J]
-        EQ
-        JIT     almostJ
-        JMP     maybeFar
-        
-almostI:
-        GET     [ROBOTJ]
-        GET     [J]
-        SUB
-        PUSH    1
-        EQ
-        JIT     nearW
-        GET     [ROBOTJ]
-        GET     [J]
-        SUB
-        PUSH    0
-        PUSH    1
-        SUB
-        EQ
-        JIT     nearE
-        JMP     far
-
-almostJ:
-        GET     [ROBOTI]
-        GET     [I]
-        SUB
-        PUSH    1
-        EQ
-        JIT     nearN
-        GET     [ROBOTI]
-        GET     [I]
-        SUB
-        PUSH    0
-        PUSH    1
-        SUB
-        EQ
-        JIT     nearS
-        JMP     far
-        
-maybeFar:
-        GET     [ROBOTJ]
-        GET     [J]
-        SUB
-        PUSH    1
-        EQ
-        JIT     nearE
-        GET     [ROBOTJ]
-        GET     [J]
-        SUB
-        PUSH    0
-        PUSH    1
-        SUB
-        EQ
-        JIT     nearW
-        JMP     far
-        
-                
-
-nearN:
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        JIT     nearNW
-        JMP     nearNE
-        
-nearS:
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        JIT     nearSW
-        JMP     nearSE
-        
-        
-nearE:  PUSH    ->E 
-        PUSH    1
-        RET
-        
-nearNE: PUSH    ->NE 
-        PUSH    1
-        RET
-        
-nearNW: PUSH    ->NW 
-        PUSH    1
-        RET
-
-nearW:  PUSH    ->W 
-        PUSH    1
-        RET
-
-nearSW: PUSH    ->SW 
-        PUSH    1
-        RET
-
-nearSE: PUSH    ->SE 
-        PUSH    1
-        RET
-
-far:    PUSH    0
-        RET
-        
-                                
         
 
-evade:
-        GET     [I]
-        GET     [ROBOTI]
-        EQ
-        JIT     sameI
-        GET     [J]
-        GET     [ROBOTJ]
-        EQ      
-        JIT     sameJ
-        JMP     notInLine
-        
-sameI:
-        GET     [ROBOTJ]
-        GET     [J] 
+askEdge:
+        PUSH    edge
+        ASK     
+        JIF     askEdge
+        PUSH    1
         SUB
-        PUSH    0
-        GT
-        JIT     evadeR     
-        JMP     evadeL
-
-evadeR:
-        PUSH    ->SE
-        MOVE
-        JIT     CorrectSE
-        PUSH    ->NE
-        MOVE
-        JIT     CorrectNE
-        PUSH    0
+        SET     [MAPSIZE]
         RET
 
-evadeL:
-        PUSH    ->NW
-        MOVE
-        JIT     CorrectNW
-        PUSH    ->SW
-        MOVE
-        JIT     CorrectSW
-        PUSH    0
-        RET
-                
-sameJ:
-        GET     [ROBOTI]
-        GET     [I]
-        SUB
-        PUSH    0
-        GT
-        JIT     evadeD     
-        JMP     evadeU
-
-evadeU:
-        PUSH    ->NE
-        MOVE
-        JIT     CorrectNE
-        PUSH    ->NW
-        MOVE
-        JIT     CorrectNW
-        PUSH    0
-        RET
-
-evadeD:
-        PUSH    ->SW
-        MOVE
-        JIT     CorrectSW
-        PUSH    ->SE
-        MOVE
-        JIT     CorrectSE
-        PUSH    0
-        RET
-
-notInLine:
-        GET     [ROBOTJ]
-        GET     [J]
-        SUB
-        PUSH    0
-        GT
-        JIT     moveR     
-        JMP     moveL
-
-moveR:  
-        PUSH    ->E
-        MOVE
-        JIT     CorrectE
-        PUSH    ->SE
-        MOVE
-        JIT     CorrectSE
-        PUSH    ->NE
-        MOVE
-        JIT     CorrectNE
-        PUSH    0
-        RET
-        
-moveL:  
-        PUSH    ->W
-        MOVE
-        JIT     CorrectW
-        PUSH    ->SW
-        MOVE
-        JIT     CorrectSW
-        PUSH    ->NW
-        MOVE
-        JIT     CorrectNW
-        PUSH    0
-        RET
-
-CorrectE:
-        POP
-        GET     [ROBOTJ]
+askBase:
+        PUSH    base
+        ASK
+        JIF     askBase
+        SET     [BASEI]
+        SET     [BASEJ]
+        GET     [BASEJ]
+        GET     [MAPSIZE]
         PUSH    1
         ADD
-        SET     [ROBOTJ]
-        PUSH    1
-        RET
-
-CorrectNE:
-        POP
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        GET     [ROBOTJ]
-        ADD
-        SET     [ROBOTJ]
-        GET     [ROBOTI]
-        PUSH    1
-        SUB
-        SET     [ROBOTI]
-        PUSH    1
-        RET
-        
-CorrectNW:
-        POP
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        GET     [ROBOTJ]
-        ADD
-        PUSH    1
-        SUB
-        SET     [ROBOTJ]
-        GET     [ROBOTI]
-        PUSH    1
-        SUB
-        SET     [ROBOTI]
-        PUSH    1
-        RET
-        
-CorrectW:
-        POP
-        GET     [ROBOTJ]
-        PUSH    1
-        SUB
-        SET     [ROBOTJ]
-        PUSH    1
-        RET
-        
-CorrectSW:
-        POP
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        GET     [ROBOTJ]
-        ADD
-        PUSH    1
-        SUB
-        SET     [ROBOTJ]
-        GET     [ROBOTI]
-        PUSH    1
-        ADD
-        SET     [ROBOTI]
-        PUSH    1
-        RET
-        
-CorrectSE:
-        POP
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        GET     [ROBOTJ]
-        ADD
-        SET     [ROBOTJ]
-        GET     [ROBOTI]
-        PUSH    1
-        ADD
-        SET     [ROBOTI]
-        PUSH    1
-        RET
-
-lookForCrystal:
-        ALOC    [nCrystal]
-trySee: SEE
-        JIF     trySee
-        PUSH    {crystal}
-        SEEK
+        PUSH    5
+        DIV
+        LT
+        JIF     upperBase
+        PUSH    0
         DUP
-        JIF     notFinded
-        SET     [nCrystal]
-
-catch:  POP
-        DRAG
-        JIT     cleanStack     
-        GET     [nCrystal]
-        PUSH    1
-        SUB
-        DUP
-        JIF     notFinded
-        SET     [nCrystal]
-        JMP     catch
-        
-cleanStack:
-        POP
-        POP
-        GET     [nCrystal]
-        PUSH    1
-        SUB
-        DUP
-        JIF     finded
-        SET     [nCrystal]
-        JMP     cleanStack
-        
-finded:
-        POP
-        PUSH    1
-        JMP     freeLFC
-
-notFinded:
-        POP
+        SET     [HORI]
+        SET     [upperBase]
         PUSH    0
-        JMP     freeLFC
-
-freeLFC:
-        FREE    [nCrystal]
+        DUP
+        SET     [ENEMYBASEI]
+        SET     [ENEMYBASEJ]
+        PUSH    -3
+        SET     [DIRECTION]
         RET
 
+upperBase:
+        PUSH    1
+        DUP
+        SET     [HORI]
+        SET     [upperBase]
+        GET     [MAPSIZE]
+        DUP
+        SET     [ENEMYBASEI]
+        SET     [ENEMYBASEJ]
+        PUSH    3
+        SET     [DIRECTION]
+        RET
 
 mvtw:
         ALOC    [RI]
@@ -665,36 +333,54 @@ iNjPlus:GET     [DJ]
 e:      PUSH    ->E    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     e
         JIT     updateE
         JMP     false
 
 ne:     PUSH    ->NE    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     ne
         JIT     updateNE
         JMP     false     
 
 nw:     PUSH    ->NW    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     nw        
         JIT     updateNW
         JMP     false
 
 w:      PUSH    ->W    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     w        
         JIT     updateW
         JMP     false
 
 sw:     PUSH    ->SW    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     sw        
         JIT     updateSW
         JMP     false
 
 se:     PUSH    ->SE    
         MOVE
         DUP
+        PUSH    -1
+        EQ
+        JIT     se
         JIT     updateSE
         JMP     false
 
@@ -705,7 +391,6 @@ false:  GET     [RJ]
         JMP     return
 
 updateE:
-        POP
         GET     [RJ]
         PUSH    1
         ADD
@@ -714,7 +399,6 @@ updateE:
         JMP     return
 
 updateNE:
-        POP
         GET     [RI]
         PUSH    2
         MOD
@@ -728,7 +412,6 @@ updateNE:
         
                  
 updateNW:
-        POP
         GET     [RI]
         PUSH    2
         MOD
@@ -743,7 +426,6 @@ updateNW:
         JMP     return        
         
 updateW:
-        POP
         GET     [RJ]
         PUSH    1
         SUB
@@ -752,7 +434,6 @@ updateW:
         JMP     return
         
 updateSW:
-        POP
         GET     [RI]
         PUSH    2
         MOD
@@ -767,7 +448,6 @@ updateSW:
         JMP     return        
         
 updateSE:
-        POP
         GET     [RI]
         PUSH    2
         MOD
@@ -787,144 +467,530 @@ return:
         FREE    [DI]
         FREE    [DJ]
         RET    
+
+almostThere:
+        GET     [ROBOTI]
+        GET     [I]
+        EQ
+        JIT     almostI
+        GET     [ROBOTJ]
+        GET     [J]
+        EQ
+        JIT     almostJ
+        JMP     maybeFar
         
-attack:
+almostI:
+        GET     [ROBOTJ]
+        GET     [J]
+        SUB
+        PUSH    1
+        EQ
+        JIT     nearW
+        GET     [ROBOTJ]
+        GET     [J]
+        SUB
+        PUSH    -1
+        EQ
+        JIT     nearE
+        JMP     far
+
+almostJ:
+        GET     [ROBOTI]
+        GET     [I]
+        SUB
+        PUSH    1
+        EQ
+        JIT     nearN
+        GET     [ROBOTI]
+        GET     [I]
+        SUB
+        PUSH    -1
+        EQ
+        JIT     nearS
+        JMP     far
+        
+maybeFar:
+        GET     [ROBOTJ]
+        GET     [J]
+        SUB
+        PUSH    1
+        EQ
+        JIT     nearE
+        GET     [ROBOTJ]
+        GET     [J]
+        SUB
+        PUSH    0
+        PUSH    1
+        SUB
+        EQ
+        JIT     nearW
+        JMP     far
+        
+                
+
+nearN:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        JIT     nearNW
+        JMP     nearNE
+        
+nearS:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        JIT     nearSW
+        JMP     nearSE
+        
+        
+nearE:  PUSH    ->E 
+        PUSH    1
+        RET
+        
+nearNE: PUSH    ->NE 
+        PUSH    1
+        RET
+        
+nearNW: PUSH    ->NW 
+        PUSH    1
+        RET
+
+nearW:  PUSH    ->W 
+        PUSH    1
+        RET
+
+nearSW: PUSH    ->SW 
+        PUSH    1
+        RET
+
+nearSE: PUSH    ->SE 
+        PUSH    1
+        RET
+
+far:    PUSH    0
+        RET
+
+evade:
+        GET     [I]
+        GET     [ROBOTI]
+        EQ
+        JIT     sameI
         GET     [J]
         GET     [ROBOTJ]
         EQ      
-        JIT     Jsame
-        JMP     attackI
+        JIT     sameJ
+        JMP     notInLine
         
-attackI: 
-        GET     [J]
+sameI:
         GET     [ROBOTJ]
+        GET     [J] 
         SUB
         PUSH    0
-        GT  
-        JIT     attackW
-        JMP     attackE        
-                    
-Jsame:  GET     [J]
-        GET     [ROBOTJ]
-        SUB
-        PUSH    0
-        GT  
-        JIT     attackN
-        JMP     attackS
-        
-attackN:
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        JIT     attackNW
-        JMP     attackNE
-        
-attackS:
-        GET     [ROBOTI]
-        PUSH    2
-        MOD
-        JIT     attackSW
-        JMP     attackSE                
-        
-attackE:
-        PUSH    ->E
-        PUSH    1
-        PUSH    (x)melee  
-        HIT
-        JIT     attackE
-        RET               
+        GT
+        JIT     evadeR     
+        JMP     evadeL
 
-attackNE:
+evadeR:
+        PUSH    ->SE
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeR
+        JIT     CorrectSE
         PUSH    ->NE
-        PUSH    1
-        PUSH    (x)melee  
-        HIT
-        JIT     attackNE
-        RET         
-        
-attackNW:
-        PUSH    ->NW
-        PUSH    1
-        PUSH    (x)melee  
-        HIT
-        JIT     attackNW
-        RET                                     
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeR
+        JIT     CorrectNE
+        PUSH    0
+        RET
 
-attackW:
-        PUSH    ->W
-        PUSH    1
-        PUSH    (x)melee  
-        HIT
-        JIT     attackW
+evadeL:
+        PUSH    ->NW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeL
+        JIT     CorrectNW
+        PUSH    ->SW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeL
+        JIT     CorrectSW
+        PUSH    0
+        RET
+                
+sameJ:
+        GET     [ROBOTI]
+        GET     [I]
+        SUB
+        PUSH    0
+        GT
+        JIT     evadeD     
+        JMP     evadeU
+
+evadeU:
+        PUSH    ->NE
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeU
+        JIT     CorrectNE
+        PUSH    ->NW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeU
+        JIT     CorrectNW
+        PUSH    0
+        RET
+
+evadeD:
+        PUSH    ->SW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeD
+        JIT     CorrectSW
+        PUSH    ->SE
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     evadeD
+        JIT     CorrectSE
+        PUSH    0
+        RET
+
+notInLine:
+        GET     [ROBOTJ]
+        GET     [J]
+        SUB
+        PUSH    0
+        GT
+        JIT     moveR     
+        JMP     moveL
+
+moveR:  
+        PUSH    ->E
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveR
+        JIT     CorrectE
+        PUSH    ->SE
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveR
+        JIT     CorrectSE
+        PUSH    ->NE
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveR
+        JIT     CorrectNE
+        PUSH    0
         RET
         
-attackSW:
+moveL:  
+        PUSH    ->W
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveL
+        JIT     CorrectW
         PUSH    ->SW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveL
+        JIT     CorrectSW
+        PUSH    ->NW
+        MOVE
+        DUP
+        PUSH    -1
+        EQ
+        JIT     moveL
+        JIT     CorrectNW
+        PUSH    0
+        RET
+
+CorrectE:
+        GET     [ROBOTJ]
         PUSH    1
-        PUSH    (x)melee  
-        HIT
-        JIT     attackSW
-        RET               
-                       
+        ADD
+        SET     [ROBOTJ]
+        PUSH    1
+        RET
+
+CorrectNE:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        SUB
+        SET     [ROBOTI]
+        PUSH    1
+        RET
         
-attackSE:
-        PUSH    ->SE
+CorrectNW:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        SUB
+        SET     [ROBOTI]
+        PUSH    1
+        RET
+        
+CorrectW:
+        GET     [ROBOTJ]
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        PUSH    1
+        RET
+        
+CorrectSW:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        PUSH    1
+        SUB
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        ADD
+        SET     [ROBOTI]
+        PUSH    1
+        RET
+        
+CorrectSE:
+        GET     [ROBOTI]
+        PUSH    2
+        MOD
+        GET     [ROBOTJ]
+        ADD
+        SET     [ROBOTJ]
+        GET     [ROBOTI]
+        PUSH    1
+        ADD
+        SET     [ROBOTI]
+        PUSH    1
+        RET
+
+attackDestiny:
+        ALOC    [RI]
+        ALOC    [RJ]
+        ALOC    [PI]
+        ALOC    [PJ]
+        ALOC    [DI]
+        ALOC    [DJ]
+        SET     [RI]
+        SET     [RJ]
+        SET     [PI]
+        SET     [PJ]
+        GET     [RI]
+        GET     [PI]
+        SUB
+        SET     [DI]
+        GET     [RJ]
+        GET     [PJ]
+        SUB
+        SET     [DJ]
+        GET     [DI]
+        DUP     
+        PUSH    0
+        EQ
+        JIT     ADiZero     
+        DUP
+        PUSH    0
+        LT
+        JIT     ADiPlus
+        DUP
+        PUSH    0
+        GT
+        JIT     ADiNeg
+
+ADiZero:  
+        POP
+        GET     [DJ]
+        DUP
+        PUSH    0
+        EQ
+        JIT     ADret
+        PUSH    0
+        GT
+        JIT     ADe
+        JMP     ADw
+
+
+ADiPlus:  
+        GET     [DJ]
+        PUSH    0
+        EQ
+        JIT     ADiPjZero
+        GET     [DJ]
+        PUSH    0
+        GT
+        JIT     ADiPjNeg
+        JMP     ADiPjPlus
+        
+ADiNeg:   
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        GET     [DJ]
+        PUSH    0
+        EQ
+        JIT     ADiNjZero
+        GET     [DJ]
+        PUSH    0
+        GT
+        JIT     ADiNjNeg
+        JMP     ADiNjPlus
+
+ADiPjZero:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        JIF     ADne
+        JMP     ADnw
+       
+ADiNjZero:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        JIF     ADse
+        JMP     ADsw
+       
+ADiPjNeg: 
+        GET     [DJ]
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADe
+        JMP     ADne
+
+ADiPjPlus:
+        GET     [DJ]
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADw
+        JMP     ADnw
+
+ADiNjNeg: 
+        GET     [DJ]
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADe
+        JMP     ADse
+
+ADiNjPlus:
+        GET     [DJ]
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADw
+        JMP     ADsw
+       
+ADe:    PUSH    ->E    
         PUSH    1
         PUSH    (x)melee          
         HIT
-        JIT     attackSE
-        RET
-        
-attackDestiny:
-attackDestinyR:
-        DUP
+        JIT     ADe
+        JMP     ADreturn
+
+ADne:   PUSH    ->NE    
         PUSH    1
-        PUSH    (x)melee  
+        PUSH    (x)melee          
         HIT
-        JIT     attackDestinyR
-        POP
-        RET         
-
-askBase:
-        PUSH    base
-        ASK
-        JIF     askBase
-        SET     [BASEI]
-        SET     [BASEJ]
-        PUSH    10
-        GET     [BASEI]
-        LE
-        JIT     upperBase
-        PUSH    -3
-        SET     [DIRECTION]
-        PUSH    -1
-        DUP
-        SET     [ENEMYBASEI]
-        SET     [ENEMYBASEJ]
-        RET
+        JIT     ADne
+        JMP     ADreturn
         
-upperBase:
-        PUSH    3
-        SET     [DIRECTION]
-        PUSH    100000
-        DUP
-        SET     [ENEMYBASEI]
-        SET     [ENEMYBASEJ]
-        RET        
-
-dropTheCrystal:
-        GET     [DIRECTION]
-        PUSH    0
-        LT
-        JIT     dropSE
-        PUSH    ->NW
-        JMP     dropNow
-dropSE:        
-        PUSH    ->SE
-        JMP     dropNow
-dropNow:
-        DROP
-        JIF     dropTheCrystal
+ADnw:   PUSH    ->NW    
         PUSH    1
-        RET
-            
+        PUSH    (x)melee          
+        HIT
+        JIT     ADnw
+        JMP     ADreturn
+        
+ADw:    PUSH    ->W    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADw
+        JMP     ADreturn
+
+ADsw:   PUSH    ->SW    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADsw
+        JMP     ADreturn
+        
+ADse:   PUSH    ->SE    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADse
+        JMP     ADreturn
+        
+ADret:  POP              
+ADreturn:
+        FREE    [RI]
+        FREE    [RJ]
+        FREE    [PI]
+        FREE    [PJ]
+        FREE    [DI]
+        FREE    [DJ]
+        RET    
+
