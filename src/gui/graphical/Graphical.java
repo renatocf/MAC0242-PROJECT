@@ -65,7 +65,3 @@ public class Graphical implements GUI
         mapFrame.looser(p);
     }
 }
-
-
-
-
