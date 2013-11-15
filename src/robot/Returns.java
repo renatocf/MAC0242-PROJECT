@@ -10,7 +10,7 @@ public interface Returns
     public final static int NO_TARGET       =  0;
     public final static int NO_ENERGY       =  0; //= -1;
     public final static int END_OF_MAP      =  0; //= -2;
-    public final static int BLOCKED         =  0; //= -2;
+    public final static int BLOCKED         =  0; //= -3;
     public final static int FULL_SLOTS      =  0; //= -3;
     public final static int EMPTY_SLOTS     =  0; //= -3;
     public final static int OUT_OF_RANGE    =  0; //= -3;
