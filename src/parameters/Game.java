@@ -18,7 +18,7 @@ public final class Game
      * Maximum number of crystals to have
      * a base destroyed.
      */
-    public static int MAX_CRYSTALS = 5;
+    public static int MAX_CRYSTALS = 1;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------
