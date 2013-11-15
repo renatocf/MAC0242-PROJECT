@@ -95,8 +95,9 @@ final public class World
      * to their priorities, solving conflicts
      * randomically. Then, executes their
      * actions and attend their requests.
+     * @return End of Game
      */
-    public static void timeStep()
+    public static boolean timeStep()
     {
         time++; // On each time step, increments time
         
@@ -165,13 +166,19 @@ final public class World
             GUI.winner(p, time, nPlayers, armies.getPopulation());
             System.out.println(armies.getPopulation());
             
+            Debugger.say("===================");
+            Debugger.say("===[ GAME OVER ]===");
+            Debugger.say("===================");
+            Debugger.close();
+            
             try { Thread.sleep(5000); }
             catch (InterruptedException e) {}
             
             System.exit(0);
-        }           
+        }
         
-        if(!(Debugger.info)) GUI.paint();
+        GUI.paint();
+        return true;
     }
     
     /**
