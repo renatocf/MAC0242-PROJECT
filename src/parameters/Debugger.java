@@ -1,5 +1,9 @@
 package parameters;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.IOException;
+
 /**
  * <b>Debugger</b><br>
  * Provide methods for printing messages 
@@ -25,7 +29,7 @@ public class Debugger
     {
         if(!info) return;
         for(Object s: strings) 
-            System.out.print((s != null) ? s.toString() : "null");
+            debugger.log.print((s != null) ? s.toString() : "null");
     }
 
     /** 
@@ -37,8 +41,8 @@ public class Debugger
     public static void say(Object ... strings)
     {
         if(!info) return;
-        print(strings);
-        System.out.println();
+        debugger.print(strings);
+        debugger.log.println();
     }
     
     /** 
@@ -52,6 +56,39 @@ public class Debugger
     public static void printf(String format, Object ... args)
     {
         if(!info) return;
-        System.out.printf(format, args);
+        debugger.log.printf(format, args);
+    }
+    
+    /**
+     * Close the log file.
+     */
+    public static void close()
+    {
+        debugger.log.close();
+    }
+    
+    /**
+     * Singleton with a debugger object 
+     */
+    private static Debugger debugger = new Debugger("log");
+    
+    /**
+     * PrintWriter with the log file
+     */
+    private static PrintWriter log;
+    
+    /**
+     * Constructor just to create the new log file.
+     * @param fileName Log file name
+     */
+    private Debugger(String fileName)
+    {
+        try { log = new PrintWriter(new File(fileName)); }
+        catch(IOException e)
+        {
+            System.out.println(
+                "[DEBUGGER] Error to generate log file\n" + e
+            );
+        }
     }
 }
