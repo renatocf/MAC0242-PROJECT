@@ -1,0 +1,265 @@
+/* adder.jj Adding up numbers */
+options 
+{
+    STATIC = false ;
+}
+PARSER_BEGIN(Parser)
+
+/**
+ * <b>Parser for user Program<b>
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Nascimento Silva
+ */
+public class Parser 
+{
+    public static void main( String[] args )
+        throws ParseException, TokenMgrError 
+    {
+        Parser parser = new Parser(System.in);
+        parser.Start(); 
+    }
+}
+
+PARSER_END(Parser)
+
+SKIP : { " " | "\n" | "\r" | "\r\n"}
+TOKEN : {< LBRACE : "(" >}
+TOKEN : {< RBRACE : ")" >}
+
+TOKEN : {< SIGN : "+"  | "-" >}
+TOKEN : {< OP   : "*"  | "/" >}
+TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
+TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" >}
+
+TOKEN : {< NUMBER : (["0"-"9"])+ ("." (["0"-"9"])+)? >}
+TOKEN : {< WORD   : (["A"-"Z"] | ["a"-"z"] | ["0"-"9"] | "_")+ >}
+
+TOKEN : {< SIGIL  : "#" | "$" | "^" | "!" | "&" >}
+TOKEN : {< DOUBLE : "#" <WORD> >}
+TOKEN : {< VAR    : <SIGIL> <WORD> >}
+
+
+TOKEN : {< EOL : ";" >}
+/**
+ * 
+ * 
+ * 
+ */
+ 
+/**
+ * Defines program expressions.
+ */ 
+void Start() :
+{}
+{
+    (
+        expression()
+        {insert("POP"); }
+        <EOL>
+        { say("--------------------------------"); }
+    )*
+}
+
+/**
+ * Expression is a comparison of Attr's.
+ */
+void expression() :
+{
+    Token   t;
+}
+{
+    attr()
+    (
+        t = <CMP>            
+        attr() 
+        { insert(cmp(t)); }
+    )*
+}
+
+/**
+ * Attr is either a arit or a attribution.
+ */
+void attr() :
+{
+    Token v, a;
+}
+{
+    arit()
+    |
+    (
+        v = <DOUBLE> 
+        a = <ATTR> 
+        arit()
+    )    
+    {attrDouble(v, a);}
+}
+
+/**
+ * Arit is a sum of terms.
+ */
+void arit() :
+{
+    Token   t;
+}
+{
+    term()
+    (
+        t = <SIGN>            
+        term() 
+        { insert(sign(t)); }
+    )*
+}
+
+/**
+ * Term is a product of factors.
+ */
+void term () :
+{
+    Token  t;
+    double value;
+}
+{
+    factor()
+    (
+        t = <OP>
+        factor()
+        { insert(op(t)); }
+    )*
+}
+
+/**
+ * Factor is either a number or a braced expression.
+ */
+void factor () :
+{
+    Token t;
+    double   value;
+}
+{
+    (
+        t = <NUMBER>
+        { value = atof(t); }
+        { PUSH(value);     }
+    )
+    |
+    (
+        <LBRACE> 
+        expression()
+        <RBRACE>
+    )
+
+}
+
+/**
+ * Auxiliar function for 
+ * pushing in the assembly.
+ * @param o Pushed object
+ */
+void PUSH(Object o) :
+{}
+{{    
+    insert("PUSH ", o);
+}}
+
+/**
+ * Print string representation of 
+ * a variable number of objects.
+ * @param obj List of objects
+ */
+void insert(Object ... obj) :
+{
+    String s;
+}
+{{
+    for(Object o: obj)
+    {
+        s = (o == null)? "null" : o.toString();
+        System.out.print(s);
+    }
+    System.out.println();
+}}
+
+void attrDouble(Token var, Token attr) :
+{ String s; }
+{{
+    s = var.image.substring(1);
+    switch(attr.image)
+    {
+        case "=" : insert("SET ", "[", s, "]"); insert("GET ", "[", s, "]"); 
+        /*case "!=": return "NE";
+        case "<" : return "LT";
+        case "<=": return "LE";
+        case ">=": return "GE";
+        case ">" : return "GT";
+        default  : return "\n"; // Invalid operator*/
+    } 
+}}
+
+/**
+ * Auxiliar function - cmp.
+ * @param  t Token with the comparison
+ *           operator
+ * @return String with comparison operator
+ */
+String cmp (Token t) :
+{}
+{{
+    switch(t.image)
+    {
+        case "==": return "EQ";
+        case "!=": return "NE";
+        case "<" : return "LT";
+        case "<=": return "LE";
+        case ">=": return "GE";
+        case ">" : return "GT";
+        default  : return "\n"; // Invalid operator
+    } 
+}}
+
+/**
+ * Auxiliar function - sign.
+ * @param  t Token with the sign
+ * @return Sign of a term
+ */
+String sign (Token t) :
+{}
+{{
+    return t.image.equals("+") ? "ADD" : "SUB"; 
+}}
+
+/**
+ * Auxiliar function - op.
+ * @param  t Token with the operation
+ * @return Operation of a factor
+ */
+String op (Token t) :
+{}
+{{
+    return t.image.equals("*") ? "MUL" : "DIV"; 
+}}
+
+/**
+ * Auxiliar function - atof.
+ * @param  t Token with a double
+ * @return Double value of the token
+ */
+double atof(Token t) :
+{}
+{{    
+    return Double.parseDouble(t.image);
+}}
+
+/**
+ * Auxiliar function - say.<br>
+ * Abbreviation of "System.out.println" 
+ * with debugger purpouses.
+ * @param o Object to be printed
+ */
+private void say(Object o) :
+{
+    String s;
+}
+{{
+    s = (o == null)? "null" : o.toString();
+    System.out.println(s);
+}}
