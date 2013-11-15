@@ -58,9 +58,12 @@ public class Main
         // Menu
         // TODO: automate inserction of programs
         try{
-            World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
-            World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
-            World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+            /* if(!Debugger.info) */
+            /* { */
+                World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
+                World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
+                World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+            /* } */
             
             String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
             for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
@@ -73,9 +76,14 @@ public class Main
         
         // Game main loop
         if(Debugger.info) 
-            for(int t = 0; t < 370; t++) World.timeStep();
-        else
-            while(true) World.timeStep();
+        {
+            for(int t = 0; t < 1000; t++) World.timeStep();
+            /* System.exit(0); // Closes the program */
+            return;
+        }
+        
+        // Run ad infinitum if not debugging
+        while(World.timeStep());
     }
     
     /**
@@ -136,7 +144,6 @@ public class Main
                 //
                 case 5: 
                     arg = g.getOptarg();
-                    System.out.println(Integer.valueOf(arg));
                     Game.RAND = new Random(Integer.valueOf(arg)); 
                     break;
                 //
