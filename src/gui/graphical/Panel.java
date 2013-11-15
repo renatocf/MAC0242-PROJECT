@@ -107,13 +107,13 @@ class Panel extends JPanel
             	cell[i][j].draw(g); 
                           
         // Painting strip
-        //g.setColor(Color.WHITE);
-        //g.fillRect(0, getHeight()/2 - 80, getWidth(), 150);
+        g.setColor(Color.WHITE);
+        g.fillRect(65, getHeight()/2 - 20, getWidth() - 130, 100);
         
         // Painting label
         g.setColor(Color.RED);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
-        g.drawString(this.p + ", YOU LOOSE!", getWidth()/2 - 300, getHeight()/2-5);
+        g.drawString(this.p + ", YOU LOOSE!", getWidth()/2 - 300, getHeight()/2 + 35);
 
 		paintEdge(g);
 
@@ -128,8 +128,8 @@ class Panel extends JPanel
                 cell[i][j].draw(g); 
     	
     	// Painting the strip
-        //g.setColor(Color.WHITE);
-        //g.fillRect(0, getHeight()/2 - 80, getWidth(), 230);
+        g.setColor(Color.WHITE);
+        g.fillRect(65, getHeight()/2 - 60, getWidth() - 130, 190);
         
         //Painting the label
         g.setColor(Color.BLACK);
