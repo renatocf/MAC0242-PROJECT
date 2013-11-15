@@ -487,10 +487,6 @@ CorrectSE:
 
 lookForCrystal:
         ALOC    [nCrystal]
-        ALOC    [lookI]
-        ALOC    [lookJ]
-        SET     [lookI]
-        SET     [lookJ]        
 trySee: SEE
         JIF     trySee
         PUSH    {crystal}
@@ -506,6 +502,8 @@ catch:  POP
         PUSH    1
         SUB
         DUP
+        PUSH    1
+        GE        
         JIF     notFinded
         SET     [nCrystal]
         JMP     catch
@@ -533,8 +531,6 @@ notFinded:
 
 freeLFC:
         FREE    [nCrystal]
-        FREE    [lookI]
-        FREE    [lookJ]
         RET
 
 

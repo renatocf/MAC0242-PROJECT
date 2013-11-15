@@ -11,6 +11,7 @@
         ALOC    [VERT]
         ALOC    [HORI]
         ALOC    [Walk]
+        ALOC    [ENEMYBORDER]
         ALOC    [upperBase]
         PUSH    0
         SET     [VERT]
@@ -27,6 +28,8 @@ askPosition:
         SET     [ROBOTI]
         SET     [ROBOTJ]
 looking:
+        CALL    lookForCrystal
+        JIT     goToTheBase
         GET     [J]
         GET     [I]         
         GET     [ROBOTJ]                
@@ -73,6 +76,8 @@ isUpperBase:
         SET     [J]
         
 keepLooking:
+        CALL    lookForCrystal
+        JIT     goToTheBase
         GET     [J]
         GET     [I]         
         GET     [ROBOTJ]                
@@ -139,6 +144,168 @@ up:
         SET     [HORI]
         JMP     keepLooking 
            
+goToTheBase:
+        GET     [ENEMYBASEI]
+        GET     [ENEMYBASEJ]
+        SET     [J]
+        SET     [I]
+
+run:
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     WhatNowIII
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     run
+                
+WhatNowIII:
+        POP
+        POP
+        GET     [upperBase]
+        JIT     lookDown
+        GET     [ROBOTI]
+        GET     [ENEMYBORDER]
+        GE
+        JIF     baseNotNear
+        GET     [ROBOTJ]
+        GET     [ENEMYBORDER]
+        GE
+        JIF     baseNotNear
+        JMP     lookForBase
+
+lookDown:
+        GET     [ROBOTI]
+        GET     [ENEMYBORDER]
+        LE
+        JIF     baseNotNear
+        GET     [ROBOTJ]
+        GET     [ENEMYBORDER]
+        LE
+        JIF     baseNotNear
+        JMP     lookForBase
+        
+lookForBase:
+        CALL    lookBase
+        JIT     2
+        PRN     
+baseNotNear:        
+        CALL    arrive
+        JIT     findEnemyBase
+        CALL    almostThere
+        JIT     popFindEnemyBase
+        CALL    evade
+        JIT     run
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    attackDestiny
+        JMP     run
+        
+popFindEnemyBase:
+        POP
+findEnemyBase:
+        PUSH    Procurando
+        PRN
+        NOP
+        JMP     -1 
+        
+lookBase:
+        ALOC    [nBase]
+        SEE
+        JIF     -1
+        PUSH    Base
+        SEEK
+        DUP
+        JIF     notFindedLB
+        SET     [nBase]
+catchLB:
+        POP
+        DRAG
+        JIT     cleanStackLB    
+        GET     [nBase]
+        PUSH    1
+        SUB
+        DUP
+        PUSH    1
+        GE        
+        JIF     notFindedLB
+        SET     [nBase]
+        JMP     catchLB
+        
+cleanStackLB:
+        GET     [nBase]
+        PUSH    1
+        SUB
+        DUP
+        JIF     findedLB
+        SET     [nBase]
+        JMP     cleanStackLB
+        
+findedLB:
+        POP
+        PUSH    1
+        JMP     freeLB
+
+notFindedLB:
+        POP
+        PUSH    0
+        JMP     freeLB
+
+freeLB:
+        FREE    [nBase]
+        RET
+                   
+                   
+lookForCrystal:
+        ALOC    [nCrystal]
+trySee: SEE
+        JIF     trySee
+        PUSH    {crystal}
+        SEEK
+        DUP
+        JIF     notFinded
+        SET     [nCrystal]
+
+catch:  POP
+        DRAG
+        JIT     cleanStack     
+        GET     [nCrystal]
+        PUSH    1
+        SUB
+        DUP
+        PUSH    1
+        GE        
+        JIF     notFinded
+        SET     [nCrystal]
+        JMP     catch
+        
+cleanStack:
+        GET     [nCrystal]
+        PUSH    1
+        SUB
+        DUP
+        JIF     finded
+        SET     [nCrystal]
+        JMP     cleanStack
+        
+finded:
+        POP
+        PUSH    1
+        JMP     freeLFC
+
+notFinded:
+        POP
+        PUSH    0
+        JMP     freeLFC
+
+freeLFC:
+        FREE    [nCrystal]
+        RET
+           
 
 arrive:
         GET     [I]
@@ -174,7 +341,7 @@ askBase:
         GET     [MAPSIZE]
         PUSH    1
         ADD
-        PUSH    5
+        PUSH    10
         DIV
         LT
         JIF     upperBase
@@ -188,6 +355,10 @@ askBase:
         SET     [ENEMYBASEJ]
         PUSH    -3
         SET     [DIRECTION]
+        GET     [MAPSIZE]
+        PUSH    10
+        DIV
+        SET     [ENEMYBORDER]
         RET
 
 upperBase:
@@ -201,6 +372,12 @@ upperBase:
         SET     [ENEMYBASEJ]
         PUSH    3
         SET     [DIRECTION]
+        GET     [MAPSIZE]
+        DUP
+        PUSH    10
+        DIV
+        SUB
+        SET     [ENEMYBORDER]
         RET
 
 mvtw:
@@ -515,7 +692,7 @@ maybeFar:
         SUB
         PUSH    1
         EQ
-        JIT     nearE
+        JIT     almostJ
         GET     [ROBOTJ]
         GET     [J]
         SUB
@@ -523,7 +700,7 @@ maybeFar:
         PUSH    1
         SUB
         EQ
-        JIT     nearW
+        JIT     almostJ
         JMP     far
         
                 
