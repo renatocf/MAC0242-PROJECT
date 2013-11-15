@@ -66,6 +66,22 @@ final public class Jumps
                 throw new OutOfBoundsException();
             }
         } 
+        else if(arg instanceof Num)
+        {
+            Num relative = (Num) arg; 
+            int index = (int) relative.getNumber();
+            
+            try {
+                if(rvm.PROG.elementAt(rvm.PC + index) != null) 
+                    rvm.PC += (index-1);
+                    // Sets the counter to the index -1, 
+                    // to be able to increment in each 
+                    // iteration of a for loop.
+            }
+            catch (Exception e) {
+                throw new OutOfBoundsException();
+            }
+        }
         else if(arg instanceof Text) 
         {
             Text text = (Text) arg;
