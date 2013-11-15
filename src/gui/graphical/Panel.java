@@ -108,7 +108,7 @@ class Panel extends JPanel
                           
         // Painting strip
         g.setColor(Color.WHITE);
-        g.fillRect(65, getHeight()/2 - 20, getWidth() - 130, 100);
+        g.fillRect(65, getHeight()/2 - 60, getWidth() - 130, 190);
         
         // Painting label
         g.setColor(Color.RED);
@@ -132,12 +132,12 @@ class Panel extends JPanel
         g.fillRect(65, getHeight()/2 - 60, getWidth() - 130, 190);
         
         //Painting the label
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLUE);
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
         g.drawString(this.p + ", YOU WIN!", getWidth()/2 - 280, getHeight()/2-15);
 		
 		
-        //g.setColor(Color.GREEN);
+        g.setColor(Color.GREEN);
         g.setFont(new Font("Arial Black", Font.BOLD, 30));
         g.drawString("Number of Times:   " + this.nTS     , getWidth()/2 - 280, getHeight()/2 + 35);
         g.drawString("Number of Players: " + this.nPlayers, getWidth()/2 - 280, getHeight()/2 + 66);
@@ -174,7 +174,7 @@ class Panel extends JPanel
         	g2d.drawImage(imga, getWidth() - 60, getHeight()/2 + 40, null);
         	g2d.drawImage(imga, getWidth() - 60, getHeight()/2 + 110, null);
        	
-       	for(int i = 28; i < getWidth() - 28; i = i + 35)
+       	for(int i = 28; i < getWidth() - 93; i = i + 35)
        	{
 			g2d.drawImage(imga, i, getHeight()/2 - 100, null);
    			g2d.drawImage(img , i, getHeight()/2 + 145, null);	
