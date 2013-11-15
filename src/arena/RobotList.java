@@ -23,7 +23,7 @@ import static parameters.Game.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class RobotList implements Iterable<Robot>
+final public class RobotList implements Iterable<Robot>
 {
     // Robot's list and info
     private Robot[] armies;
@@ -37,7 +37,8 @@ public class RobotList implements Iterable<Robot>
     final private Random rand = new Random();
     
     // Last empty space
-    int emptySpace = 0;
+    private int population = 0;
+    private int emptySpace = 0;
     
     /**
      * Default Constructor<br>
@@ -64,6 +65,7 @@ public class RobotList implements Iterable<Robot>
         armies[emptySpace++] = robot;
         speedy.put(robot.ID, 1.0 * robot.speed);
         actions.put(robot, null);
+        population++;
     }
     
     /**
@@ -182,6 +184,16 @@ public class RobotList implements Iterable<Robot>
     }
     
     /**
+     * Number of robots created.
+     * @return Number of robots built 
+     *         along the game
+     */
+    int getPopulation()
+    {
+        return this.population;
+    }
+    
+    /**
      * Quicksort implementation to be
      * used over the Robot List.
      * @param begin Start of the subarray
@@ -255,28 +267,20 @@ public class RobotList implements Iterable<Robot>
             this.emptySpace = emptySpace;
         }
         
+        /* Interface Iterator */
         public boolean hasNext()
         {
-            //String pre = "[Iterator] ";
-            //if(nextRobot + 1 != emptySpace)
-            //{
-            //    Debugger.say("\n", pre, "Has next!");
-            //    Debugger.say(pre, "[nextRobot:", 
-            //                 armies[nextRobot+1], "]");
-            //    Debugger.say(pre, "[emptySpace:", 
-            //                 emptySpace, "]");
-            //}
-            //else Debugger.say("\n", pre, "No next...");
             return nextRobot + 1 != emptySpace;
         }
         
+        /* Interface Iterator */
         public Robot next()
         {
-            /* Debugger.say("[Iterator] Getting next!"); */
             nextRobot++;
             return armies[nextRobot];
         }
         
+        /* Interface Iterator */
         public void remove()
         {
             Robot r = armies[nextRobot];
