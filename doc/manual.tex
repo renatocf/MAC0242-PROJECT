@@ -138,8 +138,12 @@ E para iniciar o jogo:
  	\item Digite : \$ \textit{ java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2} 
 \end{enumerate}
 
-Observação: Na pasta "behaviors" você pode encontrar exemplos de programas de robô para testar.
+Observação: Na pasta "behaviors" você pode encontrar exemplos de 
+programas de robô para testar.
 Eles são "Carrier.asm", "Protector.asm", "ScouDU.asm" e "ScoutUD.asm".
+
+Para poder utilizar esses programas, você deve carregá-los. Saiba 
+como fazer isso em "Utilitários".
 
 \bigskip
 
@@ -163,21 +167,18 @@ Para jogar cada um deles, basta iniciar o programa do seguinte modo:
 
 \begin{itemize}
 
-	\item Artical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2 --artical\end{verbatim}
+	\item Artical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --artical\end{verbatim}
 
-	\item Tropical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2 --tropical\end{verbatim}
-
-	\item Desertic --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2 --desertic\end{verbatim}
-
-	\item Continental --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2 --continental\end{verbatim}
-
-
+	\item Continental --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --continental\end{verbatim}
+	
+	\item Desertic --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --desertic\end{verbatim}
+	
+	\item Tropical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --tropical\end{verbatim}
 
 \end{itemize}
 
-\bigskip
-\bigskip
 
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {\textcolor{NavyBlue}{\LARGE exemplos:}
 
@@ -185,22 +186,47 @@ Para jogar cada um deles, basta iniciar o programa do seguinte modo:
 
 \begin{figure}[h]
 	\centering
-    \includegraphics[scale=0.3]{TROPICAL.png}
-    \caption{Tropical}
+    \includegraphics[scale=0.3]{img/artical.png}
+    \caption{Artical}
 \end{figure}
 
 \bigskip
 
 \begin{figure}[h]
    	\centering
-    \includegraphics[scale=0.3]{ARTICAL.png}
-    \caption{Artical}
+    \includegraphics[scale=0.3]{img/continental.png}
+    \caption{Continental}
+\end{figure}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+   	\centering
+    \includegraphics[scale=0.3]{img/desertic.png}
+    \caption{Desertic}
+\end{figure}
+
+\begin{figure}[h]
+   	\centering
+    \includegraphics[scale=0.3]{img/tropical.png}
+    \caption{Tropical}
 \end{figure}
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {\textcolor{NavyBlue}{\LARGE Utilitários}
 \begin{itemize}
+
+	\bigskip
+
+	\item Se quiser modificar o tamanho da arena,
+	coloque "-large" ao final do comando que inicia
+	o programa:
+	
+	\$ \textit {java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --artical -large}
+
+	\bigskip
+
 	\item Para utilizar os programas para os 
 	robôs, compile-os com:
 
@@ -217,6 +243,10 @@ Para jogar cada um deles, basta iniciar o programa do seguinte modo:
 	\bigskip
 \end{itemize}
 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
 
 {\textcolor{NavyBlue}{\LARGE DOCUMENTAÇÃO }
 
