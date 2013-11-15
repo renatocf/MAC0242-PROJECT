@@ -48,8 +48,9 @@ public class Main
         String[] args = getopt(argv); // Get options
         
         // Help and Usage
-        if(help)            { help();                    return; }
-        if(args.length < 3) { System.err.println(USAGE); return; }
+        if(help) { help(); return; }
+        if(args.length > Game.ROBOTS_NUM_INITIAL) 
+        { System.err.println(USAGE); return; }
         
         // Generate map
         Player[] p = World.genesis(2, Game.WEATHER, GUI, Game.RAND);
@@ -61,9 +62,9 @@ public class Main
             World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
             World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
             
-            World.insertArmy(p[1], "Boomer"         , args[0]);
-            World.insertArmy(p[1], "Number Eighteen", args[1]);
-            World.insertArmy(p[1], "Optimus Prime"  , args[2]);
+            String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
+            for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
+                World.insertArmy(p[1], names[i], args[i]);
         }
         catch(SegmentationFaultException e)
         {
