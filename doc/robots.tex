@@ -337,6 +337,11 @@
 		As classes desse package são chamadas pelas outras classes
 		que utilizam essa forma de mandar exceção.
 		
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+		
 	\subsection{GUI}
 		A classe para modo texto da GUI percorre a matriz hexagonal 
 		observando as características presentes em cada um dos terrenos 
@@ -388,6 +393,8 @@
             Ele também cria a área de texto onde são exibidas as 
             mensagens do jogo, como erro de código do programa do 
             usuário ou carregamento de determina imagem.
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         \subsubsection{ graphical/Panel.java }
             É responsável pela imagem que será impressa no painel,
@@ -406,9 +413,10 @@
         
         \subsubsection{ graphical/Scrollable.java }
             É a classe que representa o JPanel com movimentação da imagem.
-            Ele recebe os eventos do teclado das setas ↑, ↓, ← e →
-            e movimenta a tela de acordo com a seta utilizada, funciona de
-            modo análogo a barra de rolagem.
+            Ele recebe os eventos do teclado das setas cima,
+             baixo, direita e esquerda.
+            Movimentando a tela de acordo com a seta utilizada, funciona 
+            de modo análogo a barra de rolagem.
         
         \subsubsection{ textual/* }
             Esse jogo também pode ser exibido em modo texto (caractéres),
@@ -417,13 +425,28 @@
             Essa pasta contém classes que printam o jogo no terminal.
                         
         \subsubsection{ GUI.java }
-        
+            É uma interface que padroniza as funções de todas que todos
+            os modos de exibição (interfaces) devem ter.
+            De acordo com ela, tanto a inteface gráfica quanto a textual
+            devem ter as funções que pintam, pintam mapa, pintam o mini
+            mapa, imprimem texto e avisam quem é o ganhador e o 
+            perdedor.
         
         \subsubsection{ Interfaces.java }
+		    É uma estrutura chamada Enum, onde dizemos que as
+		    interfaces podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{TEXTUAL} e
+		    {\textcolor{NavyBlue}{GRAPHICAL}
         
         \subsubsection{ Printable.java }
-            
-    
+            É uma interface que reprenta tudo que pode ser graficamente
+            impresso.
+            Todas os objetos desse tipo devem ter uma função que retorna
+            seu nome (String).
+        
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 	\subsection{Main}
         O package main contém a classe de mesmo nome, com o método
         main como principal. Esta classe é a responsável por receber
@@ -438,6 +461,11 @@
         do Ant. Ambas as bibliotecas são distribuídas com a licensa
         GNU GLP v3.0, e são o porte para Java da biblioteca getopt
         do C.
+        
+\bigskip
+\bigskip
+\bigskip
+\bigskip     
 		 
 	\subsection{Operation}
 		\subsubsection{ Operation.java }
@@ -448,6 +476,10 @@
 			Para a sua construção, ela necessita receber a RVM, juntamente
 			com a ação que o robô deseja realizar.
 			
+\bigskip
+\bigskip
+\bigskip
+\bigskip	
 	
 	\subsection{Parameters}
 		\subsubsection{ Debugger.java }
@@ -466,6 +498,10 @@
 		    características configuracionais do jogo e caso
 		    necessitem ser alteradas, todas estarão no mesmo lugar.
 		    
+\bigskip
+\bigskip
+\bigskip
+\bigskip	
 		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
