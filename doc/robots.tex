@@ -487,21 +487,31 @@
 			pois mostra passo a passo, como o programa do usuário
 			está sendo lido e interpretado.
 			
-		
 		\subsubsection{ Game.java     }
-		    É uma interface que detém as características do jogo 
+		    É uma classe que detém as características do jogo 
 		    que serão passadas para muitas outras classes.
 		    Tais como a velocidade da animação, o tamanho do mapa,
 		    o número máximo de robôs, entre outras.
 		    
-		    Ela foi criada para ter um amior controle das 
+		    Ela foi criada para ter um maior controle das 
 		    características configuracionais do jogo e caso
 		    necessitem ser alteradas, todas estarão no mesmo lugar.
 		    
-\bigskip
-\bigskip
-\bigskip
-\bigskip	
+        \subsubsection{ Costs.java    }
+            É uma classe que contém as características dos robôs 
+            relativas aos custos (energia que um robô irá gastar
+            ou receber para determinado tipo de operação) tais como
+            o quanto ele receberá por rodada e a energia baixa, média
+            e alta que o robô gasta.
+            Essas características são facilmente modificadas, pois 
+            estão agrupadas no mesmo lugar.
+            
+        \subsubsection{ Verbosity.java }
+            É um dos métodos debug, que usa a função de impressão
+            na tela.
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
@@ -515,8 +525,37 @@
 		    diretório do package.
 
             Estes parsers criados, então, ficam armazenados como 
-            parte do package Parser.
-				
+            parte do package Parser.			
+     
+\bigskip
+\bigskip
+\bigskip
+\bigskip	
+
+    \subsection{Players}
+        \subsubsection{ Player.java }
+            Essa classe é responsável pelas características e funções
+            relacionadas aos jogadores (ao time).
+            No caso, cada jogador ou time terá um nome, uma base e
+            uma cor de robôs, além das funções de adição e remoção de 
+            um robô ao time e getters das informações desse jogador.
+            
+        \subsubsection{ Base.java }
+            Representa as bases em si.
+            Cada base, contendo características como posição, número
+            de cristais e o jogador a que ela pertence.
+            Possui as funções de acrescentar cristais, receber dano
+            (que no caso, não faz nada, pois ao ser atacada a base não
+            perde vidas) e getters das informações da base.
+            
+            A base tem um número escolhido ao acaso (42) de vidas,
+            portanto, quando formos retornar o HP, sempre será 42. Já
+            que a base, ao ser atacada, não recebe danos.
+            
+		    E ao imprimirmos uma base, teremos como resultado
+		    "(ß) Base".
+                   			
+                   			
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\subsection{Random}
@@ -581,8 +620,8 @@
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\subsection{Robot}
-	    Esse package cuida das funções atreladas aos robôs
-	    si, entre elas está a RVM e as funções que interpretam
+	    Esse package cuida das funções atreladas aos robôs em
+ 	    si, entre elas está a RVM e as funções que interpretam
 	    os comandos utilizados pelos usuários.
 	    
 		\subsubsection{ Arit.java }
@@ -730,6 +769,10 @@
 		    outro comando) o que faz com que o programa seja
 		    finalizado.
 		    
+		\subsubsection{ Returns.java }    
+		    É uma interface que cuida dos retornos do sistema, onde
+		    ele atribui 1 ou 0 para cada tipo de retorno.
+		    
 		\subsubsection{ RVM.java }
 			A \emph{Robot Virtual Machine} (\textbf{RVM}) é a classe 
         	principal que controla o 'cérebro' dos robôs, servindo como o
@@ -751,6 +794,16 @@
 		        \item LABEL: Hash com as posições associadas a cada LABEL
 		                     criado como marcador no código da RVM.
 		    \end{itemize}
+				
+        \subsubsection{ State.java }
+		    É uma estrutura chamada Enum, onde dizemos que os
+		    estados podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{SLEEP} e
+		    {\textcolor{NavyBlue}{ACTIVE}.
+		    
+		    Assim, quando o robô não tiver mais energia, por
+		    exemplo, seu estado será SLEEP e o robô não terá
+		    mais movimentos.				
 				
 		\subsubsection{ Stk.java }
 		    Cuida das funções que mexem diretamente com a
@@ -833,23 +886,15 @@
 	    Nesse package, temos as classes que representam
 	    os vários tipos de elementos contidos nocenários do 
 	    jogo.
-	    Para o controle desses elementos. usamos a interface
+	    Para o controle desses elementos, usamos a interface
 	    Scenario que além de padronizar o tipo de dado,
 	    força todas as classes a terem uma função que
 	    cuida dos danos adquiridos ao decorrer do jogo
 	    (por exemplo, quando uma pedra é atacada por um robô,
 	    ela perde vidas, e perdendo um determinado número de
-	    vidas, ela é destruida.
+	    vidas, ela é destruida).
 	    
-	    Dentre eles há a base, as rochas, árvores e água.
-	    
-		\subsubsection{ Base.java }
-		    A base tem um número escolhido ao acaso (42) de
-		    vidas, portanto, quando formos retornar o HP,
-		    sempre será 42. Já que a base, ao ser atacada,
-		    não recebe danos.
-		    E ao imprimirmos uma base, teremos como resultado
-		    "(ß) Base".
+	    Dentre eles há rochas, árvores e água.
 		
 		\subsubsection{ Rock.java }
 		    A pedra retira o dano recebido do seu HP(vida) e
@@ -1020,7 +1065,7 @@
 			preenche a matriz com as direções que são recebidas
 			como parâmetro.
 		
-		\subsubsection { Item }
+	**	\subsubsection { Item }
 			Item não é uma classe, é uma pasta com as 
 			classes que representam objetos do tipo item
 			(implementam a interface de itens),
@@ -1054,6 +1099,24 @@
     		{\textcolor{NavyBlue}{ public String toString()}
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
+			
+	    \subsubsection { Stack.java }
+	        Essa classe controla as pilhas.
+	        Desta forma, deve armazenar um vetor que contém
+	        os valores que deverão ser armazenados na pilha,
+	        além do controle com seu topo e seu tamanho
+	        (esse controle é feito por variáveis do objeto).
+	        
+	        Nessa classe, temos a função que retorna o topo,
+	        a que verifica se a pilha está vazia, a que dá push
+	        (coloca no topo da pilha) e pop (tira o topo da 
+	        pilha) e temos também a função que duplica o vetor
+	        da pilha, pois, em JAVA, um vetor pode ser criado
+	        somente se colocamos seu tamanho como um parâmetro
+	        fixo, e como não sabemos o seu tamanho inicialmente,
+	        duplicamos a pilha caso metade dela já esteja 
+	        preenchida (isso é verificado na função ).
+	         
 			
 		\subsubsection { Stackable.java }
 			É a interface Stackable que se responsabiliza
