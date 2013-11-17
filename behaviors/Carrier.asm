@@ -15,11 +15,11 @@
         ALOC    [Walk]
         ALOC    [ENEMYBORDER]
         ALOC    [upperBase]
-        ALOC    [AlreadyLook]
+        ALOC    [nOfEvade]
         ALOC    [LASTCRYSTALI]
         ALOC    [LASTCRYSTALJ]
-        PUSH    1
-        SET     [AlreadyLook]
+        PUSH    0
+        SET     [nOfEvade]
         PUSH    0
         DUP
         SET     [VERT]
@@ -44,16 +44,25 @@ begin:
         SET     [J]        
         
 looking:
-        GET     [AlreadyLook]
-        JIT     3
         CALL    lookForCrystal
         JIT     goToTheBase
-        GET     [AlreadyLook]
-        PUSH    1
-        ADD
-        PUSH    2
-        MOD
-        SET     [AlreadyLook]
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     tryAgain
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     looking
+        
+tryAgain:
+        POP
+        POP
+        CALL    arrive
+        JIT     start
+        CALL    almostThere
+        JIT     popStart
         GET     [J]
         GET     [I]         
         GET     [ROBOTJ]                
@@ -63,14 +72,10 @@ looking:
         SET     [ROBOTI]
         SET     [ROBOTJ]
         JMP     looking
-        
+
 WhatNow:
         POP
         POP
-        CALL    arrive
-        JIT     start
-        CALL    almostThere
-        JIT     popStart
         CALL    evade
         JIT     looking
         GET     [J]
@@ -91,18 +96,32 @@ keepLooking:
         GET     [ROBOTJ]                
         GET     [ROBOTI]        
         CALL    mvtw
-        JIF     WhatNowII
+        JIF     tryAgainII
         SET     [ROBOTI]
         SET     [ROBOTJ]
         JMP     keepLooking
 
-WhatNowII:  
+tryAgainII:
         POP
         POP
         CALL    arrive
         JIT     next
         CALL    almostThere
         JIT     popNext
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     WhatNowII
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     keepLooking
+
+
+WhatNowII:  
+        POP
+        POP
         CALL    evade
         JIT     keepLooking
         GET     [J]
@@ -187,18 +206,25 @@ lookDown:
         JMP     lookForBase
 
 lookForBase:
-        GET     [AlreadyLook]
-        JIF     3
         CALL    lookBase
         JIT     begin
-        GET     [AlreadyLook]
-        PUSH    1
-        ADD
-        PUSH    3
-        MOD
-        SET     [AlreadyLook]
 
 baseNotNear:
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     tryAgainIII
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     run
+        
+tryAgainIII:
+        POP
+        POP
+        CALL    arrive
+        JIT     findEnemyBase
         GET     [J]
         GET     [I]         
         GET     [ROBOTJ]                
@@ -208,14 +234,10 @@ baseNotNear:
         SET     [ROBOTI]
         SET     [ROBOTJ]
         JMP     run
-                
+     
 WhatNowIII:
         POP
         POP
-        CALL    arrive
-        JIT     findEnemyBase
-        CALL    almostThere
-        JIT     popFindEnemyBase
         CALL    evade
         JIT     run
         GET     [J]
@@ -240,19 +262,33 @@ lookingBase:
         GET     [I]         
         GET     [ROBOTJ]                
         GET     [ROBOTI]        
-        CALL    mvtw
-        JIF     whatNowIV
+            CALL    mvtw
+        JIF     tryAgainIV
         SET     [ROBOTI]
         SET     [ROBOTJ]
         JMP     lookingBase
-        
-whatNowIV:
+
+tryAgainIV:
         POP
         POP
         CALL    arrive
         JIT     nextFB
         CALL    almostThere
         JIT     popNextFB
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     whatNowIV
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     lookingBase
+
+
+whatNowIV:
+        POP
+        POP
         CALL    evade
         JIT     lookingBase
         GET     [J]
@@ -852,6 +888,14 @@ far:    PUSH    0
         RET
 
 evade:
+        GET     [nOfEvade]
+        PUSH    1
+        ADD
+        SET     [nOfEvade]
+        GET     [nOfEvade]
+        PUSH    10
+        MOD
+        JIF     justAttack
         GET     [I]
         GET     [ROBOTI]
         EQ
@@ -1085,6 +1129,15 @@ CorrectSE:
         ADD
         SET     [ROBOTI]
         PUSH    1
+        RET
+        
+justAttack:
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    attackDestiny
+        PUSH    0
         RET
 
 attackDestiny:

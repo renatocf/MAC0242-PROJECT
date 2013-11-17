@@ -84,15 +84,27 @@ enum Images implements ROOT
     
     // Technology
     BLACK_ROBOT  ( TEC, "Robot.png",    15, 15  ),
+    BLACK_ROBOTR ( TEC, "Right.png",    15, 15  ),
+    BLACK_ROBOTL ( TEC, "Left.png",     15, 15  ),
+    BLACK_ROBOTB ( TEC, "Back.png",     15, 15  ),
     BLACK_BASE   ( TEC, "Base.png",     18, 50  ),
     
     GREEN_ROBOT  ( TEC, "Robot.png",    15, 15  ),
+    GREEN_ROBOTR ( TEC, "Right.png",    15, 15  ),
+    GREEN_ROBOTL ( TEC, "Left.png",     15, 15  ),
+    GREEN_ROBOTB ( TEC, "Back.png",     15, 15  ),
     GREEN_BASE   ( TEC, "Base.png",     18, 50  ),
     
     BLUE_ROBOT   ( TEC, "Robot.png",    15, 15  ),
+    BLUE_ROBOTR  ( TEC, "Right.png",    15, 15  ),
+    BLUE_ROBOTL  ( TEC, "Left.png",     15, 15  ),
+    BLUE_ROBOTB  ( TEC, "Back.png",     15, 15  ),
     BLUE_BASE    ( TEC, "Base.png",     18, 50  ),
     
     RED_ROBOT    ( TEC, "Robot.png",    15, 15  ),
+    RED_ROBOTR   ( TEC, "Right.png",    15, 15  ),
+    RED_ROBOTL   ( TEC, "Left.png",     15, 15  ),
+    RED_ROBOTB   ( TEC, "Back.png",     15, 15  ),
     RED_BASE     ( TEC, "Base.png",     18, 50  ),
     
     // General

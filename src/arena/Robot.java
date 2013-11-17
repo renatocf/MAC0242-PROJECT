@@ -32,7 +32,7 @@ public class Robot implements Scenario, Printable
     final protected String name;
     final protected Player team;
     final protected int    ID;
-    
+    protected       String pos;    
     // Position
     protected int     i; // Line
     protected int     j; // Column
@@ -91,6 +91,7 @@ public class Robot implements Scenario, Printable
     {
         // ID
         this.name = baptism;
+        this.pos  = "";
         this.team = team;
         this.ID   = ID;
         
@@ -272,6 +273,20 @@ public class Robot implements Scenario, Printable
      */
     public Player getTeam () { return this.team; }
     
+    public void setPos(String mov)
+    {
+        switch (mov)
+        {
+            case "->SE" :
+            case "->SW" : this.pos = "" ; break;
+            case "->NW" :
+            case "->NE" : this.pos = "B"; break;
+            case "->E"  : this.pos = "R"; break;
+            case "->W"  : this.pos = "L"; break;
+            default     : this.pos = "" ;
+        }
+    }
+    
     // Interface scenario
     public int takeDamage(int damage)
     {
@@ -287,7 +302,7 @@ public class Robot implements Scenario, Printable
     public int getMaxPower () { return this.maxPower; }
     
     // Printable interface
-    public String name() { return "ROBOT"; }
+    public String name() { return "ROBOT" + pos; }
     
     protected int move()
     {

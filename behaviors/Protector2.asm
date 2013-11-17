@@ -26,11 +26,11 @@
 begin:
         GET     [BASEI]
         PUSH    2
-        ADD
+        SUB
         SET     [I]
         GET     [BASEJ]
         PUSH    2
-        ADD
+        SUB
         SET     [J]
         CALL    goThere
         GET     [PHASE]
@@ -40,17 +40,19 @@ begin:
 PhaseZero:
         GET     [BASEI]
         PUSH    1
-        SUB
+        ADD
         SET     [I]
         GET     [BASEJ]
         PUSH    2
-        ADD
+        SUB
         SET     [J]
         GET     [I]
-        PUSH    -1
-        GE
-        JIF     3     
-        PUSH    0
+        GET     [MAP_SIZE]
+        LE
+        JIF     5
+        GET     [MAP_SIZE]
+        PUSH    1
+        SUB
         SET     [I]
         CALL    goThere
         PUSH    1
@@ -60,17 +62,19 @@ PhaseZero:
 PhaseOne:
         GET     [BASEI]
         PUSH    2
-        ADD
+        SUB
         SET     [I]
         GET     [BASEJ]
         PUSH    1
-        SUB
+        ADD
         SET     [J]
         GET     [J]
-        PUSH    -1
-        GE
-        JIF     3     
-        PUSH    0
+        GET     [MAP_SIZE]
+        LE
+        JIF     5
+        GET     [MAP_SIZE]
+        PUSH    1
+        SUB
         SET     [J]
         CALL    goThere
         PUSH    0
@@ -127,7 +131,7 @@ lookForRobot:
         ALOC    [nRobot]
 trySee: SEE
         JIF     trySee
-        PUSH    Robot2
+        PUSH    Robot1
         SEEK
         DUP
         JIF     donthits

@@ -43,7 +43,14 @@ public class Around implements Stackable
                 {
                     matrix[0][i] = "Base";
                 }
-
+                
+                //Adjusting the String for simplicity
+                if(matrix[0][i].equals("arena.Robot") && i != 0)
+                {
+                    Robot r = (Robot) s;
+                    matrix[0][i] = "Robot" + r.getTeam().getID();
+                }
+                
                 stackable.item.Item it = seeing[i].getItem(); 
                 if(it == null) matrix[1][i] = " ";
                 else          matrix[1][i] = it.getClass().getName();
