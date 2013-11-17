@@ -18,6 +18,7 @@
     [X] Configure Ant for running javacc
     [ ] Update website info. (PHASE 3)
     [ ] Create a system for removing player.
+    [ ] Make one GUI per player.
     [ ] Add player nickname.
     
 [Vinícius]
@@ -25,7 +26,7 @@
     [X] Create robot behaviors.
     [X] Test new ASK with base.
     [X] Fix carrier to get player's base position.
-    [ ] Fix the behaviors.
+    [X] Fix the behaviors. (PHASE 3)
     [ ] Separate robot's images.
     
 [All]
