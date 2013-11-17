@@ -62,13 +62,13 @@ public final class Game
      * <b>Screen: Width</b><br>
      * inicial width of the main window.
      */
-    public static int SCREEN_WIDTH  = 720;
+    public static int SCREEN_WIDTH  = 725;
 
     /**
      * <b>Screen: Height</b><br>
      * inicial height of the main window.
      */
-    public static int SCREEN_HEIGHT = 720;
+    public static int SCREEN_HEIGHT = 775;
 
     /**
      * <b>Map: weather</b><br>
