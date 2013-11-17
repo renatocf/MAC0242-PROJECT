@@ -204,8 +204,8 @@ class Winter extends Theme
         int[][] coord = new int[2][t];
         for(int j = 0; j < t; j++)
         {
-            coord[0][j] = points[0][j];
-            coord[1][j] = points[1][j];
+            coord[0][j] = points[0][j]-1;
+            coord[1][j] = points[1][j]-1;
         } 
         return coord;
     }   
