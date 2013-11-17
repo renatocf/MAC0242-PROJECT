@@ -77,13 +77,13 @@ public class Main
         // Game main loop
         if(Debugger.info) 
         {
-            for(int t = 0; t < 1000; t++) World.timeStep();
-            /* System.exit(0); // Closes the program */
-            return;
+            for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
+            System.exit(0);
         }
         
         // Run ad infinitum if not debugging
         while(World.timeStep());
+        System.exit(0);
     }
     
     /**
