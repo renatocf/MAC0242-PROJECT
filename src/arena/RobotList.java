@@ -218,7 +218,6 @@ final public class RobotList implements Iterable<Robot>
     {
         int     i = begin -1;
         Robot   x = armies[end];
-        
         for(int j = begin; j <= end; j++)
             if(cmpLessRobot(armies[j], x))
             {
@@ -237,8 +236,8 @@ final public class RobotList implements Iterable<Robot>
      */
     private boolean cmpLessRobot(Robot robotA, Robot robotB)
     {
-        if(robotA == null) return false;
         if(robotB == null) return true;
+        if(robotA == null) return false;
         
         /* Comparison function */
         double costA = speedy.get(robotA.ID);
