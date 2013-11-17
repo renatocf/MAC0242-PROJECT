@@ -2,10 +2,10 @@
     [X] Finish documentation (LaTeX). (PHASE 2)
     [X] Create game_over function.
     [X] Count the number of robots that were created.
-    [ ] Paint who was the winner.
-    [ ] Paint additional info in the end of the game.
-    [ ] Put the phases of game in the correct time.
-    [ ] Correct documentations. (PHASE 3)
+    [X] Paint who was the winner.
+    [X] Paint additional info in the end of the game.
+    [X] Put the phases of the game in the correct time.
+    [X] Correct documentations. (PHASE 3)
     
 [Renato]
     [X] Fix parser.pl to accept many files.
@@ -15,6 +15,7 @@
     [X] Correct Ant to store new files.
     [X] Scroll with keys.
     [X] Add/Correct javadoc in package gui.graphical.
+    [X] Configure Ant for running javacc
     [ ] Update website info. (PHASE 3)
     [ ] Create a system for removing player.
     [ ] Add player nickname.
@@ -61,11 +62,15 @@
     [X] Add LaTeX images on git again.
     [X] Create relative-address Jump.
     [X] Add counter for number of robots.
-    [ ] Finish text editor.
+    [ ] Configure editor for writing.
+    [ ] Finish variables attribution in Parser.jj.
+    [ ] Describe functions in Parser.jj.
+    [ ] Describe loops in Parser.jj.
+    [ ] Describe if-else in Parser.jj.
     [ ] Add buttons to put new robots.
     [ ] Create a mini-map graphical representation.
     [ ] Find more theme-specific images.
-    [ ] Finish GUI.
     [ ] Create new system for priorities.
     [ ] Add option for playing again.
     [ ] Create menu.
+    [ ] Add priority switch-case in the language.
