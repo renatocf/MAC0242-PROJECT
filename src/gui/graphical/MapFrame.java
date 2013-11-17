@@ -37,9 +37,6 @@ class MapFrame extends JFrame
     private Map map;
     private JTextArea log;
     
-    // Screen dimensions
-    private int SCREEN_WIDTH  = 725;    
-    private int SCREEN_HEIGHT = 787;
     
     /** 
      * Default constructor.<br>
@@ -52,16 +49,16 @@ class MapFrame extends JFrame
         
         /* TODO: Take out hardcoded strings */
         this.setTitle("Robot's Battle");
-        this.setSize(725,787);
+        this.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.validate();
         this.setLocationRelativeTo(null);
                 
         this.screen = new Panel(25, 
             (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-            (int)(25.5*3*MAP_SIZE/2), 32, map);
+            (int)(25.5*3*MAP_SIZE/2) + 64, 32, map);
             
-        this.screen.setSize(725, 687);
+        this.screen.setSize(SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
         
         this.screen.setFocusable(true);
             
@@ -73,8 +70,7 @@ class MapFrame extends JFrame
         
         this.log = new JTextArea(5, 72);
         this.log.setFont(new Font("Comics Sans", Font.BOLD, 12));
-        this.log.setText("Hello World!");
-        this.log.setSize(725,200);
+        this.log.setSize(SCREEN_WIDTH,SCREEN_HEIGHT/10);
         this.log.setFocusable(true);
         
         JScrollPane scrollLog = new JScrollPane(
@@ -88,8 +84,8 @@ class MapFrame extends JFrame
         JSplitPane split = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT, false, scrollPane, scrollLog
         );
-        split.setDividerLocation(0.8);
-        split.setResizeWeight(0.8);
+        split.setDividerLocation(0.9);
+        split.setResizeWeight(0.9);
         
         this.add(split);
         
