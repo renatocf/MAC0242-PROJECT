@@ -2,5 +2,6 @@
     <info organisation="MAC0242-Project" module="Robots"/>
     <dependencies>
         <dependency org="gnu.getopt" name="java-getopt" rev="1.0.13"/>
+        <dependency org="net.java.dev.javacc" name="javacc" rev="5.0"/>
     </dependencies>
 </ivy-module>

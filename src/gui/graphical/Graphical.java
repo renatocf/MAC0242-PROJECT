@@ -26,7 +26,8 @@ public class Graphical implements GUI
     
     public Graphical(Map map)
     {
-        this.editorFrame    = new EditorFrame();
+        /* TODO: conclude editor frame */
+        /* this.editorFrame    = new EditorFrame(); */
         this.mapFrame       = new MapFrame(map);
     }
     

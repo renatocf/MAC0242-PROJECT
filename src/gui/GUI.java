@@ -40,10 +40,12 @@ public interface GUI
     
     /** 
      * Finishes the game.
-     * @param p         The winner player
-     * @param nTS       Number of timesteps 
-     * @param nPlayers  Number of players
-     * @param nRobots   Number of robot created along the game
+     * @param p        The winner player
+     * @param nTS      Number of time steps since 
+     *                 the beggining of the game
+     * @param nPlayers Number of players
+     * @param nRobots  Number of robots created by 
+     *                 all players along the game
      */
     public void winner(Player p, int nTS, int nPlayers, int nRobots);
     

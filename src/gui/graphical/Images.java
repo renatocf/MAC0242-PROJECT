@@ -128,7 +128,7 @@ enum Images implements ROOT
             //
             default: subdir = "";
         }
-        System.out.println("[IMAGE] " + ROOT + subdir + path);
+        
         this.img = load(ROOT + subdir + path); 
         this.dx = dx; this.dy = dy; this.type = type;
     }

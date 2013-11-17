@@ -39,6 +39,7 @@ final public class World
     private static int id = 1;
     private static int time = 0;
     private static int nPlayers;
+    private static int nActivePlayers;
     
     // Global characteristics
     private static Map    map;
@@ -61,11 +62,12 @@ final public class World
      * @param np Number of players
      * @param w  Weather
      */
-    public static Player[] genesis(int np, Weather w, Interfaces gui, Random rand)
+    public static Player[] 
+    genesis(int np, Weather w, Interfaces gui, Random rand)
         throws InvalidOperationException
     {
         // Set game configurations
-        nPlayers = np;
+        nActivePlayers = nPlayers = np;
         map      = new Map(w);
         armies   = new RobotList(nPlayers);
         players  = new Player[nPlayers];
@@ -74,7 +76,7 @@ final public class World
         bases = map.genesis(players, rand);
         
         // Create new players
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < nPlayers; i++)
             players[i] = new Player(bases[i]);
             
         // Initializes GUI
@@ -95,7 +97,8 @@ final public class World
      * to their priorities, solving conflicts
      * randomically. Then, executes their
      * actions and attend their requests.
-     * @return End of Game
+     * @return Boolean indicating if the 
+     *         game continues
      */
     public static boolean timeStep()
     {
@@ -139,46 +142,11 @@ final public class World
             if(r.wait == 0) turn.ON(); else r.wait--;
         }
         
-        // Game Over
-        int numActivePlayers = 0;
-        Player p = null;
-        
-        for(int i = 0; i < players.length; i++)
-        {
-            if(players[i] == null) continue;
-                                                
-            if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
-            {
-                GUI.looser(players[i]);
-                try { Thread.sleep(5000); }
-                catch (InterruptedException e) {}
-                players[i] = null;
-            }
-            else 
-            { 
-                numActivePlayers++;
-                p = players[i];
-            }
-        }
-        
-        if(numActivePlayers == 1)
-        {
-            GUI.winner(p, time, nPlayers, armies.getPopulation());
-            System.out.println(armies.getPopulation());
-            
-            Debugger.say("===================");
-            Debugger.say("===[ GAME OVER ]===");
-            Debugger.say("===================");
-            Debugger.close();
-            
-            try { Thread.sleep(5000); }
-            catch (InterruptedException e) {}
-            
-            System.exit(0);
-        }
-        
+        // Paint one frame
         GUI.paint();
-        return true;
+        
+        // Stops only when the game is over
+        return gameOver();
     }
     
     /**
@@ -320,6 +288,53 @@ final public class World
         }
         Debugger.say  ("    [", "energy after : ", r.power, "]");
         Debugger.say();
+    }
+    
+    /**
+     * Defines the end of the game.
+     * @return Boolean pointing if the game is over
+     */
+    private static boolean gameOver()
+    {
+        for(int i = 0; i < players.length; i++)
+        {
+            if(players[i] == null) continue;
+                                                
+            /* More than 5 crystals: player looses */
+            if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
+            {
+                GUI.looser(players[i]);
+                try { Thread.sleep(5000); }
+                catch (InterruptedException e) {}
+                
+                // Take out player from the game
+                players[i] = null;
+                nActivePlayers--;
+            }
+            
+            /* One player: this is the winner */
+            if(nActivePlayers == 1)
+            {
+                Player winner = null;
+                for(Player p: players) if(p != null) winner = p;
+                
+                /* Sets the winner */
+                GUI.winner(winner, time, nPlayers, armies.getPopulation());
+                
+                Debugger.say("=============================");
+                Debugger.say("========[ GAME OVER ]========");
+                Debugger.say("=============================");
+                Debugger.say("[TIME] "  , time, "ts"        );
+                Debugger.say("[WINNER] ", winner.toString() );
+                Debugger.close();
+                
+                try { Thread.sleep(5000); }
+                catch (InterruptedException e) {}
+                
+                return false;
+            }
+        }
+        return true;
     }
     
     /**

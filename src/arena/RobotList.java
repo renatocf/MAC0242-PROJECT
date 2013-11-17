@@ -34,7 +34,7 @@ final public class RobotList implements Iterable<Robot>
         = new HashMap <Robot,Operation>();
     
     // Random number generator
-    final private Random rand = new Random();
+    final private Random rand = RAND;
     
     // Last empty space
     private int population = 0;

@@ -37,6 +37,9 @@ class MapFrame extends JFrame
     private Map map;
     private JTextArea log;
     
+    // Screen dimensions
+    private int SCREEN_WIDTH  = 725;    
+    private int SCREEN_HEIGHT = 787;
     
     /** 
      * Default constructor.<br>
@@ -47,52 +50,58 @@ class MapFrame extends JFrame
     {
         this.map = map;  
         
-        /* TODO: Take out hardcoded strings */
-        this.setTitle("Robot's Battle");
-        this.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.validate();
-        this.setLocationRelativeTo(null);
+        //* MAP FRAME INFO *******************************************//
+            /* TODO: Take out hardcoded strings */
+            this.setSize                  (725,787);
+            this.setTitle                 ("Robot's Battle");
+            this.validate                 ();
+            this.setLocationRelativeTo    (null);
+            this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
                 
-        this.screen = new Panel(25, 
-            (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-            (int)(25.5*3*MAP_SIZE/2) + 64, 32, map);
+        //* ARENA SCREEN *********************************************//
+            this.screen = new Panel(25, 
+                (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
+                (int)(25.5*3*MAP_SIZE/2), 32, map);
+                
+            this.screen.setSize      (725, 687);
+            this.screen.setFocusable (true);
+                
+            JScrollPane scrollPane = new JScrollPane(
+                this.screen,
+                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+            );
+        
+        //* LOG BOX **************************************************//
+            this.log = new JTextArea(5, 72);
+            this.log.setFont      (new Font("Serif", Font.BOLD, 12));
+            this.log.setSize      (725,200);
+            this.log.setFocusable (true);
             
-        this.screen.setSize(SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
-        
-        this.screen.setFocusable(true);
+            JScrollPane scrollLog = new JScrollPane(
+                log,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+            );
             
-        JScrollPane scrollPane = new JScrollPane(
-            this.screen,
-            JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
+            // Redirect all outputs to this log box
+            this.redirectSystemStreams();
         
-        this.log = new JTextArea(5, 72);
-        this.log.setFont(new Font("Comics Sans", Font.BOLD, 12));
-        this.log.setSize(SCREEN_WIDTH,SCREEN_HEIGHT/10);
-        this.log.setFocusable(true);
+        //* ARENA + LOG **********************************************//
+            JSplitPane split = new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT, false, scrollPane, scrollLog
+            );
+            
+            split.setDividerLocation (0.8);
+            split.setResizeWeight    (0.8);
         
-        JScrollPane scrollLog = new JScrollPane(
-            log,
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
-        
-        this.redirectSystemStreams();
-        
-        JSplitPane split = new JSplitPane(
-            JSplitPane.VERTICAL_SPLIT, false, scrollPane, scrollLog
-        );
-        split.setDividerLocation(0.9);
-        split.setResizeWeight(0.9);
-        
-        this.add(split);
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() { setVisible(true); }
-        });
+        //* VISIBILITY ***********************************************//
+            this.add(split);
+            
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() { setVisible(true); }
+            });
     }
     
     /**
@@ -100,23 +109,36 @@ class MapFrame extends JFrame
      */
     void paintMap()
     {
+        this.screen.setGamePhase(Phase.ACTIVE, null, -1, -1, -1);
         this.screen.repaint();
     }
     
-    /*
-     * Interface GUI
+    /**
+     * Auxiliar function for painting in the arena
+     * info about the end of the game.
+     * @param p        The winner player
+     * @param nTS      Number of time steps since 
+     *                 the beggining of the game
+     * @param nPlayers Number of players
+     * @param nRobots  Number of robots created by 
+     *                 all players along the game
      */
-    
-    /* Implementing interface GUI */
     void winner(Player p, int nTS, int nPlayers, int nRobots)
     {
-        this.screen.setGamePhase(2, p, nTS, nPlayers, nRobots);
+        this.screen.setGamePhase(Phase.WINNER, p, nTS, nPlayers, nRobots);
+        this.screen.repaint();
     }
     
-    /* Implementing interface GUI */
+    /** 
+     * Auxilar function for painting in the arena
+     * info about a player that lost the game.
+     * @param p The looser player
+     */
     void looser(Player p)
     {
-        this.screen.setGamePhase(1, p, -1, -1, -1);
+        /* '-1' for all info not used (players/time steps/robots) */
+        this.screen.setGamePhase(Phase.LOOSER, p, -1, -1, -1);
+        this.screen.repaint();
     }
     
     /**
@@ -135,7 +157,8 @@ class MapFrame extends JFrame
             }
             
             @Override
-            public void write(byte[] b, int off, int len) throws IOException 
+            public void write(byte[] b, int off, int len) 
+                throws IOException 
             {
                 updateTextArea(new String(b, off, len));
             }

@@ -29,10 +29,12 @@ limitations under the License.
     -->
     
     <property file="build.properties"/>
+    <property name="src.parser.dir"    location="${src.dir}/parser"/>
     <property name="doc.javadoc.dir"   location="${doc.dir}/javadoc"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
 
-    <path id="libraries.path">    
+    <!-- Path for dependencies -->
+    <path id="libraries.path">
         <fileset dir="${lib.dir}">
             <include name="**/*.jar"/>
         </fileset>
@@ -40,7 +42,7 @@ limitations under the License.
     
     <!-- 
     ===================================================================
-    ==                      PACKING PROPERTIES                       ==
+    ==                   DISTRIBUTION PROPERTIES                     ==
     ===================================================================
     -->
     
@@ -48,12 +50,13 @@ limitations under the License.
                    relative paths to all its dependencies            -->
     <property name="jar.file" value="${project.name}.jar"/>
     <property name="jar.path" value="${dist.dir}/${jar.file}"/>
-       
-    <property name="one-jar.dir" value="./one-jar"/>   
-    <property name="one-jar.version"  value="0.97"/>
+    
+    <!-- One-Jar: Configurations for creating a single package -->
+    <property name="one-jar.dir"     value="./one-jar"/>   
+    <property name="one-jar.version" value="0.97"/>
     <property 
-        name="one-jar.ant.jar"  
-        value="${one-jar.dir}/one-jar-ant-task-${one-jar.version}.jar"
+        name  = "one-jar.ant.jar"
+        value = "${one-jar.dir}/one-jar-ant-task-${one-jar.version}.jar"
     />
     
     <taskdef name="one-jar" 
@@ -117,7 +120,7 @@ limitations under the License.
     <!-- Resolve dependencies -->
     <target name="resolve">
         <echo>Resolving dependencies</echo>
-        <ivy:retrieve/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" type="jar"/>
         <echo>Dependencies Resolved Successfully</echo>
     </target>    
     
@@ -125,7 +128,23 @@ limitations under the License.
     <target name="report" depends="resolve">
         <ivy:report todir="${build.dir}"/>
     </target>
-
+    
+    <!-- 
+    ===================================================================
+    ==                          COMPILER                             ==
+    ===================================================================
+    -->
+    
+    <target name="parser" depends="resolve">
+        <echo>Building language parser</echo>
+        <javacc
+            target     = "${src.dir}/parser/Parser.jj"
+            javacchome = "${lib.dir}"
+            static     = "no">
+        </javacc>
+        <echo>Parser built successfully</echo>
+    </target>
+    
     <!-- 
     ===================================================================
     ==                            BUILD                              ==
@@ -144,19 +163,19 @@ limitations under the License.
     </target>
     
     <!-- Compile messages and rules -->
-    <target name="compile" depends="init,resolve">
+    <target name="compile" depends="init,resolve,parser">
         <echo>Starting the compilation process</echo>
         <javac destdir = "${build.classes.dir}"
                srcdir  = "${src.dir}"
                includeAntRuntime = "no">
                <classpath refid="libraries.path"/>
         </javac>
-        <echo>Compilation Completed Successfully</echo>
+        <echo>Compilation completed successfully</echo>
     </target>
 
     <!-- 
     ===================================================================
-    ==                            PACKING                            ==
+    ==                         DISTRIBUTION                          ==
     ===================================================================
     -->
     
@@ -185,22 +204,23 @@ limitations under the License.
             
             <!-- Create a Manifest.mf to One-Jar -->
             <manifest>
-                <attribute name="Main-Class" value="${jar.path}"/>
-                <attribute name="One-Jar-Main-Class" value="${mf.main.class}"/>
+                <attribute name="Main-Class" 
+                           value="${jar.path}"/>
+                <attribute name="One-Jar-Main-Class" 
+                           value="${mf.main.class}"/>
             </manifest>
  
             <!-- Load the main Jar -->
             <main jar="${jar.path}"/>
 
             <!-- Get Jar dependencies -->
-            <lib>
-                <fileset dir="${lib.dir}" includes="**/*.jar"/>
-            </lib>
+            <lib><fileset dir="${lib.dir}" includes="**/*.jar"/></lib>
             
         </one-jar>
         <echo>Distribution .jar Pack Successfully Completed</echo>
     </target>
     
+    <!-- Shortcut for 'ant dist', but could be more... -->
     <target name="all" depends="dist" />
     
     <!-- 
@@ -221,14 +241,21 @@ limitations under the License.
                 
                 <!-- Packages to be included/excluded -->
                 <packageset dir="${src.dir}" defaultexcludes="yes">
-                    <exclude name = "parser/**"/>
+                    <exclude name = "parser**"/>
                 </packageset>
                 
                 <!-- Classpath for getting external libraries -->
                 <classpath refid="libraries.path"/>
             </javadoc>
+            
+            <jjdoc 
+                target="${src.parser.dir}/Parser.jj" 
+                outputfile="${doc.javadoc.dir}/Parser.html"
+                javacchome="${lib.dir}">
+            </jjdoc>
         </target>
 
+    <!-- Publish javadoc using shell script 'publish.sh' -->
     <target name="publish" depends="javadoc">
         <description>Publish documentation</description>
         <exec executable="/bin/bash">
@@ -236,6 +263,7 @@ limitations under the License.
         </exec>
     </target>
 
+    <!-- Shortcut for 'ant javadoc', but could be more... -->
     <target name="doc" depends="javadoc" />
     
     <!-- 
@@ -243,14 +271,22 @@ limitations under the License.
     ==                            CLEAN                              ==
     ===================================================================
     -->
+    <!-- Remove .class files -->
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
     
+    <!-- Remove all files generated by ant -->
     <target name="distclean" depends="clean">
         <delete dir="${dist.dir}" />
-        <delete dir="${dist.dir}" />
-        <delete><fileset dir="${lib.dir}" includes="**/*.jar"/></delete>
+        <delete>
+            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            
+            <!-- Temporary: untill use only JavaCC -->
+            <fileset dir="${src.parser.dir}" includes="Parse*.java"/>
+            <fileset dir="${src.parser.dir}" includes="Token*.java"/>
+            <fileset dir="${src.parser.dir}" includes="Simple*.java"/>
+        </delete>
     </target>
     
 </project>

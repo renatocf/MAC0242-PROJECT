@@ -28,7 +28,7 @@
 \usepackage{calc}  
 \usepackage{enumitem}  
 
-\title  {Projeto de Laboratório de Programação II - Fase 2}
+\title  {Projeto de Laboratório de Programação II - Fase 3}
 \author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
 \date   {}
 
@@ -40,17 +40,19 @@
 
 \section{Introdução} \label{sec:introdução}
 
-    Nesta fase, o projeto consiste na criação de uma máquina
-    virtual em JAVA, juntamente com a implementação de funções
-    que darão ao usuário o poder de controlar o robô através 
-    de comandos usados com pilha de dados.
-    Há também a criação da Arena, esta é resposável por controlar
-    os robôs de forma que eles sejam impossibilitados de fazer
-    movimentos não propícios. 
+    Nesta fase, o projeto consiste em representar o jogo em ambiente
+    gráfico usando bibliotecas já prontas do JAVA para conseguir 
+    tais efeitos. 
+    Assim, a arena e seus terrenos em formas hexagonais, os cristais, 
+    os robôs, as pedras, as árvores e os diferentes tipos de cenários
+    podem ser visualizados. Na fase anterior, foram criados diferentes
+    tipos de climas, que acarretam no aparecimento de diversos cenários
+    distintos.
     
-    E por último, temos os tipos de terrenos e objetos que estarão
-    dispostos nele, como cristais, rochas ( como objetos ), bases, 
-    água, árvores, entre outros ( como cenário ). 
+    Há também a parte do sistema, onde damos características fixas aos 
+    robôs (como vida e energia), criamos cristais aleatóriamente e 
+    damos a opção de "desligar" ou "ligar" um robô, de modo que este 
+    possa ser paralizado quando não tiver mais vidas.
     
     
     \subsection{Projeto}
@@ -58,15 +60,17 @@
     Os arquivos estão separados de acordo comcolor a seguinte estrutura de
     diretórios:
     \begin{itemize}
-        \item \textbf{bin:}  Arquivo executável principal do programa;
-        \item \textbf{doc:}  Pasta para a documentação, com este arquivo 
-                             e a versão fonte em \LaTeX;
-        \item \textbf{lib:}  Arquivos com classes/pacotes de Perl 
-                             no formato \texttt{.pm};
-        \item \textbf{src:}  Pasta que contém os cógigos-fonte em JAVA,
-        					 separados e organizados por pastas.
-        \item \textbf{test:} Arquivos de teste com código em Assembly
-                             do montador/máquina virtual \texttt{.txt}.
+        \item \textbf{bin:}       Arquivo executável principal do programa;
+        \item \textbf{behaviors:} Onde estão os programas teste em assembly
+        						  do robô.
+        \item \textbf{doc:}       Pasta para a documentação, com este arquivo 
+                                  e a versão fonte em \LaTeX;
+        \item \textbf{lib:}       Arquivos com classes/pacotes de Perl 
+                                  no formato \texttt{.pm};
+        \item \textbf{src:}       Pasta que contém os cógigos-fonte em JAVA,
+        					      separados e organizados por pastas.
+        \item \textbf{test:}      Arquivos de teste com código em Assembly
+                                  do montador/máquina virtual \texttt{.txt}.
     \end{itemize}
     
     \subsection{Estrutura}
@@ -144,22 +148,30 @@
     
     \begin{center}
       \begin{tabular}{|c|l|rc|}
-                     &  ADD - DIV - DUP - END - EQ - GE - GT   \\
-          Vazio      &  MOD - LE - LT - MUL - NE - POP - PRN   \\
-                     &  SUB - RET - MOVE - DRAG - DROP - HIT   \\
-                     &  LOOK - ITEM - SEE - SEEK               \\
-                     &										   \\
-          Numérico   &  RCL - STO                              \\
-          			 &										   \\
-          String     &  JMP - JIF - JIT - CALL                 \\
-          			 &										   \\
-          Empilhável &  crystal - stone                        \\
+                        &  ADD - DIV - DUP - END - EQ - GE - GT   \\
+          Vazio         &  MOD - LE - LT - MUL - NE - POP - PRN   \\
+                        &  SUB - RET - MOVE - DRAG - DROP - HIT   \\
+                        &  LOOK - ITEM - SEE - SEEK - ASK - NOP   \\
+                        &  SWAP                                   \\
+                        &                                         \\
+          Numérico      &  RCL - STO                              \\
+          			    &                                         \\
+          Endereço      &  JMP - JIF - JIT - CALL                 \\
+          			    &                                         \\
+          Nome Variável &  ALOC - FREE - GET - SET                \\
+                        &                                         \\
+          String        &  JMP - JIF - JIT - CALL                 \\
+          			    &                                         \\
+          Empilhável    &  crystal - stone                        \\
+                        &                                         \\
+          Ataque        &  ranged - melee                         \\
+                        
       \end{tabular}
-    \end{center}  
+    \end{center}
     
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
- 
+
+
 \section{Packages}
 	Foram criados pacotes para facilitar a divisão
 	e entendimento do código.
@@ -177,6 +189,8 @@
 		    {\textcolor{NavyBlue}{DRAG},
 		    {\textcolor{NavyBlue}{DROP},
 		    {\textcolor{NavyBlue}{MOVE},
+		    {\textcolor{NavyBlue}{SKIP},
+		    {\textcolor{NavyBlue}{ASK},
 		    {\textcolor{NavyBlue}{SEE} e 
 		    {\textcolor{NavyBlue}{LOOK}.
 		    
@@ -193,6 +207,7 @@
 		\subsubsection{ Appearence.java }
 		    É uma estrutura chamada Enum, onde dizemos que as
 		    aparências podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{DEEP},
 		    {\textcolor{NavyBlue}{DIRT},
             {\textcolor{NavyBlue}{GRASS},
             {\textcolor{NavyBlue}{ROCKY},
@@ -230,10 +245,10 @@
 		    
 		\subsubsection{ Robot.java }
 			Essa classe é a que define as características dos robôs
-			em geral, como velocidade ro robô, vida, quantos danos ele
+			em geral, como velocidade do robô, vida, quantos danos ele
 			causa, entre outras.
 			
-			Dentre suas funções, temos o contrutor que recebe determinadas
+			Dentre suas funções, temos o construtor que recebe determinadas
 			características e cria um robô, têm também a
 			 
 			{\textcolor{NavyBlue}{public Item removeSlots(int position)}
@@ -322,17 +337,109 @@
 		As classes desse package são chamadas pelas outras classes
 		que utilizam essa forma de mandar exceção.
 		
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+		
 	\subsection{GUI}
 		A classe para modo texto da GUI percorre a matriz hexagonal 
 		observando as características presentes em cada um dos terrenos 
 		(tipo, itens e cenários). Então, realiza a impressão desses 
-		elementos conforme símbolos pré-definidos dentro do módulo, 
-		simulando visualmente o jogo no terminal.
+		elementos com auxílio de bibliotecas JAVA, simulando visualmente 
+		o jogo em interface gráfica.
         
-		Todas as cores são feitas com o uso de \emph{Ansi Escape Codes}, 
-		e o módulo só deve ser usado em terminais que suportem a impressão 
-		destas sequências de escape.
-    
+        \subsubsection{ graphical/Cell.java }
+            É responsável pela criação dos terrenos em si.
+            Desenha as células em forma hexagonal de acordo com as
+            coordenadas x e y e o raio do hexágono que são recebidos
+            por parâmetros no construtor.
+        
+        \subsubsection{ graphical/EditorFrame.java }
+            Essa classe é responsável pela criação de um frame
+            que contenha um JTextPanel.
+            Que será uma nova janela onde o usuário poderá digitar o
+            código que manipulará determinado robô de seu exército.
+            Será um receptor do código em alto nível na fase seguinte.
+            
+        \subsubsection{ graphical/Graphical.java }
+                A Graphical irá controlar toda a parte gráfica.
+                Como agora possuímos dois tipos de frames sendo exibidos,
+                precisamos de algo mais externo para controlar tudo.
+                Portanto a Graphical irá manipular o que ocorre nos dois
+                Frames, no que imprime o mapa e no que permite que o
+                código dos robôs seja alterado.
+                
+                Nessa classe, usamos as bibliotecas Swing e AWT para
+                utilizar os recursos gráficos destas.S
+                
+        \subsubsection{ graphical/Images.java }
+            Cuida das imagens do jogo.
+            Faz isso de tal forma que, apenas utilizando um nome
+            atribuido a imagem, podemos acessá-la em seu  respectivo    
+            diretório.
+            E também possui uma função que transforma essa imagem
+            como uma variável do tipo BufferedImage para que esta
+            possa ser manipulada pelas funções das bibliotecas do
+            JAVA.
+            
+            Possui getters para largura e comprimento da imagem.
+            
+        \subsubsection{ graphical/MapFrame.java }
+            Responsável pelo frame em que será exibido o mapa do
+            jogo. Além de ser um meio de comunicação entre a Graphical
+            e o Panel.
+            
+            Ele também cria a área de texto onde são exibidas as 
+            mensagens do jogo, como erro de código do programa do 
+            usuário ou carregamento de determina imagem.
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        \subsubsection{ graphical/Panel.java }
+            É responsável pela imagem que será impressa no painel,
+            portanto controla, desde árvores e cristais, a configurações
+            dos hexágonos no mapa. Portanto possui uma matriz de cúlulas
+            e o mapa como parâmetros.
+            
+            Percorre a matriz de terrenos do mapa e imprime cada célula 
+            de acordo com a sua configuração.
+            Se possuir robôs, pedras, árvores ou bases, estes também 
+            serão impressos no painel.
+            
+            Também é responsável, por settar as fases do jogo, informando
+            o mesmo de quando podemos continuar o jogo normalmente ou
+            jogo, ou informar sobre perdedores e ganhadores. 
+        
+        \subsubsection{ textual/* }
+            Esse jogo também pode ser exibido em modo texto (caractéres),
+            (como foi feito na versão passado) para que possa ser exibido
+            no terminal.
+            Essa pasta contém classes que printam o jogo no terminal.
+                        
+        \subsubsection{ GUI.java }
+            É uma interface que padroniza as funções de todas que todos
+            os modos de exibição (interfaces) devem ter.
+            De acordo com ela, tanto a inteface gráfica quanto a textual
+            devem ter as funções que pintam, pintam mapa, pintam o mini
+            mapa, imprimem texto e avisam quem é o ganhador e o 
+            perdedor.
+        
+        \subsubsection{ Interfaces.java }
+		    É uma estrutura chamada Enum, onde dizemos que as
+		    interfaces podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{TEXTUAL} e
+		    {\textcolor{NavyBlue}{GRAPHICAL}
+        
+        \subsubsection{ Printable.java }
+            É uma interface que reprenta tudo que pode ser graficamente
+            impresso.
+            Todas os objetos desse tipo devem ter uma função que retorna
+            seu nome (String).
+        
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 	\subsection{Main}
         O package main contém a classe de mesmo nome, com o método
         main como principal. Esta classe é a responsável por receber
@@ -347,6 +454,11 @@
         do Ant. Ambas as bibliotecas são distribuídas com a licensa
         GNU GLP v3.0, e são o porte para Java da biblioteca getopt
         do C.
+        
+\bigskip
+\bigskip
+\bigskip
+\bigskip     
 		 
 	\subsection{Operation}
 		\subsubsection{ Operation.java }
@@ -357,6 +469,10 @@
 			Para a sua construção, ela necessita receber a RVM, juntamente
 			com a ação que o robô deseja realizar.
 			
+\bigskip
+\bigskip
+\bigskip
+\bigskip	
 	
 	\subsection{Parameters}
 		\subsubsection{ Debugger.java }
@@ -364,17 +480,31 @@
 			pois mostra passo a passo, como o programa do usuário
 			está sendo lido e interpretado.
 			
-		
 		\subsubsection{ Game.java     }
-		    É uma interface que detém as características do jogo 
+		    É uma classe que detém as características do jogo 
 		    que serão passadas para muitas outras classes.
 		    Tais como a velocidade da animação, o tamanho do mapa,
 		    o número máximo de robôs, entre outras.
 		    
-		    Ela foi criada para ter um amior controle das 
+		    Ela foi criada para ter um maior controle das 
 		    características configuracionais do jogo e caso
 		    necessitem ser alteradas, todas estarão no mesmo lugar.
 		    
+        \subsubsection{ Costs.java    }
+            É uma classe que contém as características dos robôs 
+            relativas aos custos (energia que um robô irá gastar
+            ou receber para determinado tipo de operação) tais como
+            o quanto ele receberá por rodada e a energia baixa, média
+            e alta que o robô gasta.
+            Essas características são facilmente modificadas, pois 
+            estão agrupadas no mesmo lugar.
+            
+        \subsubsection{ Verbosity.java }
+            É um dos métodos debug, que usa a função de impressão
+            na tela.
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		
 	\subsection{Parser}
 		\subsubsection{ Parser.java }
@@ -388,8 +518,37 @@
 		    diretório do package.
 
             Estes parsers criados, então, ficam armazenados como 
-            parte do package Parser.
-				
+            parte do package Parser.			
+     
+\bigskip
+\bigskip
+\bigskip
+\bigskip	
+
+    \subsection{Players}
+        \subsubsection{ Player.java }
+            Essa classe é responsável pelas características e funções
+            relacionadas aos jogadores (ao time).
+            No caso, cada jogador ou time terá um nome, uma base e
+            uma cor de robôs, além das funções de adição e remoção de 
+            um robô ao time e getters das informações desse jogador.
+            
+        \subsubsection{ Base.java }
+            Representa as bases em si.
+            Cada base, contendo características como posição, número
+            de cristais e o jogador a que ela pertence.
+            Possui as funções de acrescentar cristais, receber dano
+            (que no caso, não faz nada, pois ao ser atacada a base não
+            perde vidas) e getters das informações da base.
+            
+            A base tem um número escolhido ao acaso (42) de vidas,
+            portanto, quando formos retornar o HP, sempre será 42. Já
+            que a base, ao ser atacada, não recebe danos.
+            
+		    E ao imprimirmos uma base, teremos como resultado
+		    "(ß) Base".
+                   			
+                   			
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\subsection{Random}
@@ -454,8 +613,8 @@
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\subsection{Robot}
-	    Esse package cuida das funções atreladas aos robôs
-	    si, entre elas está a RVM e as funções que interpretam
+	    Esse package cuida das funções atreladas aos robôs em
+ 	    si, entre elas está a RVM e as funções que interpretam
 	    os comandos utilizados pelos usuários.
 	    
 		\subsubsection{ Arit.java }
@@ -603,6 +762,10 @@
 		    outro comando) o que faz com que o programa seja
 		    finalizado.
 		    
+		\subsubsection{ Returns.java }    
+		    É uma interface que cuida dos retornos do sistema, onde
+		    ele atribui 1 ou 0 para cada tipo de retorno.
+		    
 		\subsubsection{ RVM.java }
 			A \emph{Robot Virtual Machine} (\textbf{RVM}) é a classe 
         	principal que controla o 'cérebro' dos robôs, servindo como o
@@ -624,6 +787,16 @@
 		        \item LABEL: Hash com as posições associadas a cada LABEL
 		                     criado como marcador no código da RVM.
 		    \end{itemize}
+				
+        \subsubsection{ State.java }
+		    É uma estrutura chamada Enum, onde dizemos que os
+		    estados podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{SLEEP} e
+		    {\textcolor{NavyBlue}{ACTIVE}.
+		    
+		    Assim, quando o robô não tiver mais energia, por
+		    exemplo, seu estado será SLEEP e o robô não terá
+		    mais movimentos.				
 				
 		\subsubsection{ Stk.java }
 		    Cuida das funções que mexem diretamente com a
@@ -706,23 +879,15 @@
 	    Nesse package, temos as classes que representam
 	    os vários tipos de elementos contidos nocenários do 
 	    jogo.
-	    Para o controle desses elementos. usamos a interface
+	    Para o controle desses elementos, usamos a interface
 	    Scenario que além de padronizar o tipo de dado,
 	    força todas as classes a terem uma função que
 	    cuida dos danos adquiridos ao decorrer do jogo
 	    (por exemplo, quando uma pedra é atacada por um robô,
 	    ela perde vidas, e perdendo um determinado número de
-	    vidas, ela é destruida.
+	    vidas, ela é destruida).
 	    
-	    Dentre eles há a base, as rochas, árvores e água.
-	    
-		\subsubsection{ Base.java }
-		    A base tem um número escolhido ao acaso (42) de
-		    vidas, portanto, quando formos retornar o HP,
-		    sempre será 42. Já que a base, ao ser atacada,
-		    não recebe danos.
-		    E ao imprimirmos uma base, teremos como resultado
-		    "(ß) Base".
+	    Dentre eles há rochas, árvores e água.
 		
 		\subsubsection{ Rock.java }
 		    A pedra retira o dano recebido do seu HP(vida) e
@@ -893,7 +1058,7 @@
 			preenche a matriz com as direções que são recebidas
 			como parâmetro.
 		
-		\subsubsection { Item }
+	**	\subsubsection { Item }
 			Item não é uma classe, é uma pasta com as 
 			classes que representam objetos do tipo item
 			(implementam a interface de itens),
@@ -928,6 +1093,24 @@
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
 			
+	    \subsubsection { Stack.java }
+	        Essa classe controla as pilhas.
+	        Desta forma, deve armazenar um vetor que contém
+	        os valores que deverão ser armazenados na pilha,
+	        além do controle com seu topo e seu tamanho
+	        (esse controle é feito por variáveis do objeto).
+	        
+	        Nessa classe, temos a função que retorna o topo,
+	        a que verifica se a pilha está vazia, a que dá push
+	        (coloca no topo da pilha) e pop (tira o topo da 
+	        pilha) e temos também a função que duplica o vetor
+	        da pilha, pois, em JAVA, um vetor pode ser criado
+	        somente se colocamos seu tamanho como um parâmetro
+	        fixo, e como não sabemos o seu tamanho inicialmente,
+	        duplicamos a pilha caso metade dela já esteja 
+	        preenchida (isso é verificado na função ).
+	         
+			
 		\subsubsection { Stackable.java }
 			É a interface Stackable que se responsabiliza
 			pelos objetos empilháveis. Essa interface não
@@ -947,6 +1130,5 @@
     		{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
-
 
 \end{document}
