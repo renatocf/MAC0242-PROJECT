@@ -60,9 +60,12 @@ public class Main
         try{
             /* if(!Debugger.info) */
             /* { */
-                World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
-                World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
-                World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+                if (args.length > 1)
+                {
+                    World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
+                    World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
+                    World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+                }
             /* } */
             
             String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
