@@ -125,6 +125,7 @@ public class Action
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
         ret[0] = new Num(SUCCEDED);
+        turn.setPos(d.toString());
         return ret;
     }
     
