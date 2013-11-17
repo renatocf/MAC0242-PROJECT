@@ -37,7 +37,13 @@ public class Around implements Stackable
                 Scenario s = seeing[i].getScenario();
                 if(s == null) matrix[0][i] = " ";
                 else          matrix[0][i] = s.getClass().getName();
-            
+
+                //Adjusting the String for simplicity
+                if(matrix[0][i].equals("players.Base"))
+                {
+                    matrix[0][i] = "Base";
+                }
+
                 stackable.item.Item it = seeing[i].getItem(); 
                 if(it == null) matrix[1][i] = " ";
                 else          matrix[1][i] = it.getClass().getName();
