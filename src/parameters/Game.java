@@ -35,6 +35,7 @@ public final class Game
     /** 
      * <b>Animation: speed</b><br>
      * Number of miliseconds before painting
+     * a new screen.
      */
     public static int SPEED = 300;
     
@@ -59,13 +60,13 @@ public final class Game
 
     /**
      * <b>Screen: Width</b><br>
-     * inicial width of the main window
+     * inicial width of the main window.
      */
     public static int SCREEN_WIDTH  = 720;
 
     /**
      * <b>Screen: Height</b><br>
-     * inicial height of the main window
+     * inicial height of the main window.
      */
     public static int SCREEN_HEIGHT = 720;
 
