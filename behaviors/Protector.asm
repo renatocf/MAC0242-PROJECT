@@ -2,86 +2,132 @@
         ALOC    [ROBOTJ]
         ALOC    [I]
         ALOC    [J]
+        ALOC    [BASEI]
+        ALOC    [BASEJ]
+        ALOC    [MAP_SIZE]
         ALOC    [PHASE]
-        ALOC    [Walk]
-        PUSH    2
-        SET     [I]
         PUSH    0
-        SET     [J]
-        PUSH    1
         SET     [PHASE]
-        PUSH    position
-
-keepAsking:
+        PUSH    Position
         ASK
-        JIF     keepAsking
+        JIF     -2
         SET     [ROBOTI]
         SET     [ROBOTJ]
+        PUSH    Base
+        ASK
+        JIF     -2
+        SET     [BASEI]
+        SET     [BASEJ]
+        PUSH    Edge
+        ASK
+        JIF     -2
+        SET     [MAP_SIZE]
         
-start:
-        CALL    lookForRobot
-        JIT     start
-        GET     [J]
-        GET     [I]         
-        GET     [ROBOTJ]
-        GET     [ROBOTI]                
-        CALL    mvtw
-        SET     [Walk]
-        SET     [ROBOTI]                
-        SET     [ROBOTJ]
-        GET     [Walk]
-        JIT     callArrive
-        CALL    callAttack
-        JMP     start
-        
-callArrive:
-        CALL    arrive
-        JIT     updateIJ
-        JMP     start
-        
-callAttack:
-        CALL    attack
-        JIT     start
-        CALL    evade
-        POP
-        JMP     start
-
-updateIJ:
-        GET     [I]
-        GET     [J]
-        EQ
-        JIT     goToTheEdge
+begin:
+        GET     [BASEI]
         PUSH    2
-        DUP
+        ADD
         SET     [I]
+        GET     [BASEJ]
+        PUSH    2
+        ADD
         SET     [J]
-        JMP     start
-        
-goToTheEdge:
+        CALL    goThere
         GET     [PHASE]
-        JIF     goLeft
-        PUSH    0
-        SET     [PHASE]
+        JIF     PhaseZero
+        JMP     PhaseOne
+        
+PhaseZero:
+        GET     [BASEI]
+        PUSH    1
+        SUB
+        SET     [I]
+        GET     [BASEJ]
+        PUSH    2
+        ADD
+        SET     [J]
+        GET     [I]
+        PUSH    -1
+        GE
+        JIF     3     
         PUSH    0
         SET     [I]
-        PUSH    2
-        SET     [J]
-        JMP     start
-
-goLeft:
+        CALL    goThere
         PUSH    1
         SET     [PHASE]
+        JMP     begin
+
+PhaseOne:
+        GET     [BASEI]
         PUSH    2
+        ADD
         SET     [I]
+        GET     [BASEJ]
+        PUSH    1
+        SUB
+        SET     [J]
+        GET     [J]
+        PUSH    -1
+        GE
+        JIF     3     
         PUSH    0
         SET     [J]
-        JMP     start        
+        CALL    goThere
+        PUSH    0
+        SET     [PHASE]
+        JMP     begin
+        
+goThere:
+        CALL    lookForRobot
+        JIT     -1
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     WhatNow
+walked: SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     goThere
+        
+WhatNow:
+        POP
+        POP
+        CALL    arrive
+        JIT     retGoThere
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIT     walked
+        POP
+        POP
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    attackDestiny
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIT     walked
+        POP
+        POP
+        CALL    evade
+        JMP     goThere        
+
+
+retGoThere:
+        RET
 
 lookForRobot:
         ALOC    [nRobot]
 trySee: SEE
         JIF     trySee
-        PUSH    Robot
+        PUSH    Robot2
         SEEK
         DUP
         JIF     donthits
@@ -411,8 +457,9 @@ se:     PUSH    ->SE
         JIT     updateSE
         JMP     false
 
-ret:    POP
-false:  GET     [RJ]
+ret:
+false:  POP
+        GET     [RJ]
         GET     [RI]
         PUSH    0
         JMP     return
@@ -606,7 +653,6 @@ moveL:
         RET
 
 CorrectE:
-        POP
         GET     [ROBOTJ]
         PUSH    1
         ADD
@@ -615,7 +661,6 @@ CorrectE:
         RET
 
 CorrectNE:
-        POP
         GET     [ROBOTI]
         PUSH    2
         MOD
@@ -630,7 +675,6 @@ CorrectNE:
         RET
         
 CorrectNW:
-        POP
         GET     [ROBOTI]
         PUSH    2
         MOD
@@ -647,7 +691,6 @@ CorrectNW:
         RET
         
 CorrectW:
-        POP
         GET     [ROBOTJ]
         PUSH    1
         SUB
@@ -656,7 +699,6 @@ CorrectW:
         RET
         
 CorrectSW:
-        POP
         GET     [ROBOTI]
         PUSH    2
         MOD
@@ -673,7 +715,6 @@ CorrectSW:
         RET
         
 CorrectSE:
-        POP
         GET     [ROBOTI]
         PUSH    2
         MOD
@@ -686,3 +727,192 @@ CorrectSE:
         SET     [ROBOTI]
         PUSH    1
         RET        
+        
+attackDestiny:
+        ALOC    [RI]
+        ALOC    [RJ]
+        ALOC    [PI]
+        ALOC    [PJ]
+        ALOC    [DI]
+        ALOC    [DJ]
+        SET     [RI]
+        SET     [RJ]
+        SET     [PI]
+        SET     [PJ]
+        GET     [RI]
+        GET     [PI]
+        SUB
+        SET     [DI]
+        GET     [RJ]
+        GET     [PJ]
+        SUB
+        SET     [DJ]
+        GET     [DI]
+        DUP     
+        PUSH    0
+        EQ
+        JIT     ADiZero     
+        DUP
+        PUSH    0
+        LT
+        JIT     ADiPlus
+        DUP
+        PUSH    0
+        GT
+        JIT     ADiNeg
+
+ADiZero:  
+        POP
+        GET     [DJ]
+        DUP
+        PUSH    0
+        EQ
+        JIT     ADret
+        PUSH    0
+        GT
+        JIT     ADe
+        JMP     ADw
+
+
+ADiPlus:  
+        GET     [DJ]
+        PUSH    0
+        EQ
+        JIT     ADiPjZero
+        GET     [DJ]
+        PUSH    0
+        GT
+        JIT     ADiPjNeg
+        JMP     ADiPjPlus
+        
+ADiNeg:   
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        GET     [DJ]
+        PUSH    0
+        EQ
+        JIT     ADiNjZero
+        GET     [DJ]
+        PUSH    0
+        GT
+        JIT     ADiNjNeg
+        JMP     ADiNjPlus
+
+ADiPjZero:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        JIF     ADne
+        JMP     ADnw
+       
+ADiNjZero:
+        POP
+        GET     [RI]
+        PUSH    2
+        MOD
+        JIF     ADse
+        JMP     ADsw
+       
+ADiPjNeg: 
+        GET     [DJ]
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADe
+        JMP     ADne
+
+ADiPjPlus:
+        GET     [DJ]
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADw
+        JMP     ADnw
+
+ADiNjNeg: 
+        GET     [DJ]
+        PUSH    1
+        PUSH    2
+        SUB
+        MUL
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADe
+        JMP     ADse
+
+ADiNjPlus:
+        GET     [DJ]
+        DIV
+        PUSH    1
+        PUSH    2
+        DIV
+        GT      
+        JIT     ADw
+        JMP     ADsw
+       
+ADe:    PUSH    ->E    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADe
+        JMP     ADreturn
+
+ADne:   PUSH    ->NE    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADne
+        JMP     ADreturn
+        
+ADnw:   PUSH    ->NW    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADnw
+        JMP     ADreturn
+        
+ADw:    PUSH    ->W    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADw
+        JMP     ADreturn
+
+ADsw:   PUSH    ->SW    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADsw
+        JMP     ADreturn
+        
+ADse:   PUSH    ->SE    
+        PUSH    1
+        PUSH    (x)melee          
+        HIT
+        JIT     ADse
+        JMP     ADreturn
+        
+ADret:  POP              
+ADreturn:
+        FREE    [RI]
+        FREE    [RJ]
+        FREE    [PI]
+        FREE    [PJ]
+        FREE    [DI]
+        FREE    [DJ]
+        RET    
+        
