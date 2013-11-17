@@ -232,7 +232,6 @@ public class Textual implements Colors, GUI
         );
     }
     
-        
     /* Implementing interface GUI */
     public void looser(Player p)
     {
