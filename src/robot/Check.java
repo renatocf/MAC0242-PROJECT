@@ -112,7 +112,9 @@ final public class Check
         }
         else throw new WrongTypeException("Text or Item");
         
-        // TODO: add documentation
+        // Put in the Stack of the RVM the 
+        // direction and the confirmation
+        // of the finded object
         for(int i = a.matrix[0].length - 1; i >= 0; i--)
         {
             if(a.matrix[index][i] != null 
@@ -127,7 +129,7 @@ final public class Check
                 {
                     rvm.DATA.push(new Direction(1, i));
                     rvm.DATA.push(new Direction(0, i));
-                    rvm.DATA.push(new Num(2));                        
+                    rvm.DATA.push(new Num(2));
                 }
                 cont++;
             }
