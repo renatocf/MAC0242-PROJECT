@@ -9,26 +9,51 @@
         ALOC    [MAPSIZE]
         ALOC    [DIRECTION]
         ALOC    [VERT]
+        ALOC    [VERTBASE]
         ALOC    [HORI]
+        ALOC    [HORIBASE]
         ALOC    [Walk]
         ALOC    [ENEMYBORDER]
         ALOC    [upperBase]
+        ALOC    [AlreadyLook]
+        ALOC    [LASTCRYSTALI]
+        ALOC    [LASTCRYSTALJ]
+        PUSH    1
+        SET     [AlreadyLook]
         PUSH    0
+        DUP
         SET     [VERT]
+        SET     [VERTBASE]
         CALL    askEdge
         CALL    askBase
         GET     [BASEI]
-        SET     [I]
+        SET     [LASTCRYSTALI]
         GET     [BASEJ]
-        SET     [J]
+        SET     [LASTCRYSTALJ]
 askPosition:        
         PUSH    position
         ASK
         JIF     askPosition
         SET     [ROBOTI]
         SET     [ROBOTJ]
+        
+begin:
+        GET     [LASTCRYSTALI]
+        SET     [I]
+        GET     [LASTCRYSTALJ]
+        SET     [J]        
+        
 looking:
+        GET     [AlreadyLook]
+        JIF     3
         CALL    lookForCrystal
+        JIT     goToTheBase
+        GET     [AlreadyLook]
+        PUSH    1
+        ADD
+        PUSH    3
+        MOD
+        SET     [AlreadyLook]
         JIT     goToTheBase
         GET     [J]
         GET     [I]         
@@ -58,23 +83,7 @@ WhatNow:
         
 popStart:
         POP
-start:
-        GET     [upperBase]
-        JIT     isUpperBase
-        GET     [MAPSIZE]
-        PUSH    1
-        SUB
-        DUP
-        SET     [I]
-        SET     [J]
-        JMP     keepLooking
-        
-isUpperBase:        
-        PUSH    1
-        DUP
-        SET     [I]
-        SET     [J]
-        
+start:        
 keepLooking:
         CALL    lookForCrystal
         JIT     goToTheBase
@@ -88,7 +97,7 @@ keepLooking:
         SET     [ROBOTJ]
         JMP     keepLooking
 
-WhatNowII:
+WhatNowII:  
         POP
         POP
         CALL    arrive
@@ -132,7 +141,15 @@ right:
 up:
         GET     [I]
         GET     [DIRECTION]
+        GET     [MAPSIZE]
         ADD
+        ADD
+        DUP
+        PRN
+        GET     [MAPSIZE]
+        DUP
+        PRN
+        MOD
         SET     [I]
         PUSH    0
         SET     [VERT]
@@ -151,19 +168,6 @@ goToTheBase:
         SET     [I]
 
 run:
-        GET     [J]
-        GET     [I]         
-        GET     [ROBOTJ]                
-        GET     [ROBOTI]        
-        CALL    mvtw
-        JIF     WhatNowIII
-        SET     [ROBOTI]
-        SET     [ROBOTJ]
-        JMP     run
-                
-WhatNowIII:
-        POP
-        POP
         GET     [upperBase]
         JIT     lookDown
         GET     [ROBOTI]
@@ -186,12 +190,33 @@ lookDown:
         LE
         JIF     baseNotNear
         JMP     lookForBase
-        
+
 lookForBase:
+        GET     [AlreadyLook]
+        JIF     3
         CALL    lookBase
-        JIT     2
-        PRN     
-baseNotNear:        
+        JIT     begin
+        GET     [AlreadyLook]
+        PUSH    1
+        ADD
+        PUSH    3
+        MOD
+        SET     [AlreadyLook]
+
+baseNotNear:
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     WhatNowIII
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     run
+                
+WhatNowIII:
+        POP
+        POP
         CALL    arrive
         JIT     findEnemyBase
         CALL    almostThere
@@ -208,57 +233,115 @@ baseNotNear:
 popFindEnemyBase:
         POP
 findEnemyBase:
-        PUSH    Procurando
-        PRN
-        NOP
-        JMP     -1 
+        PUSH    1
+        SET     [I]
+        PUSH    0
+        SET     [J]
+        
+lookingBase:
+        CALL    lookBase
+        JIT     begin
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    mvtw
+        JIF     whatNowIV
+        SET     [ROBOTI]
+        SET     [ROBOTJ]
+        JMP     lookingBase
+        
+whatNowIV:
+        POP
+        POP
+        CALL    arrive
+        JIT     nextFB
+        CALL    almostThere
+        JIT     popNextFB
+        CALL    evade
+        JIT     lookingBase
+        GET     [J]
+        GET     [I]         
+        GET     [ROBOTJ]                
+        GET     [ROBOTI]        
+        CALL    attackDestiny
+        JMP     lookingBase
+
+popNextFB:
+        POP
+nextFB:
+        GET     [VERTBASE]
+        JIT     upFB
+        GET     [HORIBASE]
+        JIT     rightFB
+        JMP     leftFB
+        
+leftFB:
+        GET     [upperBase]
+        JIT     4
+        PUSH    0
+        JMP     3
+        SET     [J]
+        GET     [ENEMYBORDER]
+        SET     [J]
+        PUSH    1
+        SET     [VERTBASE]
+        JMP     lookingBase
+        
+rightFB:
+        GET     [upperBase]
+        JIT     4
+        GET     [ENEMYBORDER]
+        SET     [J]
+        JMP     3
+        GET     [MAPSIZE]
+        SET     [J]
+        PUSH    1
+        SET     [VERTBASE]
+        JMP     lookingBase
+
+upFB:
+        GET     [I]
+        GET     [DIRECTION]
+        PUSH    -1
+        MUL
+        ADD
+        SET     [I]
+        PUSH    0
+        SET     [VERTBASE]
+        GET     [HORIBASE]
+        PUSH    1
+        ADD
+        PUSH    2
+        MOD
+        SET     [HORIBASE]
+        JMP     lookingBase 
         
 lookBase:
-        ALOC    [nBase]
         SEE
         JIF     -1
         PUSH    Base
         SEEK
-        DUP
         JIF     notFindedLB
-        SET     [nBase]
 catchLB:
+        GET     [ROBOTI]
+        SET     [ENEMYBASEI]
+        GET     [ROBOTJ]
+        SET     [ENEMYBASEJ]
         POP
-        DRAG
-        JIT     cleanStackLB    
-        GET     [nBase]
-        PUSH    1
-        SUB
         DUP
-        PUSH    1
-        GE        
-        JIF     notFindedLB
-        SET     [nBase]
-        JMP     catchLB
-        
-cleanStackLB:
-        GET     [nBase]
-        PUSH    1
-        SUB
-        DUP
-        JIF     findedLB
-        SET     [nBase]
-        JMP     cleanStackLB
-        
-findedLB:
+        DROP
+        JIF     -2
         POP
         PUSH    1
         JMP     freeLB
 
 notFindedLB:
-        POP
         PUSH    0
         JMP     freeLB
 
 freeLB:
-        FREE    [nBase]
-        RET
-                   
+        RET                   
                    
 lookForCrystal:
         ALOC    [nCrystal]
@@ -290,9 +373,21 @@ cleanStack:
         DUP
         JIF     finded
         SET     [nCrystal]
+        POP
+        POP
         JMP     cleanStack
         
 finded:
+        GET     [ROBOTI]
+        SET     [LASTCRYSTALI]
+        GET     [ROBOTJ]
+        SET     [LASTCRYSTALJ]
+        GET     [VERT]
+        PUSH    1
+        ADD
+        PUSH    2
+        MOD
+        SET     [VERT]
         POP
         PUSH    1
         JMP     freeLFC
@@ -349,6 +444,8 @@ askBase:
         DUP
         SET     [HORI]
         SET     [upperBase]
+        PUSH    1
+        SET     [HORIBASE]
         PUSH    0
         DUP
         SET     [ENEMYBASEI]
@@ -356,6 +453,10 @@ askBase:
         PUSH    -3
         SET     [DIRECTION]
         GET     [MAPSIZE]
+        DUP     
+        PUSH    10
+        MOD     
+        SUB
         PUSH    10
         DIV
         SET     [ENEMYBORDER]
@@ -366,6 +467,8 @@ upperBase:
         DUP
         SET     [HORI]
         SET     [upperBase]
+        PUSH    0
+        SET     [HORIBASE]
         GET     [MAPSIZE]
         DUP
         SET     [ENEMYBASEI]
