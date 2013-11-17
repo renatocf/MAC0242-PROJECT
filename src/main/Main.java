@@ -62,9 +62,9 @@ public class Main
             /* { */
                 if (args.length > 1)
                 {
-                    World.insertArmy(p[0], "Caprica Six"     , "behaviors/Carrier.asm"  );
-                    World.insertArmy(p[0], "Number Seventeen", "behaviors/Carrier.asm"  );
-                    World.insertArmy(p[0], "Megatron"        , "behaviors/Protector.asm");
+                    World.insertArmy(p[0], "Caprica Six"     , "behaviors/Protector.asm");
+                    World.insertArmy(p[0], "Number Seventeen", "behaviors/Protector.asm");
+                    World.insertArmy(p[0], "Megatron"        , "behaviors/Carrier.asm");
                 }
             /* } */
             
