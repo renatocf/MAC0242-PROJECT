@@ -88,7 +88,7 @@ o Ant instalado, caso não possua, faça o seguinte:
 \begin{enumerate}
 	\item Abra o terminal
 
-	\item Digite no terminal: \$: sudo apt-get -u install ant
+    \item Digite: \texttt{sudo apt-get install ant}
 \end{enumerate}
 
 \bigskip
@@ -104,10 +104,10 @@ Instalação do ivy:
 
 	\item Entre na pasta (MAC0242-PROJECT)
 
-	\item Digite: \$: sudo bash install\_ivy.bash
-
-	\item E em seguida, digite: \$: ln -s -T /usr/share/java/ivy.jar /usr/share/ant/lib/ivy.jar
-
+    \item Digite: \texttt{sudo bash install\_ivy.bash} para uma instalação
+          de sistema ou \texttt{bash install\_ivy.bash} para a
+          instalação de usuário.
+    
 \end{enumerate}
 
 \bigskip
@@ -122,7 +122,7 @@ Para compilar o jogo:
 
 	\item Entre na pasta onde está localizado o arquivo do jogo (MAC0242-PROJECT)
 
-	\item Digite \$: ant
+	\item Digite \texttt{ant}
 \end{enumerate}
 
 \bigskip
@@ -135,7 +135,8 @@ E para iniciar o jogo:
 
 \begin{enumerate}                                            
 	\item Continuar no terminal
- 	\item Digite : \$ \textit{ java -jar dist/MAC0242-Project.jar programa\_jogador\_1 programa\_jogador\_2} 
+ 	\item Digite: \texttt{java -jar dist/MAC0242-Project.jar
+          programa1.asm programa2.asm programa3.asm}
 \end{enumerate}
 
 Observação: Na pasta "behaviors" você pode encontrar exemplos de 
