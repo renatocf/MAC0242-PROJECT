@@ -27,7 +27,7 @@
     [X] Test new ASK with base.
     [X] Fix carrier to get player's base position.
     [X] Fix the behaviors. (PHASE 3)
-    [ ] Separate robot's images.
+    [X] Separate robot's images.
     
 [All]
     [X] Create insert Army.
@@ -63,12 +63,12 @@
     [X] Add LaTeX images on git again.
     [X] Create relative-address Jump.
     [X] Add counter for number of robots.
+    [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
     [ ] Finish variables attribution in Parser.jj.
     [ ] Describe functions in Parser.jj.
     [ ] Describe loops in Parser.jj.
     [ ] Describe if-else in Parser.jj.
-    [ ] Add buttons to put new robots.
     [ ] Create a mini-map graphical representation.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
