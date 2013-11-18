@@ -51,6 +51,7 @@ enum Type
     GEN,
     ITM,
     NAT,
+    EFC,
     TEC,
 }    
 
@@ -81,6 +82,9 @@ enum Images implements ROOT
     // Nature
     ROCK         ( NAT, "Rock.png",     13, 13  ),
     TREE         ( NAT, "Tree.png",     25, 50  ),
+    
+    // Effect
+    HIT          ( EFC, "Hit.png",      15, 15  ),
     
     // Technology
     BLACK_ROBOT  ( TEC, "Robot.png",    15, 15  ),
@@ -125,6 +129,7 @@ enum Images implements ROOT
             case ITM: subdir = "item/";       break;
             case APP: subdir = "appearence/"; break;
             case GEN: subdir = "util/";       break;
+            case EFC: subdir = "effect/";     break;
             //
             default: subdir = "";
         }

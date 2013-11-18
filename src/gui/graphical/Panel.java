@@ -200,7 +200,7 @@ class Panel extends JPanel
                 );
                 
                 r.setPhase(32, phase[1]);
-                                
+                
                 JRobot jr = robots.get(r);
                 jr.update(x-scen.dx(), y-scen.dy());
                 jr.add();
@@ -209,6 +209,14 @@ class Panel extends JPanel
             {
                 g2d.drawImage(
                 scen.img(), x-scen.dx(), y-scen.dy(), null);
+            }
+            
+            if(s.sufferedDamage())
+            {
+                scen = Images.valueOf("HIT");
+                g2d.drawImage(
+                scen.img(), x-scen.dx(), y-scen.dy(), null
+                );  
             }
         }
     }
