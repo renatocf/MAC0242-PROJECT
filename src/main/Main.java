@@ -54,19 +54,17 @@ public class Main
         
         // Generate map
         Player[] p = World.genesis(2, Game.WEATHER, GUI, Game.RAND);
-               
+        
         // Menu
         // TODO: automate inserction of programs
         try{
-            /* if(!Debugger.info) */
-            /* { */
-                if (args.length > 1)
-                {
-                    World.insertArmy(p[0], "Caprica Six"     , "behaviors/Protector.asm");
-                    World.insertArmy(p[0], "Number Seventeen", "behaviors/Protector.asm");
-                    World.insertArmy(p[0], "Megatron"        , "behaviors/Carrier.asm");
-                }
-            /* } */
+            String ROOT = "behaviors/";
+            if (args.length > 1)
+            {
+                World.insertArmy(p[0], "Caprica Six"     , ROOT + "Protector.asm");
+                World.insertArmy(p[0], "Number Seventeen", ROOT + "Protector.asm");
+                World.insertArmy(p[0], "Megatron"        , ROOT + "Carrier.asm");
+            }
             
             String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
             for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)

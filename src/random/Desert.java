@@ -143,7 +143,6 @@ class Desert extends Theme
     {
         char[][] spots = new char[side][side];
         int nSpots = (int) (balancedRand() * side*3);
-        System.out.println(nSpots);
         
         for(int i = 0; i < side; i++)
             for(int j = 0; j < side; j++)
