@@ -32,11 +32,13 @@ public class Robot implements Scenario, Printable
     final protected String name;
     final protected Player team;
     final protected int    ID;
-    protected       String pos;    
+
     // Position
     protected int     i; // Line
     protected int     j; // Column
     protected Terrain terrain;
+    protected int[]   phase; //Phase of animation
+    protected int     leftFoot;
     
     // Hardware
     protected Item[] slots;
@@ -91,14 +93,15 @@ public class Robot implements Scenario, Printable
     {
         // ID
         this.name = baptism;
-        this.pos  = "";
         this.team = team;
         this.ID   = ID;
         
         // Position
-        this.i       = i;
-        this.j       = j;
-        this.terrain = terrain;
+        this.i        = i;
+        this.j        = j;
+        this.terrain  = terrain;
+        this.phase    = new int[] {32, 0};
+        this.leftFoot = 0;       
         
         // Hardware
         this.slots = new Item[1];
@@ -273,18 +276,50 @@ public class Robot implements Scenario, Printable
      */
     public Player getTeam () { return this.team; }
     
-    public void setPos(String mov)
+    
+    /**
+     * Setter for the robot's phase.
+     * @param x the X coordinate of the upper-left 
+     *          corner of the robot image 
+     * @param y the Y coordinate of the upper-left 
+     *          corner of the robot image 
+     */
+    public void setPhase(int x, int y)
     {
+        phase[0] = x;
+        phase[1] = y;
+    }
+    
+    /**
+     * Setter for the robot's phase.
+     * @param d the direction of the movement 
+     */
+    public void setPhase(Direction d)
+    {
+        String mov = d.toString();
         switch (mov)
         {
             case "->SE" :
-            case "->SW" : this.pos = "" ; break;
+            case "->SW" :
+                phase[0] = leftFoot*64;
+                phase[1] = 0; 
+                break;
             case "->NW" :
-            case "->NE" : this.pos = "B"; break;
-            case "->E"  : this.pos = "R"; break;
-            case "->W"  : this.pos = "L"; break;
-            default     : this.pos = "" ;
+            case "->NE" : 
+                phase[0] = leftFoot*64;
+                phase[1] = 96; 
+                break;
+            case "->E"  : 
+                phase[0] = leftFoot*64;
+                phase[1] = 64; 
+                break;
+            case "->W"  :
+                phase[0] = leftFoot*64;
+                phase[1] = 32; 
+                break;
         }
+        leftFoot += 1;
+        leftFoot %= 2;
     }
     
     // Interface scenario
@@ -301,8 +336,10 @@ public class Robot implements Scenario, Printable
     public int getPower    () { return this.power;    }
     public int getMaxPower () { return this.maxPower; }
     
+    public int[] getPhase() {return phase;}
+    
     // Printable interface
-    public String name() { return "ROBOT" + pos; }
+    public String name() { return "ROBOT";}
     
     protected int move()
     {

@@ -125,7 +125,9 @@ public class Action
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
         ret[0] = new Num(SUCCEDED);
-        turn.setPos(d.toString());
+        
+        //Set the phase of the animation of the robot
+        turn.setPhase(d); 
         return ret;
     }
     

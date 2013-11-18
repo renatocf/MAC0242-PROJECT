@@ -185,19 +185,30 @@ class Panel extends JPanel
         if(s != null)
         {
             Images scen = Images.valueOf(s.name(), s.getTeam());
-            g2d.drawImage(
-                scen.img(), x-scen.dx(), y-scen.dy(), null
-            );
             
             if(s instanceof Robot)
             {
                 Robot r = (Robot) s;
+                int[] phase = r.getPhase();
                 if(!this.robots.containsKey(r)) 
                     this.robots.put(r, new JRobot(r));
                 
+                //Get the right sprite and corrects the robot
+                g2d.drawImage(
+                scen.img().getSubimage(phase[0], phase[1], 32, 32), 
+                x-scen.dx(), y-scen.dy(), null
+                );
+                
+                r.setPhase(32, phase[1]);
+                                
                 JRobot jr = robots.get(r);
                 jr.update(x-scen.dx(), y-scen.dy());
                 jr.add();
+            }
+            else
+            {
+                g2d.drawImage(
+                scen.img(), x-scen.dx(), y-scen.dy(), null);
             }
         }
     }
