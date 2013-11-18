@@ -3,6 +3,10 @@ package parameters;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintStream;
+    import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 
 /**
  * <b>Debugger</b><br>
@@ -83,7 +87,12 @@ public class Debugger
      */
     private Debugger(String fileName)
     {
-        try { log = new PrintWriter(new File(fileName)); }
+        try
+        {   
+            BufferedOutputStream bf = new BufferedOutputStream(new FileOutputStream(fileName, false));
+            log = new PrintWriter(bf, true); 
+            System.setErr(new PrintStream(bf));
+        }
         catch(IOException e)
         {
             System.out.println(
