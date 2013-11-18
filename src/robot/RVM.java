@@ -89,8 +89,9 @@ public class RVM
             try { Ctrl.ctrl(this, function, arg);}
             catch (Exception e) 
             { 
-                System.out.println("[RVM] " + e);
-                System.out.println("At Line " + this.PC + ": " + this.PROG.elementAt(this.PC));
+                System.err.println("[RVM] " + e);
+                System.err.println("At Line " + this.PC + ": " 
+                                   + this.PROG.elementAt(this.PC));
                 e.printStackTrace();
             }
         }

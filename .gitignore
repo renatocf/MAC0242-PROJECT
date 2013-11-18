@@ -23,6 +23,9 @@ pm_to_blib
 # Java .gitignore #
 ###################
 
+# Log file
+log
+
 # Java parser
 src/parser/
 
