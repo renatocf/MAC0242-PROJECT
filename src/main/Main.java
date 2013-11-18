@@ -177,7 +177,10 @@ public class Main
         // Generate and run process
         try {
             Process p = Runtime.getRuntime().exec(
-                new String[] {"sh", "-c", "man ./doc/robots.6 < /dev/tty > /dev/tty" });
+                new String[] {
+                    "sh", "-c", "man ./doc/robots.6 < /dev/tty > /dev/tty"
+                }
+            );
             
             try{ p.waitFor(); }
             catch(InterruptedException e) {
