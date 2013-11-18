@@ -9,9 +9,12 @@ import players.Player;
  */
 public class Tree implements Scenario 
 {
-    private int HP = 7; // Vinícius: I think that the trees should be stronger than the robot
+    private int HP = 7;
+    protected boolean damageTaken = false;
+
     public int takeDamage(int damage)
     {
+        damageTaken = true;
         return HP -= damage;
     }
     
@@ -20,6 +23,17 @@ public class Tree implements Scenario
     public String toString() { return "(♣) Tree"; }
     
     public Player getTeam() { return Player.Nature; }
+    
+    // Interface scenario
+    public boolean sufferedDamage()
+    {
+        if(damageTaken)
+        {
+            damageTaken = false;
+            return true;
+        }
+        return false;
+    }
     
     public String name() { return "TREE"; }
 }

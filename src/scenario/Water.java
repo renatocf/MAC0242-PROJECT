@@ -21,6 +21,8 @@ public class Water implements Scenario
     
     public String toString() { return "(≈) Water"; }
     
+    public boolean sufferedDamage() { return false; }
+    
     public Player getTeam() { return Player.Nature; }
     
     public String name() { return "WATER"; }

@@ -75,6 +75,9 @@ public class Robot implements Scenario, Printable
     protected boolean ON = true;
     protected int wait = 0;
     
+    //Robot state
+    protected boolean damageTaken = false;
+    
     /**
      * Default constructor.
      * @param baptism Name of the robot
@@ -323,9 +326,21 @@ public class Robot implements Scenario, Printable
     }
     
     // Interface scenario
+    public boolean sufferedDamage()
+    {
+        if(damageTaken)
+        {
+            damageTaken = false;
+            return true;
+        }
+        return false;
+    }
+    
+    // Interface scenario
     public int takeDamage(int damage)
     {
         this.HP -= damage - this.forceShield;
+        damageTaken = true;
         return this.HP;
     }
     

@@ -11,6 +11,7 @@ import players.Player;
  */
 public interface Scenario extends Printable
 {
+    
     /**
      * Remaining HP to the scenario 
      * be removed from the map.
@@ -33,6 +34,11 @@ public interface Scenario extends Printable
      * way, with debug purposes.
      */
     public String toString();
+    
+    /**
+     * Check if the scenario has suffer damage
+     */
+    public boolean sufferedDamage();
     
     /** 
      * Returns the team of a given scenario

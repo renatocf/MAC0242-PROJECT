@@ -124,6 +124,8 @@ public class Base implements Scenario
     //
     // Scenarion interface methods
     //
+    
+    public boolean sufferedDamage() { return false; }
 
     public int takeDamage(int damage) 
     {
