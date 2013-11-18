@@ -316,7 +316,7 @@ class Panel extends JPanel
         Graphics2D g2d = (Graphics2D) g;
         
         // Draw red robot
-        Image red = Images.RED_ROBOT.img();
+        Image red = Images.RED_ROBOT.img().getSubimage(0, 32, 32, 32);
         
         g2d.drawImage(red,   28,     hH - 65,  null);
         g2d.drawImage(red,   28,     hH + 5 ,  null);
@@ -328,7 +328,7 @@ class Panel extends JPanel
         g2d.drawImage(red,   W - 60, hH + 145, null);
             
         // Draw black robot
-        Image black = Images.BLACK_ROBOT.img();
+        Image black = Images.BLACK_ROBOT.img().getSubimage(0, 64, 32, 32);
             
         g2d.drawImage(black, 28,     hH - 30,  null);
         g2d.drawImage(black, 28,     hH + 40,  null);
