@@ -168,7 +168,6 @@ class MapFrame extends JFrame
         
         // Substitute system streams for Graphical's one
         System.setOut(new PrintStream(out, true));
-        System.setErr(new PrintStream(out, true));
     }
     
     /**
