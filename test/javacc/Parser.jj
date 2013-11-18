@@ -26,10 +26,10 @@ SKIP : { " " | "\n" | "\r" | "\r\n"}
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 
-TOKEN : {< SIGN : "+"  | "-" >}
-TOKEN : {< OP   : "*"  | "/" >}
+TOKEN : {< SIGN : "+"  | "-"  >}
+TOKEN : {< OP   : "*"  | "/" | "%" >}
 TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
-TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" >}
+TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
 
 TOKEN : {< NUMBER : (["0"-"9"])+ ("." (["0"-"9"])+)? >}
 TOKEN : {< WORD   : (["A"-"Z"] | ["a"-"z"] | ["0"-"9"] | "_")+ >}
@@ -50,7 +50,7 @@ TOKEN : {< EOL : ";" >}
  * Defines program expressions.
  */ 
 void Start() :
-{}
+{}    
 {
     (
         expression()
@@ -68,35 +68,19 @@ void expression() :
     Token   t;
 }
 {
-    attr()
+    arit()
     (
         t = <CMP>            
-        attr() 
+        arit() 
         { insert(cmp(t)); }
     )*
 }
 
-/**
- * Attr is either a arit or a attribution.
- */
-void attr() :
-{
-    Token v, a;
-}
-{
-    arit()
-    |
-    (
-        v = <DOUBLE> 
-        a = <ATTR> 
-        arit()
-    )    
-    {attrDouble(v, a);}
-}
 
 /**
  * Arit is a sum of terms.
  */
+ 
 void arit() :
 {
     Token   t;
@@ -132,10 +116,21 @@ void term () :
  */
 void factor () :
 {
-    Token t;
+    Token t, v;
     double   value;
 }
 {
+    LOOKAHEAD(2)
+    (
+        t = <DOUBLE> 
+        v = <ATTR>
+        expression()
+        { attrDouble(t, v); }
+    )
+    |
+        t = <DOUBLE>
+        { getDouble(t); }
+    |
     (
         t = <NUMBER>
         { value = atof(t); }
@@ -162,7 +157,7 @@ void PUSH(Object o) :
 }}
 
 /**
- * Print string representation of 
+ * Print string representation of | "%"
  * a variable number of objects.
  * @param obj List of objects
  */
@@ -193,6 +188,13 @@ void attrDouble(Token var, Token attr) :
         case ">" : return "GT";
         default  : return "\n"; // Invalid operator*/
     } 
+}}
+
+void getDouble(Token var) :
+{ String s; }
+{{
+    s = var.image.substring(1);
+    insert("GET ", "[", s, "]");
 }}
 
 /**
@@ -235,7 +237,13 @@ String sign (Token t) :
 String op (Token t) :
 {}
 {{
-    return t.image.equals("*") ? "MUL" : "DIV"; 
+    switch (t.image)
+    {
+        case "*": return "MUL";
+        case "/": return "DIV";
+        case "%": return "MOD";
+     }   
+    return t.image;
 }}
 
 /**
