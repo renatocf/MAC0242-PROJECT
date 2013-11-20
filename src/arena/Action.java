@@ -109,7 +109,6 @@ public class Action
         Type type = map.map[newI][newJ].type;
         switch(type)
         {
-            /* TODO: Add energy/time costs for NORMAL/ROUGHT */
             case BLOCKED: ret[0] = new Num(BLOCKED); return ret;
         }
         
