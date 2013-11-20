@@ -77,14 +77,4 @@ class Cell
         g2d.setPaint (this.bg);
         g2d.fill     (this.hex);
     }   
-
-    /**
-     * Translates the cell among the X and Y axis.
-     * @param dx Variation in the X axis
-     * @param dy Variation in the Y axis
-     */
-    void trans(int dx, int dy) 
-    {
-        hex.translate(dx, dy);
-    }
 }
