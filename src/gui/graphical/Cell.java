@@ -28,6 +28,9 @@ class Cell
     final Terrain terrain; 
     final int x, y;
     
+    // Painting
+    TexturePaint bg;
+    
     /**
      * Default constructor.<br>
      * @param x       Horizontal position where the cell 
@@ -47,6 +50,17 @@ class Cell
                 x + (int) (r * Math.sin(i * Math.PI/3)),
                 y + (int) (r * Math.cos(i * Math.PI/3))
             );
+        
+        // Get appearence
+        String app = terrain.getAppearence().name();
+        BufferedImage appearence = Images.valueOf(app).img();
+        
+        // Get rectangle with the size the appearence
+        /* TODO: Take out hardcoded numbers */
+        Rectangle rec = new Rectangle(0,0,32,32);
+        
+        // Create texture
+        this.bg = new TexturePaint(appearence, rec);
     }
 
     /**
@@ -57,19 +71,11 @@ class Cell
      */
     void draw(Graphics g) 
     { 
-        /* TODO: Take out hardcoded numbers */
         Graphics2D g2d = (Graphics2D) g;
         
-        // Get appearence
-        String app = terrain.getAppearence().name();
-        BufferedImage appearence = Images.valueOf(app).img();
-        
-        // Get rectangle to size qhe appearence
-        Rectangle rec = new Rectangle(0,0,32,32);
-        
         // Paint the background
-        g2d.setPaint (new TexturePaint(appearence, rec));
-        g2d.fill     (hex);
+        g2d.setPaint (this.bg);
+        g2d.fill     (this.hex);
     }   
 
     /**
