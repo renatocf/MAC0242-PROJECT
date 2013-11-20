@@ -33,7 +33,7 @@ TOKEN : {< OP   : "*"  | "/" | "%" >}
 TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
 TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
 
-TOKEN : {< SNUMBER: (["-"])  (" ")* (["0"-"9"])+ ("." (["0"-"9"])+)? >}
+/*TOKEN : {< SNUMBER: (["-"])  (" ")* (["0"-"9"])+ ("." (["0"-"9"])+)? >}*/
 
 TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
 
@@ -120,13 +120,27 @@ void term () :
     double value;
 }
 {
-    factor()
+    element()
     (
         t = <OP>
-        factor()
+        element()
         
         { insert(op(t)); }
     )*
+}
+
+void element() :
+{
+    Token t;
+}
+{
+    factor()
+    |
+    (
+        t = <SIGN>
+        factor()
+        { unarySign(t); }
+    )    
 }
 
 /**
@@ -148,12 +162,12 @@ void factor () :
         t = <WORD>
         { getDouble(t); }
     |
-    (
-        t = <SNUMBER>
-        { value = atof(t); }
-        { PUSH(value);     }
-    )
-    |
+//    (
+//        t = <SNUMBER>
+//       { value = atof(t); }
+//        { PUSH(value);     }
+//    )
+//    |
     (
         t = <NUMBER>
         { value = atof(t); }
@@ -287,6 +301,16 @@ String op (Token t) :
         case "%": return "MOD";
      }   
     return t.image;
+}}
+
+void unarySign (Token t) :
+{}
+{{
+    if(t.image.equals("-"))
+    {
+        insert("PUSH -1");
+        insert("MUL");
+    } 
 }}
 
 /**
