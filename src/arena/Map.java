@@ -60,12 +60,12 @@ public class Map
      * @return List with nPlayer bases to 
      *         be given to the players
      */
-    Base[] genesis(Player[] players, Random rand)
+    Base[] genesis(int nPlayers, Random rand)
         throws InvalidOperationException
     {
-        RandomMap arena = new RandomMap     (w, players.length, MAP_SIZE, rand);
-        miniMap         = arena.getMatrix   (); 
-        map             = arena.generateMap ();              
+        RandomMap arena = new RandomMap     (w, nPlayers, MAP_SIZE, rand);
+        miniMap         = arena.getMatrix   ();
+        map             = arena.generateMap ();
         return arena.getBases();
     }
     

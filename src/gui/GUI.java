@@ -47,11 +47,11 @@ public interface GUI
      * @param nRobots  Number of robots created by 
      *                 all players along the game
      */
-    public void winner(Player p, int nTS, int nPlayers, int nRobots);
+    public void winner(int nTS, int nPlayers, int nRobots);
     
     /** 
      * Remove the looser and exhibit the message.
      * @param p The looser player
      */
-    public void looser(Player p);
+    public void looser();
 }

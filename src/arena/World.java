@@ -38,8 +38,11 @@ final public class World
     // Global settings
     private static int id = 1;
     private static int time = 0;
-    private static int nPlayers;
     private static int nActivePlayers;
+    
+    // Players and AI
+    private static int nAI;
+    private static int nPlayers;
     
     // Global characteristics
     private static Map    map;
@@ -51,7 +54,7 @@ final public class World
     private static Player[] players;
     
     // Graphical User Interface (GUI)
-    private static GUI GUI;
+    /* private static GUI GUI; */
     
     // No instances of this class allowed
     private World() {}
@@ -63,31 +66,46 @@ final public class World
      * @param w  Weather
      */
     public static Player[] 
-    genesis(int np, Weather w, Interfaces gui, Random rand)
+    genesis(int np, int nAI, Weather w, Interfaces gui, Random rand)
         throws InvalidOperationException
     {
         // Set game configurations
-        nActivePlayers = nPlayers = np;
+        World.nAI = nAI;
+        World.nActivePlayers = World.nPlayers = np;
+        
+        // Creating elements for the game
         map      = new Map(w);
         armies   = new RobotList(nPlayers);
         players  = new Player[nPlayers];
         
         // Create map
-        bases = map.genesis(players, rand);
+        bases = map.genesis(nPlayers, rand);
         
         // Create new players
         for(int i = 0; i < nPlayers; i++)
+        {
+            GUI GUI = null;
+            
+            // Set up player with its base and GUI
             players[i] = new Player(bases[i]);
             
-        // Initializes GUI
-        switch(gui)
-        {
-            case TEXTUAL   : GUI = new Textual   (map); break;
-            case GRAPHICAL : GUI = new Graphical (map); break;
-            default:         GUI = new Graphical (map);
+            // Initializes GUI for non-AI players
+            if(i < nAI) continue;
+            
+            Player p = players[i];
+            switch(gui)
+            {
+                case TEXTUAL   : GUI = new Textual   (map, p); break;
+                case GRAPHICAL : GUI = new Graphical (map, p); break;
+                default:         GUI = new Graphical (map, p);
+            }
+            p.setGUI(GUI);
         }
         
-        if(Debugger.info) GUI.printMiniMap();
+        if(Debugger.info) 
+            for(Player p: players) 
+                if(p.GUI != null) p.GUI.printMiniMap();
+        
         return players;
     }
     
@@ -143,7 +161,8 @@ final public class World
         }
         
         // Paint one frame
-        GUI.paint();
+        for(Player p: players)
+            if(p.GUI != null) p.GUI.paint();
         
         // Stops only when the game is over
         return gameOver();
@@ -303,9 +322,12 @@ final public class World
             /* More than 5 crystals: player looses */
             if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
             {
-                GUI.looser(players[i]);
-                try { Thread.sleep(5000); }
-                catch (InterruptedException e) {}
+                if(players[i].GUI != null)
+                {
+                    players[i].GUI.looser();
+                    try { Thread.sleep(5000); }
+                    catch (InterruptedException e) {}
+                }
                 
                 // Take out player from the game
                 players[i] = null;
@@ -319,7 +341,8 @@ final public class World
                 for(Player p: players) if(p != null) winner = p;
                 
                 /* Sets the winner */
-                GUI.winner(winner, time, nPlayers, armies.getPopulation());
+                if(winner.GUI != null)
+                    winner.GUI.winner(time, nPlayers, armies.getPopulation());
                 
                 Debugger.say("=============================");
                 Debugger.say("========[ GAME OVER ]========");

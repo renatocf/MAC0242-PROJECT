@@ -21,12 +21,15 @@ import static parameters.Game.*;
  */
 public class Graphical implements GUI
 {
+    Player player;
     MapFrame mapFrame;
     EditorFrame editorFrame;
     
-    public Graphical(Map map)
+    public Graphical(Map map, Player player)
     {
-        /* TODO: conclude editor frame */
+        this.player = player;   
+
+        /* TODO: Finish editor frame */
         /* this.editorFrame    = new EditorFrame(); */
         this.mapFrame       = new MapFrame(map);
     }
@@ -55,14 +58,14 @@ public class Graphical implements GUI
     public void printMiniMap() { }
     
     /* Implementing interface GUI */
-    public void winner(Player p, int nTS, int nPlayers, int nRobots)
+    public void winner(int nTS, int nPlayers, int nRobots)
     {
-        mapFrame.winner(p, nTS, nPlayers, nRobots);
+        mapFrame.winner(this.player, nTS, nPlayers, nRobots);
     }
     
     /* Implementing interface GUI */
-    public void looser(Player p)
+    public void looser()
     {
-        mapFrame.looser(p);
+        mapFrame.looser(this.player);
     }
 }

@@ -4,6 +4,7 @@ package players;
 import java.util.ArrayList;
 
 // Libraries
+import gui.GUI;
 import arena.Robot;
 
 /**
@@ -32,13 +33,17 @@ public class Player
     private String color;
     private int[]  basePos;
     
-    private // Player's armies
-    ArrayList<Robot> armies = new ArrayList<Robot>();
+    // Player's armies
+    private ArrayList<Robot> armies = new ArrayList<Robot>();
+    
+    // Player's view of the game
+    public GUI GUI = null;
     
     /**
      * Default constructor.
      * Creates the ID, color and the base
      * for a given player.
+     * @param base Player's base
      */
     public Player(Base base)
     {
@@ -50,11 +55,19 @@ public class Player
         if(base != null) base.own(this);
     }
     
+    /**
+     * Sets player's GUI.
+     * @param GUI  Player's own visualization
+     *             of what is happening on the
+     *             game
+     */
+    public void setGUI(GUI GUI) { this.GUI = GUI; }
+    
     /** 
      * Getter for the player's ID.
      * @return Integer with player ID
      */
-    public int    getID() { return this.ID;    }
+    public int getID() { return this.ID;    }
     
     /** 
      * Getter for the player's color

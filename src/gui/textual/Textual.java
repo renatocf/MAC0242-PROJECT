@@ -24,15 +24,17 @@ import static parameters.Game.*;
 public class Textual implements Colors, GUI
 {
     private Map map;
+    private Player player;
 
     /** 
      * Default constructor.<br>
      * @param map Object of the class map
      *            from package arena.
      */
-    public Textual(Map map)
+    public Textual(Map map, Player player)
     {
-        this.map = map;
+        this.map    = map;
+        this.player = player;
     }
     
     /* Implementing interface GUI */
@@ -211,7 +213,7 @@ public class Textual implements Colors, GUI
     }
     
     /* Implementing interface GUI */
-    public void winner(Player p, int nTS, int nPlayers, int nRobots)
+    public void winner(int nTS, int nPlayers, int nRobots)
     {
         System.out.print(CLEAR);
         System.out.println(
@@ -230,12 +232,13 @@ public class Textual implements Colors, GUI
             +"  ##     ##    ###    ###        ###   ###  \n"
             +"  #########     #     ########## ###    ### \n"
         );
+        // TODO: Put more info in the winner's method on Textual UI
     }
     
     /* Implementing interface GUI */
-    public void looser(Player p)
+    public void looser()
     {
-        
+        // TODO: Implement looser on Textual UI
     }
     
     /**
@@ -384,5 +387,4 @@ public class Textual implements Colors, GUI
     
     public void printText()
     { }
-    
 }

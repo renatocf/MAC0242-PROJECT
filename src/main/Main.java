@@ -53,7 +53,7 @@ public class Main
         { System.err.println(USAGE); return; }
         
         // Generate map
-        Player[] p = World.genesis(2, Game.WEATHER, GUI, Game.RAND);
+        Player[] p = World.genesis(2, 1, Game.WEATHER, GUI, Game.RAND);
         
         // Menu
         // TODO: automate inserction of programs
