@@ -1,9 +1,15 @@
 /* adder.jj Adding up numbers */
 options 
 {
-    STATIC = false ;
+    STATIC    = false ;
+    LOOKAHEAD = 3;
 }
 PARSER_BEGIN(Parser)
+
+package parser;
+import parser.*;
+import java.util.HashMap;
+import exception.WrongTypeException;
 
 /**
  * <b>Parser for user Program<b>
@@ -12,8 +18,12 @@ PARSER_BEGIN(Parser)
  */
 public class Parser 
 {
+    HashMap<String,String> symbol = new HashMap<String,String>();
+    
     public static void main( String[] args )
-        throws ParseException, TokenMgrError 
+        throws ParseException, 
+               TokenMgrError, 
+               WrongTypeException 
     {
         Parser parser = new Parser(System.in);
         parser.Start(); 
@@ -26,13 +36,15 @@ SKIP : { " " | "\n" | "\r" | "\r\n"}
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 
-TOKEN : {< SIGN : "+"  | "-" >}
-TOKEN : {< OP   : "*"  | "/" >}
-TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
-TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" >}
+TOKEN : {< NUMBER : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
+TOKEN : {< STRING : ( ("\"") (~["\""])* ("\"")) >}
 
-TOKEN : {< NUMBER : (["0"-"9"])+ ("." (["0"-"9"])+)? >}
-TOKEN : {< WORD   : (["A"-"Z"] | ["a"-"z"] | ["0"-"9"] | "_")+ >}
+TOKEN : {< SIGN : "+"  | "-"  >}
+TOKEN : {< OP   : "*"  | "/" | "%" >}
+TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
+TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
+
+TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
 
 TOKEN : {< SIGIL  : "#" | "$" | "^" | "!" | "&" >}
 TOKEN : {< DOUBLE : "#" <WORD> >}
@@ -49,55 +61,85 @@ TOKEN : {< EOL : ";" >}
 /**
  * Defines program expressions.
  */ 
-void Start() :
-{}
+void Start() 
+    throws WrongTypeException :
+{
+}    
 {
     (
-        expression()
-        {insert("POP"); }
+        (   
+//            (
+                expression()
+                { insert("POP"); }
+            //)
+  //          |
+    //        (
+      //          stringAttribution()
+        //    )
+        )?
         <EOL>
         { say("--------------------------------"); }
     )*
 }
 
+void stringAttribution() :
+{
+    Token var, str;
+}
+{
+    var = <WORD> <ATTR> 
+    (
+        str = <STRING>
+        { attrString(var, str); }
+    ) 
+    |
+    (str = <WORD>)
+    
+}
+
 /**
- * Expression is a comparison of Attr's.
+ * Insert a attribution of a double variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
  */
-void expression() :
+void attrString(Token var, Token str) :
+{ String s; }
+{{
+    s = var.image;
+    if(!symbol.containsKey(s))
+    {
+        symbol.put(s, "num");
+        insert("ALOC ", "[", s, "]");
+    }
+    insert("PUSH ", str.image);
+    insert("SET " , "[", s, "]");
+    insert("GET " , "[", s, "]");
+}}
+    
+
+
+/**
+ * Expression is a comparison of Arit's.
+ */
+void expression() 
+    throws WrongTypeException :
 {
     Token   t;
 }
 {
-    attr()
+    arit()
     (
         t = <CMP>            
-        attr() 
+        arit() 
         { insert(cmp(t)); }
     )*
 }
 
 /**
- * Attr is either a arit or a attribution.
- */
-void attr() :
-{
-    Token v, a;
-}
-{
-    arit()
-    |
-    (
-        v = <DOUBLE> 
-        a = <ATTR> 
-        arit()
-    )    
-    {attrDouble(v, a);}
-}
-
-/**
  * Arit is a sum of terms.
  */
-void arit() :
+void arit() 
+    throws WrongTypeException :
 {
     Token   t;
 }
@@ -111,31 +153,70 @@ void arit() :
 }
 
 /**
- * Term is a product of factors.
+ * Term is a product of elements.
  */
-void term () :
+void term () 
+    throws WrongTypeException :
 {
     Token  t;
     double value;
 }
 {
-    factor()
+    element()
     (
         t = <OP>
-        factor()
+        element()
+        
         { insert(op(t)); }
     )*
 }
 
 /**
- * Factor is either a number or a braced expression.
+ * Element is either a factor or a signed factor.
  */
-void factor () :
+void element() 
+    throws WrongTypeException :
 {
     Token t;
-    double   value;
 }
 {
+    factor()
+    |
+    (
+        t = <SIGN>
+        factor()
+        { unarySign(t); }
+    )    
+}
+
+/**
+ * Factor is either a attribution, a variable, 
+ * a number or a braced expression.
+ */
+void factor ()  
+    throws WrongTypeException :
+{
+    Token t, v;
+    double   value;
+}
+{    
+    (
+        t = <WORD> 
+        v = <ATTR>
+        e = expression()
+        { attrDouble(t, v, e); }
+    )
+    |
+    (
+        t = <WORD> 
+        v = <ATTR>
+        <STRING>
+        { say("funcionou"); }
+    )
+    |
+        t = <WORD>
+        { getDouble(t); }
+    |
     (
         t = <NUMBER>
         { value = atof(t); }
@@ -162,7 +243,7 @@ void PUSH(Object o) :
 }}
 
 /**
- * Print string representation of 
+ * Print string representation of | "%"
  * a variable number of objects.
  * @param obj List of objects
  */
@@ -179,20 +260,72 @@ void insert(Object ... obj) :
     System.out.println();
 }}
 
+/**
+ * Insert a attribution of a double variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
+ */
 void attrDouble(Token var, Token attr) :
 { String s; }
 {{
-    s = var.image.substring(1);
+    s = var.image;
+    if(!symbol.containsKey(s))
+    {
+        symbol.put(s, "num");
+        insert("ALOC ", "[", s, "]");
+    }
     switch(attr.image)
     {
-        case "=" : insert("SET ", "[", s, "]"); insert("GET ", "[", s, "]"); 
-        /*case "!=": return "NE";
-        case "<" : return "LT";
-        case "<=": return "LE";
-        case ">=": return "GE";
-        case ">" : return "GT";
-        default  : return "\n"; // Invalid operator*/
+        case "="  : break;
+        case "+=" : insert("GET ", "[", s, "]"); 
+                    insert("ADD"); 
+                    break;
+        
+        case "-=" : insert("GET ", "[", s, "]");
+                    insert("SWAP"); 
+                    insert("SUB"); 
+                    break;
+                    
+        case "*=" : insert("GET ", "[", s, "]"); 
+                    insert("MUL"); 
+                    break;
+                    
+        case "/=" : insert("GET ", "[", s, "]"); 
+                    insert("SWAP");
+                    insert("DIV"); 
+                    break;
+                    
+        case "%=" : insert("GET ", "[", s, "]"); 
+                    insert("SWAP");
+                    insert("MOD"); 
+                    break;
     } 
+    
+    insert("SET ", "[", s, "]"); insert("GET ", "[", s, "]");
+}}
+
+/**
+ * Insert a GET for a double variable.
+ * @param var  Token of the variable
+ */
+void getDouble(Token var) 
+    throws WrongTypeException :
+{ String s; }
+{{
+    s = var.image;
+    if(!symbol.containsKey(s))
+    {
+        symbol.put(s, "num");
+        insert("ALOC ", "[", s, "]");
+        insert("PUSH 0");
+        insert("SET ", "[", s, "]");
+    }
+    else
+    {
+        if(!symbol.get(s).equals("num"))
+            throw new WrongTypeException("number");
+    }
+    insert("GET ", "[", s, "]");
 }}
 
 /**
@@ -235,7 +368,27 @@ String sign (Token t) :
 String op (Token t) :
 {}
 {{
-    return t.image.equals("*") ? "MUL" : "DIV"; 
+    switch (t.image)
+    {
+        case "*": return "MUL";
+        case "/": return "DIV";
+        case "%": return "MOD";
+     }   
+    return t.image;
+}}
+
+/**
+ * insert a additive inverse of a factor 
+ * @param  t Token with the sign
+ */
+void unarySign (Token t) :
+{}
+{{
+    if(t.image.equals("-"))
+    {
+        insert("PUSH -1");
+        insert("MUL");
+    } 
 }}
 
 /**

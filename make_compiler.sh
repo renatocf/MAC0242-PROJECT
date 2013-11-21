@@ -3,12 +3,10 @@
 
 DIR=$(pwd)
 
-cd test/javacc/
-javacc Parser.jj
-javac *.java
+cd build/classes/
 if [ $? -ne 0 ]; then exit; fi
 echo "========================================"
 echo "JAVACC - Parser"
-java Parser
+java parser.Parser
 
 cd $DIR
