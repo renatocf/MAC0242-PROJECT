@@ -16,10 +16,10 @@
     [X] Scroll with keys.
     [X] Add/Correct javadoc in package gui.graphical.
     [X] Configure Ant for running javacc
-    [ ] Update website info. (PHASE 3)
+    [X] Make one GUI per player.
     [ ] Create a system for removing player.
-    [ ] Make one GUI per player.
     [ ] Add player nickname.
+    [ ] Update website info. (PHASE 4)
     
 [Vinícius]
     [X] Add new maps. 
@@ -28,6 +28,7 @@
     [X] Fix carrier to get player's base position.
     [X] Fix the behaviors. (PHASE 3)
     [X] Separate robot's images.
+    [ ] Get new images for fog and invisibility.
     
 [All]
     [X] Create insert Army.
