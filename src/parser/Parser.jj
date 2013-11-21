@@ -203,8 +203,8 @@ void factor ()
     (
         t = <WORD> 
         v = <ATTR>
-        e = expression()
-        { attrDouble(t, v, e); }
+        expression()
+        { attrDouble(t, v); }
     )
     |
     (
