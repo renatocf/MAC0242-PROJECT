@@ -59,29 +59,23 @@ public class Main
             System.out.println("Multiplayer mode: not creating maps...");
             return;
         }
-        
+            
         // Generate map
         Player[] p = World.genesis(2, 1, Game.WEATHER, GUI, Game.RAND);
         
         // Menu
         // TODO: automate inserction of programs
-        try{
-            String ROOT = "behaviors/";
-            if (args.length > 1 && !multi)
-            {
-                World.insertArmy(p[0], "Caprica Six"     , ROOT + "Protector.asm");
-                World.insertArmy(p[0], "Number Seventeen", ROOT + "Protector.asm");
-                World.insertArmy(p[0], "Megatron"        , ROOT + "Carrier.asm");
-            }
-            
-            String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
-            for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
-                World.insertArmy(p[1], names[i], args[i]);
-        }
-        catch(SegmentationFaultException e)
+        String ROOT = "behaviors/";
+        if(args.length > 1 && !multi)
         {
-            System.err.println("Invalid position!");
+            p[0].insertArmy("Caprica Six"     , ROOT + "Protector.asm");
+            p[0].insertArmy("Number Seventeen", ROOT + "Protector.asm");
+            p[0].insertArmy("Megatron"        , ROOT + "Carrier.asm"  );
         }
+        
+        String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
+        for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
+            p[1].insertArmy(names[i], args[i]);
         
         // Game main loop
         if(Debugger.info) 
