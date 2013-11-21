@@ -196,7 +196,8 @@ class Panel extends JPanel
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
-                boolean fog = cell[i][j].terrain.getFogWar(this.player);
+                // Get fog war (and print properly)
+                boolean fog = cell[j][i].terrain.getFogWar(this.player);
                 
                 if(!fog)
                 {
