@@ -31,7 +31,7 @@ public class Graphical implements GUI
 
         /* TODO: Finish editor frame */
         /* this.editorFrame    = new EditorFrame(); */
-        this.mapFrame       = new MapFrame(map);
+        this.mapFrame       = new MapFrame(map, player);
     }
     
     public void printText()
@@ -60,12 +60,12 @@ public class Graphical implements GUI
     /* Implementing interface GUI */
     public void winner(int nTS, int nPlayers, int nRobots)
     {
-        mapFrame.winner(this.player, nTS, nPlayers, nRobots);
+        mapFrame.winner(nTS, nPlayers, nRobots);
     }
     
     /* Implementing interface GUI */
     public void looser()
     {
-        mapFrame.looser(this.player);
+        mapFrame.looser();
     }
 }

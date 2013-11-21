@@ -34,11 +34,11 @@ public class Robot implements Scenario, Printable
     final protected int    ID;
 
     // Position
-    protected int     i; // Line
-    protected int     j; // Column
-    protected Terrain terrain;
-    protected int[]   phase; //Phase of animation
-    protected int     leftFoot;
+    protected int     i;        // Line
+    protected int     j;        // Column
+    protected int     leftFoot; 
+    protected int[]   phase;    //Phase of animation
+    protected Terrain terrain;  
     
     // Hardware
     protected Item[] slots;
@@ -72,10 +72,10 @@ public class Robot implements Scenario, Printable
     final protected int costDrop;
     
     // Robot ON/OFF
-    protected boolean ON = true;
-    protected int wait = 0;
+    protected int     wait = 0;
+    protected boolean ON   = true;
     
-    //Robot state
+    // Robot state
     protected boolean damageTaken = false;
     
     /**
@@ -137,18 +137,13 @@ public class Robot implements Scenario, Printable
         this.costDrop    = ENERGY_LOW;
     }
     
-    /**
-     * Take out an item from inside the robot.
-     * @param position Position of the item
-     *                 up to be removed inside
-     *                 its cargo
-     */
-    public Item removeSlots(int position)
-    {
-    	Item item = this.slots[position];
-    	slots[position] = null;
-    	return item;
-    }
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                                    INFO
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
     
     /**
      * Prints a detailed info about the robot.<br>
@@ -185,6 +180,14 @@ public class Robot implements Scenario, Printable
         return this.name;
     }
     
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                              POSITRONIC BRAIN
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
     /**
      * Runs 1 cycle of processment in the 
      * robot virtual machine program.
@@ -212,6 +215,14 @@ public class Robot implements Scenario, Printable
         this.positronic.upload(PROG);
     }
     
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                                 ACTIVITY
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
     /**
      * Activate the robot.
      * @see robot.RVM
@@ -232,6 +243,14 @@ public class Robot implements Scenario, Printable
         this.wait = wait;
         RVM.sleep(positronic);
     }
+    
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                              CONTROL OF POWER 
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
     
     /**
      * Recharges the power 
@@ -273,12 +292,19 @@ public class Robot implements Scenario, Printable
         return true;
     }
     
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                            GETTERS AND SETTERS
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
     /**
      * Getter for the robot's ownew ID.
      * @return Player number
      */
     public Player getTeam () { return this.team; }
-    
     
     /**
      * Setter for the robot's phase.
@@ -325,6 +351,22 @@ public class Robot implements Scenario, Printable
         leftFoot %= 2;
     }
     
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                                INTERFACES 
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
+    // Interface scenario
+    public int takeDamage(int damage)
+    {
+        this.HP -= damage - this.forceShield;
+        damageTaken = true;
+        return this.HP;
+    }
+    
     // Interface scenario
     public boolean sufferedDamage()
     {
@@ -337,25 +379,62 @@ public class Robot implements Scenario, Printable
     }
     
     // Interface scenario
-    public int takeDamage(int damage)
-    {
-        this.HP -= damage - this.forceShield;
-        damageTaken = true;
-        return this.HP;
-    }
-    
-    // Interface scenario
     public int getHP       () { return this.HP;       }
     public int getMaxHP    () { return this.maxHP;    }
     
+    // Interface scenario
     public int getPower    () { return this.power;    }
     public int getMaxPower () { return this.maxPower; }
     
-    public int[] getPhase() {return phase;}
+    public int[] getPhase  () { return this.phase;    }
     
-    // Printable interface
+    // Interface printable 
     public String name() { return "ROBOT";}
     
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                              AUXILIAR METHODS
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+        
+    /**
+     * Getter for the vertical position.
+     * @return Vertical position (Y-axis)
+     */
+    public int getPosY() { return this.i; }
+    
+    /**
+     * Getter for the horizontal position.
+     * @return Horizontal position (X-axis)
+     */
+    public int getPosX() { return this.j; }
+    
+    /**
+     * Getter for the robot's sight.
+     * @return Sight
+     */
+    public int getSight() { return this.sight; }
+    
+    /**
+     * Take out an item from inside the robot.
+     * @param position Position of the item
+     *                 up to be removed inside
+     *                 its cargo
+     */
+    protected Item removeSlots(int position)
+    {
+    	Item item = this.slots[position];
+    	slots[position] = null;
+    	return item;
+    }
+    
+    /**
+     * Cost for movements
+     * @return Cost for movements depending
+     *         on the terrain where the Robot is
+     */
     protected int move()
     {
         switch (this.terrain.type)

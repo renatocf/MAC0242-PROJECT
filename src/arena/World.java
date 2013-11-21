@@ -124,6 +124,7 @@ final public class World
         
         // Debug
         String pre = "[WORLD] ========================";
+        System.out.println("Timestep " + time);
         Debugger.say(pre + time + "ts\n");
         
         Debugger.say("[POST] Receiveing requests");
@@ -219,18 +220,27 @@ final public class World
      * with the assembly program defined by 
      * the file in 'pathToProg'.
      * 
-     * @param player     Robot owner
-     * @param name       Name of the new robot
-     * @param pathToProg Robot assembly program
+     * @param  player     Robot owner
+     * @param  name       Name of the new robot
+     * @param  pathToProg Robot assembly program
+     * @return Inserted robot
      */
-    public static void 
+    public static Robot
     insertArmy(Player player, String name, String pathToProg)
-        throws SegmentationFaultException
     {
-        Robot r = map.insertArmy(
-            name, player, id++, pathToProg
-        );
-        armies.add(r);
+        try {
+            
+            Robot r = map.insertArmy(
+                name, player, id++, pathToProg
+            );
+            armies.add(r);
+            return r;    
+            
+        } catch(SegmentationFaultException e) {
+            System.err.println("Invalid position");
+            e.printStackTrace();
+            return null;
+        }
     }
     
     /**
@@ -238,10 +248,9 @@ final public class World
      * Take out the robot from the map and
      * remove it from the Robot List. 
      * 
-     * @param dead Robot to be removed.
+     * @param  dead Robot to be removed.
      */
     public static void removeArmy(Robot dead)
-        throws SegmentationFaultException
     {
         String pre = "         [DESTROY] ";
         int team = dead.getTeam().getID();
@@ -269,18 +278,8 @@ final public class World
         // Remove all scenarios, but robots.
         // This ones are removed by the ctrl.
         Scenario s = map.map[i][j].getScenario();
-        try 
-        { 
-            if(s instanceof Robot) 
-                removeArmy((Robot) s);
-            else map.removeScenario(i,j);
-        } 
-        catch(SegmentationFaultException e) 
-        {
-            System.err.println(
-               "[World] Destroying in invalid " +
-               "position (" + i + "," + j + ")");
-        }
+        if(s instanceof Robot) removeArmy((Robot) s);
+        else map.removeScenario(i,j);
     }
     
     /**

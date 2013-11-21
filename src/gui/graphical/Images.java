@@ -67,40 +67,42 @@ enum Type
 enum Images implements ROOT
 {   
     // Appearences
-    DEEP         ( APP, "Deep.png",      0, 0   ),
-    DIRT         ( APP, "Dirt.png",      0, 0   ),
-    GRASS        ( APP, "Grass.png",     0, 0   ),
-    ICE          ( APP, "Ice.png",       0, 0   ),
-    SAND         ( APP, "Sand.png",      0, 0   ),
-    TUNDRA       ( APP, "Snow.png",      0, 0   ),
-    WATER        ( APP, "Water.png",     0, 0   ),
+    DEEP         ( APP, "Deep.png",       0, 0   ),
+    DIRT         ( APP, "Dirt.png",       0, 0   ),
+    GRASS        ( APP, "Grass.png",      0, 0   ),
+    ICE          ( APP, "Ice.png",        0, 0   ),
+    SAND         ( APP, "Sand.png",       0, 0   ),
+    TUNDRA       ( APP, "Snow.png",       0, 0   ),
+    WATER        ( APP, "Water.png",      0, 0   ),
     
     // Items
-    CRYSTAL      ( ITM, "Crystal.png",  13, 13  ),
-    STONE        ( ITM, "Stone.png",    13, 13  ),
+    CRYSTAL      ( ITM, "Crystal.png",   13, 13  ),
+    STONE        ( ITM, "Stone.png",     13, 13  ),
     
     // Nature
-    ROCK         ( NAT, "Rock.png",     13, 13  ),
-    TREE         ( NAT, "Tree.png",     25, 50  ),
+    ROCK         ( NAT, "Rock.png",      13, 13  ),
+    TREE         ( NAT, "Tree.png",      25, 50  ),
     
     // Effect
-    HIT          ( EFC, "Hit.png",      15, 15  ),
+    HIT          ( EFC, "Hit.png",       15, 15  ),
     
     // Technology
-    BLACK_ROBOT  ( TEC, "Robot.png",    15, 15  ),
-    BLACK_BASE   ( TEC, "Base.png",     18, 50  ),
+    BLACK_ROBOT  ( TEC, "Robot.png",     15, 15  ),
+    BLACK_BASE   ( TEC, "Base.png",      18, 50  ),
     
-    GREEN_ROBOT  ( TEC, "Robot.png",    15, 15  ),
-    GREEN_BASE   ( TEC, "Base.png",     18, 50  ),
+    GREEN_ROBOT  ( TEC, "Robot.png",     15, 15  ),
+    GREEN_BASE   ( TEC, "Base.png",      18, 50  ),
     
-    BLUE_ROBOT   ( TEC, "Robot.png",    15, 15  ),
-    BLUE_BASE    ( TEC, "Base.png",     18, 50  ),
+    BLUE_ROBOT   ( TEC, "Robot.png",     15, 15  ),
+    BLUE_BASE    ( TEC, "Base.png",      18, 50  ),
     
-    RED_ROBOT    ( TEC, "Robot.png",    15, 15  ),
-    RED_BASE     ( TEC, "Base.png",     18, 50  ),
+    RED_ROBOT    ( TEC, "Robot.png",     15, 15  ),
+    RED_BASE     ( TEC, "Base.png",      18, 50  ),
     
     // General
-    GAME_OVER    ( GEN, "GameOver.png" , 0, 0 );
+    FOG_WAR      ( GEN, "FogWar.png",     0, 0   ),
+    GAME_OVER    ( GEN, "GameOver.png" ,  0, 0   ),
+    INVISIBLE    ( GEN, "Invisible.png" , 0, 0   );
         
     /* Auxiliar private variables */
     private int dx = 0, dy = 0;

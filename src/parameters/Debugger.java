@@ -91,7 +91,7 @@ public class Debugger
         {   
             BufferedOutputStream bf = new BufferedOutputStream(new FileOutputStream(fileName, false));
             log = new PrintWriter(bf, true); 
-            System.setErr(new PrintStream(bf));
+            /* System.setErr(new PrintStream(bf)); */
         }
         catch(IOException e)
         {

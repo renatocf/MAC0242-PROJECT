@@ -2,6 +2,7 @@ package gui.graphical;
 
 // Default Libraries
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.WeakHashMap;
 
 // Graphical Libraries (AWT)
@@ -43,14 +44,16 @@ class Panel extends JPanel
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
     
     // Local variables
-    private Map map;
+    private Map    map;
+    private Player player;
+    
+    // Paint utils
     private Insets insets;
     private WeakHashMap<Robot,JRobot> robots 
         = new WeakHashMap<Robot,JRobot>();
     
-    // Paint auxiliary
+    // Paint auxiliaries
     private Phase  phase;
-    private Player player;
     private int    nTS;
     private int    nPlayers;
     private int    nRobots;
@@ -61,17 +64,20 @@ class Panel extends JPanel
      * @see Cell
      * @see Graphical
      *
-     * @param R      radius
-     * @param width  Desired width of the screen
-     * @param height Desired height of the screen
-     * @param y0     Desired vertical shift
      * @param map    Map over which the panel will
      *               create the GUI hexagons
+     * @param player Player who is visualizing the
+     *               panel (for his specific view)
+     * @param R      Hexagon radius
+     * @param y0     Desired vertical shift
+     * @param width  Desired width of the screen
+     * @param height Desired height of the screen
      */
-    Panel(int R, int width, int height, int y0, Map map) 
+    Panel(Map map, Player player, int R, int y0, int width, int height)
     {
-        this.map = map;
-           
+        this.map      = map;
+        this.player   = player;
+        
         // Preferences
         this.insets = this.getInsets();
         this.setLayout(null);
@@ -89,10 +95,22 @@ class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++) 
             {
                 cell[i][j] = new Cell(
-                    Δ + R + i*Dx, R + j*Dy + y0, R, map.map[j][i]
+                    this.player,    // Player
+                    Δ + R + i*Dx,   // Horizontal position
+                    R + j*Dy + y0,  // Vertical position
+                    R,              // Hexagon radius
+                    map.map[j][i]   // Terrain in map[j,i]
                 ); 
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
+        
+        
+        int X, Y, S; // X and Y positions for centering the 
+                     // visibility; S for the sight
+        
+        X = this.player.getBase().getPosX(this.player);
+        Y = this.player.getBase().getPosY(this.player);
+        this.setVisible(X,Y,1);
     }
     
     /**
@@ -132,11 +150,10 @@ class Panel extends JPanel
      *                 all players along the game
      */
     void setGamePhase(
-        Phase phase, Player player, int nTS, int nPlayers, int nRobots)
+        Phase phase, int nTS, int nPlayers, int nRobots)
     {
         this.nTS      = nTS;
         this.phase    = phase;
-        this.player   = player;
         this.nRobots  = nRobots;
         this.nPlayers = nPlayers;
     }
@@ -160,13 +177,43 @@ class Panel extends JPanel
      */
     private void paintLife(Graphics g)
     {
+        for(int i = 0; i < MAP_SIZE; i++)
+            for(int j = 0; j < MAP_SIZE; j++)
+                map.map[i][j].setInvisible(this.player);
+        
+        int X, Y, S;
+        X = this.player.getBase().getPosX(this.player);
+        Y = this.player.getBase().getPosY(this.player);
+        this.setVisible(X,Y,1);
+        
+        for(Robot r: this.player.armies)
+        {
+            X = r.getPosX(); Y = r.getPosY(); S = r.getSight();
+            this.setVisible(X,Y,S);
+        }
+        
         Graphics2D g2d = (Graphics2D) g;
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
-                item(g2d, i, j); // Items (crystals, stones, ...)
-                scen(g2d, i, j); // Scenarios (robots, trees, rocks, ...)
+                boolean fog = cell[i][j].terrain.getFogWar(this.player);
+                
+                if(!fog)
+                {
+                    item(g2d, i, j); // Items (crystals, stones, ...)
+                    scen(g2d, i, j); // Scenarios (robots, trees, rocks, ...)
+                }
             }
+    }
+    
+    private void setVisible(int X, int Y, int S)
+    {
+        int aux = -S;
+        for(int i = Y-S; i <= Y+S; i++, aux++)
+            if(i >= 0 && i < MAP_SIZE)
+                for(int j = X-S; j <= X+S-Math.abs(aux); j++)
+                    if(j >= 0 && j < MAP_SIZE)
+                        map.map[i][j].setVisible(this.player);
     }
     
     /**
@@ -180,6 +227,7 @@ class Panel extends JPanel
     {
         Cell hex = cell[j][i];
         int x = hex.x, y = hex.y;
+        boolean vis = hex.terrain.getVisibility(this.player);
         
         Scenario s = hex.terrain.getScenario();
         if(s != null)
@@ -188,6 +236,8 @@ class Panel extends JPanel
             
             if(s instanceof Robot)
             {
+                if(!vis) return;
+                 
                 Robot r = (Robot) s;
                 int[] phase = r.getPhase();
                 if(!this.robots.containsKey(r)) 
@@ -195,8 +245,8 @@ class Panel extends JPanel
                 
                 //Get the right sprite and corrects the robot
                 g2d.drawImage(
-                scen.img().getSubimage(phase[0], phase[1], 32, 32), 
-                x-scen.dx(), y-scen.dy(), null
+                    scen.img().getSubimage(phase[0], phase[1], 32, 32), 
+                    x-scen.dx(), y-scen.dy(), null
                 );
                 
                 r.setPhase(32, phase[1]);
@@ -207,15 +257,15 @@ class Panel extends JPanel
             }
             else
             {
-                g2d.drawImage(
-                scen.img(), x-scen.dx(), y-scen.dy(), null);
+                g2d.drawImage(scen.img(), x-scen.dx(), y-scen.dy(), null);
             }
+            if(!vis) g2d.drawImage(Images.INVISIBLE.img(), x-scen.dx(), y-scen.dy(), null);
             
             if(s.sufferedDamage())
             {
                 scen = Images.valueOf("HIT");
                 g2d.drawImage(
-                scen.img(), x-scen.dx(), y-scen.dy(), null
+                    scen.img(), x-scen.dx(), y-scen.dy(), null
                 );  
             }
         }

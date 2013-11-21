@@ -11,13 +11,6 @@ import players.Player;
  */
 public interface Scenario extends Printable
 {
-    
-    /**
-     * Remaining HP to the scenario 
-     * be removed from the map.
-     */
-    public int getHP();
-    
     /** 
      * Amount of damage taken by a scenario.
      * If the scenario should not be destroyed,
@@ -30,15 +23,17 @@ public interface Scenario extends Printable
     public int takeDamage(int damage);
     
     /**
-     * Prints the scenario in a more legible
-     * way, with debug purposes.
-     */
-    public String toString();
-    
-    /**
-     * Check if the scenario has suffer damage
+     * Check if the scenario has sufferd damage.
+     * @return True if there was damage, false
+     *         otherwise
      */
     public boolean sufferedDamage();
+    
+    /**
+     * Remaining HP to the scenario 
+     * be removed from the map.
+     */
+    public int getHP();
     
     /** 
      * Returns the team of a given scenario
@@ -46,4 +41,10 @@ public interface Scenario extends Printable
      * @return Player that owns the scenario
      */
     public Player getTeam();
+    
+    /**
+     * Prints the scenario in a more legible
+     * way, with debug purposes.
+     */
+    public String toString();
 }

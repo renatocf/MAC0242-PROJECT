@@ -31,20 +31,25 @@ import static parameters.Game.*;
  */
 class MapFrame extends JFrame
 {
-    /* Auxiliar variables for keeping interface GUI */
-    private boolean firstTime = true;
-    private Panel screen;
+    // View data model
     private Map map;
+    private Player player;
+    
+    // Internal structures
+    protected Panel screen;
     private JTextArea log;
     
     /** 
      * Default constructor.<br>
-     * @param map Object of the class map
-     *            from package arena.
+     * @param map    Object of the class map
+     *               from package arena.
+     * @param player Player who is visualizing the
+     *               map (whith his specific view)
      */
-    MapFrame(Map map)
+    MapFrame(Map map, Player player)
     {
-        this.map = map;  
+        this.map    = map;
+        this.player = player;
         
         //* MAP FRAME INFO *******************************************//
             /* TODO: Take out hardcoded strings */
@@ -55,9 +60,11 @@ class MapFrame extends JFrame
             this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
                 
         //* ARENA SCREEN *********************************************//
-            this.screen = new Panel(25, 
+            this.screen = new Panel(
+                map, player, 25, 32, 
                 (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-                (int)(25.5*3*MAP_SIZE/2) + 64, 32, map);
+                (int)(25.5*3*MAP_SIZE/2) + 64
+            );
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
             this.screen.setFocusable (true);
@@ -105,35 +112,33 @@ class MapFrame extends JFrame
      */
     void paintMap()
     {
-        this.screen.setGamePhase(Phase.ACTIVE, null, -1, -1, -1);
+        this.screen.setGamePhase(Phase.ACTIVE, -1, -1, -1);
         this.screen.repaint();
     }
     
     /**
      * Auxiliar function for painting in the arena
      * info about the end of the game.
-     * @param p        The winner player
      * @param nTS      Number of time steps since 
      *                 the beggining of the game
      * @param nPlayers Number of players
      * @param nRobots  Number of robots created by 
      *                 all players along the game
      */
-    void winner(Player p, int nTS, int nPlayers, int nRobots)
+    void winner(int nTS, int nPlayers, int nRobots)
     {
-        this.screen.setGamePhase(Phase.WINNER, p, nTS, nPlayers, nRobots);
+        this.screen.setGamePhase(Phase.WINNER, nTS, nPlayers, nRobots);
         this.screen.repaint();
     }
     
     /** 
      * Auxilar function for painting in the arena
      * info about a player that lost the game.
-     * @param p The looser player
      */
-    void looser(Player p)
+    void looser()
     {
         /* '-1' for all info not used (players/time steps/robots) */
-        this.screen.setGamePhase(Phase.LOOSER, p, -1, -1, -1);
+        this.screen.setGamePhase(Phase.LOOSER, -1, -1, -1);
         this.screen.repaint();
     }
     

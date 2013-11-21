@@ -77,9 +77,10 @@ public class Map
      * with the assembly program defined by 
      * the file in 'pathToProg'.
      * 
-     * @param player     Robot owner
-     * @param name       Name of the new robot
-     * @param pathToProg Robot assembly program
+     * @param  player     Robot owner
+     * @param  name       Name of the new robot
+     * @param  pathToProg Robot assembly program
+     * @return Inserted robot
      */
     Robot insertArmy(String name, Player player, int ID, 
                 String pathToProg)

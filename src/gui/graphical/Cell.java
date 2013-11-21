@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 // Libraries
 import arena.Terrain;
+import players.Player;
 
 /** 
  * <b>Graphical - Cell</b><br>
@@ -23,24 +24,35 @@ import arena.Terrain;
  */
 class Cell 
 { 
+    // Fog War
+    private final TexturePaint fog = new TexturePaint(
+        Images.FOG_WAR.img(), new Rectangle(0,0,32,32)
+    );
+    
     // Characteristics
-    final private Polygon hex = new Polygon();
+    private final Polygon hex = new Polygon();
+    private final Player  player;
+    
     final Terrain terrain; 
     final int x, y;
     
     // Painting
-    TexturePaint bg;
+    private TexturePaint bg;
     
     /**
      * Default constructor.<br>
+     * @param player  Player who is visualizing the
+     *                cell (for his specific view)
      * @param x       Horizontal position where the cell 
      *                center will be set
      * @param y       Vertical position whee the cell 
      *                center will be set
+     * @param r       Hexagon radius
      * @param terrain Terrain to build the cell
      */
-    Cell(int x, int y, int r, Terrain terrain) 
+    Cell(Player player, int x, int y, int r, Terrain terrain) 
     {
+        this.player = player;
         this.x = x; this.y = y;
         this.terrain = terrain;
         
@@ -74,7 +86,9 @@ class Cell
         Graphics2D g2d = (Graphics2D) g;
         
         // Paint the background
-        g2d.setPaint (this.bg);
+        boolean fogWar = terrain.getFogWar(this.player);
+        
+        g2d.setPaint (fogWar ? fog : this.bg);
         g2d.fill     (this.hex);
     }   
 }

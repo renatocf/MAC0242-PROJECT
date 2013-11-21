@@ -2,6 +2,7 @@ package arena;
 
 // Libraries
 import scenario.*;
+import players.Player;
 import stackable.item.*;
 import stackable.Stackable;
 
@@ -31,6 +32,7 @@ public class Terrain implements Stackable
     
     // War fog
     boolean[] fog;
+    boolean[] visibility;
     
     /** 
      * Default constructor<br>
@@ -44,6 +46,7 @@ public class Terrain implements Stackable
     public Terrain(int nPlayers, Appearence appearence)
     {
         this.fog        = new boolean[nPlayers];
+        this.visibility = new boolean[nPlayers];
         this.appearence = appearence;
         
         switch (appearence)
@@ -63,7 +66,11 @@ public class Terrain implements Stackable
             default     : this.type = Type.NORMAL; break;
         }
         
-        fog[0] = fog[1] = true; 
+        for(int i = 0; i < nPlayers; i++)
+        {
+            this.fog[i]        = true;
+            this.visibility[i] = false;
+        }
     }
     
     /** 
@@ -132,6 +139,49 @@ public class Terrain implements Stackable
         
         return "[type:" + sType + "] [appearence:" + sAppe + "] "
              + "[scenario:" + sScen + "] [item:" + sItem + "]";
+    }
+    
+    /** 
+     * Setter fot the terrain's visibility
+     * @param  Player
+     */
+    public void setVisible(Player p)
+    {
+        this.fog[p.getID()-1] = false;
+        this.visibility[p.getID()-1] = true;
+    }
+    
+    /** 
+     * Setter fot the terrain's visibility
+     * @param  Player
+     */
+    public void setInvisible(Player p)
+    {
+        this.visibility[p.getID()-1] = false;
+    }
+    
+    /** 
+     * Getter fot the terrain's fog war. 
+     * @param  Player
+     * @return True if the terrain has never
+     *         been visited (has fog war) or
+     *         false, otherwise
+     */
+    public boolean getFogWar(Player p)
+    {
+        return this.fog[p.getID()-1];
+    }
+    
+    /** 
+     * Getter fot the terrain's visibility. 
+     * @param  Player
+     * @return True if the terrain has never
+     *         been visited (has fog war) or
+     *         false, otherwise
+     */
+    public boolean getVisibility(Player p)
+    {
+        return this.visibility[p.getID()-1];
     }
     
     /** 

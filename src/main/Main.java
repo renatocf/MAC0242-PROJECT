@@ -33,9 +33,11 @@ public class Main
         "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> <prog3> [-v|-d]";
 
     // Options
+    static private int     port = 3742;
     static private boolean help;
     static private boolean usage;
-    static private Interfaces GUI  = Interfaces.GRAPHICAL;
+    static private boolean multi  = false;
+    static private Interfaces GUI = Interfaces.GRAPHICAL;
     
     /**
      * <b>Main method</b><br>
@@ -52,6 +54,12 @@ public class Main
         if(args.length > Game.ROBOTS_NUM_INITIAL) 
         { System.err.println(USAGE); return; }
         
+        if(multi) 
+        {
+            System.out.println("Multiplayer mode: not creating maps...");
+            return;
+        }
+        
         // Generate map
         Player[] p = World.genesis(2, 1, Game.WEATHER, GUI, Game.RAND);
         
@@ -59,7 +67,7 @@ public class Main
         // TODO: automate inserction of programs
         try{
             String ROOT = "behaviors/";
-            if (args.length > 1)
+            if (args.length > 1 && !multi)
             {
                 World.insertArmy(p[0], "Caprica Six"     , ROOT + "Protector.asm");
                 World.insertArmy(p[0], "Number Seventeen", ROOT + "Protector.asm");
@@ -120,9 +128,13 @@ public class Main
             // Seed
             new LongOpt("seed", LongOpt.REQUIRED_ARGUMENT, null, 5),
             
+            // Server-Client structure
+            new LongOpt("port",   LongOpt.REQUIRED_ARGUMENT, null, 'p'),
+            new LongOpt("multi",  LongOpt.NO_ARGUMENT,       null,  6 ),
+            new LongOpt("single", LongOpt.NO_ARGUMENT,       null,  7 ),
         };
         //
-        Getopt g = new Getopt("MAC0242-Project", argv, "hdvtsl", longopts);
+        Getopt g = new Getopt("MAC0242-Project", argv, "hdvtslp:", longopts);
         
         int c;
         while ((c = g.getopt()) != -1)
@@ -143,17 +155,25 @@ public class Main
                 case 3: Game.WEATHER = Weather.TROPICAL;    break;
                 case 4: Game.WEATHER = Weather.CONTINENTAL; break;
                 //
-                case 5: 
+                case 5: // --seed
                     arg = g.getOptarg();
                     Game.RAND = new Random(Integer.valueOf(arg)); 
                     break;
                 //
-                case 't':
+                case 'p': // --port
+                    arg = g.getOptarg();
+                    port = Integer.valueOf(arg);
+                    break;
+                //
+                case 6: multi = true;   break; // --multi
+                case 7: multi = false;  break; // --single
+                //
+                case 't': // --textual
                     GUI = Interfaces.TEXTUAL;
                     break;
                 //
-                case 's': Game.MAP_SIZE = 16; break;
-                case 'l': Game.MAP_SIZE = 50; break;
+                case 's': Game.MAP_SIZE = 16; break; // --small
+                case 'l': Game.MAP_SIZE = 50; break; // --large
                 //
                 case '?': // getopt() will print the error
                     break;
