@@ -28,7 +28,7 @@
     [X] Fix carrier to get player's base position.
     [X] Fix the behaviors. (PHASE 3)
     [X] Separate robot's images.
-    [ ] Get new images for fog and invisibility.
+    [ ] Get new images for invisibility.
     
 [All]
     [X] Create insert Army.
@@ -64,6 +64,7 @@
     [X] Add LaTeX images on git again.
     [X] Create relative-address Jump.
     [X] Add counter for number of robots.
+    [X] Create a mini-map graphical representation.
     [ ] Fix Fog War/Visibility appearence.
     [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
@@ -71,7 +72,6 @@
     [ ] Describe functions in Parser.jj.
     [ ] Describe loops in Parser.jj.
     [ ] Describe if-else in Parser.jj.
-    [ ] Create a mini-map graphical representation.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
     [ ] Add option for playing again.
