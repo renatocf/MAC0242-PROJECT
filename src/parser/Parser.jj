@@ -9,6 +9,7 @@ PARSER_BEGIN(Parser)
 package parser;
 import parser.*;
 import java.util.HashMap;
+import java.util.ArrayList;
 import exception.WrongTypeException;
 
 /**
@@ -18,7 +19,8 @@ import exception.WrongTypeException;
  */
 public class Parser 
 {
-    HashMap<String,String> symbol = new HashMap<String,String>();
+    HashMap<String,String>     symbol    = new HashMap<String,String>();
+    HashMap<String,Parameters> functions = new HashMap<String,Parameters>();
     
     public static void main( String[] args )
         throws ParseException, 
@@ -38,7 +40,6 @@ TOKEN : {< RBRACE : ")" >}
 
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
-
 
 TOKEN : {< SIGN : "+"  | "-"  >}
 TOKEN : {< OP   : "*"  | "/" | "%" >}
@@ -64,14 +65,70 @@ void Start()
 {
     (
         (   
-            s = expression()
-            { insert("POP"); }
+            (
+                { say("Before express  "); }
+                s = expression()
+                { insert("POP"); }
+            )
+            |
+            (
+                { say("Before prototype"); }
+                prototype()
+                { say("After prototype"); }
+            )
         )?
         <EOL>
         { say("--------------------------------"); }
     )*
 }
 
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                             FUNCTIONS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+void prototype() :
+{
+    Token t, f, s;
+    Parameters parameter;
+    ArrayList<String> types = new ArrayList<String>();
+}
+{
+    t = <WORD>
+    { say("First token"); }
+    f = <WORD>
+    { say("Second token"); }
+    <LBRACE>
+    { say("LBrace      "); }
+    (
+        s = <WORD>
+        { say("First param "); }
+        { types.add(s.image); }
+        (
+            ","
+            s = <WORD>
+            { types.add(s.image); }
+            { say("+1 param    "); }
+        )*
+    )?
+    <RBRACE>
+    { say("RBrace      "); }
+    { parameter = new Parameters(types.toArray(new String[0])); }
+    { functions.put(f.image, parameter);                        }
+    { symbol.put(f.image, t.image);                             }
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                            EXPRESSIONS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+        
 /**
  * Expression is a comparison of Arit's.
  */
