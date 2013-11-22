@@ -30,21 +30,26 @@ public class MiniMapFrame extends JFrame
         this.player = player;
         
         //* ARENA SCREEN *********************************************//
-            int RADIUS   = 5;
-            int IMG_SIZE = 0;
+            int RADIUS = 5;
+            int VSPLIT = 20;
                 
             this.miniMap = new Panel(
-                map, player, RADIUS, IMG_SIZE, 
+                map, player, RADIUS, 0, 
                 (int)(RADIUS * MAP_SIZE * Math.sqrt(3)), 
-                (int)(RADIUS * 3 * MAP_SIZE/2) + 2*IMG_SIZE
+                (int)(RADIUS * 3 * MAP_SIZE/2) + 2*VSPLIT
             );
+            this.setPreferredSize(new Dimension(
+                (int)(RADIUS * MAP_SIZE * Math.sqrt(3)),
+                (int)(RADIUS * 3 * MAP_SIZE/2) + 2*VSPLIT
+            ));
             this.miniMap.hide(true); // No scenarios/items
         
         //* MINI MAP FRAME INFO **************************************//
-            this.setSize(
-                (int)(RADIUS * MAP_SIZE * Math.sqrt(3)), // Height
-                (int)(RADIUS * 3 * MAP_SIZE/2)           // Width
-            );
+            /* this.setPreferredSize(new Dimension( */
+                /* (int)(RADIUS * MAP_SIZE * Math.sqrt(3)), // Height */
+                /* (int)(RADIUS * 3 * MAP_SIZE/2)           // Width */
+            /* )); */
+            this.pack();
         
         //* VISIBILITY ***********************************************//
             this.add(this.miniMap);

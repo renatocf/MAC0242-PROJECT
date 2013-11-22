@@ -22,6 +22,7 @@ import parameters.*;
 import arena.Robot;
 import players.Player;
 import scenario.Scenario;
+import stackable.Direction;
 import stackable.item.Item;
 
 // Import links
@@ -49,6 +50,8 @@ class Panel extends JPanel
     
     // Paint utils
     private Insets insets;
+    private int[] update  = new int[2];
+    private Direction dir;
     private WeakHashMap<Robot,JRobot> robots 
         = new WeakHashMap<Robot,JRobot>();
     
@@ -82,11 +85,19 @@ class Panel extends JPanel
         this.map      = map;
         this.player   = player;
         
+        // Initializes auxiliar variable
+        try { this.dir    = new Direction(""); }
+        catch(Exception e)
+        {
+            System.err.println("[PANEL] This sould never happen...");
+            e.printStackTrace();
+        }
+        
         // Preferences
-        this.insets = this.getInsets();
-        this.setLayout(null);
-        this.setBackground(Color.black);
-        this.setPreferredSize(new Dimension(width, height));
+        this.insets = this.getInsets ();
+        this.setLayout        (null);
+        this.setBackground    (Color.black);
+        this.setPreferredSize (new Dimension(width, height));
         
         // Initial phase: active
         this.phase = Phase.ACTIVE;
@@ -127,13 +138,17 @@ class Panel extends JPanel
     {
         super.paintComponent(g);
         
-        // First, draw all the background without Fog War
+        // First, update player's visibility
+        this.blinkVisibility();
+        
+        // Then, draw all the background without Fog War
         this.paintMap(g);
         
         // Remove all GUI elements, mainly the robots power/HP bars
         for(java.util.Map.Entry<Robot, JRobot> entry : robots.entrySet())
             entry.getValue().remove(); 
         
+        // Finally, print accordingly the state
         switch(this.phase)
         {
             case LOOSER: if(!hide) looser(g);    break;
@@ -192,20 +207,6 @@ class Panel extends JPanel
      */
     private void paintLife(Graphics g)
     {
-        // Hide all the map
-        for(int i = 0; i < MAP_SIZE; i++)
-            for(int j = 0; j < MAP_SIZE; j++)
-                cell[i][j].terrain.setInvisible(this.player);
-        
-        // But let the base's around be visible
-        int X = this.player.getBase().getPosX(this.player);
-        int Y = this.player.getBase().getPosY(this.player);
-        this.setVisible(X,Y,1);
-        
-        // And the player's robots
-        for(Robot r: this.player.armies)
-            this.setVisible(r.getPosX(), r.getPosY(), r.getSight());
-        
         Graphics2D g2d = (Graphics2D) g;
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
@@ -221,6 +222,27 @@ class Panel extends JPanel
     }
     
     /**
+     * Make all terrains invisible and, then, set the visibility
+     * for this new step (around player's stuff).
+     */
+    private void blinkVisibility()
+    {
+        // Hide all the map
+        for(int i = 0; i < MAP_SIZE; i++)
+            for(int j = 0; j < MAP_SIZE; j++)
+                cell[i][j].terrain.setInvisible(this.player);
+        
+        // But let the base's around be visible
+        int X = this.player.getBase().getPosX(this.player);
+        int Y = this.player.getBase().getPosY(this.player);
+        this.setVisible(X,Y,1);
+        
+        // And the player's robots
+        for(Robot r: this.player.armies)
+            this.setVisible(r.getPosX(), r.getPosY(), r.getSight() * 2);
+    }
+    
+    /**
      * Auxiliar method for making an area visible
      * (which takes out Fog War and shows all scenarios).
      * @param X Horizontal position
@@ -229,12 +251,25 @@ class Panel extends JPanel
      */
     private void setVisible(int X, int Y, int S)
     {
-        int aux = -S;
-        for(int i = Y-S; i <= Y+S; i++, aux++)
-            if(i >= 0 && i < MAP_SIZE)
-                for(int j = X-S; j <= X+S-Math.abs(aux); j++)
-                    if(j >= 0 && j < MAP_SIZE)
-                        map.map[i][j].setVisible(this.player);
+        if(X < 0 || X >= MAP_SIZE) return;
+        if(Y < 0 || Y >= MAP_SIZE) return;
+        
+        cell[X][Y].terrain.setVisible(this.player);
+        if(S == 0) return;
+            
+        try {
+            for(int k = 1; k <= 6; k++)
+            {
+                dir.set(k); update = dir.get(Y);
+                if(X + update[0] < 0 || X + update[0] >= MAP_SIZE) continue;
+                if(Y + update[1] < 0 || Y + update[1] >= MAP_SIZE) continue;
+                setVisible(X + update[0], Y + update[1], S-1);
+            }
+            
+        } catch(Exception e) {
+            System.err.println("[PANEL] (setVisible) This sould never happen...");
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -258,9 +293,20 @@ class Panel extends JPanel
             // Special treatment for robots
             if(s instanceof Robot)
             {
-                // When there is no visibility, do not print
-                if(!vis) return;
-                 
+                // Does not print if not visible
+                if(!vis) 
+                {
+                    // When something is being hit, show it!
+                    if(s.sufferedDamage())
+                    {
+                        scen = Images.valueOf("HIT");
+                        g2d.drawImage(
+                            scen.img(), x-scen.dx(), y-scen.dy(), null
+                        );  
+                    }
+                    return;
+                }
+                
                 // Get the robot and its animation phase
                 Robot r = (Robot) s;
                 int[] phase = r.getPhase();
@@ -289,11 +335,6 @@ class Panel extends JPanel
                 g2d.drawImage(scen.img(), x-scen.dx(), y-scen.dy(), null);
             }
             
-            // If there is no visibility, masks player's view
-            if(!vis) g2d.drawImage(
-                Images.INVISIBLE.img(), x-scen.dx(), y-scen.dy(), null
-            );
-            
             // When something is being hit, show it!
             if(s.sufferedDamage())
             {
@@ -304,6 +345,12 @@ class Panel extends JPanel
             }
             
         } // s != null
+            
+        // If there is no visibility, masks player's view
+        Images inv = Images.INVISIBLE;
+        if(!vis) g2d.drawImage(
+            inv.img(), x-inv.dx(), y-inv.dy(), null
+        );
     }
     
     /**

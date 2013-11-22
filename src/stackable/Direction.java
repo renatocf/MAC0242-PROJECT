@@ -151,6 +151,30 @@ public class Direction implements Stackable
     }
     
     /**
+     * Setter for the cardinal point.
+     * @param  dir Integer representing one of the directions
+     *             (0 for its own position and starting from E
+     *             counterclockwise)
+     * @return String of the cardinal point
+     */
+    public String set(int dir) 
+        throws InvalidOperationException
+    {
+        switch(dir)
+        {
+            case 1: set( 0,  1,  0,  1); this.cardPoint = "E" ; break; 
+            case 2: set(-1,  0, -1,  1); this.cardPoint = "NE"; break; 
+            case 3: set(-1, -1, -1,  0); this.cardPoint = "NW"; break;
+            case 4: set( 0, -1,  0, -1); this.cardPoint = "W" ; break; 
+            case 5: set( 1, -1,  1,  0); this.cardPoint = "SW"; break; 
+            case 6: set( 1,  0,  1,  1); this.cardPoint = "SE"; break; 
+            case 0: set( 0,  0,  0,  0); this.cardPoint = ""  ; break;
+            default: throw new InvalidOperationException("" + dir);
+        }
+        return this.cardPoint;
+    }
+    
+    /**
      * Auxiliar function to shortcut atribution
      * inside the secondary structure.
      * @param even_x Horizontal position in even row

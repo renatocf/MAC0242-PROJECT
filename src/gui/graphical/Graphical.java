@@ -36,11 +36,20 @@ public class Graphical implements GUI
         this.miniMapFrame   = new MiniMapFrame(map, player);
     }
     
-    public void printText()
-    {
-        System.out.println(this.editorFrame.getText());
+    /* Implementing interface GUI */
+    public void printText(Object ... strings)
+    { 
+        for(Object s: strings) 
+            System.out.println((s != null) ? s.toString() : "null");
     }
-
+    
+    /* Implementing interface GUI */
+    public void sayText(Object ... strings)
+    {
+        System.out.print   (strings);
+        System.out.println ();
+    }
+    
     /* Implementing interface GUI */
     public void paint()
     {

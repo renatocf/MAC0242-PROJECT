@@ -102,7 +102,7 @@ enum Images implements ROOT
     // General
     FOG_WAR      ( GEN, "FogWar.png",     0, 0   ),
     GAME_OVER    ( GEN, "GameOver.png" ,  0, 0   ),
-    INVISIBLE    ( GEN, "Invisible.png" , 0, 0   );
+    INVISIBLE    ( GEN, "Invisible.png", 23, 28  );
         
     /* Auxiliar private variables */
     private int dx = 0, dy = 0;
