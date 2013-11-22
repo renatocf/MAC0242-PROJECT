@@ -48,6 +48,7 @@ class MapFrame extends JFrame
      */
     MapFrame(Map map, Player player)
     {
+        // Setting MapFrame attributes
         this.map    = map;
         this.player = player;
         
@@ -60,10 +61,14 @@ class MapFrame extends JFrame
             this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
                 
         //* ARENA SCREEN *********************************************//
+            int RADIUS   = 25;
+            int x0 = SCREEN_WIDTH/2;
+            int y0 = SCREEN_HEIGHT/2;
+            int MAP_WIDTH  = 2*x0 + (int)(RADIUS * MAP_SIZE * Math.sqrt(3));
+            int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2);
+            
             this.screen = new Panel(
-                map, player, 25, 32, 
-                (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-                (int)(25.5*3*MAP_SIZE/2) + 64
+                map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
             );
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
@@ -74,6 +79,14 @@ class MapFrame extends JFrame
                 JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
             );
+            
+            int BASE_X = (int) (player.getBase().getPosY(player)* RADIUS * Math.sqrt(3));
+            int BASE_Y = (int) (player.getBase().getPosX(player) * RADIUS * 1.5);
+            
+            scrollPane.getVerticalScrollBar().setMaximum   (MAP_HEIGHT);
+            scrollPane.getHorizontalScrollBar().setMaximum (MAP_WIDTH);
+            scrollPane.getHorizontalScrollBar().setValue   (BASE_X);
+            scrollPane.getVerticalScrollBar().setValue     (BASE_Y);
         
         //* LOG BOX **************************************************//
             this.log = new JTextArea(5, 72);
@@ -110,7 +123,7 @@ class MapFrame extends JFrame
     /**
      * Auxiliar method to repaint frame.
      */
-    void paintMap()
+    void paint()
     {
         this.screen.setGamePhase(Phase.ACTIVE, -1, -1, -1);
         this.screen.repaint();

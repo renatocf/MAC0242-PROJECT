@@ -38,6 +38,20 @@ public class Textual implements Colors, GUI
     }
     
     /* Implementing interface GUI */
+    public void printText(Object ... strings)
+    { 
+        for(Object s: strings) 
+            System.out.println((s != null) ? s.toString() : "null");
+    }
+    
+    /* Implementing interface GUI */
+    public void sayText(Object ... strings)
+    {
+        System.out.print   (strings);
+        System.out.println ();
+    }
+    
+    /* Implementing interface GUI */
     public void paint()
     {
         try { Thread.sleep(SPEED); } 
@@ -384,7 +398,4 @@ public class Textual implements Colors, GUI
     {
         System.out.println(s);
     }
-    
-    public void printText()
-    { }
 }

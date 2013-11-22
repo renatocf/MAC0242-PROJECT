@@ -124,7 +124,6 @@ final public class World
         
         // Debug
         String pre = "[WORLD] ========================";
-        System.out.println("Timestep " + time);
         Debugger.say(pre + time + "ts\n");
         
         Debugger.say("[POST] Receiveing requests");
@@ -167,6 +166,16 @@ final public class World
         
         // Stops only when the game is over
         return gameOver();
+    }
+    
+    /**
+     * Send a message to a player.
+     * Given the player's user interface, send
+     * a message for him (whith or without info).
+     */
+    public static void chat(Player player, String msg)
+    {
+        if(player.GUI != null) player.GUI.printText(msg);
     }
     
     /**
@@ -252,6 +261,9 @@ final public class World
      */
     public static void removeArmy(Robot dead)
     {
+        // Send message to the user   
+        chat(dead.getTeam(), dead.toString() + " has been defeated!"); 
+        
         String pre = "         [DESTROY] ";
         int team = dead.getTeam().getID();
         
@@ -341,7 +353,9 @@ final public class World
                 
                 /* Sets the winner */
                 if(winner.GUI != null)
-                    winner.GUI.winner(time, nPlayers, armies.getPopulation());
+                    winner.GUI.winner(
+                        time, nPlayers, armies.getPopulation()
+                    );
                 
                 Debugger.say("=============================");
                 Debugger.say("========[ GAME OVER ]========");

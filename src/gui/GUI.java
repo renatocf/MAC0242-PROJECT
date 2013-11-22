@@ -36,7 +36,25 @@ public interface GUI
      */
     public void printMiniMap();
     
-    public void printText();
+    /** 
+     * Send a message to this GUI.<br>
+     * Prints the message in the appropriate 
+     * area, with this string.
+     * @param strings Variable size list of objects,
+     *                which will have their 'toString()'
+     *                method used for being printed.
+     */
+    public void printText(Object ... strings);
+    
+    /** 
+     * Send a message to this GUI (with \n).<br>
+     * Prints the message in the appropriate 
+     * area, with this string.
+     * @param strings Variable size list of objects,
+     *                which will have their 'toString()'
+     *                method used for being printed.
+     */
+    public void sayText(Object ... strings);
     
     /** 
      * Finishes the game.
