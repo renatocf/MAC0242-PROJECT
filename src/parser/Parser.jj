@@ -2,7 +2,7 @@
 options 
 {
     STATIC    = false ;
-    LOOKAHEAD = 4;
+    LOOKAHEAD = 2;
 }
 PARSER_BEGIN(Parser)
 
@@ -36,8 +36,9 @@ SKIP : { " " | "\n" | "\r" | "\r\n"}
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 
-TOKEN : {< NUMBER : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
-TOKEN : {< STRING : ( ("\"") (~["\""])* ("\"")) >}
+TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
+TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
+
 
 TOKEN : {< SIGN : "+"  | "-"  >}
 TOKEN : {< OP   : "*"  | "/" | "%" >}
@@ -51,7 +52,7 @@ TOKEN : {< EOL : ";" >}
  * 
  * 
  */
- 
+
 /**
  * Defines program expressions.
  */ 
@@ -179,11 +180,26 @@ String factor ()
             return s; }
     )
     |
+    (
+        t = <WORD>
+        <LBRACE>
+        (
+            expression() 
+            (
+                "," 
+                expression()
+            )*
+        )?
+        <RBRACE>
+        { s = call(t.image); }
+        { return s; }
+    )
+    |
         t = <WORD>
         { s = get(t); }
         { return s; }
     |
-    (
+        (
         t = <STRING>
         { PUSH(t.image);     }
         { return "string"; }
@@ -232,6 +248,18 @@ void insert(Object ... obj) :
         System.out.print(s);
     }
     System.out.println();
+}}
+
+String call(String f) :
+{}
+{{
+    if(!symbol.containsKey(f))
+    {
+        say("Não tem na tabela");
+        symbol.put(f, "number");
+    }
+    insert ("CALL ", f);
+    return symbol.get(f);
 }}
 
 /**
