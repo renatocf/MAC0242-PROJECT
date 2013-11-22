@@ -79,7 +79,7 @@ class Panel extends JPanel
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
      */
-    Panel(Map map, Player player, int R, int y0, int width, int height)
+    Panel(Map map, Player player, int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
         this.map      = map;
@@ -112,11 +112,11 @@ class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++) 
             {
                 cell[i][j] = new Cell(
-                    this.player,    // Player
-                    Δ + R + i*Dx,   // Horizontal position
-                    R + j*Dy + y0,  // Vertical position
-                    R,              // Hexagon radius
-                    map.map[j][i]   // Terrain in map[j,i]
+                    this.player,            // Player
+                    x0 + Δ + R + i*Dx,      // Horizontal position
+                    y0 + R + j*Dy,          // Vertical position
+                    R,                      // Hexagon radius
+                    map.map[j][i]           // Terrain in map[j,i]
                 ); 
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
@@ -124,7 +124,7 @@ class Panel extends JPanel
         // Visibility around player's bases
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
-        this.setVisible(X,Y,1);
+        this.setVisible(X,Y,3);
     }
     
     /**
@@ -235,7 +235,7 @@ class Panel extends JPanel
         // But let the base's around be visible
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
-        this.setVisible(X,Y,1);
+        this.setVisible(Y,X,3);
         
         // And the player's robots
         for(Robot r: this.player.armies)
@@ -261,9 +261,9 @@ class Panel extends JPanel
             for(int k = 1; k <= 6; k++)
             {
                 dir.set(k); update = dir.get(Y);
-                if(X + update[0] < 0 || X + update[0] >= MAP_SIZE) continue;
-                if(Y + update[1] < 0 || Y + update[1] >= MAP_SIZE) continue;
-                setVisible(X + update[0], Y + update[1], S-1);
+                if(X + update[1] < 0 || X + update[1] >= MAP_SIZE) continue;
+                if(Y + update[0] < 0 || Y + update[0] >= MAP_SIZE) continue;
+                setVisible(X + update[1], Y + update[0], S-1);
             }
             
         } catch(Exception e) {
@@ -296,14 +296,10 @@ class Panel extends JPanel
                 // Does not print if not visible
                 if(!vis) 
                 {
-                    // When something is being hit, show it!
-                    if(s.sufferedDamage())
-                    {
-                        scen = Images.valueOf("HIT");
-                        g2d.drawImage(
-                            scen.img(), x-scen.dx(), y-scen.dy(), null
-                        );  
-                    }
+                    Images inv = Images.INVISIBLE;
+                    if(!vis) g2d.drawImage(
+                        inv.img(), x-inv.dx(), y-inv.dy(), null
+                    );
                     return;
                 }
                 
