@@ -52,11 +52,11 @@ class Panel extends JPanel
     private WeakHashMap<Robot,JRobot> robots 
         = new WeakHashMap<Robot,JRobot>();
     
-    // Paint auxiliaries
-    private Phase  phase;
-    private int    nTS;
-    private int    nPlayers;
-    private int    nRobots;
+    // Paint auxiliars
+    private Phase phase;
+    private int   nTS;
+    private int   nPlayers;
+    private int   nRobots;
     
     /**
      * Create a Panel with dimensions width x height,
@@ -75,6 +75,7 @@ class Panel extends JPanel
      */
     Panel(Map map, Player player, int R, int y0, int width, int height)
     {
+        // Store game attributes
         this.map      = map;
         this.player   = player;
         
@@ -84,12 +85,14 @@ class Panel extends JPanel
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(width, height));
         
+        // Initial phase: active
         this.phase = Phase.ACTIVE;
         
         // Put images in the screen
         int Dx = (int) ( 2*R * Math.sin(Math.PI/3) ); 
         int Dy = 3 * R/2 +1;
        
+        // Build a grid of cells
         int Δ  = 0;
         for (int i = 0; i < MAP_SIZE; i++)
             for (int j = 0; j < MAP_SIZE; j++) 
@@ -104,12 +107,9 @@ class Panel extends JPanel
                 Δ = (Δ == 0) ? Dx/2 : 0;
             }
         
-        
-        int X, Y, S; // X and Y positions for centering the 
-                     // visibility; S for the sight
-        
-        X = this.player.getBase().getPosX(this.player);
-        Y = this.player.getBase().getPosY(this.player);
+        // Visibility around player's bases
+        int X = this.player.getBase().getPosX(this.player);
+        int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(X,Y,1);
     }
     
@@ -124,7 +124,7 @@ class Panel extends JPanel
     {
         super.paintComponent(g);
         
-        // First, draw all the background
+        // First, draw all the background without Fog War
         this.paintMap(g);
         
         // Remove all GUI elements, mainly the robots power/HP bars
@@ -167,7 +167,7 @@ class Panel extends JPanel
     {
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
-                if(cell[i][j].terrain.getFogWar(this.player) == false)
+                if(!cell[i][j].terrain.getFogWar(this.player))
                     cell[i][j].draw(g); 
     }
     
@@ -178,36 +178,41 @@ class Panel extends JPanel
      */
     private void paintLife(Graphics g)
     {
+        // Hide all the map
         for(int i = 0; i < MAP_SIZE; i++)
             for(int j = 0; j < MAP_SIZE; j++)
-                map.map[i][j].setInvisible(this.player);
+                cell[i][j].terrain.setInvisible(this.player);
         
-        int X, Y, S;
-        X = this.player.getBase().getPosX(this.player);
-        Y = this.player.getBase().getPosY(this.player);
+        // But let the base's around be visible
+        int X = this.player.getBase().getPosX(this.player);
+        int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(X,Y,1);
         
+        // And the player's robots
         for(Robot r: this.player.armies)
-        {
-            X = r.getPosX(); Y = r.getPosY(); S = r.getSight();
-            this.setVisible(X,Y,S);
-        }
+            this.setVisible(r.getPosX(), r.getPosY(), r.getSight());
         
         Graphics2D g2d = (Graphics2D) g;
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
                 // Get fog war (and print properly)
-                boolean fog = cell[j][i].terrain.getFogWar(this.player);
+                boolean fog = cell[i][j].terrain.getFogWar(this.player);
                 
-                if(!fog)
-                {
-                    item(g2d, i, j); // Items (crystals, stones, ...)
-                    scen(g2d, i, j); // Scenarios (robots, trees, rocks, ...)
-                }
+                // Print items and scenarios if there is no fog
+                if(fog) continue;
+                item(g2d, i, j); // Items (crystals, stones...)
+                scen(g2d, i, j); // Scenarios (robots, trees, rocks...)
             }
     }
     
+    /**
+     * Auxiliar method for making an area visible
+     * (which takes out Fog War and shows all scenarios).
+     * @param X Horizontal position
+     * @param Y Vertical position
+     * @param S Sight (radius) of the area to be set visible
+     */
     private void setVisible(int X, int Y, int S)
     {
         int aux = -S;
@@ -227,7 +232,7 @@ class Panel extends JPanel
      */
     private void scen(Graphics2D g2d, int i, int j)
     {
-        Cell hex = cell[j][i];
+        Cell hex = cell[i][j];
         int x = hex.x, y = hex.y;
         boolean vis = hex.terrain.getVisibility(this.player);
         
@@ -236,33 +241,46 @@ class Panel extends JPanel
         {
             Images scen = Images.valueOf(s.name(), s.getTeam());
             
+            // Special treatment for robots
             if(s instanceof Robot)
             {
+                // When there is no visibility, do not print
                 if(!vis) return;
                  
+                // Get the robot and its animation phase
                 Robot r = (Robot) s;
                 int[] phase = r.getPhase();
-                if(!this.robots.containsKey(r)) 
+                
+                // Add new JRobots for new Robots
+                if(!this.robots.containsKey(r))
                     this.robots.put(r, new JRobot(r));
                 
-                //Get the right sprite and corrects the robot
+                // Get the right sprite and corrects the robot
                 g2d.drawImage(
                     scen.img().getSubimage(phase[0], phase[1], 32, 32), 
                     x-scen.dx(), y-scen.dy(), null
                 );
                 
+                // Update robot's position
                 r.setPhase(32, phase[1]);
                 
+                // Add JRobot in the Panel
                 JRobot jr = robots.get(r);
                 jr.update(x-scen.dx(), y-scen.dy());
                 jr.add();
             }
             else
             {
+                // Always draw other's scenarios
                 g2d.drawImage(scen.img(), x-scen.dx(), y-scen.dy(), null);
             }
-            if(!vis) g2d.drawImage(Images.INVISIBLE.img(), x-scen.dx(), y-scen.dy(), null);
             
+            // If there is no visibility, masks player's view
+            if(!vis) g2d.drawImage(
+                Images.INVISIBLE.img(), x-scen.dx(), y-scen.dy(), null
+            );
+            
+            // When something is being hit, show it!
             if(s.sufferedDamage())
             {
                 scen = Images.valueOf("HIT");
@@ -270,7 +288,8 @@ class Panel extends JPanel
                     scen.img(), x-scen.dx(), y-scen.dy(), null
                 );  
             }
-        }
+            
+        } // s != null
     }
     
     /**
@@ -282,7 +301,7 @@ class Panel extends JPanel
      */
     private void item(Graphics2D g2d, int i, int j)
     {
-        Cell hex = cell[j][i];
+        Cell hex = cell[i][j];
         int x = hex.x, y = hex.y;
         
         // Print items
@@ -319,6 +338,7 @@ class Panel extends JPanel
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
         g.drawString(this.player + ", YOU LOOSE!", hW-300, hH + 35);
         
+        // Paint all the label
         paintEdge(g);
     }
     
@@ -344,12 +364,14 @@ class Panel extends JPanel
         g.setFont(new Font("Arial Black", Font.BOLD, 50));
         g.drawString(this.player + ", YOU WIN!", hW-280, hH-15);
         
+        // Painting game's info
         g.setColor(Color.GREEN);
         g.setFont(new Font("Arial Black", Font.BOLD, 30));
         g.drawString("Number of Steps: "   + this.nTS,      hW-280, hH+35);
         g.drawString("Number of Players: " + this.nPlayers, hW-280, hH+66);
         g.drawString("Number of Robots: "  + this.nRobots,  hW-280, hH+97);
         
+        // Paint all the label
         paintEdge(g);
     }
     
@@ -367,7 +389,7 @@ class Panel extends JPanel
         // Painting the border
         Graphics2D g2d = (Graphics2D) g;
         
-        // Draw red robot
+        // Draw red robots
         Image red = Images.RED_ROBOT.img().getSubimage(0, 32, 32, 32);
         
         g2d.drawImage(red,   28,     hH - 65,  null);
@@ -379,7 +401,7 @@ class Panel extends JPanel
         g2d.drawImage(red,   W - 60, hH + 75,  null);
         g2d.drawImage(red,   W - 60, hH + 145, null);
             
-        // Draw black robot
+        // Draw black robots
         Image black = Images.BLACK_ROBOT.img().getSubimage(0, 64, 32, 32);
             
         g2d.drawImage(black, 28,     hH - 30,  null);
@@ -409,6 +431,7 @@ class Panel extends JPanel
         private Robot robot;
         private Dimension size = new Dimension(30,5); // Bar size
         
+        // Additional info for settings
         private int maxHP;
         private int maxPower;
         
