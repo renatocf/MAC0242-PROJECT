@@ -48,6 +48,7 @@ class MapFrame extends JFrame
      */
     MapFrame(Map map, Player player)
     {
+        // Setting MapFrame attributes
         this.map    = map;
         this.player = player;
         
@@ -60,10 +61,13 @@ class MapFrame extends JFrame
             this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
                 
         //* ARENA SCREEN *********************************************//
+            int RADIUS   = 25;
+            int IMG_SIZE = 32;
+            
             this.screen = new Panel(
-                map, player, 25, 32, 
-                (int)(25.2*MAP_SIZE*Math.sqrt(3)), 
-                (int)(25.5*3*MAP_SIZE/2) + 64
+                map, player, RADIUS, IMG_SIZE, 
+                (int)(RADIUS * MAP_SIZE * Math.sqrt(3)), 
+                (int)(RADIUS * 3 * MAP_SIZE/2) + 2*IMG_SIZE
             );
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
@@ -110,7 +114,7 @@ class MapFrame extends JFrame
     /**
      * Auxiliar method to repaint frame.
      */
-    void paintMap()
+    void paint()
     {
         this.screen.setGamePhase(Phase.ACTIVE, -1, -1, -1);
         this.screen.repaint();
