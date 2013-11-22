@@ -219,6 +219,18 @@ class Panel extends JPanel
                 item(g2d, i, j); // Items (crystals, stones...)
                 scen(g2d, i, j); // Scenarios (robots, trees, rocks...)
             }
+            
+        Images inv = Images.INVISIBLE;
+        boolean vis;
+        for (int i = 0; i < MAP_SIZE; i++) 
+            for (int j = 0; j < MAP_SIZE; j++)
+            {
+                vis = cell[i][j].terrain.getVisibility(this.player);
+                if(!vis) g2d.drawImage(
+                    inv.img(), cell[i][j].x-inv.dx(), cell[i][j].y-inv.dy(), null
+                );
+            }
+                
     }
     
     /**
@@ -235,7 +247,7 @@ class Panel extends JPanel
         // But let the base's around be visible
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
-        this.setVisible(Y,X,3);
+        this.setVisible(Y,X,7);
         
         // And the player's robots
         for(Robot r: this.player.armies)
@@ -296,10 +308,10 @@ class Panel extends JPanel
                 // Does not print if not visible
                 if(!vis) 
                 {
-                    Images inv = Images.INVISIBLE;
-                    if(!vis) g2d.drawImage(
-                        inv.img(), x-inv.dx(), y-inv.dy(), null
-                    );
+                //    Images inv = Images.INVISIBLE;
+                  //  if(!vis) g2d.drawImage(
+                    //    inv.img(), x-inv.dx(), y-inv.dy(), null
+                    //);
                     return;
                 }
                 
@@ -343,12 +355,13 @@ class Panel extends JPanel
         } // s != null
             
         // If there is no visibility, masks player's view
-        Images inv = Images.INVISIBLE;
-        if(!vis) g2d.drawImage(
-            inv.img(), x-inv.dx(), y-inv.dy(), null
-        );
+        //Images inv = Images.INVISIBLE;
+        //if(!vis) g2d.drawImage(
+        //    inv.img(), x-inv.dx(), y-inv.dy(), null
+        //);
     }
     
+        
     /**
      * Auxiliar function for painting an 
      * item over a terrain in the game.
