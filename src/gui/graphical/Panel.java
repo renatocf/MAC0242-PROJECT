@@ -58,6 +58,9 @@ class Panel extends JPanel
     private int   nPlayers;
     private int   nRobots;
     
+    // Show or not scenarios/items
+    boolean hide = false;
+    
     /**
      * Create a Panel with dimensions width x height,
      * containing MAP_SIZE² hexagons (built from a map).
@@ -133,10 +136,21 @@ class Panel extends JPanel
         
         switch(this.phase)
         {
-            case LOOSER: looser(g);    break;
-            case WINNER: winner(g);    break;
-            case ACTIVE: paintLife(g); break;
+            case LOOSER: if(!hide) looser(g);    break;
+            case WINNER: if(!hide) winner(g);    break;
+            case ACTIVE: if(!hide) paintLife(g); break;
         }
+    }
+    
+    /**
+     * Set if the scenarios and items
+     * sound or not be showed.
+     * @param show True if show invisible mask and 
+     *             scenarios, false otherwise
+     */
+    void hide(boolean show)
+    {
+        hide = show;
     }
     
     /**
