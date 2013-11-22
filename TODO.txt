@@ -64,6 +64,7 @@
     [X] Add LaTeX images on git again.
     [X] Create relative-address Jump.
     [X] Add counter for number of robots.
+    [ ] Fix Fog War/Visibility appearence.
     [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
     [ ] Finish variables attribution in Parser.jj.
