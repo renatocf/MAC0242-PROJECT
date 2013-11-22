@@ -167,7 +167,8 @@ class Panel extends JPanel
     {
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
-                cell[i][j].draw(g); 
+                if(cell[i][j].terrain.getFogWar(this.player) == false)
+                    cell[i][j].draw(g); 
     }
     
     /**
