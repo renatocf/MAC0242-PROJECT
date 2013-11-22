@@ -2,7 +2,7 @@
 options 
 {
     STATIC    = false ;
-    LOOKAHEAD = 3;
+    LOOKAHEAD = 4;
 }
 PARSER_BEGIN(Parser)
 
@@ -64,171 +64,151 @@ TOKEN : {< EOL : ";" >}
 void Start() 
     throws WrongTypeException :
 {
+    String s;
 }    
 {
     (
         (   
-//            (
-                expression()
-                { insert("POP"); }
-            //)
-  //          |
-    //        (
-      //          stringAttribution()
-        //    )
+            s = expression()
+            { insert("POP"); }
         )?
         <EOL>
         { say("--------------------------------"); }
     )*
 }
 
-void stringAttribution() :
-{
-    Token var, str;
-}
-{
-    var = <WORD> <ATTR> 
-    (
-        str = <STRING>
-        { attrString(var, str); }
-    ) 
-    |
-    (str = <WORD>)
-    
-}
-
-/**
- * Insert a attribution of a double variable.
- * @param var  Token of the variable
- * @param attr Token of the attribution  
- */
-void attrString(Token var, Token str) :
-{ String s; }
-{{
-    s = var.image;
-    if(!symbol.containsKey(s))
-    {
-        symbol.put(s, "num");
-        insert("ALOC ", "[", s, "]");
-    }
-    insert("PUSH ", str.image);
-    insert("SET " , "[", s, "]");
-    insert("GET " , "[", s, "]");
-}}
-    
-
-
 /**
  * Expression is a comparison of Arit's.
  */
-void expression() 
+String expression() 
     throws WrongTypeException :
 {
     Token   t;
+    String s = "";
 }
 {
-    arit()
+    s = arit()
     (
-        t = <CMP>            
-        arit() 
+        t = <CMP>
+        { checkTypeError(s); }            
+        s = arit()
+        { checkTypeError(s); }
         { insert(cmp(t)); }
     )*
+    { return s; }
 }
 
 /**
  * Arit is a sum of terms.
  */
-void arit() 
+String arit() 
     throws WrongTypeException :
 {
     Token   t;
+    String  s = "";
 }
 {
-    term()
+    s = term()
     (
         t = <SIGN>            
-        term() 
+        { checkTypeError(s); }
+        s = term() 
+        { checkTypeError(s); }
         { insert(sign(t)); }
     )*
+    { return s; }
 }
 
 /**
  * Term is a product of elements.
  */
-void term () 
+String term () 
     throws WrongTypeException :
 {
     Token  t;
     double value;
+    String s = "";
 }
 {
-    element()
+    s = element()
     (
         t = <OP>
-        element()
-        
+        { checkTypeError(s); }
+        s = element()
+        { checkTypeError(s); }
         { insert(op(t)); }
     )*
+    { return s; }
 }
 
 /**
  * Element is either a factor or a signed factor.
  */
-void element() 
+String element() 
     throws WrongTypeException :
 {
     Token t;
+    String s = "";;
 }
 {
-    factor()
+    (s = factor()
+    { return s; })
     |
     (
         t = <SIGN>
-        factor()
+        s = factor()
+        { checkTypeError(s); }
         { unarySign(t); }
-    )    
+        { return s; }
+    )
+    {return s;}
+    
 }
 
 /**
  * Factor is either a attribution, a variable, 
  * a number or a braced expression.
  */
-void factor ()  
+String factor ()  
     throws WrongTypeException :
 {
     Token t, v;
     double   value;
+    String s = "";
 }
 {    
     (
         t = <WORD> 
         v = <ATTR>
-        expression()
-        { attrDouble(t, v); }
-    )
-    |
-    (
-        t = <WORD> 
-        v = <ATTR>
-        <STRING>
-        { say("funcionou"); }
+        s = expression()
+        { attr(t, v, s);
+            return s; }
     )
     |
         t = <WORD>
-        { getDouble(t); }
+        { s = get(t); }
+        { return s; }
+    |
+    (
+        t = <STRING>
+        { PUSH(t.image);     }
+        { return "string"; }
+    )
     |
     (
         t = <NUMBER>
         { value = atof(t); }
         { PUSH(value);     }
+        { return "number"; }
     )
     |
     (
         <LBRACE> 
-        expression()
+        s = expression()
         <RBRACE>
+        { return s; }
     )
-
+    
 }
 
 /**
@@ -265,37 +245,41 @@ void insert(Object ... obj) :
  * @param var  Token of the variable
  * @param attr Token of the attribution  
  */
-void attrDouble(Token var, Token attr) :
+void attr(Token var, Token attr, String type) 
+    throws WrongTypeException:
 { String s; }
 {{
     s = var.image;
     if(!symbol.containsKey(s))
-    {
-        symbol.put(s, "num");
         insert("ALOC ", "[", s, "]");
-    }
+    symbol.put(s, type);
     switch(attr.image)
     {
         case "="  : break;
-        case "+=" : insert("GET ", "[", s, "]"); 
+        case "+=" : checkTypeError(type);
+                    insert("GET ", "[", s, "]"); 
                     insert("ADD"); 
                     break;
         
-        case "-=" : insert("GET ", "[", s, "]");
+        case "-=" : checkTypeError(type);
+                    insert("GET ", "[", s, "]");
                     insert("SWAP"); 
                     insert("SUB"); 
                     break;
                     
-        case "*=" : insert("GET ", "[", s, "]"); 
+        case "*=" : checkTypeError(type);
+                    insert("GET ", "[", s, "]"); 
                     insert("MUL"); 
                     break;
                     
-        case "/=" : insert("GET ", "[", s, "]"); 
+        case "/=" : checkTypeError(type);
+                    insert("GET ", "[", s, "]"); 
                     insert("SWAP");
                     insert("DIV"); 
                     break;
                     
-        case "%=" : insert("GET ", "[", s, "]"); 
+        case "%=" : checkTypeError(type);
+                    insert("GET ", "[", s, "]"); 
                     insert("SWAP");
                     insert("MOD"); 
                     break;
@@ -305,27 +289,23 @@ void attrDouble(Token var, Token attr) :
 }}
 
 /**
- * Insert a GET for a double variable.
+ * Insert a GET for a variable.
  * @param var  Token of the variable
  */
-void getDouble(Token var) 
+String get(Token var) 
     throws WrongTypeException :
 { String s; }
 {{
     s = var.image;
     if(!symbol.containsKey(s))
     {
-        symbol.put(s, "num");
+        symbol.put(s, "number");
         insert("ALOC ", "[", s, "]");
         insert("PUSH 0");
         insert("SET ", "[", s, "]");
     }
-    else
-    {
-        if(!symbol.get(s).equals("num"))
-            throw new WrongTypeException("number");
-    }
     insert("GET ", "[", s, "]");
+    return symbol.get(s);
 }}
 
 /**
@@ -415,4 +395,14 @@ private void say(Object o) :
 {{
     s = (o == null)? "null" : o.toString();
     System.out.println(s);
+}}
+
+private void checkTypeError(String s)
+    throws WrongTypeException :
+{}
+{{
+    if (s != null)
+        if(!s.equals("number"))
+            throw new WrongTypeException("number");
+            
 }}
