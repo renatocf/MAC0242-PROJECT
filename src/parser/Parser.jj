@@ -45,12 +45,6 @@ TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
 TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
 
 TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
-
-TOKEN : {< SIGIL  : "#" | "$" | "^" | "!" | "&" >}
-TOKEN : {< DOUBLE : "#" <WORD> >}
-TOKEN : {< VAR    : <SIGIL> <WORD> >}
-
-
 TOKEN : {< EOL : ";" >}
 /**
  * 
