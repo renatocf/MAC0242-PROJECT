@@ -74,7 +74,6 @@ public interface GUI
     
     /** 
      * Finishes the game.
-     * @param p        The winner player
      * @param nTS      Number of time steps since 
      *                 the beggining of the game
      * @param nPlayers Number of players
@@ -84,8 +83,8 @@ public interface GUI
     public void winner(int nTS, int nPlayers, int nRobots);
     
     /** 
-     * Remove the looser and exhibit the message.
-     * @param p The looser player
+     * Remove the looser and exhibit 
+     * the looser message for him.
      */
     public void looser();
 }

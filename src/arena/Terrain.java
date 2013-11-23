@@ -159,7 +159,7 @@ public class Terrain implements Stackable
     
     /** 
      * Setter fot the terrain's visibility
-     * @param  Player
+     * @param p Player
      */
     public void setVisible(Player p)
     {
@@ -169,7 +169,7 @@ public class Terrain implements Stackable
     
     /** 
      * Setter fot the terrain's visibility
-     * @param  Player
+     * @param p Player
      */
     public void setInvisible(Player p)
     {
@@ -178,7 +178,7 @@ public class Terrain implements Stackable
     
     /** 
      * Getter fot the terrain's fog war. 
-     * @param  Player
+     * @param  p Player
      * @return True if the terrain has never
      *         been visited (has fog war) or
      *         false, otherwise
@@ -190,7 +190,7 @@ public class Terrain implements Stackable
     
     /** 
      * Getter fot the terrain's visibility. 
-     * @param  Player
+     * @param  p Player
      * @return True if the terrain has never
      *         been visited (has fog war) or
      *         false, otherwise

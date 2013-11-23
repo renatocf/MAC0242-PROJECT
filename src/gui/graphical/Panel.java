@@ -187,7 +187,6 @@ class Panel extends JPanel
     /**
      * Load info about the game phase.<br>
      * @param phase    Game phase
-     * @param player   Player (looser or winner)
      * @param nTS      Number of time steps since 
      *                 the beggining of the game
      * @param nPlayers Number of players

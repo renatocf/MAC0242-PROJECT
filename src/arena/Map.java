@@ -72,7 +72,10 @@ public class Map
     
     /**
      * Create map to 'n' players.
-     * @param  players List of players
+     * @param  nPlayers Number of players
+     * @param  rand     Random object to 
+     *                  generate everything
+     *                  with the same seed
      * @return List with nPlayer bases to 
      *         be given to the players
      */
