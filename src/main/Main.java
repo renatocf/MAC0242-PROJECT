@@ -65,7 +65,7 @@ public class Main
         
         // Menu
         // TODO: automate inserction of programs
-        String ROOT = "behaviors/";
+        String ROOT = "/data/behaviors/";
         if(args.length > 1 && !multi)
         {
             p[0].insertArmy("Caprica Six"     , ROOT + "Protector.asm");
