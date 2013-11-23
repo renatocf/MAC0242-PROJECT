@@ -17,6 +17,8 @@
     [X] Add/Correct javadoc in package gui.graphical.
     [X] Configure Ant for running javacc
     [X] Make one GUI per player.
+    [X] Add NOTICE for license on all files.
+    [ ] Fiz '@author' on all files.
     [ ] Create a system for removing player.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
@@ -28,7 +30,8 @@
     [X] Fix carrier to get player's base position.
     [X] Fix the behaviors. (PHASE 3)
     [X] Separate robot's images.
-    [ ] Get new images for invisibility.
+    [X] Get new images for invisibility.
+    [X] Centralize image view on player's base.
     
 [All]
     [X] Create insert Army.
@@ -65,7 +68,7 @@
     [X] Create relative-address Jump.
     [X] Add counter for number of robots.
     [X] Create a mini-map graphical representation.
-    [ ] Fix Fog War/Visibility appearence.
+    [X] Fix Fog War/Visibility appearence.
     [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
     [ ] Finish variables attribution in Parser.jj.
