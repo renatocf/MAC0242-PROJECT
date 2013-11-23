@@ -102,7 +102,7 @@ final public class World
             p.setGUI(GUI);
         }
         
-        if(Debugger.info) 
+        if(Debugger.debugging()) 
             for(Player p: players) 
                 if(p.GUI != null) p.GUI.printMiniMap();
         

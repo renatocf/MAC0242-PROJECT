@@ -1,5 +1,6 @@
 package parameters;
 
+// Default libraries
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -17,14 +18,48 @@ import java.io.BufferedOutputStream;
  */
 public class Debugger
 {
-    /** 
-     * Variable to indicate if the Debugger should 
-     * print it's info.
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                              DEBUGGER METHODS
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
+    /**
+     * Initialize the debugger.
      */
-    public static boolean info = false;
+    public static void init()
+    {
+        debugger = new Debugger("log");
+        info = true;
+    }
+    
+    /**
+     * Close the debugger.<br>
+     * Makes no action if the debugger was not initilized.
+     */
+    public static void close()
+    {
+        if(!info) return;
+        debugger.log.close();
+    }
+    
+    /**
+     * Shows info if the debugger is working or not.<br>
+     * Makes no action if the debugger was not initilized.
+     * 
+     * @return True if debugging, false otherwise
+     */
+    public static boolean debugging()
+    {
+        return info;
+    }
     
     /** 
-     * Print without a terminal newline.
+     * Print without a terminal newline.<br>
+     * Makes no action if the debugger was not initilized.
+     * 
      * @param strings Variable size list of objects,
      *                which will have their 'toString()'
      *                method used for being printed.
@@ -37,7 +72,9 @@ public class Debugger
     }
 
     /** 
-     * Print with a terminal newline.
+     * Print with a terminal newline.<br>
+     * Makes no action if the debugger was not initilized.
+     * 
      * @param strings Variable size list of objects,
      *                which will have their 'toString()'
      *                method used for being printed.
@@ -50,7 +87,9 @@ public class Debugger
     }
     
     /** 
-     * Print formatted.
+     * Print formatted.<br>
+     * Makes no action if the debugger was not initilized.
+     * 
      * @param format String with sequences of formats to
      *               be printed.
      * @param args   Variable size list of objects,
@@ -63,23 +102,37 @@ public class Debugger
         debugger.log.printf(format, args);
     }
     
-    /**
-     * Close the log file.
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                                  VARIABLES
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
+    
+    /** 
+     * Variable to indicate if the Debugger should 
+     * print it's info.
      */
-    public static void close()
-    {
-        debugger.log.close();
-    }
+    private static boolean info = false;
     
     /**
      * Singleton with a debugger object 
      */
-    private static Debugger debugger = new Debugger("log");
+    private static Debugger debugger;
     
     /**
      * PrintWriter with the log file
      */
     private static PrintWriter log;
+    
+    /*
+    ////////////////////////////////////////////////////////////////////
+    -------------------------------------------------------------------
+                                CONSTRUCTOR
+    -------------------------------------------------------------------
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    */
     
     /**
      * Constructor just to create the new log file.
@@ -89,15 +142,20 @@ public class Debugger
     {
         try
         {   
-            BufferedOutputStream bf = new BufferedOutputStream(new FileOutputStream(fileName, false));
+            // Create a new log file
+            FileOutputStream fos = new FileOutputStream(fileName, false);
+            BufferedOutputStream bf = new BufferedOutputStream(fos);
             log = new PrintWriter(bf, true); 
-            /* System.setErr(new PrintStream(bf)); */
+            
+            // Set stderr to go to the log file
+            System.setErr(new PrintStream(bf));
         }
         catch(IOException e)
         {
             System.out.println(
                 "[DEBUGGER] Error to generate log file\n" + e
             );
+            e.printStackTrace();
         }
     }
 }

@@ -33,9 +33,9 @@ public class Main
         "USAGE: java -jar dist/MAC0242.jar <prog1> <prog2> <prog3> [-v|-d]";
 
     // Options
-    static private int     port = 3742;
-    static private boolean help;
-    static private boolean usage;
+    static private int     port   = 3742;
+    static private boolean help   = false;
+    static private boolean usage  = false;
     static private boolean multi  = false;
     static private Interfaces GUI = Interfaces.GRAPHICAL;
     
@@ -78,7 +78,7 @@ public class Main
             p[1].insertArmy(names[i], args[i]);
         
         // Game main loop
-        if(Debugger.info) 
+        if(Debugger.debugging()) 
         {
             for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
             System.exit(0);
@@ -128,7 +128,7 @@ public class Main
             new LongOpt("single", LongOpt.NO_ARGUMENT,       null,  7 ),
         };
         //
-        Getopt g = new Getopt("MAC0242-Project", argv, "hdvtslp:", longopts);
+        Getopt g = new Getopt("MAC0242-Project",argv,"hdvtslp:",longopts);
         
         int c;
         while ((c = g.getopt()) != -1)
@@ -141,7 +141,7 @@ public class Main
                 //
                 case 'd': // --debug
                 case 'v': // --verbose
-                    Debugger.info = true;
+                    Debugger.init();
                     break;
                 //
                 case 1: Game.WEATHER = Weather.ARTICAL;     break;
