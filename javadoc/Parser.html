@@ -48,6 +48,28 @@
   <TD>
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
+&lt;NUMBER: (["0"-"9"])+ ("." (["0"-"9"])+)?&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;STRING: "\"" (~["\""])* "\""&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
 &lt;SIGN: "+" | "-"&gt;
 }
 
@@ -59,7 +81,7 @@
   <TD>
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
-&lt;OP: "*" | "/"&gt;
+&lt;OP: "*" | "/" | "%"&gt;
 }
 
    </PRE>
@@ -81,7 +103,7 @@
   <TD>
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
-&lt;ATTR: "=" | "+=" | "-=" | "*=" | "/="&gt;
+&lt;ATTR: "=" | "+=" | "-=" | "*=" | "/=" | "%="&gt;
 }
 
    </PRE>
@@ -92,51 +114,7 @@
   <TD>
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
-&lt;NUMBER: (["0"-"9"])+ ("." (["0"-"9"])+)?&gt;
-}
-
-   </PRE>
-  </TD>
- </TR>
- <!-- Token -->
- <TR>
-  <TD>
-   <PRE>
-&lt;DEFAULT&gt; TOKEN : {
-&lt;WORD: (["A"-"Z"] | ["a"-"z"] | ["0"-"9"] | "_")+&gt;
-}
-
-   </PRE>
-  </TD>
- </TR>
- <!-- Token -->
- <TR>
-  <TD>
-   <PRE>
-&lt;DEFAULT&gt; TOKEN : {
-&lt;SIGIL: "#" | "$" | "^" | "!" | "&amp;"&gt;
-}
-
-   </PRE>
-  </TD>
- </TR>
- <!-- Token -->
- <TR>
-  <TD>
-   <PRE>
-&lt;DEFAULT&gt; TOKEN : {
-&lt;DOUBLE: "#" &lt;WORD&gt;&gt;
-}
-
-   </PRE>
-  </TD>
- </TR>
- <!-- Token -->
- <TR>
-  <TD>
-   <PRE>
-&lt;DEFAULT&gt; TOKEN : {
-&lt;VAR: &lt;SIGIL&gt; &lt;WORD&gt;&gt;
+&lt;WORD: (["A"-"Z"] | ["a"-"z"] | "_")+&gt;
 }
 
    </PRE>
@@ -174,40 +152,47 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod1">Start</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod2">expression</A> &lt;EOL&gt; )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( <A HREF="#prod2">expression</A> ) | ( <A HREF="#prod3">prototype</A> ) )? &lt;EOL&gt; )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
   <TD>
 <PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                             FUNCTIONS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">prototype</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WORD&gt; &lt;WORD&gt; &lt;LBRACE&gt; ( &lt;WORD&gt; ( "," &lt;WORD&gt; )* )? &lt;RBRACE&gt;</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                            EXPRESSIONS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
 /**
- * Expression is a comparison of Attr's.
+ * Expression is a comparison of Arit's.
  */</PRE>
   </TD>
  </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">expression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod3">attr</A> ( &lt;CMP&gt; <A HREF="#prod3">attr</A> )*</TD>
-</TR>
- <!-- Special token -->
- <TR>
-  <TD>
-<PRE>
-/**
- * Attr is either a arit or a attribution.
- */</PRE>
-  </TD>
- </TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">attr</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod4">arit</A></TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;DOUBLE&gt; &lt;ATTR&gt; <A HREF="#prod4">arit</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod4">arit</A> ( &lt;CMP&gt; <A HREF="#prod4">arit</A> )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -228,27 +213,67 @@
   <TD>
 <PRE>
 /**
- * Term is a product of factors.
+ * Term is a product of elements.
  */</PRE>
   </TD>
  </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">term</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod6">factor</A> ( &lt;OP&gt; <A HREF="#prod6">factor</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod6">element</A> ( &lt;OP&gt; <A HREF="#prod6">element</A> )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
   <TD>
 <PRE>
 /**
- * Factor is either a number or a braced expression.
+ * Element is either a factor or a signed factor.
  */</PRE>
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">factor</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">element</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod7">factor</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SIGN&gt; <A HREF="#prod7">factor</A> )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Factor is either a attribution, a variable, 
+ * a number or a braced expression.
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">factor</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;WORD&gt; &lt;ATTR&gt; <A HREF="#prod2">expression</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;WORD&gt; &lt;LBRACE&gt; ( <A HREF="#prod2">expression</A> ( "," <A HREF="#prod2">expression</A> )* )? &lt;RBRACE&gt; )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WORD&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;STRING&gt; )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;NUMBER&gt; )</TD>
 </TR>
 <TR>
@@ -268,7 +293,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">PUSH</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">PUSH</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -277,19 +302,50 @@
   <TD>
 <PRE>
 /**
- * Print string representation of 
+ * Print string representation of | "%"
  * a variable number of objects.
  * @param obj List of objects
  */</PRE>
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">insert</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">insert</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">attrDouble</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">call</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Insert a attribution of a double variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">attr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Insert a GET for a variable.
+ * @param var  Token of the variable
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">get</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -306,7 +362,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">cmp</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">cmp</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -322,7 +378,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">sign</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">sign</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -338,7 +394,22 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">op</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">op</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * insert a additive inverse of a factor 
+ * @param  t Token with the sign
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">unarySign</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -354,7 +425,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">atof</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">atof</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -371,7 +442,12 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">say</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">say</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">checkTypeError</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
