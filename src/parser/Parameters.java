@@ -2,15 +2,38 @@ package parser;
 
 class Parameters
 {
-    private String[] types;
+    // Auxiliar attributes
+    String[] types;
     
     /**
      * Default constructor.<br>
-     * @param types Array with strings representing
-     *              the types of the arrays
+     * @param types Array with strings indicating
+     *              the types of the parameters of
+     *              a given function
      */
     Parameters(String[] types)
     {
         this.types = types;
+    }
+    
+    /**
+     * Getter for a type.
+     * @param  pos Position
+     * @return Parameter type of a given position.
+     *         If invalid, returns null
+     */
+    String getType(int pos)
+    {
+        if(pos < 0 || pos >= types.length) return null;
+        return types[pos];
+    }
+    
+    /**
+     * Getter for the number of parameters.
+     * @return Number of parameters
+     */
+    int getSize()
+    {
+        return types.length;
     }
 }
