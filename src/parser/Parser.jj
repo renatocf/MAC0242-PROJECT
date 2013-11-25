@@ -1,4 +1,3 @@
-/* adder.jj Adding up numbers */
 options 
 {
     STATIC    = false ;
@@ -9,8 +8,10 @@ PARSER_BEGIN(Parser)
 package parser;
 import parser.*;
 import java.util.HashMap;
+import java.util.Stack;
 import java.util.ArrayList;
 import exception.WrongTypeException;
+import exception.UndefinedFunctionException;
 
 /**
  * <b>Parser for user Program<b>
@@ -19,13 +20,15 @@ import exception.WrongTypeException;
  */
 public class Parser 
 {
-    HashMap<String,String>     symbol    = new HashMap<String,String>();
-    HashMap<String,Parameters> functions = new HashMap<String,Parameters>();
+    Stack<HashMap<String,String>> scope     = new Stack<HashMap<String,String>>();
+    HashMap<String,String>        returns   = new HashMap<String,String>();
+    HashMap<String,Parameters>    functions = new HashMap<String,Parameters>();
     
     public static void main( String[] args )
         throws ParseException, 
                TokenMgrError, 
-               WrongTypeException 
+               WrongTypeException,
+               UndefinedFunctionException 
     {
         Parser parser = new Parser(System.in);
         parser.Start(); 
@@ -35,8 +38,11 @@ public class Parser
 PARSER_END(Parser)
 
 SKIP : { " " | "\n" | "\r" | "\r\n"}
+
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
+TOKEN : {< LCURLY : "{" >}
+TOKEN : {< RCURLY : "}" >}
 
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
@@ -58,26 +64,35 @@ TOKEN : {< EOL : ";" >}
  * Defines program expressions.
  */ 
 void Start() 
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     String s;
+    HashMap<String,String> main = new HashMap<String,String>();
 }    
 {
+    { scope.push(main); }
     (
         (   
             (
-                { say("Before express  "); }
-                s = expression()
-                { insert("POP"); }
+                header()
+                (
+                    function()
+                )
+                |
+                (
+                    <EOL>
+                )
             )
             |
             (
-                { say("Before prototype"); }
-                prototype()
-                { say("After prototype"); }
+                s = expression()
+                { insert("POP"); }
+                <EOL>
             )
-        )?
-        <EOL>
+            |
+            <EOL>
+        )
         { say("--------------------------------"); }
     )*
 }
@@ -89,36 +104,76 @@ void Start()
 -----------------------------------------------------------------------
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
-
-void prototype() :
+ArrayList<String[]> header() :
 {
-    Token t, f, s;
+    Token t, f, s1, s2;
     Parameters parameter;
+    String[] aux = new String[2];
+    ArrayList<String[]> vars = new ArrayList<String[]>();
     ArrayList<String> types = new ArrayList<String>();
 }
 {
     t = <WORD>
-    { say("First token"); }
     f = <WORD>
-    { say("Second token"); }
     <LBRACE>
-    { say("LBrace      "); }
     (
-        s = <WORD>
-        { say("First param "); }
-        { types.add(s.image); }
+        s1 = <WORD>
+        { types.add(s1.image); }
+        { aux[0] = s1.image; }
+        (
+            s2 = <WORD>
+            { aux[1] = s2.image; }
+        )?
+        {
+            vars.add(aux);
+            aux = new String[2];
+        }
         (
             ","
-            s = <WORD>
-            { types.add(s.image); }
-            { say("+1 param    "); }
+            s1 = <WORD>
+            { types.add(s1.image); }
+            { aux[0] = s1.image; }
+            (
+                s2 = <WORD>
+                { aux[1] = s2.image; }
+            )?
+            {
+                vars.add(aux);
+                aux = new String[2];
+            }
         )*
     )?
     <RBRACE>
-    { say("RBrace      "); }
     { parameter = new Parameters(types.toArray(new String[0])); }
     { functions.put(f.image, parameter);                        }
-    { symbol.put(f.image, t.image);                             }
+    { returns.put(f.image, t.image);                            }
+    { return vars;                                              }
+}
+
+
+//void prototype() :
+//{
+//}
+//{
+ //   header()
+  //  <EOL>
+//}
+
+void function() 
+    throws WrongTypeException, 
+           UndefinedFunctionException :
+{
+    ArrayList<String[]> vars;
+}
+{
+    <LCURLY>
+    {say("na função!");}
+    (
+        expression()
+        <EOL>
+    )*
+    <RCURLY>
+    //block()
 }
 
 /*
@@ -133,7 +188,8 @@ void prototype() :
  * Expression is a comparison of Arit's.
  */
 String expression() 
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     Token   t;
     String s = "";
@@ -154,7 +210,8 @@ String expression()
  * Arit is a sum of terms.
  */
 String arit() 
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     Token   t;
     String  s = "";
@@ -175,7 +232,8 @@ String arit()
  * Term is a product of elements.
  */
 String term () 
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     Token  t;
     double value;
@@ -197,7 +255,8 @@ String term ()
  * Element is either a factor or a signed factor.
  */
 String element() 
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     Token t;
     String s = "";;
@@ -222,11 +281,14 @@ String element()
  * a number or a braced expression.
  */
 String factor ()  
-    throws WrongTypeException :
+    throws WrongTypeException, 
+           UndefinedFunctionException :
 {
     Token t, v;
     double   value;
     String s = "";
+    int i = 0;
+    Parameters p;
 }
 {    
     (
@@ -239,14 +301,37 @@ String factor ()
     |
     (
         t = <WORD>
+        { p = functions.get(t.image); }
         <LBRACE>
         (
-            expression() 
+            s = expression()
+            {
+                if (i == p.getSize())
+                    throw new UndefinedFunctionException(t.image);   
+                if(!s.equals(p.getType(i++)))
+                    throw new WrongTypeException(
+                        p.getType(i-1) + " on argument " + i
+                        + " at function '" + t.image + "'"
+                    );
+            } 
             (
                 "," 
-                expression()
+                s = expression()
+                {
+                    if (i == p.getSize())
+                        throw new UndefinedFunctionException(t.image);
+                    if(!s.equals(p.getType(i++)))
+                       throw new WrongTypeException(
+                        "at function '" + t.image + "': " 
+                        + p.getType(i-1) + " on position " + i
+                    );
+                }
             )*
         )?
+        {
+            if (i != p.getSize())
+                throw new UndefinedFunctionException(t.image);
+        }
         <RBRACE>
         { s = call(t.image); }
         { return s; }
@@ -307,16 +392,16 @@ void insert(Object ... obj) :
     System.out.println();
 }}
 
-String call(String f) :
+String call(String f) 
+    throws UndefinedFunctionException :
 {}
 {{
-    if(!symbol.containsKey(f))
+    if(!returns.containsKey(f))
     {
-        say("Não tem na tabela");
-        symbol.put(f, "number");
+        throw new UndefinedFunctionException(f);
     }
     insert ("CALL ", f);
-    return symbol.get(f);
+    return returns.get(f);
 }}
 
 /**
@@ -329,9 +414,9 @@ void attr(Token var, Token attr, String type)
 { String s; }
 {{
     s = var.image;
-    if(!symbol.containsKey(s))
-        insert("ALOC ", "[", s, "]");
-    symbol.put(s, type);
+    if(!scope.peek().containsKey(s))
+        insert("ALOC ", s, "]");
+    scope.peek().put(s, type);
     switch(attr.image)
     {
         case "="  : break;
@@ -341,7 +426,7 @@ void attr(Token var, Token attr, String type)
                     break;
         
         case "-=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]");
+                    insert("GET ", "[", s, "]"); 
                     insert("SWAP"); 
                     insert("SUB"); 
                     break;
@@ -358,7 +443,7 @@ void attr(Token var, Token attr, String type)
                     break;
                     
         case "%=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]"); 
+                    insert("GET ", "[", s, "]");
                     insert("SWAP");
                     insert("MOD"); 
                     break;
@@ -376,15 +461,15 @@ String get(Token var)
 { String s; }
 {{
     s = var.image;
-    if(!symbol.containsKey(s))
+    if(!scope.peek().containsKey(s))
     {
-        symbol.put(s, "number");
+        scope.peek().put(s, "number");
         insert("ALOC ", "[", s, "]");
         insert("PUSH 0");
         insert("SET ", "[", s, "]");
     }
     insert("GET ", "[", s, "]");
-    return symbol.get(s);
+    return scope.peek().get(s);
 }}
 
 /**
