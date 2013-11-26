@@ -12,6 +12,7 @@ import java.util.Stack;
 import java.util.ArrayList;
 import exception.WrongTypeException;
 import exception.UndefinedFunctionException;
+import exception.MissingReturnException;
 
 /**
  * <b>Parser for user Program<b>
@@ -21,6 +22,7 @@ import exception.UndefinedFunctionException;
 public class Parser 
 {
     Stack<HashMap<String,String>> scope     = new Stack<HashMap<String,String>>();
+    String                        actual    = "main";
     HashMap<String,String>        returns   = new HashMap<String,String>();
     HashMap<String,Parameters>    functions = new HashMap<String,Parameters>();
     
@@ -28,7 +30,8 @@ public class Parser
         throws ParseException, 
                TokenMgrError, 
                WrongTypeException,
-               UndefinedFunctionException 
+               UndefinedFunctionException,
+               MissingReturnException
     {
         Parser parser = new Parser(System.in);
         parser.Start(); 
@@ -37,12 +40,16 @@ public class Parser
 
 PARSER_END(Parser)
 
-SKIP : { " " | "\n" | "\r" | "\r\n"}
+SKIP : { " " | "\n" | "\r" | "\r\n" | "\t" }
 
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
+
+TOKEN : {< DEF : "def" >}
+TOKEN : {< RET : "return" >}
+TOKEN : {< TYPE : "number" | "string" | "void" >}
 
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
@@ -65,7 +72,8 @@ TOKEN : {< EOL : ";" >}
  */ 
 void Start() 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           MissingReturnException :
 {
     String s;
     HashMap<String,String> main = new HashMap<String,String>();
@@ -73,27 +81,21 @@ void Start()
 {
     { scope.push(main); }
     (
-        (   
-            (
-                header()
-                (
-                    function()
-                )
-                |
-                (
-                    <EOL>
-                )
-            )
+        (
+                prototype()
+            |
+                function()
+            |
+                <EOL>
             |
             (
                 s = expression()
                 { insert("POP"); }
                 <EOL>
             )
-            |
-            <EOL>
         )
         { say("--------------------------------"); }
+        { actual = "main"; }
     )*
 }
 
@@ -104,7 +106,8 @@ void Start()
 -----------------------------------------------------------------------
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
-ArrayList<String[]> header() :
+ArrayList<String[]> header() 
+    throws UndefinedFunctionException :
 {
     Token t, f, s1, s2;
     Parameters parameter;
@@ -113,11 +116,11 @@ ArrayList<String[]> header() :
     ArrayList<String> types = new ArrayList<String>();
 }
 {
-    t = <WORD>
+    t = <TYPE>
     f = <WORD>
     <LBRACE>
     (
-        s1 = <WORD>
+        s1 = <TYPE>
         { types.add(s1.image); }
         { aux[0] = s1.image; }
         (
@@ -130,7 +133,7 @@ ArrayList<String[]> header() :
         }
         (
             ","
-            s1 = <WORD>
+            s1 = <TYPE>
             { types.add(s1.image); }
             { aux[0] = s1.image; }
             (
@@ -145,35 +148,90 @@ ArrayList<String[]> header() :
     )?
     <RBRACE>
     { parameter = new Parameters(types.toArray(new String[0])); }
-    { functions.put(f.image, parameter);                        }
-    { returns.put(f.image, t.image);                            }
-    { return vars;                                              }
+    {   
+        if (functions.containsKey(f.image))
+        {
+            if(functions.get(f.image).getSize() != parameter.getSize())
+                throw new UndefinedFunctionException(f.image);
+        }
+        else        
+            functions.put(f.image, parameter);
+    }
+    
+    {   
+        if (returns.containsKey(f.image))
+        {
+            if(!returns.get(f.image).equals(t.image))
+                throw new UndefinedFunctionException(f.image);
+        }
+        else
+            returns.put(f.image, t.image);                          
+    }
+        
+    {
+        actual = f.image; 
+        return vars; 
+    }
 }
 
 
-//void prototype() :
-//{
-//}
-//{
- //   header()
-  //  <EOL>
-//}
+void prototype() 
+    throws UndefinedFunctionException :
+{
+}
+{
+    <DEF>
+    header()
+    <EOL>
+}
 
 void function() 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           MissingReturnException :
 {
     ArrayList<String[]> vars;
+    boolean returned = false;
+    String s;
 }
 {
+    vars = header()
+    { scope.push(new HashMap<String,String>()); }
+    { insert(actual + ":"); }
     <LCURLY>
-    {say("na função!");}
+    {
+        for(int i = vars.size() -1; i >= 0; i--)
+        {
+            if(vars.get(i)[0] == null || vars.get(i)[1] == null)
+                throw new UndefinedFunctionException(actual);
+            attr(vars.get(i)[1], "=", vars.get(i)[0]);
+            insert("POP");
+        }    
+    }
     (
-        expression()
-        <EOL>
+        (
+            expression()
+            <EOL>
+        )
+        |
+        (
+            <RET>
+            s = expression()
+            {
+                if(!returns.get(actual).equals(s))
+                    throw new WrongTypeException(returns.get(actual));
+            }
+            <EOL>
+            { insert("RET"); }
+            { returned = true;}
+        )
     )*
     <RCURLY>
-    //block()
+    { 
+        if(!returned && !returns.get(actual).equals("void")) 
+            throw new MissingReturnException(actual); 
+    }
+    { scope.pop(); }
 }
 
 /*
@@ -295,13 +353,17 @@ String factor ()
         t = <WORD> 
         v = <ATTR>
         s = expression()
-        { attr(t, v, s);
+        { attr(t.image, v.image, s);
             return s; }
     )
     |
     (
         t = <WORD>
-        { p = functions.get(t.image); }
+        { 
+            p = functions.get(t.image);
+            if(p == null)
+            {throw new UndefinedFunctionException(t.image);} 
+        }
         <LBRACE>
         (
             s = expression()
@@ -409,15 +471,15 @@ String call(String f)
  * @param var  Token of the variable
  * @param attr Token of the attribution  
  */
-void attr(Token var, Token attr, String type) 
+void attr(String var, String attr, String type) 
     throws WrongTypeException:
 { String s; }
 {{
-    s = var.image;
+    s = actual + "::" + var;
     if(!scope.peek().containsKey(s))
-        insert("ALOC ", s, "]");
+        insert("ALOC ", "[", s, "]");
     scope.peek().put(s, type);
-    switch(attr.image)
+    switch(attr)
     {
         case "="  : break;
         case "+=" : checkTypeError(type);
@@ -460,7 +522,7 @@ String get(Token var)
     throws WrongTypeException :
 { String s; }
 {{
-    s = var.image;
+    s = actual + "::" + var.image;
     if(!scope.peek().containsKey(s))
     {
         scope.peek().put(s, "number");
