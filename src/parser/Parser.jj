@@ -17,6 +17,7 @@ import java.util.Vector;
 
 // Libraries
 import robot.Command;
+import stackable.*;
 import parser.*;
 
 // Exceptions
@@ -93,13 +94,15 @@ void Start()
            InvalidOperationException :
 {
     String s;
-    HashMap<String,String> main = new HashMap<String,String>();
-    Iterator<String> keys;
+    HashMap<String,String> main   = new HashMap<String,String>();
+    Vector<Command>        prog   = new Vector<Command>();
+    Iterator<String>       keys;
 }    
 {
     {   
         main.put("__SCOPE__", "main");
-        scope.push(main); 
+        scope.push(main);
+        blocks.push(prog);
     }
     (
         (
@@ -111,7 +114,7 @@ void Start()
             |
             (
                 s = expression()
-                { insert("POP"); }
+                { insertCmd("POP"); }
                 <EOL>
             )
         )
@@ -122,7 +125,7 @@ void Start()
             keys = scope.peek().keySet().iterator();
             while(keys.hasNext())
                 free(keys.next());
-            insert("END");
+            insertCmd("END");
     }
 }
 
@@ -220,29 +223,45 @@ void function()
 {
     ArrayList<String[]> vars;
     boolean returned = false;
+}
+{
+    vars = header()
+    returned = block(vars)
+
+    { 
+        if(!returned && !returns.get(actual).equals("void")) 
+            throw new MissingReturnException(actual);
+    }
+}
+
+boolean block( ArrayList<String[]> vars )
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+    boolean returned = false;
     String s;
     Iterator<String> keys;
 }
 {
-    vars = header()
-    { 
-        scope.push(new HashMap<String,String>()); 
-        scope.peek().put("__SCOPE__", actual);
-    }
-    { insert(actual + ":"); }
     <LCURLY>
     {
+        scope.push(new HashMap<String,String>()); 
+        scope.peek().put("__SCOPE__", actual);
+        insertLabel(actual); 
         for(int i = vars.size() -1; i >= 0; i--)
         {
             if(vars.get(i)[0] == null || vars.get(i)[1] == null)
                 throw new UndefinedFunctionException(actual);
             attr(vars.get(i)[1], "=", vars.get(i)[0], "my");
-            insert("POP");
+            insertCmd("POP");
         }    
     }
     (
         (
             expression()
+            { insertCmd("POP"); }
             <EOL>
         )
         |
@@ -259,7 +278,7 @@ void function()
                 while(keys.hasNext())
                     free(keys.next());
             }
-            { insert("RET"); }
+            { insertCmd("RET"); }
             { returned = true;}
         )
     )*
@@ -272,13 +291,9 @@ void function()
                 free(keys.next());
         }
     }
-    <RCURLY>
-    { 
-        if(!returned && !returns.get(actual).equals("void")) 
-            throw new MissingReturnException(actual);
-    }
-    
     { scope.pop(); }
+    <RCURLY>
+    { return returned; }
 }
 
 /*
@@ -307,7 +322,7 @@ String expression()
         { checkTypeError(s); }            
         s = arit()
         { checkTypeError(s); }
-        { insert(cmp(t)); }
+        { insertCmd(cmp(t)); }
     )*
     { return s; }
 }
@@ -330,7 +345,7 @@ String arit()
         { checkTypeError(s); }
         s = term() 
         { checkTypeError(s); }
-        { insert(sign(t)); }
+        { insertCmd(sign(t)); }
     )*
     { return s; }
 }
@@ -354,7 +369,7 @@ String term ()
         { checkTypeError(s); }
         s = element()
         { checkTypeError(s); }
-        { insert(op(t)); }
+        { insertCmd(op(t)); }
     )*
     { return s; }
 }
@@ -395,7 +410,7 @@ String factor ()
            InvalidOperationException :
 {
     Token t, u = null, v;
-    double   value;
+    double value;
     String s = "";
     int i = 0;
     Parameters p;
@@ -460,14 +475,14 @@ String factor ()
     |
         (
         t = <STRING>
-        { PUSH(t.image);     }
+        { pushString(t.image);     }
         { return "string"; }
     )
     |
     (
         t = <NUMBER>
         { value = atof(t); }
-        { PUSH(value);     }
+        { pushNumber(value);     }
         { return "number"; }
     )
     |
@@ -482,13 +497,24 @@ String factor ()
 
 /**
  * Auxiliar function for 
- * pushing in the assembly.
- * @param o Pushed object
+ * pushing text in the assembly.
+ * @param o Pushed text
  */
-void PUSH(Object o) :
+void pushString(String s) :
 {}
 {{    
-    insert("PUSH ", o);
+    insertArg("PUSH", new Text(s));
+}}
+
+/**
+ * Auxiliar function for 
+ * pushing number in the assembly.
+ * @param o Pushed number
+ */
+void pushNumber(double n) :
+{}
+{{    
+    insertArg("PUSH", new Num(n));
 }}
 
 /**
@@ -496,6 +522,41 @@ void PUSH(Object o) :
  * a variable number of objects.
  * @param obj List of objects
  */
+
+void insert(String label, String cmd, Stackable arg) :
+{
+
+}
+{{
+    blocks.peek().add(new Command(cmd, arg, label));
+}}
+
+void insertArg(String cmd, Stackable arg) :
+{
+
+}
+{{
+    insert(null, cmd, arg);
+    say(cmd + " " + arg.toString());
+}}
+
+void insertCmd(String cmd) :
+{
+
+}
+{{
+    insert(null, cmd, null);
+    say(cmd);
+}}
+
+void insertLabel(String label) :
+{}
+{{
+    insert(label, null, null);
+    say(label + ":");
+}}
+
+/*
 void insert(Object ... obj) :
 {
     String s;
@@ -508,6 +569,7 @@ void insert(Object ... obj) :
     }
     System.out.println();
 }}
+*/
 
 String call(String f) 
     throws UndefinedFunctionException :
@@ -517,7 +579,7 @@ String call(String f)
     {
         throw new UndefinedFunctionException(f);
     }
-    insert ("CALL ", f);
+    insertArg("CALL", new Text(f));
     return returns.get(f);
 }}
 
@@ -537,7 +599,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.peek().put(var, type);
             s = actual + "::" + var;
-            insert("ALOC ", "[", s, "]");
+            insertArg("ALOC", new Text("[" + s + "]"));
         }
         else
             throw new InvalidOperationException("\"my\"");
@@ -548,7 +610,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.get(0).put(var, type);
             s = "main" + "::" + var;
-            insert("ALOC ", "[", s, "]");
+            insertArg("ALOC", new Text("[" + s + "]"));
         }
         else
             throw new InvalidOperationException("\"our\"");
@@ -560,7 +622,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.get(0).put(var, type);
             s = "main" + "::" + var;
-            insert("ALOC ", "[", s, "]");
+            insertArg("ALOC", new Text("[" + s + "]"));
         }
     }
     
@@ -569,42 +631,42 @@ void attr(String var, String attr, String type, String sc)
     {
         case "="  : break;
         case "+=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]"); 
-                    insert("ADD"); 
+                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertCmd("ADD"); 
                     break;
         
         case "-=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]"); 
-                    insert("SWAP"); 
-                    insert("SUB"); 
+                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertCmd("SWAP"); 
+                    insertCmd("SUB"); 
                     break;
                     
         case "*=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]"); 
-                    insert("MUL"); 
+                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertCmd("MUL"); 
                     break;
                     
         case "/=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]"); 
-                    insert("SWAP");
-                    insert("DIV"); 
+                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertCmd("SWAP");
+                    insertCmd("DIV"); 
                     break;
                     
         case "%=" : checkTypeError(type);
-                    insert("GET ", "[", s, "]");
-                    insert("SWAP");
-                    insert("MOD"); 
+                    insertArg("GET", new Text("[" + s + "]"));
+                    insertCmd("SWAP");
+                    insertCmd("MOD"); 
                     break;
     } 
     
-    insert("SET ", "[", s, "]"); insert("GET ", "[", s, "]");
+    insertArg("SET", new Text("[" + s + "]")); insertArg("GET", new Text("[" + s + "]"));
 }}
 
 void free(String s) :
 {}
 {{
     if(s.charAt(0) != '_' || s.charAt(1) != '_')
-        insert("FREE ", "[", actual + "::" + s, "]");
+        insertArg("FREE", new Text("[" + actual + "::" + s + "]"));
 }}
 
 /**
@@ -620,11 +682,11 @@ String get(String var)
     {
         scope.get(0).put(var, "number");
         s = "main" + "::" + var;
-        insert("ALOC ", "[", s, "]");
-        insert("PUSH 0");
-        insert("SET ", "[", s, "]");
+        insertArg("ALOC", new Text("[" + s + "]"));
+        pushNumber(0);
+        insertArg("SET", new Text("[" + s + "]"));
     }
-    insert("GET ", "[", s, "]");
+    insertArg("GET", new Text("[" + s + "]"));
     return typeof(var);
 }}
 
@@ -724,8 +786,8 @@ void unarySign (Token t) :
 {{
     if(t.image.equals("-"))
     {
-        insert("PUSH -1");
-        insert("MUL");
+        insertArg("PUSH", new Num(-1));
+        insertCmd("MUL");
     } 
 }}
 
