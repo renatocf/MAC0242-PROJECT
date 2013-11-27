@@ -6,13 +6,25 @@ options
 PARSER_BEGIN(Parser)
 
 package parser;
-import parser.*;
+
+// Default libraries
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Stack;
 import java.util.ArrayList;
+import java.util.Vector;
+
+// Libraries
+import robot.Command;
+import parser.*;
+
+// Exceptions
 import exception.WrongTypeException;
 import exception.UndefinedFunctionException;
 import exception.MissingReturnException;
+import exception.InvalidOperationException;
+
 
 /**
  * <b>Parser for user Program<b>
@@ -22,16 +34,19 @@ import exception.MissingReturnException;
 public class Parser 
 {
     Stack<HashMap<String,String>> scope     = new Stack<HashMap<String,String>>();
+    Stack<Vector<Command>>        blocks    = new Stack<Vector<Command>>();
     String                        actual    = "main";
     HashMap<String,String>        returns   = new HashMap<String,String>();
     HashMap<String,Parameters>    functions = new HashMap<String,Parameters>();
+    
     
     public static void main( String[] args )
         throws ParseException, 
                TokenMgrError, 
                WrongTypeException,
                UndefinedFunctionException,
-               MissingReturnException
+               MissingReturnException,
+               InvalidOperationException
     {
         Parser parser = new Parser(System.in);
         parser.Start(); 
@@ -50,6 +65,7 @@ TOKEN : {< RCURLY : "}" >}
 TOKEN : {< DEF : "def" >}
 TOKEN : {< RET : "return" >}
 TOKEN : {< TYPE : "number" | "string" | "void" >}
+TOKEN : {< SCOPE : "my" | "our" >}
 
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
@@ -73,13 +89,18 @@ TOKEN : {< EOL : ";" >}
 void Start() 
     throws WrongTypeException, 
            UndefinedFunctionException,
-           MissingReturnException :
+           MissingReturnException,
+           InvalidOperationException :
 {
     String s;
     HashMap<String,String> main = new HashMap<String,String>();
+    Iterator<String> keys;
 }    
 {
-    { scope.push(main); }
+    {   
+        main.put("__SCOPE__", "main");
+        scope.push(main); 
+    }
     (
         (
                 prototype()
@@ -97,6 +118,12 @@ void Start()
         { say("--------------------------------"); }
         { actual = "main"; }
     )*
+    {
+            keys = scope.peek().keySet().iterator();
+            while(keys.hasNext())
+                free(keys.next());
+            insert("END");
+    }
 }
 
 /*
@@ -188,15 +215,20 @@ void prototype()
 void function() 
     throws WrongTypeException, 
            UndefinedFunctionException,
-           MissingReturnException :
+           MissingReturnException,
+           InvalidOperationException :
 {
     ArrayList<String[]> vars;
     boolean returned = false;
     String s;
+    Iterator<String> keys;
 }
 {
     vars = header()
-    { scope.push(new HashMap<String,String>()); }
+    { 
+        scope.push(new HashMap<String,String>()); 
+        scope.peek().put("__SCOPE__", actual);
+    }
     { insert(actual + ":"); }
     <LCURLY>
     {
@@ -204,7 +236,7 @@ void function()
         {
             if(vars.get(i)[0] == null || vars.get(i)[1] == null)
                 throw new UndefinedFunctionException(actual);
-            attr(vars.get(i)[1], "=", vars.get(i)[0]);
+            attr(vars.get(i)[1], "=", vars.get(i)[0], "my");
             insert("POP");
         }    
     }
@@ -222,15 +254,30 @@ void function()
                     throw new WrongTypeException(returns.get(actual));
             }
             <EOL>
+            {
+                keys = scope.peek().keySet().iterator();
+                while(keys.hasNext())
+                    free(keys.next());
+            }
             { insert("RET"); }
             { returned = true;}
         )
     )*
+    
+    {   
+        if(returns.get(actual).equals("void"))
+        {
+            keys = scope.peek().keySet().iterator();
+            while(keys.hasNext())
+                free(keys.next());
+        }
+    }
     <RCURLY>
     { 
         if(!returned && !returns.get(actual).equals("void")) 
-            throw new MissingReturnException(actual); 
+            throw new MissingReturnException(actual);
     }
+    
     { scope.pop(); }
 }
 
@@ -247,7 +294,8 @@ void function()
  */
 String expression() 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           InvalidOperationException :
 {
     Token   t;
     String s = "";
@@ -269,7 +317,8 @@ String expression()
  */
 String arit() 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           InvalidOperationException :
 {
     Token   t;
     String  s = "";
@@ -291,7 +340,8 @@ String arit()
  */
 String term () 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           InvalidOperationException :
 {
     Token  t;
     double value;
@@ -314,7 +364,8 @@ String term ()
  */
 String element() 
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           InvalidOperationException :
 {
     Token t;
     String s = "";;
@@ -340,20 +391,24 @@ String element()
  */
 String factor ()  
     throws WrongTypeException, 
-           UndefinedFunctionException :
+           UndefinedFunctionException,
+           InvalidOperationException :
 {
-    Token t, v;
+    Token t, u = null, v;
     double   value;
     String s = "";
     int i = 0;
     Parameters p;
 }
-{    
+{ 
     (
+        (   
+            u = <SCOPE>
+        )?
         t = <WORD> 
         v = <ATTR>
         s = expression()
-        { attr(t.image, v.image, s);
+        { attr(t.image, v.image, s, u != null ? u.image : null);
             return s; }
     )
     |
@@ -400,7 +455,7 @@ String factor ()
     )
     |
         t = <WORD>
-        { s = get(t); }
+        { s = get(t.image); }
         { return s; }
     |
         (
@@ -471,14 +526,45 @@ String call(String f)
  * @param var  Token of the variable
  * @param attr Token of the attribution  
  */
-void attr(String var, String attr, String type) 
-    throws WrongTypeException:
+void attr(String var, String attr, String type, String sc) 
+    throws WrongTypeException,
+           InvalidOperationException :
 { String s; }
 {{
-    s = actual + "::" + var;
-    if(!scope.peek().containsKey(s))
-        insert("ALOC ", "[", s, "]");
-    scope.peek().put(s, type);
+    if (sc != null && sc.equals("my"))
+    {
+        if(!scope.peek().containsKey(var))
+        {
+            scope.peek().put(var, type);
+            s = actual + "::" + var;
+            insert("ALOC ", "[", s, "]");
+        }
+        else
+            throw new InvalidOperationException("\"my\"");
+    }
+    else if (sc != null && sc.equals("our"))
+    {
+        if(!scope.get(0).containsKey(var))
+        {
+            scope.get(0).put(var, type);
+            s = "main" + "::" + var;
+            insert("ALOC ", "[", s, "]");
+        }
+        else
+            throw new InvalidOperationException("\"our\"");
+    }
+    else // null
+    {
+        s = declared(var);
+        if(s == null)
+        {
+            scope.get(0).put(var, type);
+            s = "main" + "::" + var;
+            insert("ALOC ", "[", s, "]");
+        }
+    }
+    
+    
     switch(attr)
     {
         case "="  : break;
@@ -514,24 +600,70 @@ void attr(String var, String attr, String type)
     insert("SET ", "[", s, "]"); insert("GET ", "[", s, "]");
 }}
 
+void free(String s) :
+{}
+{{
+    if(s.charAt(0) != '_' || s.charAt(1) != '_')
+        insert("FREE ", "[", actual + "::" + s, "]");
+}}
+
 /**
  * Insert a GET for a variable.
  * @param var  Token of the variable
  */
-String get(Token var) 
+String get(String var) 
     throws WrongTypeException :
 { String s; }
 {{
-    s = actual + "::" + var.image;
-    if(!scope.peek().containsKey(s))
+    s = declared(var);
+    if(s == null)
     {
-        scope.peek().put(s, "number");
+        scope.get(0).put(var, "number");
+        s = "main" + "::" + var;
         insert("ALOC ", "[", s, "]");
         insert("PUSH 0");
         insert("SET ", "[", s, "]");
     }
     insert("GET ", "[", s, "]");
-    return scope.peek().get(s);
+    return typeof(var);
+}}
+
+String declared(String var) :
+{
+    ListIterator<HashMap<String, String>> i;
+    HashMap<String, String> varList;
+    int size;
+}
+{{
+    size = scope.size();
+    i = scope.listIterator(size);
+    
+    while(i.hasPrevious())
+    {
+        varList = i.previous();
+        if(varList.containsKey(var))
+            return varList.get("__SCOPE__") + "::" + var;
+    }
+    return null;
+}}
+
+String typeof(String var) :
+{
+    ListIterator<HashMap<String, String>> i;
+    HashMap<String, String> varList;
+    int size;
+}
+{{
+    size = scope.size();
+    i = scope.listIterator(size);
+    
+    while(i.hasPrevious())
+    {
+        varList = i.previous();
+        if(varList.containsKey(var))
+            return varList.get(var);
+    }
+    return null;
 }}
 
 /**
