@@ -18,8 +18,8 @@
     [X] Configure Ant for running javacc
     [X] Make one GUI per player.
     [X] Add NOTICE for license on all files.
-    [ ] Fiz '@author' on all files.
-    [ ] Create a system for removing player.
+    [X] Create a system for removing player.
+    [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
     
@@ -69,10 +69,10 @@
     [X] Add counter for number of robots.
     [X] Create a mini-map graphical representation.
     [X] Fix Fog War/Visibility appearence.
+    [X] Describe functions in Parser.jj.
     [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
     [ ] Finish variables attribution in Parser.jj.
-    [ ] Describe functions in Parser.jj.
     [ ] Describe loops in Parser.jj.
     [ ] Describe if-else in Parser.jj.
     [ ] Find more theme-specific images.
