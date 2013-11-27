@@ -27,9 +27,9 @@ import gui.graphical.*;
 // Libraries
 import robot.*;
 import random.*;
+import remote.*;
 import players.*;
 import scenario.*;
-import operation.*;
 import exception.*;
 import stackable.*;
 import parameters.*;

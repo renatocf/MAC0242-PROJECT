@@ -18,7 +18,7 @@ package robot;
 
 // Libraries
 import arena.*;
-import operation.*;
+import remote.*;
 import stackable.*;
 import exception.*;
 

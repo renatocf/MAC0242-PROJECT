@@ -16,8 +16,8 @@
 /**********************************************************************/
 /**
  * <b>Works as a protocol of communication
- * between a RVM and the arena's World main
+ * between a Player/RVM and the arena's World main
  * controller class.</b>
  * <p>
  */
-package operation;
+package remote;

@@ -22,7 +22,7 @@ import stackable.*;
 import exception.*;
 import parameters.*;
 import players.Base;
-import operation.Operation;
+import remote.Operation;
 
 // Import links
 import static parameters.Game.*;
