@@ -1,0 +1,19 @@
+def number square(number);
+def number mulByX(number); 
+
+my catA = 3;
+my catB = 4;
+hSquared = square(catA) + square(catB);
+x = 7;
+mulByX(hSquared);
+
+number square(number x)
+{
+    my j = x;
+    return x*j;
+}
+
+number mulByX(number y)
+{
+    return y*x;
+}
