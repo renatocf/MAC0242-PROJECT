@@ -179,13 +179,14 @@ boolean conditional()
 }
 {
     <IF>
-    {say ("entrou");}
     { insertArg("PUSH", new Num(1)); }
     <LBRACE>
     s = expression()
+    { checkTypeError(s); }
     (
         l = <LOGICAL>
         s = expression()
+        { checkTypeError(s); }
         { insertCmd(logical(l)); }
     )*
     <RBRACE>
@@ -195,9 +196,11 @@ boolean conditional()
         { insertCmd("DUP"); }
         <LBRACE>
         s = expression()
+        { checkTypeError(s); }
         (
             l = <LOGICAL>
             s = expression()
+            { checkTypeError(s); }
             { insertCmd(logical(l)); }
         )*
         <RBRACE>
