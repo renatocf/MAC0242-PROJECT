@@ -225,6 +225,32 @@ limitations under the License.
     
     <!-- 
     ===================================================================
+    ==                          OTHER BUILDS                         ==
+    ===================================================================
+    -->
+    <target name="build-server" depends="compile">
+        <echo>Building server .jar file</echo>
+        <echo>Dependencies: ${lib.dir}</echo>
+        
+        <!-- Jar main file with data and .class files -->
+        <jar destfile = "dist/Robot-Battle-Server.jar">
+            
+            <!-- Create a Manifest.mf to One-Jar -->
+            <manifest>
+                <attribute name="Main-Class" 
+                           value="arena.WorldServer"/>
+            </manifest>
+            
+            <!-- Base directories -->
+            <fileset dir  = "${build.classes.dir}"/>
+            <fileset dir  = "${data.dir}"/>
+        </jar>
+        
+        <echo>Server .jar Build Successfully Completed</echo>
+    </target>
+    
+    <!-- 
+    ===================================================================
     ==                         DOCUMENTATION                         ==
     ===================================================================
     -->
