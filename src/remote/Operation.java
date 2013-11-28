@@ -23,7 +23,7 @@ import exception.*;
 import stackable.*;
 
 /**
- * <b>Class Operation</b> <br>
+ * <b>Remote - Operation</b> <br>
  * Validates the type and arguments of
  * a given operation and works as an 
  * interface betwen the arena and a RVM.
@@ -34,7 +34,7 @@ import stackable.*;
  * @see robot.RVM 
  * @see arena.World
  */
-public class Operation
+public class Operation implements Request
 {
     final private   Stackable[] arg;
     final private   String action;
