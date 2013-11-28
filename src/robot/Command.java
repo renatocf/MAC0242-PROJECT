@@ -32,7 +32,7 @@ import stackable.*;
 public class Command
 {
     final private String    function;
-    final private Stackable attribute;
+    private Stackable attribute;
     final private String    label;
 
     /**
@@ -57,6 +57,9 @@ public class Command
         this.label     = lbl;
     }
 
+    /** @param attr Stackable to set the attribute of the line. */
+    public void setAttribute (Stackable attr) { this.attribute = attr; }
+    
     /** @return String with the function name. */
     public String    getFunction  () { return this.function;  }
     
@@ -68,6 +71,9 @@ public class Command
 
     public String toString()
     {
-        return this.label + ": " + this.function + " " + this.attribute;
+        String label = (this.label == null)     ? "" : this.label + ": ";
+        String func  = (this.function == null)  ? "" : this.function;
+        String attr  = (this.attribute == null) ? "" : this.attribute.toString();
+        return String.format("%-10s %-4s    %s", label, func, attr);
     }
 }
