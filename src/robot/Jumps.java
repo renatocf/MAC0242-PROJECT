@@ -113,7 +113,7 @@ final public class Jumps
         }
         
         // Debug
-        Debugger.say("    [GOTO] ", rvm.PC+1);
+        Debugger.say("        [GOTO] ", rvm.PC+1);
     }
     
     /**
