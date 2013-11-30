@@ -19,6 +19,7 @@ package robot;
 // Libraries
 import stackable.*;
 import exception.*;
+import parameters.Debugger;
 
 /**
  * <b>Assembly functions - class Stk</b><br>
@@ -45,6 +46,7 @@ final public class Stk
     static void PUSH(RVM rvm, Stackable st)
     {
         rvm.DATA.push(st);
+        printStack(rvm);
     }
     
     /**
@@ -57,7 +59,9 @@ final public class Stk
      */
     static Stackable POP(RVM rvm) throws StackUnderflowException
     {
-        return rvm.DATA.pop();
+        Stackable pop = rvm.DATA.pop();
+        printStack(rvm);
+        return pop;
     }
     
     /**
@@ -73,6 +77,7 @@ final public class Stk
         Stackable st = rvm.DATA.pop(); 
         rvm.DATA.push(st);
         rvm.DATA.push(st);
+        printStack(rvm);
     }
     
     /**
@@ -90,5 +95,22 @@ final public class Stk
         
         rvm.DATA.push(top);
         rvm.DATA.push(sl);
+        printStack(rvm);
+    }
+    
+    /**
+     * Auxiliar function for debugging 
+     * the main stack.<br>
+     * @param  rvm Virtual Machine
+     */
+    private static void printStack(RVM rvm)
+    {
+        if(!Debugger.debugging()) return;
+        
+        // Print stack
+        Debugger.print("        [STACK] ");
+        for(Stackable stk: rvm.DATA)
+            Debugger.print(stk, ", ");
+        Debugger.say("[TOP]");
     }
 }
