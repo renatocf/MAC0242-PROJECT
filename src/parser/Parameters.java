@@ -1,6 +1,12 @@
 package parser;
 
-class Parameters
+/**
+ * <b>Compiler - Parameters</b><br>
+ * Provide a simple container to the
+ * parameters of a function stored in
+ * the parser's simble table.
+ */
+public class Parameters
 {
     // Auxiliar attributes
     String[] types;
@@ -11,7 +17,7 @@ class Parameters
      *              the types of the parameters of
      *              a given function
      */
-    Parameters(String[] types)
+    public Parameters(String[] types)
     {
         this.types = types;
     }
@@ -22,7 +28,7 @@ class Parameters
      * @return Parameter type of a given position.
      *         If invalid, returns null
      */
-    String getType(int pos)
+    public String getType(int pos)
     {
         if(pos < 0 || pos >= types.length) return null;
         return types[pos];
@@ -32,7 +38,7 @@ class Parameters
      * Getter for the number of parameters.
      * @return Number of parameters
      */
-    int getSize()
+    public int getSize()
     {
         return types.length;
     }
