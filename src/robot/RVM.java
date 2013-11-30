@@ -44,6 +44,7 @@ public class RVM
     HashMap <String, Integer>  LABEL = new HashMap <String, Integer>    ();
     HashMap <String, Stackable> VARS = new HashMap <String, Stackable>  ();
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable> ();
+    Stackable[] CACHE = new Stackable[2];
     int PC = 0;
 
     boolean syscall = false;
