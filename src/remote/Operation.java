@@ -66,6 +66,7 @@ public class Operation implements Request
             case "LOOK" : rightType = LOOK(); break;
             case "SEE"  : rightType = SEE (); break;
             case "ASK"  : rightType = ASK (); break; 
+            case "SEND" : rightType = SEND(); break; 
             case "SKIP" : rightType = SKIP(); break; 
             default     : throw new InvalidOperationException(this.action);
         }
@@ -92,6 +93,7 @@ public class Operation implements Request
     // Verify arguments
     private boolean SEE  () { return true;                             }
     private boolean SKIP () { return true;                             }
+    private boolean SEND () { return true;                             }
     private boolean MOVE () { return this.arg[0] instanceof Direction; }
     private boolean DRAG () { return this.arg[0] instanceof Direction; }
     private boolean DROP () { return this.arg[0] instanceof Direction; }
