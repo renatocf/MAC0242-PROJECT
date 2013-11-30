@@ -128,11 +128,15 @@ final public class Ctrl
             case "ITEM": Check.ITEM (rvm);      break;
             case "SEEK": Check.SEEK (rvm);      break;
 
-            // Loval variables
+            // Local variables
             case "ALOC": Var.ALOC   (rvm, arg); break;
             case "FREE": Var.FREE   (rvm, arg); break;
             case "GET" : Var.GET    (rvm, arg); break;
             case "SET" : Var.SET    (rvm, arg); break;
+
+            // Network interface
+            case "READ": Net.READ   (rvm);      break;
+            case "WRT" : Net.WRT    (rvm);      break;
             
             // Base case
             default: throw new InvalidOperationException(met);
