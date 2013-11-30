@@ -101,6 +101,7 @@ final public class Ctrl
             case "LT"  : Tests.LT   (rvm);      break;
             case "LE"  : Tests.LE   (rvm);      break;
             case "NE"  : Tests.NE   (rvm);      break;
+            case "NIL" : Tests.NIL  (rvm);      break;
                                     
             // Jumps functions      
             case "JMP" : Jumps.JMP  (rvm, arg); break;
@@ -123,11 +124,12 @@ final public class Ctrl
             case "LOOK": Syst.LOOK  (rvm);      break;
             case "SEE" : Syst.SEE   (rvm);      break;
             case "ASK" : Syst.ASK   (rvm);      break;
-
+            case "SEND": Syst.SEND  (rvm);      break;
+            
             // Item verification
             case "ITEM": Check.ITEM (rvm);      break;
             case "SEEK": Check.SEEK (rvm);      break;
-
+            
             // Local variables
             case "ALOC": Var.ALOC   (rvm, arg); break;
             case "FREE": Var.FREE   (rvm, arg); break;
