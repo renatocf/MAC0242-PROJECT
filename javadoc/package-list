@@ -4,10 +4,11 @@ gui
 gui.graphical
 gui.textual
 main
-operation
 parameters
+parser
 players
 random
+remote
 robot
 scenario
 stackable
