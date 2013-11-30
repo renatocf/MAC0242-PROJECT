@@ -78,7 +78,6 @@ public class Robot implements Scenario, Printable
     final protected int costTime;
     
     // Costs
-    
     final protected int costMove;
     final protected int costAttack;
     final protected int costLook;
@@ -231,6 +230,18 @@ public class Robot implements Scenario, Printable
         this.positronic.upload(PROG);
     }
     
+    /**
+     * Send info from the network to the 
+     * positronic brain.
+     * @param info Array of stackables to be
+     *             downloaded by the robot's
+     *             virtual machine
+     */
+    public void download(Stackable[] info)
+    {
+        this.positronic.download(info);
+    }
+    
     /*
     ////////////////////////////////////////////////////////////////////
     -------------------------------------------------------------------
@@ -321,6 +332,24 @@ public class Robot implements Scenario, Printable
      * @return Player number
      */
     public Player getTeam () { return this.team; }
+        
+    /**
+     * Getter for the vertical position.
+     * @return Vertical position (Y-axis)
+     */
+    public int getPosY() { return this.i; }
+    
+    /**
+     * Getter for the horizontal position.
+     * @return Horizontal position (X-axis)
+     */
+    public int getPosX() { return this.j; }
+    
+    /**
+     * Getter for the robot's sight.
+     * @return Sight
+     */
+    public int getSight() { return this.sight; }
     
     /**
      * Setter for the robot's phase.
@@ -414,24 +443,6 @@ public class Robot implements Scenario, Printable
     -------------------------------------------------------------------
     \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     */
-        
-    /**
-     * Getter for the vertical position.
-     * @return Vertical position (Y-axis)
-     */
-    public int getPosY() { return this.i; }
-    
-    /**
-     * Getter for the horizontal position.
-     * @return Horizontal position (X-axis)
-     */
-    public int getPosX() { return this.j; }
-    
-    /**
-     * Getter for the robot's sight.
-     * @return Sight
-     */
-    public int getSight() { return this.sight; }
     
     /**
      * Take out an item from inside the robot.
