@@ -227,12 +227,12 @@ class Panel extends JPanel
             for (int j = 0; j < MAP_SIZE; j++)
             {
                 // Get fog war (and print properly)
-                boolean fog = cell[i][j].terrain.getFogWar(this.player);
+                boolean fog = cell[j][i].terrain.getFogWar(this.player);
                 
                 // Print items and scenarios if there is no fog
                 if(fog) continue;
-                item(g2d, i, j); // Items (crystals, stones...)
-                scen(g2d, i, j); // Scenarios (robots, trees, rocks...)
+                item(g2d, j, i); // Items (crystals, stones...)
+                scen(g2d, j, i); // Scenarios (robots, trees, rocks...)
             }
             
         Images inv = Images.INVISIBLE;
