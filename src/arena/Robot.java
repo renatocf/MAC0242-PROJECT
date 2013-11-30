@@ -25,6 +25,7 @@ import players.*;
 import exception.*;
 import stackable.*;
 import gui.Printable;
+import parser.Cortex;
 import scenario.Scenario;
 import stackable.item.Item;
 
@@ -107,7 +108,7 @@ public class Robot implements Scenario, Printable
      *                to be done by the robot
      */
     public Robot(String baptism, Player team, int ID, 
-                 int i, int j, Terrain terrain, Vector<Command> PROG)
+                 int i, int j, Terrain terrain, String pathToProg)
     {
         // ID
         this.name = baptism;
@@ -123,7 +124,7 @@ public class Robot implements Scenario, Printable
         
         // Hardware
         this.slots = new Item[1];
-        this.positronic = new RVM (PROG);
+        this.positronic = new RVM (Cortex.readFromASM(pathToProg));
         
         // Energy
         this.HP         = 12;
@@ -222,12 +223,11 @@ public class Robot implements Scenario, Printable
     
     /**
      * Upload a new program for the robot.
-     * @param PROG Program with the actions
-     *             to be done by the robot
+     * @param pathToProg Robot assembly program
      */
-    public void upload(Vector<Command> PROG)
+    public void upload(String pathToProg)
     {
-        this.positronic.upload(PROG);
+        this.positronic.upload(Cortex.readFromASM(pathToProg));
     }
     
     /**
