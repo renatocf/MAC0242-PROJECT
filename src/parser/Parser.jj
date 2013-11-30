@@ -1,10 +1,26 @@
 options 
 {
-    STATIC    = false ;
+    STATIC    = true;
     LOOKAHEAD = 2;
 }
-PARSER_BEGIN(Parser)
 
+PARSER_BEGIN(Parser)
+/**********************************************************************/
+/* Copyright 2013 KRV                                                 */
+/*                                                                    */
+/* Licensed under the Apache License, Version 2.0 (the "License");    */
+/* you may not use this file except in compliance with the License.   */
+/* You may obtain a copy of the License at                            */
+/*                                                                    */
+/*  http://www.apache.org/licenses/LICENSE-2.0                        */
+/*                                                                    */
+/* Unless required by applicable law or agreed to in writing,         */
+/* software distributed under the License is distributed on an        */
+/* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,       */
+/* either express or implied.                                         */
+/* See the License for the specific language governing permissions    */
+/* and limitations under the License.                                 */
+/**********************************************************************/
 package parser.auto;
 
 // Default libraries
@@ -33,13 +49,32 @@ import exception.UndefinedFunctionException;
  */
 public class Parser 
 {
-    Stack<HashMap<String,String>> scope     = new Stack<HashMap<String,String>>();
-    Stack<Vector<Command>>        blocks    = new Stack<Vector<Command>>();
-    String                        actual    = "main";
-    HashMap<String,String>        returns   = new HashMap<String,String>();
-    HashMap<String,Parameters>    functions = new HashMap<String,Parameters>();
+    // Variables
+    private static String                           actual;  
+    private static Stack   <HashMap<String,String>> scope;   
+    private static Stack   <Vector<Command>>        blocks;  
+    private static HashMap <String,String>          returns; 
+    private static HashMap <String,Parameters>      functions;
     
+    // Parser
+    private static Parser parser = null;
     
+    /**
+     * <b>Parser - Init</b><br>
+     * Create a singleton parser. If it 
+     * was already defined, do nothing.
+     */
+    public static void Init()
+    {
+        if(Parser.parser == null)
+            Parser.parser = new Parser(System.in);
+    }
+    
+    /**
+     * <b>Parser - Main</b><br>
+     * Run the parser in an interactive 
+     * mode, mainly with debug purposes.
+     */
     public static void main( String[] args )
         throws ParseException, 
                TokenMgrError, 
@@ -48,8 +83,13 @@ public class Parser
                MissingReturnException,
                InvalidOperationException
     {
-        Parser parser = new Parser(System.in);
-        parser.Start(); 
+        Parser.Init();
+        Vector<Command> prog = Parser.Start(); 
+        
+        // Print vector with the generated program
+        int line = 1;
+        for(Command cmd: prog)
+            System.out.printf("%3d:  %s\n", line++, cmd);
     }
 }
 
@@ -61,7 +101,6 @@ TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
-
 
 TOKEN : {< TYPE : "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
@@ -93,16 +132,21 @@ TOKEN : {< EOL : ";" >}
 /**
  * Defines program expressions.
  */ 
-void Start() 
+Vector<Command> Start() 
     throws WrongTypeException, 
            UndefinedFunctionException,
            MissingReturnException,
            InvalidOperationException :
 {
+    Parser.actual    = "main";
+    Parser.scope     = new Stack   <HashMap<String,String>> ();
+    Parser.blocks    = new Stack   <Vector<Command>>        ();
+    Parser.returns   = new HashMap <String,String>          ();
+    Parser.functions = new HashMap <String,Parameters>      ();
+    
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
     Iterator<String>       keys;
-    Iterator<Command>      cmds;
 }    
 {
     {   
@@ -123,14 +167,15 @@ void Start()
         { actual = "main"; }
     )*
     {
-            keys = scope.peek().keySet().iterator();
-            while(keys.hasNext())
-                free(keys.next());
-            insertLabel("end");
-            insertCmd("END");
-            cmds = blocks.peek().iterator();
-            for(int line = 1; cmds.hasNext(); line++)
-                say(String.format("%3d:  ", line) + cmds.next());
+        // Free all the remaining variables;
+        keys = scope.peek().keySet().iterator();
+        while(keys.hasNext()) free(keys.next());
+        
+        // Finish program
+        insertLabel ("end");
+        insertCmd   ("END");
+        
+        return prog;
     }
 }
 
@@ -164,7 +209,7 @@ boolean command()
     { return false; }
 }
 
-/** IF-ELSIF-ELSE *****************************************************/
+//* IF-ELSIF-ELSE *****************************************************/
 
 boolean conditional() 
     throws WrongTypeException, 
