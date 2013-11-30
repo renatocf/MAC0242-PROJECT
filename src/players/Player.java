@@ -39,7 +39,7 @@ public class Player
     /*
     ////////////////////////////////////////////////////////////////////
     -------------------------------------------------------------------
-                                  CLASS DATA
+                                 CLASS' DATA
     -------------------------------------------------------------------
     \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     */
@@ -56,7 +56,7 @@ public class Player
     /*
     ////////////////////////////////////////////////////////////////////
     -------------------------------------------------------------------
-                                 OBJECT DATA
+                                OBJECT'S DATA
     -------------------------------------------------------------------
     \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     */
@@ -133,8 +133,7 @@ public class Player
      * @param  name       Name of the new robot
      * @param  pathToProg Robot assembly program
      */
-    public void 
-    insertArmy(String name, String pathToProg)
+    public void insertArmy(String name, String pathToProg)
     {
         Debugger.say("[", this.toString(), "]", " Adding robot ", name);
         Robot r = World.insertArmy(this, name, pathToProg);
