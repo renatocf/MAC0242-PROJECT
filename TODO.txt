@@ -75,7 +75,7 @@
     [X] Describe functions in Parser.jj.
     [X] Finish variables attribution in Parser.jj.
     [X] Describe if-else in Parser.jj.
-    [ ] Find a way to identify which robot sended a message.
+    [ ] Find a way to identify which robot sent a message.
     [ ] Describe loops in Parser.jj.
     [ ] Accept 'import' of other files in Parser.jj.
     [ ] Add buttons to put new robots.
