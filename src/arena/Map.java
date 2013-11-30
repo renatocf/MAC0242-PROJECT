@@ -57,7 +57,7 @@ public class Map
     // Map Matrixes
     public char[][]    miniMap;
     public Terrain[][] map;
-
+    
     // Weather
     final private Weather w;
     
@@ -101,43 +101,21 @@ public class Map
      * @param  pathToProg Robot assembly program
      * @return Inserted robot
      */
-    Robot insertArmy(String name, Player player, int ID, 
-                String pathToProg)
+    Robot insertArmy(
+        String name, Player player, int ID, String pathToProg)
         throws SegmentationFaultException
     {
+        // Find a place to put the new robot
         int[] coords = populate(player);
         int i = coords[0], j = coords[1];
         
         if(i < 0 || j < 0 || i >= MAP_SIZE || j >= MAP_SIZE) 
             throw new SegmentationFaultException();
         
-        // Creates a new string
-        String prog = processInput(pathToProg);
-        
-        try { 
-            Class<?> Parser = Class.forName("parser." + prog); 
-            Method   upload = Parser.getMethod("upload");
-            // Suppress warning of converting from Object class
-            // to Vector<Command> (unhappily, it cannot be solved
-            // due to the characteristics of generic types).
-            @SuppressWarnings("unchecked")
-            Vector<Command> PROG = (Vector<Command>) upload.invoke(null);
-            
-            Robot r = new Robot(name, player, ID, i, j, map[i][j],  PROG);
-            this.map[i][j].setScenario(r);
-            return r;
-        }
-        catch(ClassNotFoundException e) 
-        {
-            System.err.println(
-                "Class not found! Program \"" + 
-                prog + "\" does not exist!"
-            );
-        }
-        catch(NoSuchMethodException     e) {}
-        catch(IllegalAccessException    e) {}
-        catch(InvocationTargetException e) {}
-        return null;
+        // Initilixe the new robot and place it in the map
+        Robot r = new Robot(name, player, ID, i, j, map[i][j], pathToProg);
+        this.map[i][j].setScenario(r);
+        return r;
     }
     
    /**
@@ -178,31 +156,5 @@ public class Map
     Scenario removeScenario(int i, int j)
     {
         return map[i][j].removeScenario();
-    }
-    
-    /** 
-     * Changes path to make the program name.<br>
-     * Given a strinfg makes tha path a valid name
-     * for the program to be loaded.
-     */
-    static String processInput(String input)
-    {
-        // Process input
-        input = input.replaceFirst("^.*/"  , ""); // Takes out dir path
-        input = input.replaceFirst("\\..*$", ""); // Takes out excension
-        
-        // Uppercase first
-        char   first = Character.toUpperCase(input.charAt(0));
-        String other = input.substring(1).toLowerCase();
-        String prog  = first + other;
-
-        // Debug message
-        if(!prog.equals(input))
-        {
-            Debugger.say(input + " is not a valid name!");
-            Debugger.say("Searching for " + prog);
-            Debugger.say();
-        }
-        return prog;
     }
 }
