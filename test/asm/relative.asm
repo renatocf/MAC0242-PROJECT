@@ -1,5 +1,6 @@
-PUSH    voltei
-PRN     
-JMP     -2
+JMP     3
 PUSH    Nao
 PRN
+PUSH    Sim
+PRN
+JMP     -5

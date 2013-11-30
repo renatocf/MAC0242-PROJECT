@@ -62,18 +62,25 @@ TOKEN : {< RBRACE : ")" >}
 TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
 
-TOKEN : {< DEF : "def" >}
-TOKEN : {< RET : "return" >}
+
 TOKEN : {< TYPE : "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
+
+TOKEN : {< IF    : "if"     >}
+TOKEN : {< ELSE  : "else"   >}
+TOKEN : {< ELSIF : "elsif"  >}
+
+TOKEN : {< DEF   : "def"    >}
+TOKEN : {< RET   : "return" >}
 
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
 
-TOKEN : {< SIGN : "+"  | "-"  >}
-TOKEN : {< OP   : "*"  | "/" | "%" >}
-TOKEN : {< CMP  : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
-TOKEN : {< ATTR : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
+TOKEN : {< SIGN     : "+"  | "-"  >}
+TOKEN : {< OP       : "*"  | "/" | "%" >}
+TOKEN : {< CMP      : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
+TOKEN : {< ATTR     : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
+TOKEN : {< LOGICAL  : "&&" | "||" >}
 
 TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
 TOKEN : {< EOL : ";" >}
@@ -92,10 +99,10 @@ void Start()
            MissingReturnException,
            InvalidOperationException :
 {
-    String s;
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
     Iterator<String>       keys;
+    Iterator<Command>      cmds;
 }    
 {
     {   
@@ -105,28 +112,112 @@ void Start()
     }
     (
         (
+                command()
+            |
                 prototype()
             |
                 function()
             |
                 <EOL>
-            |
-            (
-                s = expression()
-                { insertCmd("POP"); }
-                <EOL>
-            )
         )
-        { say("--------------------------------"); }
         { actual = "main"; }
     )*
     {
             keys = scope.peek().keySet().iterator();
             while(keys.hasNext())
                 free(keys.next());
+            insertLabel("end");
             insertCmd("END");
+            cmds = blocks.peek().iterator();
+            for(int line = 1; cmds.hasNext(); line++)
+                say(String.format("%3d:  ", line) + cmds.next());
     }
 }
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                              COMMANDS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+boolean command() 
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+}
+{
+    (
+        (
+            conditional()
+        )
+        |
+        (
+            expression()
+            { insertCmd("POP"); }
+            <EOL>
+        )
+    )
+    { return false; }
+}
+
+/** IF-ELSIF-ELSE *****************************************************/
+
+boolean conditional() 
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+    String  s;
+    Token   l;
+    boolean returned = false;
+}
+{
+    <IF>
+    { insertArg("PUSH", new Num(1)); }
+    <LBRACE>
+    s = expression()
+    { checkTypeError(s); }
+    (
+        l = <LOGICAL>
+        s = expression()
+        { checkTypeError(s); }
+        { insertCmd(logical(l)); }
+    )*
+    <RBRACE>
+    returned = block(null) 
+        (
+        <ELSIF>
+        { insertCmd("DUP"); }
+        <LBRACE>
+        s = expression()
+        { checkTypeError(s); }
+        (
+            l = <LOGICAL>
+            s = expression()
+            { checkTypeError(s); }
+            { insertCmd(logical(l)); }
+        )*
+        <RBRACE>
+        { insertCmd("MUL"); }
+        returned = block(null)
+    )*
+    (
+        <ELSE>
+        { insertCmd("DUP"); }        
+        returned = block(null)
+    )?
+     
+    { 
+        insertCmd("POP");
+        return false; 
+    }
+}
+
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -221,19 +312,24 @@ void function()
            InvalidOperationException :
 {
     ArrayList<String[]> vars;
-    boolean returned = false;
+    boolean returned;
 }
 {
     vars = header()
+    {
+        insertArg("PUSH", new Num(1));
+        insertArg("PUSH", new Num(0));
+        insertLabel(actual);
+    }
     returned = block(vars)
-
-    { 
-        if(!returned && !returns.get(actual).equals("void")) 
+    {
+        insertCmd("POP");
+        if(!returned && returns.get(actual) != null)
             throw new MissingReturnException(actual);
     }
 }
 
-boolean block( ArrayList<String[]> vars )
+boolean block(ArrayList<String[]> vars)
     throws WrongTypeException, 
            UndefinedFunctionException,
            MissingReturnException,
@@ -242,22 +338,31 @@ boolean block( ArrayList<String[]> vars )
     boolean returned = false;
     String s;
     Iterator<String> keys;
+    Vector<Command>  code;
+    Command mainJump = new Command("JIF", null, null);
+    int dev;
 }
 {
     <LCURLY>
-    {
+    {   
         scope.push(new HashMap<String,String>()); 
         scope.peek().put("__SCOPE__", actual);
-        insertLabel(actual); 
-        for(int i = vars.size() -1; i >= 0; i--)
-        {
-            if(vars.get(i)[0] == null || vars.get(i)[1] == null)
-                throw new UndefinedFunctionException(actual);
-            attr(vars.get(i)[1], "=", vars.get(i)[0], "my");
-            insertCmd("POP");
-        }    
+        blocks.push(new Vector<Command>());
+        blocks.peek().add(mainJump);
+        if(vars != null)
+            for(int i = vars.size() -1; i >= 0; i--)
+            {
+                if(vars.get(i)[0] == null || vars.get(i)[1] == null)
+                    throw new UndefinedFunctionException(actual);
+                attr(vars.get(i)[1], "=", vars.get(i)[0], "my");
+                insertCmd("POP");
+            }
     }
     (
+        {
+            if(returned)
+                throw new InvalidOperationException("unreacheable code");
+        }
         (
             expression()
             { insertCmd("POP"); }
@@ -272,26 +377,24 @@ boolean block( ArrayList<String[]> vars )
                     throw new WrongTypeException(returns.get(actual));
             }
             <EOL>
-            {
-                keys = scope.peek().keySet().iterator();
-                while(keys.hasNext())
-                    free(keys.next());
-            }
-            { insertCmd("RET"); }
             { returned = true;}
         )
     )*
-    
-    {   
-        if(returns.get(actual).equals("void"))
-        {
-            keys = scope.peek().keySet().iterator();
-            while(keys.hasNext())
-                free(keys.next());
-        }
-    }
-    { scope.pop(); }
     <RCURLY>
+    { 
+        keys = scope.peek().keySet().iterator();
+        while(keys.hasNext())
+            free(keys.next());
+        scope.pop();
+        insertCmd("POP");
+        insertArg("PUSH", new Num(0));
+        if (vars != null)
+            insertCmd("RET");
+        dev = blocks.peek().size();
+        mainJump.setAttribute(new Num(dev));
+        code = blocks.pop();
+        blocks.peek().addAll(code);
+    }
     { return returned; }
 }
 
@@ -536,7 +639,7 @@ void insertArg(String cmd, Stackable arg) :
 }
 {{
     insert(null, cmd, arg);
-    say(cmd + " " + arg.toString());
+    //say(cmd + " " + arg.toString());
 }}
 
 void insertCmd(String cmd) :
@@ -545,14 +648,14 @@ void insertCmd(String cmd) :
 }
 {{
     insert(null, cmd, null);
-    say(cmd);
+    //say(cmd);
 }}
 
 void insertLabel(String label) :
 {}
 {{
     insert(label, null, null);
-    say(label + ":");
+    //say(label + ":");
 }}
 
 /*
@@ -725,6 +828,17 @@ String typeof(String var) :
             return varList.get(var);
     }
     return null;
+}}
+
+/**
+ * Auxiliar function - sign.
+ * @param  t Token with the sign
+ * @return Sign of a term
+ */
+String logical(Token t) :
+{}
+{{
+    return t.image.equals("&&") ? "MUL" : "ADD"; 
 }}
 
 /**
