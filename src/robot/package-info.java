@@ -48,6 +48,7 @@
  *      <li> MOVE
  *      <li> MUL
  *      <li> NE
+ *      <li> NIL
  *      <li> NOP
  *      <li> POP
  *      <li> PRN
@@ -56,6 +57,7 @@
  *      <li> RET
  *      <li> SEE
  *      <li> SEEK
+ *      <li> SEND
  *      <li> STO
  *      <li> SUB
  *      <li> SWAP
