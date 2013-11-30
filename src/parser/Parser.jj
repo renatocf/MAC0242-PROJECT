@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 // Libraries
 import parser.*;
@@ -60,20 +62,80 @@ public class Parser
     private static Parser parser = null;
     
     /**
-     * <b>Parser - Init</b><br>
-     * Create a singleton parser. If it 
-     * was already defined, do nothing.
+     * Parser - parse.<br>
+     * Read from stdin and make a program 
+     * accordingly to the input.
+     * 
+     * @return Vector with commands from
+     *         readable by RVM
+     * 
+     * @throws TokenMgrError, 
+     * @throws ParseException, 
+     * @throws WrongTypeException,
+     * @throws MissingReturnException,
+     * @throws InvalidOperationException,
+     * @throws UndefinedFunctionException
      */
-    public static void Init()
+    public static Vector<Command> parse()
+        throws TokenMgrError, 
+               ParseException, 
+               WrongTypeException,
+               MissingReturnException,
+               InvalidOperationException,
+               UndefinedFunctionException
     {
-        if(Parser.parser == null)
-            Parser.parser = new Parser(System.in);
+        Parser.Init();
+        Parser.ReInit(System.in);
+        return Parser.Start();
+    }
+    
+    /**
+     * Parser - parse.<br>
+     * Read a file and translates the program 
+     * in Positron to the RVM bytecode.
+     * 
+     * @param  path Path to file to be compiled
+     * @return Vector with commands from
+     *         readable by RVM
+     * 
+     * @throws TokenMgrError, 
+     * @throws ParseException, 
+     * @throws WrongTypeException,
+     * @throws MissingReturnException,
+     * @throws InvalidOperationException,
+     * @throws UndefinedFunctionException
+     */
+    public static Vector<Command> parse(String path)
+        throws ParseException, 
+               TokenMgrError, 
+               WrongTypeException,
+               UndefinedFunctionException,
+               MissingReturnException,
+               InvalidOperationException
+    {
+        try {
+            Parser.Init();
+            Parser.ReInit(new FileInputStream(path));
+            return Parser.Start();
+            
+        } catch(FileNotFoundException e) {
+            System.err.println("[PARSER] File not found!");
+            e.printStackTrace();
+            return null;
+        }
     }
     
     /**
      * <b>Parser - Main</b><br>
      * Run the parser in an interactive 
      * mode, mainly with debug purposes.
+     * 
+     * @throws TokenMgrError, 
+     * @throws ParseException, 
+     * @throws WrongTypeException,
+     * @throws MissingReturnException,
+     * @throws InvalidOperationException,
+     * @throws UndefinedFunctionException
      */
     public static void main( String[] args )
         throws ParseException, 
@@ -83,13 +145,23 @@ public class Parser
                MissingReturnException,
                InvalidOperationException
     {
-        Parser.Init();
-        Vector<Command> prog = Parser.Start(); 
+        Vector<Command> prog = Parser.parse();
         
         // Print vector with the generated program
         int line = 1;
         for(Command cmd: prog)
             System.out.printf("%3d:  %s\n", line++, cmd);
+    }
+    
+    /**
+     * Parser - Init.<br>
+     * Create a singleton parser. If it 
+     * was already defined, do nothing.
+     */
+    private static void Init()
+    {
+        if(Parser.parser == null)
+            Parser.parser = new Parser(System.in);
     }
 }
 
@@ -174,6 +246,10 @@ Vector<Command> Start()
         // Finish program
         insertLabel ("end");
         insertCmd   ("END");
+        
+        // Add a final prog to identify 
+        // when the 'file' is finished
+        prog.add(null);
         
         return prog;
     }
