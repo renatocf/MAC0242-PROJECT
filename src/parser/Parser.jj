@@ -802,6 +802,7 @@ String call(String f)
     {
         throw new UndefinedFunctionException(f);
     }
+    insertArg("PUSH", new Num(1));
     insertArg("CALL", new Text(f));
     return returns.get(f);
 }}
