@@ -196,9 +196,8 @@ public class RVM
      * overloaded accordingly to the 
      * size of the info passed, up to
      * the size avaiable on the cache.
-     * @param rvm Virtual Machine
      * @see Net
-     * @see Action
+     * @see arena.Action
      */
     public void download(Stackable[] info)
     {

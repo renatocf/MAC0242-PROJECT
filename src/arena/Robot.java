@@ -96,16 +96,12 @@ public class Robot implements Scenario, Printable
     
     /**
      * Default constructor.
-     * @param baptism Name of the robot
-     * @param team    Ownew of the robot
-     * @param ID      Unique identification 
-     *                for the doctor
-     * @param i       Vertical position
-     *                in the map
-     * @param j       Horizontal position 
-     *                in the map
-     * @param PROG    Program with the actions
-     *                to be done by the robot
+     * @param baptism    Name of the robot
+     * @param team       Ownew of the robot
+     * @param ID         Unique identification for the robot
+     * @param i          Vertical position in the map
+     * @param j          Horizontal position in the map
+     * @param pathToProg Robot's assembly program
      */
     public Robot(String baptism, Player team, int ID, 
                  int i, int j, Terrain terrain, String pathToProg)

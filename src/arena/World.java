@@ -247,7 +247,7 @@ final public class World
      * 
      * @param  player     Robot owner
      * @param  name       Name of the new robot
-     * @param  pathToProg Robot assembly program
+     * @param  pathToProg Robot's assembly program
      * @return Inserted robot
      */
     public static Robot

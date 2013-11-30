@@ -20,7 +20,7 @@ package exception;
  * Exception used inside Parser to declare when there is no return in a
  * function
  * @author Vinícius Nascimento Silva
- * @see    parser.Parser
+ * @see    parser.positron.Positron
  */
 public final class MissingReturnException extends Exception 
 {
