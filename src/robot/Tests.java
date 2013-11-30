@@ -26,7 +26,8 @@ import stackable.item.*;
  * <b>Assembly functions - class Tests</b><br>
  * Provides the funcions for making 
  * boolean comparisons between elements
- * inside the stack of the virtual Machine
+ * inside the stack of the virtual Machine.
+ * Also verifies if an element is or not Nil.
  * 
  * @author Renato Cordeiro Ferreira
  * @see Ctrl
@@ -35,6 +36,29 @@ final public class Tests
 {
     // No instances of this class allowed
     private Tests() {} 
+    
+    /**
+     * Assembly funcion NIL. <br>
+     * Takes out the top of the main stack 
+     * and pushes 1 if it is Nil and 0, 
+     * otherwise.
+     *
+     * @param rvm Virtual Machine
+     */
+    static void NIL(RVM rvm)
+        throws StackUnderflowException,
+               WrongTypeException
+    {
+        Stackable stk;
+        
+        try { stk = rvm.DATA.pop(); }
+        catch (Exception e) {
+            throw new StackUnderflowException();
+        }
+        
+        // Return Num(0) if the top is not Nil
+        rvm.DATA.push(new Num(stk instanceof Nil ? 1 : 0));
+    }
     
     /** 
      * Interface for compartison operations,
