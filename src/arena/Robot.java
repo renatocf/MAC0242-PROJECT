@@ -124,7 +124,7 @@ public class Robot implements Scenario, Printable
         
         // Hardware
         this.slots = new Item[1];
-        this.positronic = new RVM (Cortex.readFromASM(pathToProg));
+        this.positronic = new RVM (Cortex.translates(pathToProg));
         
         // Energy
         this.HP         = 12;
@@ -227,7 +227,7 @@ public class Robot implements Scenario, Printable
      */
     public void upload(String pathToProg)
     {
-        this.positronic.upload(Cortex.readFromASM(pathToProg));
+        this.positronic.upload(Cortex.translates(pathToProg));
     }
     
     /**
