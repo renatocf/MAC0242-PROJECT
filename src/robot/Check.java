@@ -89,8 +89,8 @@ final public class Check
      */
     static void SEEK(RVM rvm)
      throws StackUnderflowException,
-               WrongTypeException,
-               InvalidOperationException
+            WrongTypeException,
+            InvalidOperationException
     {
         Stackable ar;
         Stackable stk;
