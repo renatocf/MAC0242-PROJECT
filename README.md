@@ -39,9 +39,9 @@ Para instalar o Ivy,  foi disponibilizado um
 script em *Bash*:
 
 * Para a instalação de sistema, utilize:    
-  `sudo bash install_ivy.bash`
+  `sudo bash scripts/install_ivy.bash`
 * Para a instalação local:    
-  `bash install_ivy.bash`
+  `bash scripts/install_ivy.bash`
 
 Por fim, para compilar o jogo, digite:    
                                             
@@ -52,7 +52,7 @@ que  possa ser  rodada independentemente  do
 diretório, é  necessário instalar localmente 
 oprograma [One-Jar™][5]. Para fazê-lo, rode:
 
-    $ bash install_one-jar.bash
+    $ bash scripts/install_one-jar.bash
 
 Em seguida, compile com:
 
@@ -78,7 +78,7 @@ diretório `test/` junto ao código-fonte.
 Para  utilizá-los  como  programas  para  os 
 robôs, compile-os com:
 
-    $ sh reload.sh path/para/o/arquivo.asm
+    $ sh scripts/reload.sh path/para/o/arquivo.asm
 
 Para  comportamentos  mais   elaborados  dos 
 robôs,  utilize  os  scripts  disponíveis na 
