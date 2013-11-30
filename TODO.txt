@@ -20,6 +20,8 @@
     [X] Add NOTICE for license on all files.
     [X] Create a system for removing player.
     [X] Add 'network system' between robots on assembly.
+    [X] Join parser in the main program.
+    [X] Make the RVM's read the Positron files.
     [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
