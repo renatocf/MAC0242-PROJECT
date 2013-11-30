@@ -43,9 +43,10 @@ final public class Net
      */
     static void READ(RVM rvm) 
     {
-        // TODO: Get a better system for showing an empty space
-        rvm.DATA.push(rvm.CACHE[0] != null ? rvm.CACHE[0] : new Text(""));
-        rvm.DATA.push(rvm.CACHE[1] != null ? rvm.CACHE[1] : new Text(""));
+        // TODO: Get a better system for sending no info
+        for(int i = 0; i < rvm.CACHE.length; i++)
+            if(rvm.CACHE[i] != null) rvm.DATA.push(rvm.CACHE[i]);
+            else rvm.DATA.push(Nil.get());
     }
     
     /**
