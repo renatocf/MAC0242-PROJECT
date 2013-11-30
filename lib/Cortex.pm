@@ -30,7 +30,8 @@ use warnings;
 my @ins1 = ('ADD' , 'DIV' , 'DUP' , 'END' , 'EQ'  , 'GE'  , 'GT'  , 
             'MOD' , 'LE'  , 'LT'  , 'MUL' , 'NE'  , 'POP' , 'PRN' , 
             'SUB' , 'RET' , 'MOVE', 'DRAG', 'DROP', 'HIT' , 'LOOK', 
-            'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP' , 'SWAP'); # arg: none
+            'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP' , 'READ', 'WRT' ,
+            'SWAP'); # arg: none
 my @ins2 = ('RCL' , 'STO');                  # arg: numeric  (only)
 my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL'); # arg: address/string
 my @ins4 = ('ALOC', 'FREE', 'GET' , 'SET' ); # arg: var name (only)
