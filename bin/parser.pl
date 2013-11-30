@@ -235,18 +235,18 @@ for my $var($t, $n, $a, $v)
 ########################################################################
 ##                          PRINTING PARSER                           ##
 ########################################################################
-mkdir "$base/$src/parser";
+mkdir "$base/$src/parser/quark";
 my $java_file = $file;
 $java_file =~ s|.*/(.*)\..*|$1|;
 $java_file = ucfirst lc $java_file;
 say "FILE: $java_file";
 
-open(my $PARSER, ">", "$base/$src/parser/$java_file.java");
+open(my $PARSER, ">", "$base/$src/parser/quark/$java_file.java");
 select $PARSER;
 
 # Preamble
 say << "PREAMBLE";
- package parser;
+ package parser.quark;
 
 // Default Libraries
 import java.util.Vector;
@@ -427,12 +427,12 @@ my $build_xml = << "BUILD_XML";
 BUILD_XML
 
 # Creating parser.xml for compilation
-unless(-f "$base/$src/parser/Parser.xml")
+unless(-f "$base/$src/parser/quark/Parser.xml")
 {
-    open (XML, ">", "$base/$src/parser/Parser.xml");
+    open (XML, ">", "$base/$src/parser/quark/Parser.xml");
     say   XML $build_xml;
     close XML;
 }
 
 # Building file
-system("ant -buildfile $base/$src/parser/Parser.xml");
+system("ant -buildfile $base/$src/parser/quark/Parser.xml");

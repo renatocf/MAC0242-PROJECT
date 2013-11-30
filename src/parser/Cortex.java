@@ -110,7 +110,7 @@ final public class Cortex
         String prog = processInput(pathToProg);
         
         try { 
-            Class<?> Parser = Class.forName("parser." + prog); 
+            Class<?> Parser = Class.forName("parser.quark." + prog); 
             Method   upload = Parser.getMethod("upload");
             // Suppress warning of converting from Object class
             // to Vector<Command> (unhappily, it cannot be solved
