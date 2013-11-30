@@ -169,7 +169,7 @@ for my $line (@prog)
             $arg = uc $arg; 
             $arg =~ s/\(X\)//; 
             $line->[1] = "x$arg";
-            $direction{$arg} = "Attack x$arg = new Attack(\"$arg\");";
+            $attack{$arg} = "Attack x$arg = new Attack(\"$arg\");";
         }
         
         # Stackable (item) argument
@@ -333,6 +333,14 @@ if(scalar keys %direction)
     say " " x 8, "// Direction variables";
     for my $dir (sort keys %direction) 
     { say " " x 8, $direction{$dir}; }
+    print "\n";
+}
+
+if(scalar keys %attack)
+{
+    say " " x 8, "// Attack variables";
+    for my $att (sort keys %attack) 
+    { say " " x 8, $attack{$att}; }
     print "\n";
 }
 
