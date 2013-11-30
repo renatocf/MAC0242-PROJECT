@@ -33,7 +33,11 @@ import parameters.*;
 import static parameters.Game.*;
 
 /**
- * <b>Main package class with the constructor of the robot and its data.</b>
+ * <b>
+ * Main package class with the 
+ * constructor of the robot and 
+ * its data.
+ * </b>
  * @author Renato Cordeiro Ferreira
  */
 public class RVM
@@ -44,7 +48,7 @@ public class RVM
     HashMap <String, Integer>  LABEL = new HashMap <String, Integer>    ();
     HashMap <String, Stackable> VARS = new HashMap <String, Stackable>  ();
     HashMap <Integer, Stackable> RAM = new HashMap <Integer, Stackable> ();
-    Stackable[] CACHE = new Stackable[2];
+    Stackable[] CACHE = new Stackable[] { Nil.get(), Nil.get() };
     int PC = 0;
 
     boolean syscall = false;
@@ -166,14 +170,40 @@ public class RVM
                     this.PC--; exec(); this.PC++; 
                 }
                 
-                // Debug
+                // Debug: stack
                 Debugger.say  ("[STACK]");
                 Debugger.print("    ");
                 for(Stackable stk: this.DATA)
                     Debugger.print(stk, ", ");
-                Debugger.say();
+                Debugger.say("[TOP]");
+                
+                // Debug: cache
+                Debugger.say  ("[CACHE]");
+                Debugger.print("    [ ");
+                for(int i = 0; i < this.CACHE.length-1; i++)
+                    Debugger.print(this.CACHE[i], " | ");
+                Debugger.print(this.CACHE[this.CACHE.length-1]);
+                Debugger.say(" ]");
+                
                 break;
         }
+    }
+    
+    /** 
+     * Receive data from the network 
+     * and put it on the CACHE.<br>
+     * The info in the cache will be 
+     * overloaded accordingly to the 
+     * size of the info passed, up to
+     * the size avaiable on the cache.
+     * @param rvm Virtual Machine
+     * @see Net
+     * @see Action
+     */
+    public void download(Stackable[] info)
+    {
+        for(int i = 0; i < this.CACHE.length && i < info.length; i++)
+            this.CACHE[i] = info[i];
     }
     
     /** 
