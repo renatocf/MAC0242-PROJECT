@@ -23,9 +23,11 @@ import java.lang.reflect.*;
 
 // Libraries
 import exception.*;
-import parser.auto.*;
 import robot.Command;
 import parameters.Debugger;
+
+// Parsers
+import parser.positron.*;
 
 /**
  * <b>Cortex</b><br>
@@ -76,7 +78,7 @@ final public class Cortex
         // TODO: Give a better exception treatment
         try {
             // Create program vector from file
-            PROG = Parser.parse(pathToProg);
+            PROG = Positron.parse(pathToProg);
             
         } catch(ParseException e) {
             System.err.println("[CORTEX] Parser error!");

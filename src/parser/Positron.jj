@@ -4,7 +4,7 @@ options
     LOOKAHEAD = 2;
 }
 
-PARSER_BEGIN(Parser)
+PARSER_BEGIN(Positron)
 /**********************************************************************/
 /* Copyright 2013 KRV                                                 */
 /*                                                                    */
@@ -21,7 +21,7 @@ PARSER_BEGIN(Parser)
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package parser.auto;
+package parser.positron;
 
 // Default libraries
 import java.util.Stack;
@@ -45,11 +45,12 @@ import exception.InvalidOperationException;
 import exception.UndefinedFunctionException;
 
 /**
- * <b>Parser for user Program<b>
+ * <b>Parser for Positron Language<b>
+ * @author Karina Suemi Awoki
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Nascimento Silva
  */
-public class Parser 
+public class Positron 
 {
     // Variables
     private static String                           actual;  
@@ -58,11 +59,11 @@ public class Parser
     private static HashMap <String,String>          returns; 
     private static HashMap <String,Parameters>      functions;
     
-    // Parser
-    private static Parser parser = null;
+    // Positron Parser
+    private static Positron parser = null;
     
     /**
-     * Parser - parse.<br>
+     * Positron - parse.<br>
      * Read from stdin and make a program 
      * accordingly to the input.
      * 
@@ -84,13 +85,13 @@ public class Parser
                InvalidOperationException,
                UndefinedFunctionException
     {
-        Parser.Init();
-        Parser.ReInit(System.in);
-        return Parser.Start();
+        Positron.Init();
+        Positron.ReInit(System.in);
+        return Positron.Start();
     }
     
     /**
-     * Parser - parse.<br>
+     * Positron - parse.<br>
      * Read a file and translates the program 
      * in Positron to the RVM bytecode.
      * 
@@ -114,19 +115,19 @@ public class Parser
                InvalidOperationException
     {
         try {
-            Parser.Init();
-            Parser.ReInit(new FileInputStream(path));
-            return Parser.Start();
+            Positron.Init();
+            Positron.ReInit(new FileInputStream(path));
+            return Positron.Start();
             
         } catch(FileNotFoundException e) {
-            System.err.println("[PARSER] File not found!");
+            System.err.println("[POSITRON] File not found!");
             e.printStackTrace();
             return null;
         }
     }
     
     /**
-     * <b>Parser - Main</b><br>
+     * <b>Positron - Main</b><br>
      * Run the parser in an interactive 
      * mode, mainly with debug purposes.
      * 
@@ -145,7 +146,7 @@ public class Parser
                MissingReturnException,
                InvalidOperationException
     {
-        Vector<Command> prog = Parser.parse();
+        Vector<Command> prog = Positron.parse();
         
         // Print vector with the generated program
         int line = 1;
@@ -154,18 +155,18 @@ public class Parser
     }
     
     /**
-     * Parser - Init.<br>
+     * Positron - Init.<br>
      * Create a singleton parser. If it 
      * was already defined, do nothing.
      */
     private static void Init()
     {
-        if(Parser.parser == null)
-            Parser.parser = new Parser(System.in);
+        if(Positron.parser == null)
+            Positron.parser = new Positron(System.in);
     }
 }
 
-PARSER_END(Parser)
+PARSER_END(Positron)
 
 SKIP : { " " | "\n" | "\r" | "\r\n" | "\t" }
 
@@ -210,11 +211,11 @@ Vector<Command> Start()
            MissingReturnException,
            InvalidOperationException :
 {
-    Parser.actual    = "main";
-    Parser.scope     = new Stack   <HashMap<String,String>> ();
-    Parser.blocks    = new Stack   <Vector<Command>>        ();
-    Parser.returns   = new HashMap <String,String>          ();
-    Parser.functions = new HashMap <String,Parameters>      ();
+    Positron.actual    = "main";
+    Positron.scope     = new Stack   <HashMap<String,String>> ();
+    Positron.blocks    = new Stack   <Vector<Command>>        ();
+    Positron.returns   = new HashMap <String,String>          ();
+    Positron.functions = new HashMap <String,Parameters>      ();
     
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
