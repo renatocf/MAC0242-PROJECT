@@ -222,6 +222,23 @@ final public class Syst
     }
     
     /**
+     * Assembly funcion SEND. <br>
+     * Makes a syscall to repass to the 
+     * player's robot network the info
+     * inside the robot's cache memory.
+     * 
+     * @param  rvm Virtual Machine.
+     * @throws WrongTypeException
+     * @throws InvalidOperationException 
+     */
+    static void SEND(RVM rvm)
+        throws WrongTypeException,
+               InvalidOperationException
+    {
+        action(rvm, "SEND", 2);
+    }
+    
+    /**
      * Assembly funcion SKIP. <br>
      * Makes a syscall with no operations.
      * 
