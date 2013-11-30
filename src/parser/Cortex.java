@@ -41,39 +41,53 @@ final public class Cortex
     private Cortex() {}
     
     /** 
-     * Translates Positron to Assembly.<br>
+     * Translates file to RVM's bytecode.<br>
+     * Translates the file accordingly to its 
+     * format, defined in the languages readable
+     * by the parser.
+     * @see Languages
+     */
+    public static Vector<Command> translates(String pathToProg)
+    {
+        switch(Languages.define(pathToProg))
+        {
+            case QUARK:    return readFromASM(pathToProg);
+            case POSITRON: return readFromPOS(pathToProg);
+            default: 
+                System.err.println(
+                    "[CORTEX] File type not identified!"
+                );
+                return null;
+        }
+    }
+    
+    /** 
+     * Upload program made only with Positron.<br>
      * Given a string with the path to the .pos
      * program, creates a vector of commmands 
      * from it using the assembly.
+     * @param  pathToProg Robot assembly program
+     * @return Program translated to RVM's format
      */
-    public static Vector<Command> translate(String pathToProg)
+    private static Vector<Command> readFromPOS(String pathToProg)
     {
-        String prog = processInput(pathToProg);
         Vector<Command> PROG  = null;
-        
-        try {
-            // ReInit parser to parse from this file
-            Parser.ReInit(new FileInputStream(pathToProg));
-            
-        } catch(FileNotFoundException e) {
-            System.err.println("File not found!");
-            e.printStackTrace();
-        }
         
         // TODO: Give a better exception treatment
         try {
             // Create program vector from file
-            PROG = Parser.Start();
+            PROG = Parser.parse(pathToProg);
             
         } catch(ParseException e) {
-            System.err.println("Parser error!");
+            System.err.println("[CORTEX] Parser error!");
             e.printStackTrace();
             
         } catch(TokenMgrError e) {
-            System.err.println("Token Manager error!");
+            System.err.println("[CORTEX] Token Manager error!");
             e.printStackTrace();
             
         } catch(Exception e) {
+            System.err.print("[CORTEX] ");
             e.printStackTrace();
         }
         
@@ -81,12 +95,14 @@ final public class Cortex
     }
     
     /** 
-     * Upload program made only with assembly.<br>
+     * Upload program made only with Assembly.<br>
      * Given a string with the path to the .asm
      * program, uploads the .java program that
      * creates a vector of commands from it.
+     * @param  pathToProg Robot assembly program
+     * @return Program translated to RVM's format
      */
-    public static Vector<Command> readFromASM(String pathToProg)
+    private static Vector<Command> readFromASM(String pathToProg)
     {
         // Creates a new string
         String prog = processInput(pathToProg);
@@ -117,7 +133,9 @@ final public class Cortex
     /** 
      * Changes path to make the program name.<br>
      * Given a string, makes tha path a valid name
-     * for the program to be loaded.
+     * for the program's class to be loaded.
+     * @param input Path to program
+     * @see Cortex#readFromASM
      */
     private static String processInput(String input)
     {
