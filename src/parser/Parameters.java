@@ -1,7 +1,7 @@
 package parser;
 
 /**
- * <b>Compiler - Parameters</b><br>
+ * <b>Parser - Parameters</b><br>
  * Provide a simple container to the
  * parameters of a function stored in
  * the parser's simble table.
