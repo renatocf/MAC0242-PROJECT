@@ -60,7 +60,6 @@ public class Action
         Stackable[] stackable = null;
         String action = op.getAction();
         
-        
         // Try to collect the power to do the action.
         // If the robot do not have it, returns -1 to
         // the RVM.
@@ -81,6 +80,7 @@ public class Action
             case "LOOK" : stackable = LOOK (map, turn, op); break;
             case "SEE"  : stackable = SEE  (map, turn, op); break;
             case "ASK"  : stackable = ASK  (map, turn, op); break;
+            case "SEND" : stackable = SEND (map, turn, op); break;
         }
         
         if(stackable == null) 
@@ -570,5 +570,26 @@ public class Action
         Debugger.say();
         
         return stk;
+    }
+    
+    /**
+     * Operation SEND.<br>
+     * Receives an info from the cache memory of the robot,
+     * to be resent to the other robots through their network.
+     * @see robot.Syst#SEND
+     * 
+     * @param map  Map of the arena
+     * @param turn Robot that may do the action
+     * @param op   Operation to be executed (or not)
+     */
+    static Stackable[] SEND (Map map, Robot turn, Operation op)
+    {  
+        Stackable[] info = op.getArgument();
+        
+        // Send message to all robots
+        for(Robot r: turn.getTeam().getRobots())
+            if(r != turn) r.download(info);
+        
+        return new Stackable[] { new Num(1) };
     }
 }
