@@ -268,8 +268,7 @@ boolean command()
            UndefinedFunctionException,
            MissingReturnException,
            InvalidOperationException :
-{
-}
+{}
 {
     (
         (
