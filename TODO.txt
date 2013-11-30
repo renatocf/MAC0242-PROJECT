@@ -19,6 +19,7 @@
     [X] Make one GUI per player.
     [X] Add NOTICE for license on all files.
     [X] Create a system for removing player.
+    [X] Add 'network system' between robots on assembly.
     [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
@@ -70,11 +71,13 @@
     [X] Create a mini-map graphical representation.
     [X] Fix Fog War/Visibility appearence.
     [X] Describe functions in Parser.jj.
-    [ ] Add buttons to put new robots.
-    [ ] Configure editor for writing.
-    [ ] Finish variables attribution in Parser.jj.
+    [X] Finish variables attribution in Parser.jj.
+    [X] Describe if-else in Parser.jj.
     [ ] Describe loops in Parser.jj.
-    [ ] Describe if-else in Parser.jj.
+    [ ] Accept 'import' of other files in Parser.jj.
+    [ ] Add buttons to put new robots.
+    [ ] Create Positron Standard Library (PSL)
+    [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
     [ ] Add option for playing again.
