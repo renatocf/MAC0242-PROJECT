@@ -274,7 +274,7 @@ limitations under the License.
                 
                 <!-- Packages to be included/excluded -->
                 <packageset dir="${src.dir}" defaultexcludes="yes">
-                    <exclude name = "parser/**"/>
+                    <exclude name = "parser/*/"/>
                 </packageset>
                 
                 <!-- Classpath for getting external libraries -->
