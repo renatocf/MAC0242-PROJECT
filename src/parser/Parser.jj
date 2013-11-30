@@ -5,27 +5,26 @@ options
 }
 PARSER_BEGIN(Parser)
 
-package parser;
+package parser.auto;
 
 // Default libraries
+import java.util.Stack;
+import java.util.Vector;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Stack;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.ListIterator;
 
 // Libraries
-import robot.Command;
-import stackable.*;
 import parser.*;
+import stackable.*;
+import robot.Command;
 
 // Exceptions
 import exception.WrongTypeException;
-import exception.UndefinedFunctionException;
 import exception.MissingReturnException;
 import exception.InvalidOperationException;
-
+import exception.UndefinedFunctionException;
 
 /**
  * <b>Parser for user Program<b>
