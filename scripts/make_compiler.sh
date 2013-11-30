@@ -7,6 +7,6 @@ cd build/classes/
 if [ $? -ne 0 ]; then exit; fi
 echo "========================================"
 echo "JAVACC - Parser"
-java parser.auto.Parser
+java parser.positron.Positron
 
 cd $DIR
