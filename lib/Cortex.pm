@@ -31,7 +31,7 @@ my @ins1 = ('ADD' , 'DIV' , 'DUP' , 'END' , 'EQ'  , 'GE'  , 'GT'  ,
             'MOD' , 'LE'  , 'LT'  , 'MUL' , 'NE'  , 'POP' , 'PRN' , 
             'SUB' , 'RET' , 'MOVE', 'DRAG', 'DROP', 'HIT' , 'LOOK', 
             'ITEM', 'SEE' , 'SEEK', 'ASK' , 'NOP' , 'READ', 'WRT' ,
-            'SWAP'); # arg: none
+            'SEND', 'SWAP', 'NIL' );         # arg: none
 my @ins2 = ('RCL' , 'STO');                  # arg: numeric  (only)
 my @ins3 = ('JMP' , 'JIF' , 'JIT' , 'CALL'); # arg: address/string
 my @ins4 = ('ALOC', 'FREE', 'GET' , 'SET' ); # arg: var name (only)
@@ -91,7 +91,7 @@ sub parse
                             |        #           }
                             ->\w*    # DIRECTION }
                             |        #           }
-                            "\w+"    # STRING    } 
+                            "[^\"]*" # STRING    } 
                             |        #           }
                             {\w+}    # STACKABLE }
                             |        #           }
@@ -108,10 +108,10 @@ sub parse
             # If there is any command
             if($com eq "PUSH")
             {
-                if    ($arg =~ m/^[+-]?\d+$/)           {} # Numeric
-                elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {} # Direction
-                elsif ($arg =~ m/^"(\w+)"$/) { $arg = $1 } # String
-                elsif ($arg =~ m/^{(\w+)}$/)               # Stackable
+                if    ($arg =~ m/^[+-]?\d+$/)           {}    # Numeric
+                elsif ($arg =~ m/^(?:->[NS]?[WE]|->)$/) {}    # Direction
+                elsif ($arg =~ m/^"([^\"]*)"$/) { $arg = $1 } # String
+                elsif ($arg =~ m/^{(\w+)}$/)                  # Stackable
                 {
                     $err = 1; # If matches, return
                               # to the default value
