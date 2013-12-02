@@ -53,7 +53,9 @@ import exception.UndefinedFunctionException;
 public class Positron 
 {
     // Variables
+    private static int                              count;
     private static String                           actual;  
+    private static String                           flow;  
     private static Stack   <HashMap<String,String>> scope;   
     private static Stack   <Vector<Command>>        blocks;  
     private static HashMap <String,String>          returns; 
@@ -178,6 +180,10 @@ TOKEN : {< RCURLY : "}" >}
 TOKEN : {< TYPE : "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
 
+TOKEN : {< WHILE    : "while"    >}
+TOKEN : {< BREAK    : "break"    >}
+TOKEN : {< CONTINUE : "continue" >}
+
 TOKEN : {< IF    : "if"     >}
 TOKEN : {< ELSE  : "else"   >}
 TOKEN : {< ELSIF : "elsif"  >}
@@ -212,10 +218,13 @@ Vector<Command> Start()
            InvalidOperationException :
 {
     Positron.actual    = "main";
+    Positron.flow      = "main";
+    Positron.count     = 1;
     Positron.scope     = new Stack   <HashMap<String,String>> ();
     Positron.blocks    = new Stack   <Vector<Command>>        ();
     Positron.returns   = new HashMap <String,String>          ();
     Positron.functions = new HashMap <String,Parameters>      ();
+    
     
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
@@ -238,6 +247,7 @@ Vector<Command> Start()
                 <EOL>
         )
         { actual = "main"; }
+        { flow   = "main"; }
     )*
     {
         // Free all the remaining variables;
@@ -285,8 +295,40 @@ boolean command()
     { return false; }
 }
 
-//* IF-ELSIF-ELSE *****************************************************/
+//* WHILE *************************************************************/
+boolean loop()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+    String  s;
+    String  oldFlow;
+    Token   l;
+    boolean returned = false;
+}
+{
+    <WHILE>
+    { 
+        oldFlow = flow;
+        flow = "WHILE" + "_" + count++;
+    }
+    <LBRACE>
+    s = expression()
+    (
+        l = <LOGICAL>
+        s = expression()
+    )*
+    <RBRACE>
+    returned = block(null)
+    { 
+        insertCmd("POP");
+        flow = oldFlow;
+        return returned; 
+    }
+}
 
+//* IF-ELSIF-ELSE *****************************************************/
 boolean conditional() 
     throws WrongTypeException, 
            UndefinedFunctionException,
@@ -294,11 +336,16 @@ boolean conditional()
            InvalidOperationException :
 {
     String  s;
+    String  oldFlow;
     Token   l;
     boolean returned = false;
 }
 {
     <IF>
+    { 
+        oldFlow = flow;
+        flow = "IF" + "_" + count++; 
+    }
     { insertArg("PUSH", new Num(1)); }
     <LBRACE>
     s = expression()
@@ -335,7 +382,8 @@ boolean conditional()
      
     { 
         insertCmd("POP");
-        return false; 
+        flow = oldFlow;
+        return returned; 
     }
 }
 
@@ -410,7 +458,8 @@ ArrayList<String[]> header()
     }
         
     {
-        actual = f.image; 
+        actual = f.image;
+        flow   = f.image; 
         return vars; 
     }
 }
@@ -438,13 +487,11 @@ void function()
 {
     vars = header()
     {
-        insertArg("PUSH", new Num(1));
         insertArg("PUSH", new Num(0));
         insertLabel(actual);
     }
     returned = block(vars)
     {
-        insertCmd("POP");
         if(!returned && returns.get(actual) != null)
             throw new MissingReturnException(actual);
     }
@@ -467,14 +514,14 @@ boolean block(ArrayList<String[]> vars)
     <LCURLY>
     {   
         scope.push(new HashMap<String,String>()); 
-        scope.peek().put("__SCOPE__", actual);
+        scope.peek().put("__SCOPE__", flow);
         blocks.push(new Vector<Command>());
         blocks.peek().add(mainJump);
         if(vars != null)
             for(int i = vars.size() -1; i >= 0; i--)
             {
                 if(vars.get(i)[0] == null || vars.get(i)[1] == null)
-                    throw new UndefinedFunctionException(actual);
+                    throw new UndefinedFunctionException(flow);
                 attr(vars.get(i)[1], "=", vars.get(i)[0], "my");
                 insertCmd("POP");
             }
@@ -485,12 +532,6 @@ boolean block(ArrayList<String[]> vars)
                 throw new InvalidOperationException("unreacheable code");
         }
         (
-            expression()
-            { insertCmd("POP"); }
-            <EOL>
-        )
-        |
-        (
             <RET>
             s = expression()
             {
@@ -500,17 +541,27 @@ boolean block(ArrayList<String[]> vars)
             <EOL>
             { returned = true;}
         )
+        |
+        (
+            command()
+        )
     )*
     <RCURLY>
+    
     { 
         keys = scope.peek().keySet().iterator();
         while(keys.hasNext())
             free(keys.next());
         scope.pop();
+        if (vars != null)
+            insertArg("PUSH", new Num(1));
         insertCmd("POP");
         insertArg("PUSH", new Num(0));
         if (vars != null)
+        {
+            insertCmd("SWAP");
             insertCmd("RET");
+        }
         dev = blocks.peek().size();
         mainJump.setAttribute(new Num(dev));
         code = blocks.pop();
@@ -804,6 +855,8 @@ String call(String f)
     }
     insertArg("PUSH", new Num(1));
     insertArg("CALL", new Text(f));
+    insertCmd("SWAP");
+    insertCmd("POP");
     return returns.get(f);
 }}
 
@@ -822,7 +875,7 @@ void attr(String var, String attr, String type, String sc)
         if(!scope.peek().containsKey(var))
         {
             scope.peek().put(var, type);
-            s = actual + "::" + var;
+            s = flow + "::" + var;
             insertArg("ALOC", new Text("[" + s + "]"));
         }
         else
@@ -890,7 +943,7 @@ void free(String s) :
 {}
 {{
     if(s.charAt(0) != '_' || s.charAt(1) != '_')
-        insertArg("FREE", new Text("[" + actual + "::" + s + "]"));
+        insertArg("FREE", new Text("[" + flow + "::" + s + "]"));
 }}
 
 /**
