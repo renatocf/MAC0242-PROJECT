@@ -108,9 +108,9 @@ final public class Stk
         if(!Debugger.debugging()) return;
         
         // Print stack
-        Debugger.print("        [STACK] ");
+        Debugger.print("\033[1;33m", "        [STACK] ");
         for(Stackable stk: rvm.DATA)
             Debugger.print(stk, ", ");
-        Debugger.say("[TOP]");
+        Debugger.say("[TOP]", "\033[0m");
     }
 }
