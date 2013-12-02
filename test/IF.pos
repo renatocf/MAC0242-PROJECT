@@ -1,8 +1,12 @@
-if (0)
+def number whatever(number);
+
+whatever(8);
+
+number whatever(number y)
 {
-    2+2;
-}
-elsif (1)
-{
-    3-2;
+    if(1)
+    {
+        return y+2;
+    }
+    return y;
 }
