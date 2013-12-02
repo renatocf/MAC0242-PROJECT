@@ -6,6 +6,8 @@
     [X] Paint additional info in the end of the game.
     [X] Put the phases of the game in the correct time.
     [X] Correct documentations. (PHASE 3)
+    [ ] Add option for playing again.
+    [ ] Create menu.
     
 [Renato]
     [X] Fix parser.pl to accept many files.
@@ -25,6 +27,8 @@
     [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
+    [ ] Find a way to identify which robot sent a message.
+    [ ] Accept 'import' of other files in Parser.jj.
     
 [Vinícius]
     [X] Add new maps. 
@@ -35,6 +39,7 @@
     [X] Separate robot's images.
     [X] Get new images for invisibility.
     [X] Centralize image view on player's base.
+    [ ] Create Positron Standard Library (PSL)
     
 [All]
     [X] Create insert Army.
@@ -75,14 +80,9 @@
     [X] Describe functions in Parser.jj.
     [X] Finish variables attribution in Parser.jj.
     [X] Describe if-else in Parser.jj.
-    [ ] Find a way to identify which robot sent a message.
     [ ] Describe loops in Parser.jj.
-    [ ] Accept 'import' of other files in Parser.jj.
     [ ] Add buttons to put new robots.
-    [ ] Create Positron Standard Library (PSL)
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
-    [ ] Add option for playing again.
-    [ ] Create menu.
     [ ] Add priority switch-case in the language.
