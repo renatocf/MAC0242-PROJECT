@@ -174,4 +174,24 @@ public class Debugger
             e.printStackTrace();
         }
     }
+    
+    /**
+     * <b>Colors</b><br>
+     * Colors for debugging purposes.
+     */
+    public interface Colors
+    {
+        // Restore default
+        String RESTORE    = "\033[0m";
+        
+        // Default colors
+        String BLACK     = "\033[1;30m";  // Black
+        String RED       = "\033[1;31m";  // Red
+        String GREEN     = "\033[1;32m";  // Green
+        String YELLOW    = "\033[1;33m";  // Yellow
+        String BLUE      = "\033[1;34m";  // Blue
+        String PURPLE    = "\033[1;35m";  // Purple
+        String CYAN      = "\033[1;36m";  // Cyan
+        String WHITE     = "\033[1;37m";  // White
+    }
 }
