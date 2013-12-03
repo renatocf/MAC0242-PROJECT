@@ -170,7 +170,11 @@ public class Positron
 
 PARSER_END(Positron)
 
-SKIP : { " " | "\n" | "\r" | "\r\n" | "\t" }
+SKIP : { 
+    " " | "\n" | "\r" | "\r\n" | "\t" 
+    | <"//" (~["\n"])* "\n"> // C and C++ (or Java) style comments
+    | <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/"> 
+}
 
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
