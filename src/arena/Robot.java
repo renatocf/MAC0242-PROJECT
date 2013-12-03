@@ -128,8 +128,8 @@ public class Robot implements Scenario, Printable
         
         // Combat
         this.damageMelee = 3;
-        this.damageRange = 0;
-        this.maxRange    = 0;
+        this.damageRange = 1;
+        this.maxRange    = 3;
         this.forceShield = 0;
         
         // Capacities
