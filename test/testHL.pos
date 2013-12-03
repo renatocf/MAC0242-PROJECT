@@ -7,9 +7,10 @@ hSquared = square(catA) + square(catB);
 x = 7;
 mulByX(hSquared);
 
+// Comment
 number square(number x)
 {
-    my j = x;
+    my j = x; // Comment
     return x*j;
 }
 
