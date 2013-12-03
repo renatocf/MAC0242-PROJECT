@@ -87,10 +87,11 @@ final public class Tests
         throws WrongTypeException, StackUnderflowException
     {
         // Default answers
+		boolean res;
         Num no = new Num(0), yes = new Num(1);
            
         // Stores the arguments to be tested
-        Stackable arg1 = rvm.DATA.pop(), arg2 = rvm.DATA.pop();
+        Stackable arg2 = rvm.DATA.pop(), arg1 = rvm.DATA.pop();
         
         if(arg1 instanceof Num && arg2 instanceof Num)
         {
@@ -98,10 +99,7 @@ final public class Tests
             Num num1 = (Num) arg1, num2 = (Num) arg2;
             
             // Result of the comparison
-            boolean res = num1.getNumber() == num2.getNumber();
-            
-            // Push true or false accordingly to the comparison
-            if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
+            res = num1.getNumber() == num2.getNumber();
         }
         else if(arg1 instanceof Direction && arg2 instanceof Direction)
         {
@@ -111,49 +109,24 @@ final public class Tests
             // Gets the direction
             String s1 = d1.toString(), s2 = d2.toString();
             
-            // Push true or false accordingly to the comparison
-            if( s1.equals(s2)) 
-                rvm.DATA.push(yes);
-            else rvm.DATA.push(no);
-            
-            String pre = "    [EQ] "; 
-            if(s1.equals(s2))
-            {
-                Debugger.say(pre + "YES");
-                Debugger.say(pre + "stack: " + s1); 
-                Debugger.say(pre + "stack: " + s2);
-            }   
-            else
-            {   
-                Debugger.say(pre + "NO");
-                Debugger.say(pre + "stack: " + s1); 
-                Debugger.say(pre + "stack: " + s2);
-            }
+            // Result of the comparison
+			res = s1.equals(s2);
         }
         else
         {
             String class1 = arg1.getClass().getName();
             String class2 = arg2.getClass().getName();
-            
-            if( class1.equals(class2)) 
-                rvm.DATA.push(yes);
-            else rvm.DATA.push(no);
-            
-            // Debug
-            String pre = "    [EQ] "; 
-            if( arg1.getClass().equals(arg2.getClass()) )
-            {
-                Debugger.say(pre, "YES");
-                Debugger.say(pre, "stack: ", class1); 
-                Debugger.say(pre, "stack: ", class2);
-            }
-            else
-            {
-                Debugger.say(pre, "NO");
-                Debugger.say(pre, "stack: ", class1); 
-                Debugger.say(pre, "stack: ", class2);
-            }
+			
+            // Result of the comparison
+			res = class1.equals(class2);
         }
+            
+		// Push true or false accordingly to the comparison
+		if(res) rvm.DATA.push(yes);
+		else	rvm.DATA.push(no);
+			
+		// Debug
+		Debug.printCmp(rvm, res);
     }
     
     /**
@@ -173,6 +146,7 @@ final public class Tests
         throws StackUnderflowException, WrongTypeException
     {
         // Default answers
+		boolean res;
         Num no = new Num(0), yes = new Num(1);
            
         // Stores the arguments to be tested
@@ -184,35 +158,33 @@ final public class Tests
             Num num1 = (Num) arg1, num2 = (Num) arg2;
             
             // Result of the comparison
-            boolean res = num1.getNumber() != num2.getNumber();
+            res = !(num1.getNumber() == num2.getNumber());
+        }
+        else if(arg1 instanceof Direction && arg2 instanceof Direction)
+        {
+            // Downcasts to direction if the type is correct
+            Direction d1 = (Direction) arg1, d2 = (Direction) arg2;
             
-            // Push true or false accordingly to the comparison
-            if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
+            // Gets the direction
+            String s1 = d1.toString(), s2 = d2.toString();
+            
+            // Result of the comparison
+			res = !s1.equals(s2);
         }
         else
         {
             String class1 = arg1.getClass().getName();
             String class2 = arg2.getClass().getName();
-            
-            if( !class1.equals(class2)) 
-                rvm.DATA.push(yes);
-            else rvm.DATA.push(no);
-            
-            // Debug
-            String pre = "    [NE] "; 
-            if( !arg1.getClass().equals(arg2.getClass()) )
-            {
-                Debugger.say(pre, "YES");
-                Debugger.say(pre, "stack: ", class1); 
-                Debugger.say(pre, "stack: ", class2);
-            }
-            else
-            {
-                Debugger.say(pre, "NO");
-                Debugger.say(pre, "stack: ", class1); 
-                Debugger.say(pre, "stack: ", class2);
-            }
+			
+			res = !class1.equals(class2);
         }
+		
+		// Push true or false accordingly to the comparison
+		if(res) rvm.DATA.push(yes); 
+		else    rvm.DATA.push(no);
+			
+		// Debug
+		Debug.printCmp(rvm, res);
     }
     
     /**
@@ -235,7 +207,7 @@ final public class Tests
         Num no = new Num(0), yes = new Num(1);
            
         // Stores the arguments to be tested
-        Stackable arg1 = rvm.DATA.pop(), arg2 = rvm.DATA.pop();
+        Stackable arg2 = rvm.DATA.pop(), arg1 = rvm.DATA.pop();
         
         if(arg1 instanceof Num && arg2 instanceof Num)
         {
@@ -244,6 +216,9 @@ final public class Tests
             
             // Result of the comparison
             boolean res = cmp.cmp(num1.getNumber(), num2.getNumber());
+			
+			// Debug
+			Debug.printCmp(rvm, res);
             
             // Push true or false accordingly to the comparison
             if(res) { rvm.DATA.push(yes); } else { rvm.DATA.push(no); }
