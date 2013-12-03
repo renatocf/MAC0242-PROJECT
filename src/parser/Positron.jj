@@ -221,14 +221,13 @@ Vector<Command> Start()
            MissingReturnException,
            InvalidOperationException :
 {
-    Positron.actual    = "main";
-    Positron.flow      = "main";
     Positron.count     = 1;
+    Positron.flow      = "main";
+    Positron.actual    = "main";
     Positron.scope     = new Stack   <HashMap<String,String>> ();
     Positron.blocks    = new Stack   <Vector<Command>>        ();
     Positron.returns   = new HashMap <String,String>          ();
     Positron.functions = new HashMap <String,Parameters>      ();
-    
     
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
