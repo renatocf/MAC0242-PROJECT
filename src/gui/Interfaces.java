@@ -32,6 +32,7 @@ import gui.graphical.Graphical;
  */
 public enum Interfaces
 {
+    NONE,
     TEXTUAL,
     GRAPHICAL
 }

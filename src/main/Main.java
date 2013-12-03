@@ -155,9 +155,13 @@ public class Main
                     help = true;
                     break;
                 //
-                case 'd': // --debug
                 case 'v': // --verbose
                     Debugger.init();
+                    break;
+                //
+                case 'd': // --debug
+                    Debugger.init();
+                    GUI = Interfaces.NONE;
                     break;
                 //
                 case 1: Game.WEATHER = Weather.ARTICAL;     break;

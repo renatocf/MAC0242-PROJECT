@@ -111,6 +111,7 @@ final public class World
             Player p = players[i];
             switch(gui)
             {
+                case NONE      : GUI = null;                   break;
                 case TEXTUAL   : GUI = new Textual   (map, p); break;
                 case GRAPHICAL : GUI = new Graphical (map, p); break;
                 default:         GUI = new Graphical (map, p);
