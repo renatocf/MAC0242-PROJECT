@@ -179,12 +179,14 @@ SKIP : {
     | <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/"> 
 }
 
+// Dividers
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
 TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
 
-TOKEN : {< TYPE : "number" | "string" | "void" >}
+// Types
+TOKEN : {< TYPE : "way" | "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
 
 // IO
@@ -201,12 +203,16 @@ TOKEN : {< IF    : "if"     >}
 TOKEN : {< ELSE  : "else"   >}
 TOKEN : {< ELSIF : "elsif"  >}
 
+// Functions
 TOKEN : {< DEF   : "def"    >}
 TOKEN : {< RET   : "return" >}
 
+// Primitive types
+TOKEN : {< WAY      : "->" ( ( "N" | "S" ) ? ( "W" | "E" ) )? >}
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
 
+// Operations
 TOKEN : {< SIGN     : "+"  | "-"  >}
 TOKEN : {< OP       : "*"  | "/" | "%" >}
 TOKEN : {< CMP      : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
@@ -552,8 +558,7 @@ ArrayList<String[]> header()
 
 void prototype() 
     throws UndefinedFunctionException :
-{
-}
+{}
 {
     <DEF>
     header()
@@ -837,17 +842,23 @@ String factor ()
         { s = get(t.image); }
         { return s; }
     |
+    (
+        t = <WAY>
+        { pushWay(t.image.replaceFirst("->", "")); }
+        { return "way";     } 
+    )
+    |
         (
         t = <STRING>
-        { pushString(t.image);     }
-        { return "string"; }
+        { pushString(t.image);  }
+        { return "string";      }
     )
     |
     (
         t = <NUMBER>
-        { value = atof(t); }
-        { pushNumber(value);     }
-        { return "number"; }
+        { value = atof(t);      }
+        { pushNumber(value);    }
+        { return "number";      }
     )
     |
     (
@@ -868,6 +879,18 @@ void pushString(String s) :
 {}
 {{    
     insertArg("PUSH", new Text(s));
+}}
+
+/**
+ * Auxiliar function for pushing 
+ * directions in the assembly.
+ * @param o Pushed direction
+ */
+void pushWay(String s)
+    throws InvalidOperationException :
+{}
+{{    
+    insertArg("PUSH", new Direction(s));
 }}
 
 /**
