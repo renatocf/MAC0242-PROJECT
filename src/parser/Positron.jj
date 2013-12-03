@@ -189,6 +189,11 @@ TOKEN : {< RCURLY : "}" >}
 TOKEN : {< TYPE : "way" | "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
 
+// Syscalls
+TOKEN : {< MOVE   : "move"     >}
+TOKEN : {< FIRE   : "fire"     >}
+TOKEN : {< HIT    : "hit"      >}
+
 // IO
 TOKEN : {< SAY    : "say"      >}
 TOKEN : {< PRINT  : "print"    >}
@@ -300,12 +305,14 @@ Vector<Command> Start()
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
 
-boolean command() 
+boolean command()
     throws WrongTypeException, 
            UndefinedFunctionException,
            MissingReturnException,
            InvalidOperationException :
-{}
+{
+    boolean returns = false;
+}
 {
     (
         (
@@ -318,9 +325,9 @@ boolean command()
             <EOL>
         )
         |
-        loop()
+        returns = loop()
         |
-        conditional()
+        returns = conditional()
         |
         (
             expression()
@@ -328,7 +335,7 @@ boolean command()
             <EOL>
         )
     )
-    { return false; }
+    { return returns; }
 }
 
 //* PRINT *************************************************************/
@@ -344,12 +351,23 @@ void print()
         (
             <LBRACE>
             expression()
+            { insertCmd("PRN"); }
+            (
+                ","
+                expression()
+                { insertCmd("PRN"); }
+            )*
             <RBRACE>
         )
         |
         expression()
+        { insertCmd("PRN"); }
+        (
+            ","
+            expression()
+            { insertCmd("PRN"); }
+        )*
     )
-    { insertCmd("PRN"); }
 }
 
 //* SAY ***************************************************************/
@@ -365,13 +383,24 @@ void println()
         (
             <LBRACE>
             expression()
+            { insertCmd("PRN"); }
+            (
+                ","
+                expression()
+                { insertCmd("PRN"); }
+            )*
             <RBRACE>
         )
         |
         expression()
+        { insertCmd("PRN"); }
+        (
+            ","
+            expression()
+            { insertCmd("PRN"); }
+        )*
     )
     { 
-        insertCmd("PRN"); 
         insertArg("PUSH", new Text("\n"));
         insertCmd("PRN"); 
     }
@@ -407,15 +436,23 @@ boolean loop()
         s = expression()
     )*
     <RBRACE>
-    returned = block(null)
-    { 
-        // Go back to the top
-        insertArg("GET", BLOCK_FLAG);
-        insertArg("JIF", new Text(flow));
-        
-        flow = oldFlow;
-        return returned; 
-    }
+    (
+        (
+            returned = block(null)
+            { 
+                // Go back to the top
+                insertArg("GET", BLOCK_FLAG);
+                insertArg("JIF", new Text(flow));
+                
+                flow = oldFlow;
+                return returned; 
+            }
+        )
+        |
+        <EOL>
+        { insertArg("JIT", new Text(flow)); }
+    )
+    { return false; }
 }
 
 //* IF-ELSIF-ELSE *****************************************************/
@@ -438,11 +475,11 @@ boolean conditional()
     }
     <LBRACE>
     s = expression()
-    { checkTypeError(s); }
+    /*{ checkTypeError(s); }*/
     (
         l = <LOGICAL>
         s = expression()
-        { checkTypeError(s); }
+        /*{ checkTypeError(s); }*/
         { insertCmd(logical(l)); }
     )*
     <RBRACE>
@@ -451,11 +488,11 @@ boolean conditional()
         <ELSIF>
         <LBRACE>
         s = expression()
-        { checkTypeError(s); }
+        /*{ checkTypeError(s); }*/
         (
             l = <LOGICAL>
             s = expression()
-            { checkTypeError(s); }
+            /*{ checkTypeError(s); }*/
             { insertCmd(logical(l)); }
         )*
         <RBRACE>
@@ -476,6 +513,63 @@ boolean conditional()
         flow = oldFlow;
         return returned; 
     }
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                              SYSCALLS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+String syscall()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{
+    String s;
+}
+{
+    (
+        s = hit()
+        |
+        s = move()
+    )
+    { return s; }
+}
+
+
+//* ATTACKS ***********************************************************/
+String hit()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <HIT>
+    <LBRACE>
+    expression()
+    <RBRACE>
+    { insertArg("PUSH", new Num(1));          }
+    { insertArg("PUSH", new Attack("MELEE")); }
+    { insertCmd("HIT");                       }
+    { return "number";                        }
+}
+
+//* MOVE **************************************************************/
+String move()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <MOVE>
+    <LBRACE>
+    expression()
+    <RBRACE>
+    { insertCmd("MOVE"); }
+    { return "number";   }
 }
 
 
@@ -684,9 +778,7 @@ String expression()
     s = arit()
     (
         t = <CMP>
-        { checkTypeError(s); }            
         s = arit()
-        { checkTypeError(s); }
         { insertCmd(cmp(t)); }
     )*
     { return s; }
@@ -843,15 +935,20 @@ String factor ()
         { return s; }
     |
     (
+        s = syscall()
+        { return s; }
+    )
+    |
+    (
         t = <WAY>
         { pushWay(t.image.replaceFirst("->", "")); }
-        { return "way";     } 
+        { return "way";                            }
     )
     |
         (
         t = <STRING>
-        { pushString(t.image);  }
-        { return "string";      }
+        { pushString(t.image.replaceAll("\"", "")); }
+        { return "string";                          }
     )
     |
     (
@@ -909,28 +1006,21 @@ void pushNumber(double n) :
  * a variable number of objects.
  * @param obj List of objects
  */
-
 void insert(String label, String cmd, Stackable arg) :
-{
-
-}
+{}
 {{
     blocks.peek().add(new Command(cmd, arg, label));
 }}
 
 void insertArg(String cmd, Stackable arg) :
-{
-
-}
+{}
 {{
     insert(null, cmd, arg);
     //say(cmd + " " + arg.toString());
 }}
 
 void insertCmd(String cmd) :
-{
-
-}
+{}
 {{
     insert(null, cmd, null);
     //say(cmd);
@@ -942,21 +1032,6 @@ void insertLabel(String label) :
     insert(label, null, null);
     //say(label + ":");
 }}
-
-/*
-void insert(Object ... obj) :
-{
-    String s;
-}
-{{
-    for(Object o: obj)
-    {
-        s = (o == null)? "null" : o.toString();
-        System.out.print(s);
-    }
-    System.out.println();
-}}
-*/
 
 String call(String f) 
     throws UndefinedFunctionException :
