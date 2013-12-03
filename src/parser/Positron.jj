@@ -53,13 +53,14 @@ import exception.UndefinedFunctionException;
 public class Positron 
 {
     // Variables
-    private static int                              count;
-    private static String                           actual;  
-    private static String                           flow;  
-    private static Stack   <HashMap<String,String>> scope;   
-    private static Stack   <Vector<Command>>        blocks;  
-    private static HashMap <String,String>          returns; 
-    private static HashMap <String,Parameters>      functions;
+    private static int                                count;
+    private static String                             actual;  
+    private static String                             flow;
+    private static ArrayList <String>                 magic;  
+    private static Stack     <HashMap<String,String>> scope;   
+    private static Stack     <Vector<Command>>        blocks;  
+    private static HashMap   <String,String>          returns; 
+    private static HashMap   <String,Parameters>      functions;
     
     // Auxiliar variables
     private static Text BLOCK_FLAG = new Text("[BLOCK_FLAG]");
@@ -179,6 +180,9 @@ SKIP : {
     | <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/"> 
 }
 
+// Magic Variables
+TOKEN : {< MAGIC  : "&"("X"|"Y"|"BASE_X"|"BASE_Y")     >}
+
 // Dividers
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
@@ -244,10 +248,11 @@ Vector<Command> Start()
     Positron.count     = 1;
     Positron.flow      = "main";
     Positron.actual    = "main";
-    Positron.scope     = new Stack   <HashMap<String,String>> ();
-    Positron.blocks    = new Stack   <Vector<Command>>        ();
-    Positron.returns   = new HashMap <String,String>          ();
-    Positron.functions = new HashMap <String,Parameters>      ();
+    Positron.magic     = new ArrayList <String>                 ();
+    Positron.scope     = new Stack     <HashMap<String,String>> ();
+    Positron.blocks    = new Stack     <Vector<Command>>        ();
+    Positron.returns   = new HashMap   <String,String>          ();
+    Positron.functions = new HashMap   <String,Parameters>      ();
     
     HashMap<String,String> main   = new HashMap<String,String>();
     Vector<Command>        prog   = new Vector<Command>();
@@ -258,6 +263,9 @@ Vector<Command> Start()
         main.put("__SCOPE__", "main");
         scope.push(main);
         blocks.push(prog);
+        
+        // Magic variables
+        allocMagic();
         
         // Auxiliar variables
         insertArg("ALOC", BLOCK_FLAG);
@@ -282,11 +290,13 @@ Vector<Command> Start()
         keys = scope.peek().keySet().iterator();
         while(keys.hasNext()) free(keys.next());
         
+        insertLabel ("end");        
+
         // Free variables
         insertArg("FREE", BLOCK_FLAG);
+        freeMagic();
         
         // Finish program
-        insertLabel ("end");
         insertCmd   ("END");
         
         // Add a final prog to identify 
@@ -956,6 +966,12 @@ String factor ()
         { return s; }
     |
     (
+        t = <MAGIC>
+        { getMagic(t.image); }
+        { return "number"; }
+    )
+    |
+    (
         s = syscall()
         { return s; }
     )
@@ -1172,6 +1188,42 @@ String get(String var)
     }
     insertArg("GET", new Text("[" + s + "]"));
     return typeof(var);
+}}
+
+/**
+ * Auxiliar function for magic variables.
+ */
+void allocMagic() :
+{}
+{{
+    magic.add("&X");
+    magic.add("&Y");
+    magic.add("&BASE_X");
+    magic.add("&BASE_Y");
+    
+    insertLabel("magic_variables");
+    for(String var: magic)
+        insertArg("ALOC", new Text("[" + var + "]"));
+}}
+
+/**
+ * Auxiliar function to free the magic variables.
+ */
+void freeMagic() :
+{}
+{{
+    for(String var: magic)   free(var);
+}}
+
+/**
+ * Insert a GET for a magic variable.
+ * @param var  Token of the variable
+ */
+void getMagic(String var) 
+    throws WrongTypeException :
+{}
+{{
+    insertArg("GET", new Text("[" + var + "]"));
 }}
 
 String declared(String var) :
