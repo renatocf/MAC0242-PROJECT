@@ -532,6 +532,8 @@ String syscall()
 }
 {
     (
+        s = fire()
+        |
         s = hit()
         |
         s = move()
@@ -557,6 +559,26 @@ String hit()
     { return "number";                        }
 }
 
+String fire()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <FIRE>
+    <LBRACE>
+    expression()
+    ","
+    expression()
+    ","
+    expression()
+    <RBRACE>
+    { insertArg("PUSH", new Num(3));           }
+    { insertArg("PUSH", new Attack("RANGED")); }
+    { insertCmd("HIT");                        }
+    { return "number";                         }
+}
+
 //* MOVE **************************************************************/
 String move()
     throws WrongTypeException, 
@@ -571,7 +593,6 @@ String move()
     { insertCmd("MOVE"); }
     { return "number";   }
 }
-
 
 /*
 ////////////////////////////////////////////////////////////////////////
