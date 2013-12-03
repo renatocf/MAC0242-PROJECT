@@ -104,4 +104,14 @@ final class Debug
     {
         Debugger.say(ColorJump, "        [GOTO] ", PURPLE, rvm.PC+1, RESTORE);
     }
+    
+    /**
+     * Auxiliar function for debugging comparisons.<br>
+     * @param rvm Virtual Machine
+     */
+    final static void printCmp(RVM rvm, boolean yes)
+    {
+        Debugger.say(ColorJump, "        [CMP] ", PURPLE, yes ? "TRUE" : "FALSE", RESTORE);
+        printStack(rvm);
+    }
 }
