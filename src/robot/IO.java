@@ -45,7 +45,7 @@ final public class IO
     {
         try
         {
-            System.out.println(rvm.DATA.pop());
+            System.out.print(rvm.DATA.pop());
         }
         catch (Exception e)
         {
