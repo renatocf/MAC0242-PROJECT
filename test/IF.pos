@@ -1,12 +1,22 @@
 def number whatever(number);
 
-whatever(8);
+my x = 0;
+x = whatever(0);
 
 number whatever(number y)
 {
-    if(1)
+    if(y > 10)
     {
-        return y+2;
+        y = y+2;
+        // return y+2;
     }
+	elsif(y < 5)
+	{
+		y = x;
+	}
+	else
+	{
+		y = 1;
+	}
     return y;
 }
