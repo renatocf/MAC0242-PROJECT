@@ -61,6 +61,9 @@ public class Positron
     private static HashMap <String,String>          returns; 
     private static HashMap <String,Parameters>      functions;
     
+    // Auxiliar variables
+    private static Text BLOCK_FLAG = new Text("[BLOCK_FLAG]");
+    
     // Positron Parser
     private static Positron parser = null;
     
@@ -184,10 +187,16 @@ TOKEN : {< RCURLY : "}" >}
 TOKEN : {< TYPE : "number" | "string" | "void" >}
 TOKEN : {< SCOPE : "my" | "our" >}
 
+// IO
+TOKEN : {< SAY    : "say"      >}
+TOKEN : {< PRINT  : "print"    >}
+
+// Loops
 TOKEN : {< WHILE    : "while"    >}
 TOKEN : {< BREAK    : "break"    >}
 TOKEN : {< CONTINUE : "continue" >}
 
+// Conditional
 TOKEN : {< IF    : "if"     >}
 TOKEN : {< ELSE  : "else"   >}
 TOKEN : {< ELSIF : "elsif"  >}
@@ -238,6 +247,11 @@ Vector<Command> Start()
         main.put("__SCOPE__", "main");
         scope.push(main);
         blocks.push(prog);
+        
+        // Auxiliar variables
+        insertArg("ALOC", BLOCK_FLAG);
+        insertArg("PUSH", new Num(1));
+        insertArg("SET" , BLOCK_FLAG);
     }
     (
         (
@@ -256,6 +270,9 @@ Vector<Command> Start()
         // Free all the remaining variables;
         keys = scope.peek().keySet().iterator();
         while(keys.hasNext()) free(keys.next());
+        
+        // Free variables
+        insertArg("FREE", BLOCK_FLAG);
         
         // Finish program
         insertLabel ("end");
@@ -286,8 +303,18 @@ boolean command()
 {
     (
         (
-            conditional()
+            print()
+            <EOL>
         )
+        |
+        (
+            println()
+            <EOL>
+        )
+        |
+        loop()
+        |
+        conditional()
         |
         (
             expression()
@@ -296,6 +323,52 @@ boolean command()
         )
     )
     { return false; }
+}
+
+//* PRINT *************************************************************/
+void print()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{}
+{
+    <PRINT>
+    (
+        (
+            <LBRACE>
+            expression()
+            <RBRACE>
+        )
+        |
+        expression()
+    )
+    { insertCmd("PRN"); }
+}
+
+//* SAY ***************************************************************/
+void println()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{}
+{
+    <SAY>
+    (
+        (
+            <LBRACE>
+            expression()
+            <RBRACE>
+        )
+        |
+        expression()
+    )
+    { 
+        insertCmd("PRN"); 
+        insertArg("PUSH", new Text("\n"));
+        insertCmd("PRN"); 
+    }
 }
 
 //* WHILE *************************************************************/
@@ -312,9 +385,14 @@ boolean loop()
 }
 {
     <WHILE>
-    { 
+    {
         oldFlow = flow;
         flow = "WHILE" + "_" + count++;
+        insertLabel(flow);
+        
+        // Reset if flag
+        insertArg("PUSH", new Num(1));
+        insertArg("SET", BLOCK_FLAG);
     }
     <LBRACE>
     s = expression()
@@ -325,7 +403,10 @@ boolean loop()
     <RBRACE>
     returned = block(null)
     { 
-        insertCmd("POP");
+        // Go back to the top
+        insertArg("GET", BLOCK_FLAG);
+        insertArg("JIF", new Text(flow));
+        
         flow = oldFlow;
         return returned; 
     }
@@ -349,7 +430,6 @@ boolean conditional()
         oldFlow = flow;
         flow = "IF" + "_" + count++; 
     }
-    { insertArg("PUSH", new Num(1)); }
     <LBRACE>
     s = expression()
     { checkTypeError(s); }
@@ -361,9 +441,8 @@ boolean conditional()
     )*
     <RBRACE>
     returned = block(null) 
-        (
+    (
         <ELSIF>
-        { insertCmd("DUP"); }
         <LBRACE>
         s = expression()
         { checkTypeError(s); }
@@ -374,17 +453,20 @@ boolean conditional()
             { insertCmd(logical(l)); }
         )*
         <RBRACE>
-        { insertCmd("MUL"); }
+        { insertArg("GET", BLOCK_FLAG); }
+        { insertCmd("MUL");          }
         returned = block(null)
     )*
     (
         <ELSE>
-        { insertCmd("DUP"); }        
+        { insertArg("GET", BLOCK_FLAG); }
         returned = block(null)
     )?
      
     { 
-        insertCmd("POP");
+        insertArg("PUSH", new Num(1));
+        insertArg("SET", BLOCK_FLAG);
+        
         flow = oldFlow;
         return returned; 
     }
@@ -497,6 +579,8 @@ void function()
     {
         if(!returned && returns.get(actual) != null)
             throw new MissingReturnException(actual);
+        insertArg("PUSH", new Num(1));
+        insertArg("SET", BLOCK_FLAG);
     }
 }
 
@@ -556,13 +640,12 @@ boolean block(ArrayList<String[]> vars)
         while(keys.hasNext())
             free(keys.next());
         scope.pop();
-        if (vars != null)
-            insertArg("PUSH", new Num(1));
-        insertCmd("POP");
+        
         insertArg("PUSH", new Num(0));
+        insertArg("SET", BLOCK_FLAG);
+        
         if (vars != null)
         {
-            insertCmd("SWAP");
             insertCmd("RET");
         }
         dev = blocks.peek().size();
@@ -698,10 +781,14 @@ String factor ()
             u = <SCOPE>
         )?
         t = <WORD> 
-        v = <ATTR>
-        s = expression()
-        { attr(t.image, v.image, s, u != null ? u.image : null);
-            return s; }
+        (
+            (
+                v = <ATTR>
+                s = expression()
+                { attr(t.image, v.image, s, u != null ? u.image : null); }
+            )
+        )
+        { return s; }
     )
     |
     (
@@ -858,8 +945,6 @@ String call(String f)
     }
     insertArg("PUSH", new Num(1));
     insertArg("CALL", new Text(f));
-    insertCmd("SWAP");
-    insertCmd("POP");
     return returns.get(f);
 }}
 
