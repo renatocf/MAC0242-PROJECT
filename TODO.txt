@@ -28,7 +28,7 @@
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
     [ ] Find a way to identify which robot sent a message.
-    [ ] Accept 'import' of other files in Parser.jj.
+    [ ] Accept 'import' of other files in Positron.jj.
     
 [Vinícius]
     [X] Add new maps. 
@@ -77,10 +77,11 @@
     [X] Add counter for number of robots.
     [X] Create a mini-map graphical representation.
     [X] Fix Fog War/Visibility appearence.
-    [X] Describe functions in Parser.jj.
-    [X] Finish variables attribution in Parser.jj.
-    [X] Describe if-else in Parser.jj.
-    [ ] Describe loops in Parser.jj.
+    [X] Describe functions in Positron.jj.
+    [X] Finish variables attribution in Positron.jj.
+    [X] Describe if-else in Positron.jj.
+    [X] Describe loops in Positron.jj.
+    [X] Create magical variables to Positron.jj
     [ ] Add buttons to put new robots.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
