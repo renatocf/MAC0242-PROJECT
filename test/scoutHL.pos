@@ -1,0 +1,6 @@
+while(move(->E));
+move(->NW);
+move(->NE);
+while(move(->W));
+move(->NE);
+move(->NW);
