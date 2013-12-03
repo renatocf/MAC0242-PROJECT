@@ -1,0 +1,10 @@
+x = 0;
+while(x < 3)
+{
+    move(->W);
+    x += 1;
+}
+
+while(hit(->NW));
+
+while(move(->E));
