@@ -47,6 +47,9 @@ final public class Net
         for(int i = 0; i < rvm.CACHE.length; i++)
             if(rvm.CACHE[i] != null) rvm.DATA.push(rvm.CACHE[i]);
             else rvm.DATA.push(Nil.get());
+        
+        // Debug
+        Debug.printCache(rvm);
     }
     
     /**
@@ -62,5 +65,8 @@ final public class Net
     {
         rvm.CACHE[0] = rvm.DATA.pop(); 
         rvm.CACHE[1] = rvm.DATA.pop(); 
+        
+        // Debug
+        Debug.printCache(rvm);
     }
 }

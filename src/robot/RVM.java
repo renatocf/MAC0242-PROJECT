@@ -170,20 +170,9 @@ public class RVM
                     this.PC--; exec(); this.PC++; 
                 }
                 
-                // Debug: stack
-                Debugger.say  ("[STACK]");
-                Debugger.print("    ");
-                for(Stackable stk: this.DATA)
-                    Debugger.print(stk, ", ");
-                Debugger.say("[TOP]");
-                
-                // Debug: cache
-                Debugger.say  ("[CACHE]");
-                Debugger.print("    [ ");
-                for(int i = 0; i < this.CACHE.length-1; i++)
-                    Debugger.print(this.CACHE[i], " | ");
-                Debugger.print(this.CACHE[this.CACHE.length-1]);
-                Debugger.say(" ]");
+                // Debug
+                Debug.printStack(this);
+                Debug.printCache(this);
                 
                 break;
         }

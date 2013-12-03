@@ -46,7 +46,7 @@ final public class Stk
     static void PUSH(RVM rvm, Stackable st)
     {
         rvm.DATA.push(st);
-        printStack(rvm);
+        Debug.printStack(rvm);
     }
     
     /**
@@ -60,7 +60,7 @@ final public class Stk
     static Stackable POP(RVM rvm) throws StackUnderflowException
     {
         Stackable pop = rvm.DATA.pop();
-        printStack(rvm);
+        Debug.printStack(rvm);
         return pop;
     }
     
@@ -77,7 +77,7 @@ final public class Stk
         Stackable st = rvm.DATA.pop(); 
         rvm.DATA.push(st);
         rvm.DATA.push(st);
-        printStack(rvm);
+        Debug.printStack(rvm);
     }
     
     /**
@@ -95,22 +95,6 @@ final public class Stk
         
         rvm.DATA.push(top);
         rvm.DATA.push(sl);
-        printStack(rvm);
-    }
-    
-    /**
-     * Auxiliar function for debugging 
-     * the main stack.<br>
-     * @param  rvm Virtual Machine
-     */
-    private static void printStack(RVM rvm)
-    {
-        if(!Debugger.debugging()) return;
-        
-        // Print stack
-        Debugger.print("\033[1;33m", "        [STACK] ");
-        for(Stackable stk: rvm.DATA)
-            Debugger.print(stk, ", ");
-        Debugger.say("[TOP]", "\033[0m");
+        Debug.printStack(rvm);
     }
 }

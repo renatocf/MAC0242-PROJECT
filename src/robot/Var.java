@@ -152,7 +152,11 @@ final public class Var
             if(rvm.VARS.containsKey(n))
             {
                 Stackable top = rvm.VARS.get(n);
-                if(top != null) rvm.DATA.push(top);
+                if(top != null) 
+                {
+                    rvm.DATA.push(top);
+                    Debug.printStack(rvm);
+                }
                 else throw new NotInitializedException(n);
             }
             else throw new SegmentationFaultException();
