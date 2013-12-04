@@ -55,10 +55,10 @@ final public class Var
         throws SegmentationFaultException,
                WrongTypeException
     {
-        if(name instanceof Text)
+        if(name instanceof Variable)
         {
-            Text t = (Text) name;
-            String n = t.getText();
+            Variable v = (Variable) name;
+            String n = v.getVariable();
             if(!rvm.VARS.containsKey(n))
                 rvm.VARS.put(n, null);
             else throw new SegmentationFaultException();
@@ -85,10 +85,10 @@ final public class Var
         throws SegmentationFaultException,
                WrongTypeException
     {
-        if(name instanceof Text)
+        if(name instanceof Variable)
         {
-            Text t = (Text) name;
-            String n = t.getText();
+            Variable v = (Variable) name;
+            String n = v.getVariable();
             if(rvm.VARS.containsKey(n))
                 rvm.VARS.remove(n);
             else throw new SegmentationFaultException();
@@ -115,10 +115,10 @@ final public class Var
         throws SegmentationFaultException,
                WrongTypeException
     {
-        if(name instanceof Text)
+        if(name instanceof Variable)
         {
-            Text t = (Text) name;
-            String n = t.getText();
+            Variable v = (Variable) name;
+            String n = v.getVariable();
             if(rvm.VARS.containsKey(n))
                 rvm.VARS.put(n, rvm.DATA.pop());
             else throw new SegmentationFaultException();
@@ -145,10 +145,10 @@ final public class Var
                SegmentationFaultException,
                WrongTypeException
     {
-        if(name instanceof Text)
+        if(name instanceof Variable)
         {
-            Text t = (Text) name;
-            String n = t.getText();
+            Variable v = (Variable) name;
+            String n = v.getVariable();
             if(rvm.VARS.containsKey(n))
             {
                 Stackable top = rvm.VARS.get(n);
