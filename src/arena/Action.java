@@ -61,8 +61,8 @@ public class Action
         String action = op.getAction();
         
         // Try to collect the power to do the action.
-        // If the robot do not have it, returns -1 to
-        // the RVM.
+        // If the robot do not have it, returns NO_ENERGY
+        // to the RVM.
         if (!turn.spendPower(action)) 
         {
             stackable = new Stackable[1]; 
