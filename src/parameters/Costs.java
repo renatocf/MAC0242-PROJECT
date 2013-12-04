@@ -29,6 +29,11 @@ public final class Costs
     public static int ENERGY_CHARGE = 2;
 
     /** 
+     * <b>Energy: None</b>
+     */
+    public static int ENERGY_NONE   = 0;
+
+    /** 
      * <b>Energy: Low</b>
      */
     public static int ENERGY_LOW    = 1;
