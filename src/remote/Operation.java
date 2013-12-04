@@ -104,15 +104,18 @@ public class Operation implements Request
     { 
         // Argument 0: attack type; Argument 1: Number of directions
         if(!(this.arg[0] instanceof Attack)) return false;
-        if(!(this.arg[1] instanceof Num   )) return false;
-        
-        // Check if the number of directions is consistent
-        Num ndirs = (Num) arg[1];
-        if(ndirs.getNumber() != arg.length-2) return false;
-        
-        // Check if the arguments are directions
-        for(int i = 2; i < arg.length; i++)
-            if(!(this.arg[i] instanceof Direction)) return false;
+        if((this.arg[1] instanceof Num))
+        {
+            // Check if the number of directions is consistent
+            Num ndirs = (Num) arg[1];
+            if(ndirs.getNumber() != arg.length-2) return false;
+            
+            // Check if the arguments are directions
+            for(int i = 2; i < arg.length; i++)
+                if(!(this.arg[i] instanceof Direction)) return false;
+        }
+        else if(this.arg[1] instanceof Coordinate) {}
+        else return false;
  
         // Otherwise, it's all right       
         return true;
