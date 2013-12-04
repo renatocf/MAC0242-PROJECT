@@ -51,10 +51,7 @@ final class Debug
         Debugger.print(ColorStack, "        [STACK] ", RESTORE);
         for(Stackable stk: rvm.DATA)
         {
-            if(stk instanceof Num)       Debugger.print(PURPLE, stk, RESTORE);
-            else if(stk instanceof Text) Debugger.print(PURPLE, '"', stk, '"', RESTORE);
-            else                         Debugger.print(stk);
-            
+            printStackable(stk);
             Debugger.print(", ");
         }
         Debugger.say(ColorStack, "[TOP]", RESTORE);
@@ -83,21 +80,25 @@ final class Debug
      * Auxiliar function for debugging 
      * the command being executed.<br>
      * @param rvm Virtual Machine
+     * @param arg Stackable to be printed as argument to the command
      */
-    final static void printCommand(String command, Stackable arg)
+    final static void printCommand(String command, Stackable stk)
     {
         if(!Debugger.debugging()) return;
         
         // Debug
         Debugger.print(" ", ColorCommand, command, RESTORE);
-        if(arg != null) Debugger.print(" ", arg);
+        if(stk != null)
+        { 
+            Debugger.print(" ");
+            printStackable(stk);
+        }
         Debugger.say();
         if(command.equals("END")) Debugger.say("===========");
     }
     
     /**
-     * Auxiliar function for debugging 
-     * the jumps.<br>
+     * Auxiliar function for debugging the jumps.<br>
      * @param rvm Virtual Machine
      */
     final static void printJump(RVM rvm)
@@ -108,10 +109,32 @@ final class Debug
     /**
      * Auxiliar function for debugging comparisons.<br>
      * @param rvm Virtual Machine
+     * @param yes Comparison answer (true/false)
      */
     final static void printCmp(RVM rvm, boolean yes)
     {
         Debugger.say(ColorJump, "        [CMP] ", PURPLE, yes ? "TRUE" : "FALSE", RESTORE);
         printStack(rvm);
+    }
+    
+    /**
+     * Auxiliar function for debugging the program counter (PC).<br>
+     * @param PC Program Counter
+     */
+    final static void printPC(int PC)
+    {
+        Debugger.printf("[PC:%3d]", PC); 
+    }
+    
+    /**
+     * Auxiliar function for printing a stackable with the
+     * right colors related to it.
+     * @param stk Stackable to be printed as argument to the command
+     */
+    private static void printStackable(Stackable stk)
+    {
+        if(stk instanceof Num)       Debugger.print(PURPLE, stk, RESTORE);
+        else if(stk instanceof Text) Debugger.print(PURPLE, '"', stk, '"', RESTORE);
+        else                         Debugger.print(stk);
     }
 }
