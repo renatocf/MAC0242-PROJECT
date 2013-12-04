@@ -299,99 +299,156 @@ public class Action
         Stackable[] ret = new Stackable[1];
         Stackable[] s = op.getArgument();
         
-        Attack      atk  = (Attack) s[0];
-        Num         num  = (Num)    s[1];
-        Direction[] dirs = new Direction[(int)num.getNumber()];
-        
         int damage = 0;
-        int distance = (int) num.getNumber();
+        Attack atk = (Attack) s[0];
         
-        // TODO: PROBLEMS HERE ↓ 
-        // If we add more commands to HIT, we 
-        // need to change this +2.
-        for(int i = 0; i < distance; i++)
-            dirs[i] = (Direction) s[i + 2];
-        
-        switch (atk.getAttack())
-        {
-            case "MELEE" : damage = turn.damageMelee; 
-                           if(distance > 1)
-                           {
-                                ret[0] = new Num(OUT_OF_RANGE);
-                                return ret;
-                           }    
-                           break;
-            case "RANGED": damage = turn.damageRange; 
-                           if(distance > turn.maxRange)
-                           {
-                                ret[0] = new Num(OUT_OF_RANGE);
-                                return ret;
-                           }    
-                           break;
-        }
-        
-        // Debug
-        String directions = "";
-        for(Direction d: dirs) directions += d.toString() + " ";
-        
-        int lookI = turn.i;
-        int lookJ = turn.j;
         Scenario thing = null;
+        int lookI = turn.i, lookJ = turn.i;
         
-        Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
-        Debugger.say("    [HIT]", " ", directions);
-        
-        for(Direction d: dirs)
+        if(s[1] instanceof Coordinate)
         {
-            int[] update = d.get(lookI);
+            Coordinate coord = (Coordinate) s[1];
+            int targetI = coord.getI(), targetJ = coord.getJ();
             
-            lookI += update[0];
-            lookJ += update[1];
-            
-            if(lookI >= MAP_SIZE
-            || lookJ >= MAP_SIZE
-            || lookI < 0
-            || lookJ < 0)
+            int range = 1;
+            switch (atk.getAttack())
             {
-                ret[0] = new Num(END_OF_MAP);
-                return ret;
-            }    
+                case "MELEE" : damage = turn.damageMelee; 
+                               range = 1;
+                               break;
+                case "RANGED": damage = turn.damageRange; 
+                               range = turn.maxRange;
+                               break;
+            }
+            
+            for(int i = 0; i < range; i++)
+            {
+                int Δi = targetI - lookI;
+                int Δj = targetJ - lookJ;
+                
+                if(Δj == 0)
+                {
+                    if(Δi > 0) lookI += 1;
+                    if(Δi < 0) lookI -= 1;
+                }
+                
+                if(Δi == 0)
+                {
+                    if(Δj > 0) lookJ += 1;
+                    if(Δj < 0) lookJ -= 1;
+                }
+                else
+                {
+                    if(Δj < 0) lookJ += -1 * lookI%2;
+                    if(Δj > 0) lookJ +=  1 * lookI%2;
+                    lookI += (Δi > 0) ? 1 : -1;
+                }
+                
+                if(lookI >= MAP_SIZE
+                || lookJ >= MAP_SIZE
+                || lookI < 0
+                || lookJ < 0)
+                {
+                    ret[0] = new Num(END_OF_MAP);
+                    return ret;
+                }    
+                
+                thing = map.map[lookI][lookJ].getScenario();
+                if(thing != null) break;
+            }
+        }
+        else if(s[1] instanceof Num)
+        {
+            Num         num  = (Num)    s[1];
+            Direction[] dirs = new Direction[(int)num.getNumber()];
+            
+            int distance = (int) num.getNumber();
+            
+            // TODO: PROBLEMS HERE ↓ 
+            // If we add more commands to HIT, we 
+            // need to change this +2.
+            for(int i = 0; i < distance; i++)
+                dirs[i] = (Direction) s[i + 2];
+            
+            switch (atk.getAttack())
+            {
+                case "MELEE" : damage = turn.damageMelee; 
+                               if(distance > 1)
+                               {
+                                    ret[0] = new Num(OUT_OF_RANGE);
+                                    return ret;
+                               }    
+                               break;
+                case "RANGED": damage = turn.damageRange; 
+                               if(distance > turn.maxRange)
+                               {
+                                    ret[0] = new Num(OUT_OF_RANGE);
+                                    return ret;
+                               }    
+                               break;
+            }
             
             // Debug
-            Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
-                        
-            thing = map.map[lookI][lookJ].getScenario();
-            if(thing != null)
+            String directions = "";
+            for(Direction d: dirs) directions += d.toString() + " ";
+            
+            Debugger.say("    [HIT]", "[", atk.getAttack() + "]");
+            Debugger.say("    [HIT]", " ", directions);
+            
+            for(Direction d: dirs)
             {
-                // No attacks against allies!
-                if(thing.getTeam() == turn.getTeam())
+                int[] update = d.get(lookI);
+                
+                lookI += update[0];
+                lookJ += update[1];
+                
+                if(lookI >= MAP_SIZE
+                || lookJ >= MAP_SIZE
+                || lookI < 0
+                || lookJ < 0)
                 {
-                    Debugger.say("    [HIT]", "[NONE]");
-                    Debugger.say("    [HIT] ", thing, " is an ally");
                     ret[0] = new Num(END_OF_MAP);
-                    return ret; 
-                }
+                    return ret;
+                }    
                 
-                int done = thing.takeDamage(damage);
-                Debugger.say("    [HIT]", "[FIGHT]");
-                Debugger.say("         [DAMAGE:", damage, "]");
-                Debugger.say("         [REMAIN:", done  , "]"); 
-                
-                if(thing.getHP() <= 0) 
-                {                 
-                    Debugger.say("    [HIT]", "[DESTROYED]");
-                    World.destroy(lookI, lookJ);
-                }
-                break;
-            }
-        }   
+                // Debug
+                Debugger.say("    [HIT]", map.map[lookI][lookJ]); 
+                            
+                thing = map.map[lookI][lookJ].getScenario();
+                if(thing != null) break;
+            }   
+        }
         
+        // Attack in the air
         if(thing == null) 
         {
             Debugger.say("    [HIT]", "[EMPTY]");
             ret[0] = new Num(NO_TARGET);
             return ret;
         }
+        
+        // No attacks against allies!
+        if(thing.getTeam() == turn.getTeam())
+        {
+            Debugger.say("    [HIT]", "[NONE]");
+            Debugger.say("    [HIT] ", thing, " is an ally");
+            ret[0] = new Num(END_OF_MAP);
+            return ret; 
+        }
+        
+        // Thing take damage
+        int done = thing.takeDamage(damage);
+        Debugger.say("    [HIT]", "[FIGHT]");
+        Debugger.say("         [DAMAGE:", damage, "]");
+        Debugger.say("         [REMAIN:", done  , "]"); 
+        
+        // If its HP are below 0
+        if(thing.getHP() <= 0) 
+        {                 
+            Debugger.say("    [HIT]", "[DESTROYED]");
+            World.destroy(lookI, lookJ);
+        }
+        
         ret[0] = new Num(SUCCEDED);
         return ret;
     }
