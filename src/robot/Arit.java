@@ -67,7 +67,20 @@ final public class Arit
             double ans = op.op(b.getNumber(), a.getNumber());
             rvm.DATA.push(new Num(ans));
         }
-        else { throw new WrongTypeException("Num"); }
+        else if(arg1 instanceof Coordinate && arg2 instanceof Coordinate)
+        {
+            Coordinate a = (Coordinate) arg1, b = (Coordinate) arg2;
+            
+            double a1 = a.getCoordinate()[0];
+            double a2 = a.getCoordinate()[1];
+            double b1 = b.getCoordinate()[0];
+            double b2 = b.getCoordinate()[1];
+            
+            double ans1 = op.op(b1, a1);
+            double ans2 = op.op(b2, a2);
+            rvm.DATA.push(new Coordinate(ans1, ans2));
+        }
+        else { throw new WrongTypeException("Num or Coordinate"); }
     }
 
     /**
