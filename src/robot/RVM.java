@@ -152,7 +152,7 @@ public class RVM
                 while(!this.syscall && c < ASM_MAX_RUN) 
                 { 
                     if(this.PROG.elementAt(this.PC) == null) this.PC = 0;
-                    Debugger.printf("[PC:%3d]", this.PC); 
+                    Debug.printPC(this.PC);
                     exec(); this.PC++; c++; 
                 }
                 break;
