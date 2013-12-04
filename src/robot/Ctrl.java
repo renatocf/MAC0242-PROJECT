@@ -141,6 +141,10 @@ final public class Ctrl
             case "READ": Net.READ   (rvm);      break;
             case "WRT" : Net.WRT    (rvm);      break;
             
+            // Type Cast
+            case "COOR": Cast.COOR  (rvm);      break;
+            case "GTIJ": Cast.GTIJ  (rvm);      break;
+            
             // Base case
             default: throw new InvalidOperationException(met);
         }
