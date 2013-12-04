@@ -85,6 +85,7 @@
     [X] Create magical variables to Positron.jj
     [ ] Make ASK a zero-cost syscall.
     [ ] Implement ASK for getting info.
+    [ ] Stackable of coordinates.
     [ ] Try (try) to add arrays of stackables.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
