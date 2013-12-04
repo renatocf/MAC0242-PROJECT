@@ -7,6 +7,7 @@
     [X] Put the phases of the game in the correct time.
     [X] Correct documentations. (PHASE 3)
     [ ] Add option for playing again.
+    [ ] Add buttons to put new robots.
     [ ] Create menu.
     
 [Renato]
@@ -82,7 +83,9 @@
     [X] Describe if-else in Positron.jj.
     [X] Describe loops in Positron.jj.
     [X] Create magical variables to Positron.jj
-    [ ] Add buttons to put new robots.
+    [ ] Make ASK a zero-cost syscall.
+    [ ] Implement ASK for getting info.
+    [ ] Try (try) to add arrays of stackables.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
