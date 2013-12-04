@@ -62,8 +62,4 @@ class EditorFrame extends JFrame
     {
         return this.txtPane.getText();
     }
-        
-        
-        
-    
 }
