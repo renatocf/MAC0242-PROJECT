@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 
 class Menu extends JPanel 
 {
+    private javax.swing.JButton botao1;
+
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);

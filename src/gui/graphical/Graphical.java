@@ -99,4 +99,10 @@ public class Graphical implements GUI
     {
         this.mapFrame.looser();
     }
+    
+    // ---
+    public int showMenu()
+    {
+        return this.mapFrame.menuVisit();
+    }
 }

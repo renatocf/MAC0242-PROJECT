@@ -85,6 +85,7 @@ final public class World
     genesis(int np, int nAI, Weather w, Interfaces gui, Random rand)
         throws InvalidOperationException
     {
+    
         // Set game configurations
         World.nAI = nAI;
         World.nActivePlayers = World.nPlayers = np;
@@ -409,5 +410,11 @@ final public class World
        throws InvalidOperationException
     {
         return Action.ctrl(map, turn, op);
+    }
+    
+    // ---
+    public static int menuOptions(int i)
+    {
+        return GUI.showMenu();
     }
 }

@@ -53,6 +53,7 @@ class MapFrame extends JFrame
     
     // Internal structures
     protected Panel screen;
+    protected Menu menu;
     private JTextArea log;
     
     private javax.swing.JButton botao1;
@@ -164,8 +165,9 @@ class MapFrame extends JFrame
         this.screen.repaint();
     }
     
-    void menuVisit()
+    int menuVisit()
     {
+        return 1;
         this.screen.setVisible(false);
     }
     
@@ -180,6 +182,11 @@ class MapFrame extends JFrame
          this.add(button1);
         this.screen.setGamePhase(Phase.LOOSER, -1, -1, -1);
         this.screen.repaint();
+        
+        //Time: 100 seconds
+        
+        this.screen.setVisible(false);
+        this.menu.setVisible(true);        
     }
     
     /**

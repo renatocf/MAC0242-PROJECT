@@ -90,18 +90,24 @@ public class Main
         }
         
         String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
-        for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
-            p[1].insertArmy(names[i], args[i]);
-        
-        // Game main loop
-        if(Debugger.debugging()) 
+        // ---
+        while(true)
         {
-            for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
-            System.exit(0);
+            for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
+                p[1].insertArmy(names[i], args[i]);
+            
+            // Game main loop
+            if(Debugger.debugging()) 
+            {
+                for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
+                System.exit(0);
+            }
+            
+            // Run ad infinitum if not debugging
+            while(World.timeStep());
+            
+            World.menuOptions(0);
         }
-        
-        // Run ad infinitum if not debugging
-        while(World.timeStep());
         System.exit(0);
     }
     
