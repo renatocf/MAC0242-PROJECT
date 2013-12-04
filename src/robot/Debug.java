@@ -30,10 +30,12 @@ import static parameters.Debugger.Colors.*;
  */
 final class Debug
 {
+    final private static String ColorPC      = YELLOW;
+    final private static String ColorJump    = RED;
     final private static String ColorStack   = GREEN;
     final private static String ColorCache   = RED;
+    final private static String ColorLabel   = BLUE;
     final private static String ColorCommand = YELLOW;
-    final private static String ColorJump    = RED;
     
     // No instances of this class allowed
     private Debug() {}
@@ -51,7 +53,7 @@ final class Debug
         Debugger.print(ColorStack, "        [STACK] ", RESTORE);
         for(Stackable stk: rvm.DATA)
         {
-            printStackable(stk);
+            Debugger.print(formatStackable(stk));
             Debugger.print(", ");
         }
         Debugger.say(ColorStack, "[TOP]", RESTORE);
@@ -77,32 +79,13 @@ final class Debug
     }
     
     /**
-     * Auxiliar function for debugging 
-     * the command being executed.<br>
-     * @param rvm Virtual Machine
-     * @param arg Stackable to be printed as argument to the command
-     */
-    final static void printCommand(String command, Stackable stk)
-    {
-        if(!Debugger.debugging()) return;
-        
-        // Debug
-        Debugger.print(" ", ColorCommand, command, RESTORE);
-        if(stk != null)
-        { 
-            Debugger.print(" ");
-            printStackable(stk);
-        }
-        Debugger.say();
-        if(command.equals("END")) Debugger.say("===========");
-    }
-    
-    /**
      * Auxiliar function for debugging the jumps.<br>
      * @param rvm Virtual Machine
      */
     final static void printJump(RVM rvm)
     {
+        if(!Debugger.debugging()) return;
+        
         Debugger.say(ColorJump, "        [GOTO] ", PURPLE, rvm.PC+1, RESTORE);
     }
     
@@ -113,6 +96,8 @@ final class Debug
      */
     final static void printCmp(RVM rvm, boolean yes)
     {
+        if(!Debugger.debugging()) return;
+        
         Debugger.say(ColorJump, "        [CMP] ", PURPLE, yes ? "TRUE" : "FALSE", RESTORE);
         printStack(rvm);
     }
@@ -123,7 +108,54 @@ final class Debug
      */
     final static void printPC(int PC)
     {
-        Debugger.printf("[PC:%3d]", PC); 
+        if(!Debugger.debugging()) return;
+        
+        Debugger.print(ColorPC);
+        Debugger.printf("%3d ", PC); 
+        Debugger.print(RESTORE);
+    }
+    
+    /**
+     * Auxiliar function for printing 
+     * the label of a given line.
+     * @param label Label
+     */ 
+    final static void printLabel(String label)
+    {
+        if(!Debugger.debugging()) return;
+        
+        if(label == null || label.equals("")) return;
+        Debugger.say(ColorLabel, label, RESTORE, ":");
+    }
+    
+    /**
+     * Auxiliar function for debugging 
+     * the command being executed.<br>
+     * @param rvm     Virtual Machine
+     * @param command Name of the command
+     *                to be executed
+     * @param stk     Command arguments
+     *                (if any)
+     */
+    final static void printCommand(RVM rvm, String command, Stackable stk)
+    {
+        if(!Debugger.debugging()) return;
+        
+        // Debug
+        if(rvm.activity == State.SLEEP)
+        {
+            Debugger.print(ColorCommand);
+            Debugger.print("    [", command, "]");
+            Debugger.print(RESTORE);
+        }
+        else 
+        { 
+            Debugger.print  (ColorCommand, "    ");
+            Debugger.printf ("%-4s   ", command);
+            Debugger.print  (RESTORE, " ");
+            if(stk != null) Debugger.print (formatStackable(stk));
+        }
+        Debugger.say();
     }
     
     /**
@@ -131,10 +163,11 @@ final class Debug
      * right colors related to it.
      * @param stk Stackable to be printed as argument to the command
      */
-    private static void printStackable(Stackable stk)
+    private static String formatStackable(Stackable stk)
     {
-        if(stk instanceof Num)       Debugger.print(PURPLE, stk, RESTORE);
-        else if(stk instanceof Text) Debugger.print(PURPLE, '"', stk, '"', RESTORE);
-        else                         Debugger.print(stk);
+        if(stk instanceof Direction) return PURPLE + stk + RESTORE;
+        else if(stk instanceof Num)  return PURPLE + stk + RESTORE;
+        else if(stk instanceof Text) return PURPLE + '"' + stk + '"' + RESTORE;
+        else                         return stk.toString();
     }
 }
