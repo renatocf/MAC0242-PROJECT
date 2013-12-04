@@ -63,7 +63,7 @@ public class Positron
     private static HashMap   <String,Parameters>      functions;
     
     // Auxiliar variables
-    private static Text BLOCK_FLAG = new Text("[BLOCK_FLAG]");
+    private static Variable BLOCK_FLAG = new Variable("BLOCK_FLAG");
     
     // Positron Parser
     private static Positron parser = null;
@@ -1099,7 +1099,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.peek().put(var, type);
             s = flow + "::" + var;
-            insertArg("ALOC", new Text("[" + s + "]"));
+            insertArg("ALOC", new Variable(s));
         }
         else
             throw new InvalidOperationException("\"my\"");
@@ -1110,7 +1110,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.get(0).put(var, type);
             s = "main" + "::" + var;
-            insertArg("ALOC", new Text("[" + s + "]"));
+            insertArg("ALOC", new Variable(s));
         }
         else
             throw new InvalidOperationException("\"our\"");
@@ -1122,7 +1122,7 @@ void attr(String var, String attr, String type, String sc)
         {
             scope.get(0).put(var, type);
             s = "main" + "::" + var;
-            insertArg("ALOC", new Text("[" + s + "]"));
+            insertArg("ALOC", new Variable(s));
         }
     }
     
@@ -1131,42 +1131,42 @@ void attr(String var, String attr, String type, String sc)
     {
         case "="  : break;
         case "+=" : checkTypeError(type);
-                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertArg("GET", new Variable(s)); 
                     insertCmd("ADD"); 
                     break;
         
         case "-=" : checkTypeError(type);
-                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertArg("GET", new Variable(s)); 
                     insertCmd("SWAP"); 
                     insertCmd("SUB"); 
                     break;
                     
         case "*=" : checkTypeError(type);
-                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertArg("GET", new Variable(s)); 
                     insertCmd("MUL"); 
                     break;
                     
         case "/=" : checkTypeError(type);
-                    insertArg("GET", new Text("[" + s + "]")); 
+                    insertArg("GET", new Variable(s)); 
                     insertCmd("SWAP");
                     insertCmd("DIV"); 
                     break;
                     
         case "%=" : checkTypeError(type);
-                    insertArg("GET", new Text("[" + s + "]"));
+                    insertArg("GET", new Variable(s));
                     insertCmd("SWAP");
                     insertCmd("MOD"); 
                     break;
     } 
     
-    insertArg("SET", new Text("[" + s + "]")); insertArg("GET", new Text("[" + s + "]"));
+    insertArg("SET", new Variable(s)); insertArg("GET", new Variable(s));
 }}
 
 void free(String s) :
 {}
 {{
     if(s.charAt(0) != '_' || s.charAt(1) != '_')
-        insertArg("FREE", new Text("[" + flow + "::" + s + "]"));
+        insertArg("FREE", new Variable(flow + "::" + s));
 }}
 
 /**
@@ -1182,11 +1182,11 @@ String get(String var)
     {
         scope.get(0).put(var, "number");
         s = "main" + "::" + var;
-        insertArg("ALOC", new Text("[" + s + "]"));
+        insertArg("ALOC", new Variable(s));
         pushNumber(0);
-        insertArg("SET", new Text("[" + s + "]"));
+        insertArg("SET", new Variable(s));
     }
-    insertArg("GET", new Text("[" + s + "]"));
+    insertArg("GET", new Variable(s));
     return typeof(var);
 }}
 
@@ -1203,7 +1203,7 @@ void allocMagic() :
     
     insertLabel("magic_variables");
     for(String var: magic)
-        insertArg("ALOC", new Text("[" + var + "]"));
+        insertArg("ALOC", new Variable(var));
 }}
 
 /**
@@ -1223,7 +1223,7 @@ void getMagic(String var)
     throws WrongTypeException :
 {}
 {{
-    insertArg("GET", new Text("[" + var + "]"));
+    insertArg("GET", new Variable(var));
 }}
 
 String declared(String var) :
