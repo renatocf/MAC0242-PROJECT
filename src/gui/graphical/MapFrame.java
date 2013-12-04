@@ -55,6 +55,8 @@ class MapFrame extends JFrame
     protected Panel screen;
     private JTextArea log;
     
+    private javax.swing.JButton botao1;
+    
     /** 
      * Default constructor.<br>
      * @param map    Object of the class map
@@ -157,7 +159,14 @@ class MapFrame extends JFrame
     void winner(int nTS, int nPlayers, int nRobots)
     {
         this.screen.setGamePhase(Phase.WINNER, nTS, nPlayers, nRobots);
+        JButton button1 = new JButton("Java");
+         this.add(button1);
         this.screen.repaint();
+    }
+    
+    void menuVisit()
+    {
+        this.screen.setVisible(false);
     }
     
     /** 
@@ -167,6 +176,8 @@ class MapFrame extends JFrame
     void looser()
     {
         /* '-1' for all info not used (players/time steps/robots) */
+        JButton button1 = new JButton("Java");
+         this.add(button1);
         this.screen.setGamePhase(Phase.LOOSER, -1, -1, -1);
         this.screen.repaint();
     }
