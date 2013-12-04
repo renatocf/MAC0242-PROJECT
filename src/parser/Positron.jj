@@ -190,13 +190,14 @@ TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
 
 // Types
-TOKEN : {< TYPE : "way" | "number" | "string" | "void" >}
+TOKEN : {< TYPE : "way" | "number" | "string" | "void" | "coord" >}
 TOKEN : {< SCOPE : "my" | "our" >}
 
 // Syscalls
+TOKEN : {< ASK    : "ask"      >}
+TOKEN : {< HIT    : "hit"      >}
 TOKEN : {< MOVE   : "move"     >}
 TOKEN : {< FIRE   : "fire"     >}
-TOKEN : {< HIT    : "hit"      >}
 
 // IO
 TOKEN : {< SAY    : "say"      >}
@@ -542,6 +543,8 @@ String syscall()
 }
 {
     (
+        s = ask()
+        |
         s = fire()
         |
         s = hit()
@@ -551,6 +554,27 @@ String syscall()
     { return s; }
 }
 
+//* ASK ***************************************************************/
+String ask()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <ASK>
+    (
+        (
+            <LBRACE>
+            expression()
+            { insertCmd("ASK"); }
+            <RBRACE>
+        )
+        |
+        expression()
+        { insertCmd("ASK"); }
+    )
+    { return "coord"; }
+}
 
 //* ATTACKS ***********************************************************/
 String hit()
@@ -578,12 +602,7 @@ String fire()
     <FIRE>
     <LBRACE>
     expression()
-    ","
-    expression()
-    ","
-    expression()
     <RBRACE>
-    { insertArg("PUSH", new Num(3));           }
     { insertArg("PUSH", new Attack("RANGED")); }
     { insertCmd("HIT");                        }
     { return "number";                         }
@@ -972,6 +991,11 @@ String factor ()
     )
     |
     (
+        coord()
+        { return "coord"; }
+    )
+    |
+    (
         s = syscall()
         { return s; }
     )
@@ -1002,6 +1026,22 @@ String factor ()
         { return s; }
     )
     
+}
+
+void coord() 
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{
+    String s;
+}
+{
+    "["
+    s = expression()
+    ","
+    s = expression()
+    "]"
+    { insertCmd("COOR"); }
 }
 
 /**
@@ -1212,7 +1252,8 @@ void allocMagic() :
 void freeMagic() :
 {}
 {{
-    for(String var: magic)   free(var);
+    for(String var: magic)
+        insertArg("FREE", new Variable(var));
 }}
 
 /**
@@ -1369,7 +1410,7 @@ private void checkTypeError(String s)
 {}
 {{
     if (s != null)
-        if(!s.equals("number"))
-            throw new WrongTypeException("number");
+        if(!s.equals("number") && !s.equals("coord"))
+            throw new WrongTypeException("number or coord");
             
 }}
