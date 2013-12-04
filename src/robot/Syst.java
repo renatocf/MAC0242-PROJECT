@@ -155,15 +155,25 @@ final public class Syst
         if(rvm.activity == State.ACTIVE)
         {
             Stackable atk = rvm.DATA.pop();
-            Stackable num = rvm.DATA.pop();
+            Stackable stk = rvm.DATA.pop();
             
-            /* Get number of directions */
-            int ndirs = (int) ((Num)num).getNumber();
-            
-            rvm.DATA.push(num);
-            rvm.DATA.push(atk);
-            
-            action(rvm, "HIT", ndirs + 2);
+            if(stk instanceof Num)
+            {
+                /* Get number of directions */
+                int ndirs = (int) ((Num)stk).getNumber();
+                
+                rvm.DATA.push(stk);
+                rvm.DATA.push(atk);
+                
+                action(rvm, "HIT", ndirs + 2);
+            }
+            else // coordinate
+            {
+                rvm.DATA.push(stk);
+                rvm.DATA.push(atk);
+                
+                action(rvm, "HIT", 2);
+            }
         }
         // No pushes will be done in the return 
         else action(rvm, "HIT", 0);
