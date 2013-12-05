@@ -53,10 +53,14 @@ class MapFrame extends JFrame
     
     // Internal structures
     protected Panel screen;
+<<<<<<< HEAD
     protected Menu menu;
+=======
+    protected static Menu menu;
+>>>>>>> master
     private JTextArea log;
     
-    private javax.swing.JButton botao1;
+    private javax.swing.JButton menuButton1;
     
     /** 
      * Default constructor.<br>
@@ -137,6 +141,10 @@ class MapFrame extends JFrame
                 @Override
                 public void run() { setVisible(true); }
             });
+            
+            //---
+            JButton menuButton1 = new JButton("Reiniciar");
+            menu.add(menuButton1);
     }
     
     /**
@@ -238,4 +246,10 @@ class MapFrame extends JFrame
             }
         });
     }
+    
+    public static int optionsMenu()
+    {
+        return menu.iterator();
+    }
+    
 }

@@ -25,6 +25,7 @@
     [X] Add 'network system' between robots on assembly.
     [X] Join parser in the main program.
     [X] Make the RVM's read the Positron files.
+    [X] Fix debug mode with colors.
     [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
@@ -83,9 +84,9 @@
     [X] Describe if-else in Positron.jj.
     [X] Describe loops in Positron.jj.
     [X] Create magical variables to Positron.jj
-    [ ] Make ASK a zero-cost syscall.
+    [X] Make ASK a zero-cost syscall.
+    [X] Stackable of coordinates.
     [ ] Implement ASK for getting info.
-    [ ] Stackable of coordinates.
     [ ] Try (try) to add arrays of stackables.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.

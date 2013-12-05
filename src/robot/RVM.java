@@ -107,7 +107,7 @@ public class RVM
         // Call function
         if(function != null)
         {
-            try { Ctrl.ctrl(this, function, arg);}
+            try { Ctrl.ctrl(this, function, arg); }
             catch (Exception e) 
             { 
                 System.err.println("[RVM] " + e);
@@ -116,6 +116,7 @@ public class RVM
                 e.printStackTrace();
             }
         }
+        else Debug.printLabel(com.getLabel());
     }
 
     /**

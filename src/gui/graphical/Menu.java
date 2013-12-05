@@ -24,8 +24,18 @@ import javax.swing.JPanel;
 
 class Menu extends JPanel 
 {
+<<<<<<< HEAD
     private javax.swing.JButton botao1;
 
+=======
+    private int state = 0;
+
+    public int iterator()
+    {
+        return this.state;
+    }    
+    
+>>>>>>> master
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);

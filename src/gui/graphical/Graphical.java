@@ -100,9 +100,15 @@ public class Graphical implements GUI
         this.mapFrame.looser();
     }
     
+<<<<<<< HEAD
     // ---
     public int showMenu()
     {
         return this.mapFrame.menuVisit();
+=======
+    public int menu()
+    {
+        return MapFrame.optionsMenu();
+>>>>>>> master
     }
 }

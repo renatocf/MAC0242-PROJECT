@@ -143,7 +143,7 @@ public class Robot implements Scenario, Printable
         this.costMove    = ENERGY_MEDIUM;
         this.costAttack  = ENERGY_MEDIUM;
         this.costLook    = ENERGY_LOW;
-        this.costSee     = ENERGY_HIGH;
+        this.costSee     = ENERGY_NONE;
         this.costAsk     = ENERGY_LOW;
         this.costDrag    = ENERGY_MEDIUM;
         this.costDrop    = ENERGY_LOW;

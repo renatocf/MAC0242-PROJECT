@@ -412,9 +412,18 @@ final public class World
         return Action.ctrl(map, turn, op);
     }
     
+<<<<<<< HEAD
     // ---
     public static int menuOptions(int i)
     {
         return GUI.showMenu();
     }
+=======
+    
+    public static int optionsMenu()
+    {
+        return players[0].GUI.menu();
+    }
+    
+>>>>>>> master
 }

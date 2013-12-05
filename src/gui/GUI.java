@@ -88,6 +88,10 @@ public interface GUI
      */
     public void looser();
     
+<<<<<<< HEAD
     // ---
     public int showMenu();
+=======
+    public int menu();
+>>>>>>> master
 }
