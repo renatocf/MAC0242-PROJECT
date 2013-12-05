@@ -16,6 +16,10 @@
 /**********************************************************************/
 package arena;
 
+// Default Libraries
+
+import java.util.ArrayList;
+
 // Libraries
 import scenario.*;
 import stackable.*;
@@ -222,6 +226,8 @@ public class Action
         
         int cont = 0;
         
+        System.out.println("entrei");
+        
         if(lookI >= MAP_SIZE 
         || lookJ >= MAP_SIZE  
         || lookI < 0  
@@ -255,9 +261,9 @@ public class Action
         else 
         {
             // Otherwise, just throws the item (if possible)
-            if(map.map[lookI][lookJ].item != null)
+            if(map.map[lookI][lookJ].item == null)
             {
-                robot.removeSlots(cont - 1);
+                map.map[lookI][lookJ].item = robot.removeSlots(cont - 1);
                 ret[0] = returnValue(SUCCEDED);
             }
         }
@@ -304,7 +310,9 @@ public class Action
         Attack atk = (Attack) s[0];
         
         Scenario thing = null;
-        int lookI = turn.i, lookJ = turn.i;
+        int lookI = turn.i, lookJ = turn.j;
+        
+        ;
         
         if(s[1] instanceof Coordinate)
         {
@@ -332,16 +340,15 @@ public class Action
                     if(Δi > 0) lookI += 1;
                     if(Δi < 0) lookI -= 1;
                 }
-                
-                if(Δi == 0)
+                else if(Δi == 0)
                 {
                     if(Δj > 0) lookJ += 1;
                     if(Δj < 0) lookJ -= 1;
                 }
                 else
                 {
-                    if(Δj < 0) lookJ += -1 * lookI%2;
-                    if(Δj > 0) lookJ +=  1 * lookI%2;
+                    if(Δj < 0) lookJ += -1 * (lookI)%2;
+                    if(Δj > 0) lookJ +=  1 * (lookI)%2;
                     lookI += (Δi > 0) ? 1 : -1;
                 }
                 
@@ -356,6 +363,13 @@ public class Action
                 
                 thing = map.map[lookI][lookJ].getScenario();
                 if(thing != null) break;
+            }
+            
+            // If it is not reached returns out of range error
+            if(targetI - lookI != 0 || targetJ - lookJ != 0)
+            {
+                ret[0] = returnValue(OUT_OF_RANGE);
+                return ret;    
             }
         }
         else if(s[1] instanceof Num)
@@ -513,50 +527,15 @@ public class Action
         
         Stackable[] st = new Stackable[2];
         
-        int nTerrain; 
-        if(turn.sight == 1) nTerrain = 7;
-        else nTerrain = 19;
+        ArrayList<Terrain>    ter    = new ArrayList<Terrain>(); 
+        ArrayList<Coordinate> coords = new ArrayList<Coordinate>();    
         
-        Terrain[] ter = new Terrain[nTerrain];
+        searchR(map, ter, coords, turn.i, turn.j, turn.sight);
         
-        int lookI;
-        int lookJ;
+        Terrain   [] arrayOfTer = ter   .toArray(new Terrain   [0]);
+        Coordinate[] arrayOfCoo = coords.toArray(new Coordinate[0]);
         
-        for(int i = 0; i < nTerrain; i++)
-        {
-            d = new Direction(0, i);
-            
-            int[] update = d.get(turn.i);
-            lookI = turn.i + update[0];
-            lookJ = turn.j + update[1];
-            
-            if(lookI >= MAP_SIZE 
-            || lookJ >= MAP_SIZE  
-            || lookI < 0  
-            || lookJ < 0)         ter[i] = null;
-            
-            else 
-            {  
-                if(i < 7)
-                    ter[i] = map.map[lookI][lookJ];
-                else
-                {
-                    d = new Direction(1, i);
-                    update =  d.get(lookI);
-                    lookI  += update[0];
-                    lookJ  += update[1];
-                    
-                    if(lookI >= MAP_SIZE 
-                    || lookJ >= MAP_SIZE  
-                    || lookI < 0  
-                    || lookJ < 0)         ter[i] = null;
-                    
-                    else  ter[i] = map.map[lookI][lookJ];
-                    
-                }
-            }
-        }
-        Around a = new Around(ter);
+        Around a = new Around(arrayOfTer, arrayOfCoo);
         st[0] = (Stackable) a; 
         st[1] = new Num (1);
         return st;
@@ -588,12 +567,11 @@ public class Action
         {
             case "position":
             case "Position":
-                Num x    = new Num(turn.i);
-                Num y    = new Num(turn.j);
-                stk      = new Stackable[3];
-                stk[2]   = one; 
-                stk[1]   = x; 
-                stk[0]   = y;
+                Num i    = new Num(turn.i);
+                Num j    = new Num(turn.j);
+                stk      = new Stackable[2];
+                stk[1]   = j; 
+                stk[0]   = i;
                 break;
             
             case "base":
@@ -661,5 +639,38 @@ public class Action
     private static Num returnValue(Returns r)
     {
         return new Num(r.getValue());
+    }
+    
+    private static void searchR
+    (
+        Map map, 
+        ArrayList<Terrain> ter,
+        ArrayList<Coordinate> coords, 
+        int I, 
+        int J, 
+        int range
+    )
+        throws InvalidOperationException
+    {
+        Direction dir = new Direction("");
+        int [] update;
+        
+        if(I < 0 || I >= MAP_SIZE) return;
+        if(J < 0 || J >= MAP_SIZE) return;
+        
+        if(!ter.contains(map.map[I][J]))
+        {
+            coords.add(new Coordinate(I,J));
+            ter.add(map.map[I][J]);
+        }
+        if(range == 0) return;
+            
+        for(int k = 1; k <= 6; k++)
+        {
+            dir.set(k); update = dir.get(I);
+            if(J + update[1] < 0 || J + update[1] >= MAP_SIZE) continue;
+            if(I + update[0] < 0 || I + update[0] >= MAP_SIZE) continue;
+            searchR(map, ter, coords, I + update[0], J + update[1], range-1);
+        }
     }
 }

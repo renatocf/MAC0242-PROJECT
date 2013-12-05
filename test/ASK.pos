@@ -1,0 +1,4 @@
+our c = toCoord(ask("position"));
+our i = toNumberI(c);
+our j = toNumberJ(c);
+say "(", i, ",", j, ")";

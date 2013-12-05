@@ -1,0 +1,7 @@
+while(move(->NW)>0);
+say toCoord(ask("Position"));
+hit(->NW);
+
+
+
+
