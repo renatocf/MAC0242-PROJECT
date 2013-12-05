@@ -16,20 +16,32 @@
 /**********************************************************************/
 package robot;
 
-public interface Returns
+public enum Returns
 {   
-    public final static int TRUE            =  1;
-    public final static int SUCCEDED        =  1;
-
-    public final static int FALSE           =  0;
-    public final static int NOT_SUCCEDED    =  0;
-    public final static int NO_TARGET       =  0;
-    public final static int NO_ENERGY       =  0; //= -1;
-    public final static int END_OF_MAP      =  0; //= -2;
-    public final static int BLOCKED         =  0; //= -3;
-    public final static int FULL_SLOTS      =  0; //= -3;
-    public final static int EMPTY_SLOTS     =  0; //= -3;
-    public final static int OUT_OF_RANGE    =  0; //= -3;
-    public final static int FRIENDLY_FIRE   =  0; //= -4;
-    public final static int INVALID_ACTION  =  0; //= -5;
+    TRUE           (1),
+    SUCCEDED       (1),
+                      
+    FALSE          (0),
+    NOT_SUCCEDED   (0),
+    NO_TARGET      (0),
+    NO_ENERGY      (-1), // =  0;
+    END_OF_MAP     (-2), // =  0;
+    BLOCKED        (-3), // =  0;
+    FULL_SLOTS     (-3), // =  0;
+    EMPTY_SLOTS    (-3), // =  0;
+    OUT_OF_RANGE   (-3), // =  0;
+    FRIENDLY_FIRE  (-4), // =  0;
+    INVALID_ACTION (-5); // =  0;
+        
+    // Return value
+    private int value;
+    
+    // No instances of this class allowed
+    private Returns(int value) { this.value = value; }
+        
+    /**
+     * Method for getting the internal
+     * value of the field.
+     */
+    public int getValue() { return this.value; }
 }

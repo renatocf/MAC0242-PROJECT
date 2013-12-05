@@ -22,6 +22,7 @@ import stackable.*;
 import exception.*;
 import parameters.*;
 import players.Base;
+import robot.Returns;
 import remote.Operation;
 
 // Import links
@@ -66,7 +67,7 @@ public class Action
         if (!turn.spendPower(action)) 
         {
             stackable = new Stackable[1]; 
-            stackable[0] = new Num(NO_ENERGY);
+            stackable[0] = returnValue(NO_ENERGY);
             return stackable;
         }
         
@@ -86,7 +87,7 @@ public class Action
         if(stackable == null) 
         {
             stackable = new Stackable[1]; 
-            stackable[0] = new Num(INVALID_ACTION);
+            stackable[0] = returnValue(INVALID_ACTION);
         }
         return stackable;
     }
@@ -118,14 +119,14 @@ public class Action
         || newJ < 0  
         || map.map[newI][newJ].scenario != null)
         {
-            ret[0] = new Num(END_OF_MAP);
+            ret[0] = returnValue(END_OF_MAP);
             return ret;
         }
         
         Type type = map.map[newI][newJ].type;
         switch(type)
         {
-            case BLOCKED: ret[0] = new Num(BLOCKED); return ret;
+            case BLOCKED: ret[0] = returnValue(BLOCKED); return ret;
         }
         
         // Takes out from original position
@@ -139,7 +140,7 @@ public class Action
         
         // Goes to the new position in the map
         map.map[turn.i][turn.j].setScenario(robot);
-        ret[0] = new Num(SUCCEDED);
+        ret[0] = returnValue(SUCCEDED);
         
         //Set the phase of the animation of the robot
         turn.setPhase(d); 
@@ -176,14 +177,14 @@ public class Action
         || lookJ < 0  
         || map.map[lookI][lookJ].item == null)
         {
-            ret[0] = new Num(END_OF_MAP);
+            ret[0] = returnValue(END_OF_MAP);
             return ret;
         }
 
         for(int i = 0; i < turn.slots.length && turn.slots[i] != null; i++) cont++;
         if(cont >= turn.slots.length)
         {
-            ret[0] = new Num(FULL_SLOTS);
+            ret[0] = returnValue(FULL_SLOTS);
             return ret;
         }
             
@@ -193,7 +194,7 @@ public class Action
         
         Debugger.say("    [DRAG]", map.map[lookI][lookJ] );
         
-        ret[0] = new Num(SUCCEDED);
+        ret[0] = returnValue(SUCCEDED);
         return ret;
     }
     
@@ -227,7 +228,7 @@ public class Action
         || lookJ < 0  
         || map.map[lookI][lookJ].item != null)
         {
-            ret[0] = new Num(END_OF_MAP);
+            ret[0] = returnValue(END_OF_MAP);
             return ret;
         }
         
@@ -237,19 +238,19 @@ public class Action
         for(int i = 0; i < turn.slots.length && robot.slots[i] != null; i++) cont++;
         if(cont == 0)
         {
-            ret[0] = new Num(EMPTY_SLOTS);
+            ret[0] = returnValue(EMPTY_SLOTS);
             return ret;
         }
             
         Debugger.say("    [DROP]", map.map[lookI][lookJ]);
         
-        ret[0] = new Num(NOT_SUCCEDED);
+        ret[0] = returnValue(NOT_SUCCEDED);
         if(map.map[lookI][lookJ].scenario instanceof Base)
         {
             // If the scenario is a base, throw the crystal on it
             Base b = (Base) map.map[lookI][lookJ].scenario;
             robot.removeSlots(cont - 1); allow = b.addCrystal(turn);
-            ret[0] = new Num((allow)? SUCCEDED : NOT_SUCCEDED);
+            ret[0] = returnValue((allow)? SUCCEDED : NOT_SUCCEDED);
         }
         else 
         {
@@ -257,7 +258,7 @@ public class Action
             if(map.map[lookI][lookJ].item != null)
             {
                 robot.removeSlots(cont - 1);
-                ret[0] = new Num(SUCCEDED);
+                ret[0] = returnValue(SUCCEDED);
             }
         }
         
@@ -278,7 +279,7 @@ public class Action
     {  
         Stackable[] ret = new Stackable[1];
         Debugger.say("    [SKIP]"); // Debug
-        ret[0] = new Num(SUCCEDED);
+        ret[0] = returnValue(SUCCEDED);
         return ret;
     }
     
@@ -349,7 +350,7 @@ public class Action
                 || lookI < 0
                 || lookJ < 0)
                 {
-                    ret[0] = new Num(END_OF_MAP);
+                    ret[0] = returnValue(END_OF_MAP);
                     return ret;
                 }    
                 
@@ -375,14 +376,14 @@ public class Action
                 case "MELEE" : damage = turn.damageMelee; 
                                if(distance > 1)
                                {
-                                    ret[0] = new Num(OUT_OF_RANGE);
+                                    ret[0] = returnValue(OUT_OF_RANGE);
                                     return ret;
                                }    
                                break;
                 case "RANGED": damage = turn.damageRange; 
                                if(distance > turn.maxRange)
                                {
-                                    ret[0] = new Num(OUT_OF_RANGE);
+                                    ret[0] = returnValue(OUT_OF_RANGE);
                                     return ret;
                                }    
                                break;
@@ -407,7 +408,7 @@ public class Action
                 || lookI < 0
                 || lookJ < 0)
                 {
-                    ret[0] = new Num(END_OF_MAP);
+                    ret[0] = returnValue(END_OF_MAP);
                     return ret;
                 }    
                 
@@ -423,7 +424,7 @@ public class Action
         if(thing == null) 
         {
             Debugger.say("    [HIT]", "[EMPTY]");
-            ret[0] = new Num(NO_TARGET);
+            ret[0] = returnValue(NO_TARGET);
             return ret;
         }
         
@@ -432,7 +433,7 @@ public class Action
         {
             Debugger.say("    [HIT]", "[NONE]");
             Debugger.say("    [HIT] ", thing, " is an ally");
-            ret[0] = new Num(END_OF_MAP);
+            ret[0] = returnValue(END_OF_MAP);
             return ret; 
         }
         
@@ -449,7 +450,7 @@ public class Action
             World.destroy(lookI, lookJ);
         }
         
-        ret[0] = new Num(SUCCEDED);
+        ret[0] = returnValue(SUCCEDED);
         return ret;
     }
     
@@ -611,7 +612,7 @@ public class Action
                 stk      = new
                  Stackable[2];
                 stk[1]   = one;
-                stk[0]   = new Num(MAP_SIZE );
+                stk[0]   = new Num(MAP_SIZE);
                 break;                
             
             default:
@@ -648,5 +649,17 @@ public class Action
             if(r != turn) r.download(info);
         
         return new Stackable[] { new Num(1) };
+    }
+    
+    /**
+     * Auxiliar function for returning
+     * a value from a Returns enum.
+     * @param r Returns enum with 
+     *          return value associated
+     *          with a string
+     */
+    private static Num returnValue(Returns r)
+    {
+        return new Num(r.getValue());
     }
 }
