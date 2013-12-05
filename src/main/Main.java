@@ -91,11 +91,11 @@ public class Main
         
         String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
         
-        while(true)
-        {
-            if(World.optionsMenu()==0)
+        //while(true)
+        //{
+            //if(World.optionsMenu()==0)
             // If the gamer don't want to beging other game!
-                break;
+          //      break;
         
             for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
                 p[1].insertArmy(names[i], args[i]);
@@ -109,7 +109,7 @@ public class Main
             
             // Run ad infinitum if not debugging
             while(World.timeStep());            
-        }
+       // }
         System.exit(0);
         
     }

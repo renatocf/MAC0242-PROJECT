@@ -102,6 +102,6 @@ public class Graphical implements GUI
     
     public int menu()
     {
-        return MapFrame.optionsMenu();
+        return mapFrame.optionsMenu();
     }
 }

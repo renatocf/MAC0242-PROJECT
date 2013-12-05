@@ -414,6 +414,7 @@ final public class World
     
     public static int optionsMenu()
     {
+        System.out.println("----- ");
         return players[0].GUI.menu();
     }
     

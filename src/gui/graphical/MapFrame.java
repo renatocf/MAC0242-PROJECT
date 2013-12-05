@@ -139,8 +139,8 @@ class MapFrame extends JFrame
             });
             
             //---
-            JButton menuButton1 = new JButton("Reiniciar");
-            menu.add(menuButton1);
+            //JButton menuButton1 = new JButton("Reiniciar");
+            //menu.add(menuButton1);
     }
     
     /**
@@ -237,7 +237,7 @@ class MapFrame extends JFrame
         });
     }
     
-    public static int optionsMenu()
+    public int optionsMenu()
     {
         return menu.iterator();
     }
