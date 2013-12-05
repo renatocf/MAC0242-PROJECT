@@ -112,6 +112,17 @@ final public class Tests
             // Result of the comparison
 			res = s1.equals(s2);
         }
+        else if(arg1 instanceof Coordinate && arg2 instanceof Coordinate)
+        {
+            // Downcasts to direction if the type is correct
+            Coordinate c1 = (Coordinate) arg1, c2 = (Coordinate) arg2;
+            
+            // Gets the direction
+            String s1 = c1.toString(), s2 = c2.toString();
+            
+            // Result of the comparison
+			res = s1.equals(s2);
+        }
         else
         {
             String class1 = arg1.getClass().getName();
@@ -167,6 +178,17 @@ final public class Tests
             
             // Gets the direction
             String s1 = d1.toString(), s2 = d2.toString();
+            
+            // Result of the comparison
+			res = !s1.equals(s2);
+        }
+        else if(arg1 instanceof Coordinate && arg2 instanceof Coordinate)
+        {
+            // Downcasts to direction if the type is correct
+            Coordinate c1 = (Coordinate) arg1, c2 = (Coordinate) arg2;
+            
+            // Gets the direction
+            String s1 = c1.toString(), s2 = c2.toString();
             
             // Result of the comparison
 			res = !s1.equals(s2);
