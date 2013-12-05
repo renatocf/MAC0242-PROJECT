@@ -122,10 +122,36 @@ public class Positron
                MissingReturnException,
                InvalidOperationException
     {
+        Vector<Command> main; 
         try {
             Positron.Init();
+                        
+            System.out.println(path);            
+                        
+            // Header of stdlib
+            Positron.ReInit(parser.getClass().getResourceAsStream("/behaviors/stdlib.e"));
+            main = Positron.Import("stdlib");
+            
+            if(main == null) System.out.println("Erro1");
+            else System.out.println("não null");
+            
+            // Main program
             Positron.ReInit(new FileInputStream(path));
-            return Positron.Start();
+            main = Positron.Start();
+            
+            if(main == null) System.out.println("Erro2");
+            else System.out.println("não null");
+            // stdlib
+            Positron.ReInit(parser.getClass().getResourceAsStream("/behaviors/stdlib.pos"));
+            main = Positron.Import("stdlib");
+            
+            if(main == null) System.out.println("Erro3");
+            else System.out.println("não null");
+            // Add a final prog to identify 
+            // when the 'file' is finished
+            main.add(null);
+            
+            return main;
             
         } catch(FileNotFoundException e) {
             System.err.println("[POSITRON] File not found!");
@@ -171,6 +197,13 @@ public class Positron
     {
         if(Positron.parser == null)
             Positron.parser = new Positron(System.in);
+        
+        Positron.count     = 1;
+        Positron.magic     = new ArrayList <String>                 ();
+        Positron.scope     = new Stack     <HashMap<String,String>> ();
+        Positron.blocks    = new Stack     <Vector<Command>>        ();
+        Positron.returns   = new HashMap   <String,String>          ();
+        Positron.functions = new HashMap   <String,Parameters>      ();
     }
 }
 
@@ -184,6 +217,9 @@ SKIP : {
 
 // Magic Variables
 TOKEN : {< MAGIC  : "&"("ROBOT"|"BASE")     >}
+
+// Pre-proc (One of these days)
+TOKEN : {< IMPORT : "import" >}
 
 // Dividers
 TOKEN : {< LBRACE : "(" >}
@@ -200,6 +236,17 @@ TOKEN : {< ASK    : "ask"      >}
 TOKEN : {< HIT    : "hit"      >}
 TOKEN : {< MOVE   : "move"     >}
 TOKEN : {< FIRE   : "fire"     >}
+<<<<<<< Updated upstream
+=======
+TOKEN : {< LOOK   : "look"     >}
+TOKEN : {< DRAG   : "drag"     >}
+TOKEN : {< DROP   : "drop"     >}
+
+// Auxiliar Methods
+TOKEN : {< TOCOORD: "toCoord"   >}
+TOKEN : {< TONUM_I: "toNumberI" >}
+TOKEN : {< TONUM_J: "toNumberJ" >}
+>>>>>>> Stashed changes
 
 // IO
 TOKEN : {< SAY    : "say"      >}
@@ -231,8 +278,11 @@ TOKEN : {< CMP      : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
 TOKEN : {< ATTR     : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
 TOKEN : {< LOGICAL  : "&&" | "||" >}
 
+// Variables
 TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
-TOKEN : {< EOL : ";" >}
+
+// End of Line
+TOKEN : {< EOL    : ";" >}
 /**
  * 
  * 
@@ -241,31 +291,21 @@ TOKEN : {< EOL : ";" >}
 
 /**
  * Defines program expressions.
- */ 
+ */
 Vector<Command> Start() 
     throws WrongTypeException, 
            UndefinedFunctionException,
            MissingReturnException,
            InvalidOperationException :
 {
-    Positron.count     = 1;
-    Positron.flow      = "main";
-    Positron.actual    = "main";
-    Positron.magic     = new ArrayList <String>                 ();
-    Positron.scope     = new Stack     <HashMap<String,String>> ();
-    Positron.blocks    = new Stack     <Vector<Command>>        ();
-    Positron.returns   = new HashMap   <String,String>          ();
-    Positron.functions = new HashMap   <String,Parameters>      ();
-    
     HashMap<String,String> main   = new HashMap<String,String>();
-    Vector<Command>        prog   = new Vector<Command>();
     Iterator<String>       keys;
 }    
 {
     {   
+        blocks.push(new Vector<Command>());
         main.put("__SCOPE__", "main");
         scope.push(main);
-        blocks.push(prog);
         
         // Magic variables
         allocError();
@@ -275,21 +315,9 @@ Vector<Command> Start()
         insertArg("ALOC", BLOCK_FLAG);
         insertArg("PUSH", new Num(1));
         insertArg("SET" , BLOCK_FLAG);
-    }
-    (
-        (
-                command()
-            |
-                prototype()
-            |
-                function()
-            |
-                <EOL>
-        )
-        { actual = "main"; }
-        { flow   = "main"; }
-    )*
-    {
+    
+        blocks.peek().addAll(Import("main"));
+    
         // Free all the remaining variables;
         keys = scope.peek().keySet().iterator();
         while(keys.hasNext()) free(keys.next());
@@ -304,13 +332,42 @@ Vector<Command> Start()
         // Finish program
         insertCmd   ("END");
         
-        // Add a final prog to identify 
-        // when the 'file' is finished
-        prog.add(null);
-        
-        return prog;
+        return blocks.pop();;
     }
 }
+
+Vector<Command> Import(String namespace)
+throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+    Positron.flow      = namespace;
+    Positron.actual    = namespace;
+}
+{
+    {
+        blocks.push(new Vector<Command>());
+        scope.push(new HashMap<String,String>());
+        scope.peek().put("__SCOPE__", namespace);
+    }
+    (
+        (
+                command()
+            |
+                prototype()
+            |
+                function()
+            |
+                <EOL>
+        )
+        { actual = namespace; }
+        { flow   = namespace; }
+    )*
+    
+    { return blocks.pop(); }
+}
+
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -984,15 +1041,13 @@ String factor ()
         { return s; }
     )
     |
+        t = <MAGIC>
+        { insertArg("GET", new Text("["+t.image+"]")); }
+        { return "coord"; }
+    |
         t = <WORD>
         { s = get(t.image); }
         { return s; }
-    |
-    (
-        t = <MAGIC>
-        { getMagic(t.image); }
-        { return "number"; }
-    )
     |
     (
         coord()
