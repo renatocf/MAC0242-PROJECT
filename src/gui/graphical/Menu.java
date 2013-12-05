@@ -24,6 +24,13 @@ import javax.swing.JPanel;
 
 class Menu extends JPanel 
 {
+    private int state = 0;
+
+    public int iterator()
+    {
+        return this.state;
+    }    
+    
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);

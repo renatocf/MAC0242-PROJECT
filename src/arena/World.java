@@ -410,4 +410,11 @@ final public class World
     {
         return Action.ctrl(map, turn, op);
     }
+    
+    
+    public static int optionsMenu()
+    {
+        return players[0].GUI.menu();
+    }
+    
 }

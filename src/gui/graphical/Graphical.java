@@ -99,4 +99,9 @@ public class Graphical implements GUI
     {
         this.mapFrame.looser();
     }
+    
+    public int menu()
+    {
+        return MapFrame.optionsMenu();
+    }
 }
