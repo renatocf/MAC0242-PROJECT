@@ -53,7 +53,7 @@ class MapFrame extends JFrame
     
     // Internal structures
     protected Panel screen;
-    protected Menu menu;
+    protected static Menu menu;
     private JTextArea log;
     
     private javax.swing.JButton menuButton1;
@@ -237,9 +237,9 @@ class MapFrame extends JFrame
         });
     }
     
-    public int optionsMenu()
+    public static int optionsMenu()
     {
-        return this.menu.iterator();
+        return menu.iterator();
     }
     
 }
