@@ -87,6 +87,4 @@ public interface GUI
      * the looser message for him.
      */
     public void looser();
-    
-    public int menu();
 }

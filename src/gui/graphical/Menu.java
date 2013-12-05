@@ -16,23 +16,81 @@
 /**********************************************************************/
 package gui.graphical;
 
+// Default libraries
+import gui.MENU;
+import gui.MENU.Opts;
+
 // Graphical Libraries (AWT)
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.Dimension;
 
 // Graphical Libraries (Swing)
-import javax.swing.JPanel;
+import javax.swing.*;
 
-class Menu extends JPanel 
-{
-    private int state = 0;
-
-    public int iterator()
-    {
-        return this.state;
-    }    
+/**
+ * <b>MENU - Graphical Mode</b><br>
+ * Makes an implementation of the interface
+ * MENU for exhibiting the game, using Java's
+ * default graphic libraries (AWT and Swing).
+ */
+public class Menu extends JFrame implements MENU
+{   
+    private boolean pressed = false;
+    private JButton new_game;
+    private JButton exitB;    
     
-    protected void paintComponent(Graphics g) 
+    private MenuPanel menu;
+    
+    
+    
+    // Interface MENU
+    /*private JPanel Grid()
     {
-        super.paintComponent(g);
+        setLayout(new GridLayout(2, 1));
+        add(new JButton("1"));
+        add(new JButton("2"));        
+    }*/
+    
+    public Opts exhibit()
+    {
+        // Close the frame
+        this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+        //this.setComponentPanel(new MenuPanel());
+        menu = new MenuPanel();
+        add(menu);
+        
+        // Screen config.     
+        this.setSize(1000, 300);   
+        this.setLocationRelativeTo(null);
+        
+        
+        // Create buttons
+       /* new_game = new JButton(":: Restart ::");
+        exitB = new JButton("Exit");
+        */
+        
+        
+        
+        // Button new game config.
+       /* this.add(new_game);
+        this.add(exitB);
+
+        // Listeners
+        new_game.addActionListener(this);
+        exitB.addActionListener(this); */
+        
+        this.setVisible(true);
+        
+        menu.testando();
+
+        // Wait the press of some buttonJpanel 
+        //while(!menu.getPressed());
+            //new_game.addActionListener(this);
+            
+        this.setVisible(false);
+        return MENU.Opts.NEW_GAME;
     }
+
+
 }

@@ -16,6 +16,9 @@
 /**********************************************************************/
 package gui.textual;
 
+// Default libraries
+import java.util.Scanner;
+
 // Libraries
 import gui.*;
 import arena.*;
@@ -413,10 +416,5 @@ public class Textual implements Colors, GUI
     final private void println(String s)
     {
         System.out.println(s);
-    }
-    
-    public int menu()
-    {
-        return 0;
     }
 }

@@ -18,14 +18,16 @@ package gui.graphical;
 
 // Default Libraries
 import java.io.PrintStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 // Graphical Libraries (AWT)
 import java.awt.*;
+import java.awt.event.*;
 
 // Graphical Libraries (Swing)
 import javax.swing.*;
+import java.lang.*;
 
 // Libraries
 import arena.Map;
@@ -53,10 +55,12 @@ class MapFrame extends JFrame
     
     // Internal structures
     protected Panel screen;
+    protected MiniMapControl miniMapControl;
     protected static Menu menu;
     private JTextArea log;
     
-    private javax.swing.JButton menuButton1;
+    private MiniMapFrame miniMapFrame;
+    
     
     /** 
      * Default constructor.<br>
@@ -65,14 +69,16 @@ class MapFrame extends JFrame
      * @param player Player who is visualizing the
      *               map (whith his specific view)
      */
-    MapFrame(Map map, Player player)
+    MapFrame(Map map, Player player, MiniMapFrame miniMapFrame)
     {
+    
         // Setting MapFrame attributes
         this.map    = map;
         this.player = player;
+        this.miniMapFrame = miniMapFrame;
         
         //* MAP FRAME INFO *******************************************//
-            /* TODO: Take out hardcoded strings */
+            /* TODO: Take out hardcoded stimplements ActionListenerrings */
             this.setSize                  (SCREEN_WIDTH,SCREEN_HEIGHT);
             this.setTitle                 ("Robot's Battle");
             this.validate                 ();
@@ -86,9 +92,20 @@ class MapFrame extends JFrame
             int MAP_WIDTH  = 2*x0 + (int)(RADIUS * MAP_SIZE * Math.sqrt(3));
             int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2);
             
+            
+            //TODO: --- this.miniMapControl = new MiniMapControl(this.miniMapFrame);
+            this.setVisible(true);
+            
+            //TODO: Thread threadMMC = new Thread(this.miniMapControl);
+            //TODO: threadMMC.start();
+            
+            //TODO: add(miniMapControl);
+            
             this.screen = new Panel(
                 map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
             );
+            //TODO: Thread threadScreen = new Thread(this.screen);
+            //TODO: threadScreen.start();
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
             this.screen.setFocusable (true);
@@ -137,10 +154,6 @@ class MapFrame extends JFrame
                 @Override
                 public void run() { setVisible(true); }
             });
-            
-            //---
-            //JButton menuButton1 = new JButton("Reiniciar");
-            //menu.add(menuButton1);
     }
     
     /**
@@ -164,8 +177,6 @@ class MapFrame extends JFrame
     void winner(int nTS, int nPlayers, int nRobots)
     {
         this.screen.setGamePhase(Phase.WINNER, nTS, nPlayers, nRobots);
-        JButton button1 = new JButton("Java");
-         this.add(button1);
         this.screen.repaint();
     }
     
@@ -181,8 +192,6 @@ class MapFrame extends JFrame
     void looser()
     {
         /* '-1' for all info not used (players/time steps/robots) */
-        JButton button1 = new JButton("Java");
-         this.add(button1);
         this.screen.setGamePhase(Phase.LOOSER, -1, -1, -1);
         this.screen.repaint();
     }
@@ -235,11 +244,7 @@ class MapFrame extends JFrame
                 log.setCaretPosition(log.getText().length() - 1);
             }
         });
-    }
+    }    
     
-    public int optionsMenu()
-    {
-        return menu.iterator();
-    }
-    
+
 }

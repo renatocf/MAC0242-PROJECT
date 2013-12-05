@@ -48,7 +48,7 @@ public class Graphical implements GUI
 
         /* TODO: Finish editor frame */
         /* this.editorFrame    = new EditorFrame(); */
-        this.mapFrame       = new MapFrame(map, player);
+        this.mapFrame       = new MapFrame(map, player, miniMapFrame);
         this.miniMapFrame   = new MiniMapFrame(map, player);
     }
     
@@ -98,10 +98,5 @@ public class Graphical implements GUI
     public void looser()
     {
         this.mapFrame.looser();
-    }
-    
-    public int menu()
-    {
-        return mapFrame.optionsMenu();
     }
 }

@@ -23,6 +23,7 @@ import java.util.WeakHashMap;
 
 // Graphical Libraries (AWT)
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
@@ -55,7 +56,7 @@ import static parameters.Game.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-class Panel extends JPanel 
+class Panel extends JPanel
 {
     // Map made with cells
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
@@ -84,17 +85,18 @@ class Panel extends JPanel
      * Create a Panel with dimensions width x height,
      * containing MAP_SIZE² hexagons (built from a map).
      * @see Cell
-     * @see Graphical
+     * @see GraphjButton listener paralelo a outras classeical
      *
      * @param map    Map over which the panel will
      *               create the GUI hexagons
-     * @param player Player who is visualizing the
+     * @param plajButton listener paralelo a outras classeyer Player who is visualizing the
      *               panel (for his specific view)
      * @param R      Hexagon radius
      * @param y0     Desired vertical shift
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
      */
+  
     Panel(Map map, Player player, int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
@@ -259,7 +261,7 @@ class Panel extends JPanel
             for(int j = 0; j < MAP_SIZE; j++)
                 cell[i][j].terrain.setInvisible(this.player);
         
-        // But let the base's around be visible
+        // But lejButton listener paralelo a outras classet the base's around be visible
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(Y,X,7);
@@ -506,7 +508,7 @@ class Panel extends JPanel
         }
     }
     
-    /**
+    /**jButton listener paralelo a outras classe
      * <b>JRobot - Robot with more than images</b><br>
      * Print a robot exhibiting a status bar and other
      * useful info for the player.
@@ -607,4 +609,54 @@ class Panel extends JPanel
             Panel.super.remove(this.power);
         }
     }
+}
+
+
+
+
+
+
+class MiniMapControl extends JPanel
+                     implements ActionListener
+{
+    private MiniMapFrame minimapframe;
+    
+    private boolean minimapVisible = false;
+    private JButton minimap;
+//    private JButton exitB;
+    
+
+    public MiniMapControl(MiniMapFrame minimapf)
+    {
+        this.setVisible(true);
+        minimap    = new JButton("------------");
+        
+        this.minimapframe = minimapf;
+        while(true)
+        {
+            minimap.addActionListener(this);
+        }
+    
+    }
+    
+    
+    public void actionPerformed(ActionEvent evt) 
+    {  
+        Object obj=evt.getSource();  
+                  
+        if(obj == minimap)
+        {
+            if(minimapVisible)
+            {
+                minimapVisible = false;
+                minimapframe.setVisible(false);
+            }
+            else
+            {
+                minimapVisible = true;
+                minimapframe.setVisible(true);
+            }
+        }  
+    } 
+    
 }

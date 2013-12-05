@@ -29,6 +29,8 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
+import gui.MENU;
+import gui.MENU.Opts;
 
 // Configs interfaces
 import gui.Interfaces;
@@ -54,6 +56,7 @@ public class Main
     static private boolean usage  = false;
     static private boolean multi  = false;
     static private Interfaces GUI = Interfaces.GRAPHICAL;
+    static private MENU MENU = new gui.graphical.Menu();
     
     /**
      * <b>Main method</b><br>
@@ -64,7 +67,7 @@ public class Main
         throws InvalidOperationException
     {
         String[] args = getopt(argv); // Get options
-        
+        System.out.println("");
         // Help and Usage
         if(help) { help(); return; }
         if(args.length > Game.ROBOTS_NUM_INITIAL) 
@@ -75,7 +78,34 @@ public class Main
             System.out.println("Multiplayer mode: not creating maps...");
             return;
         }
-            
+        
+        while(menu(args));
+    }
+    
+    /**
+     * Call menu and deal whith its options.
+     * @param  args File names from stdin
+     * @return Boolean to indicate if the game
+     *         may or not continue
+     */
+    private static boolean menu(String[] args)
+        throws InvalidOperationException
+    {
+        switch(MENU.exhibit())
+        {
+            case NEW_GAME: newGame(args); break;
+            case EXIT: return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Create a new game.
+     * @param args File names from stdin
+     */    
+    private static void newGame(String[] args)
+        throws InvalidOperationException
+    {
         // Generate map
         Player[] p = World.genesis(2, 1, Game.WEATHER, GUI, Game.RAND);
         
@@ -90,28 +120,19 @@ public class Main
         }
         
         String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
+    
+        for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
+            p[1].insertArmy(names[i], args[i]);
         
-        //while(true)
-        //{
-            //if(World.optionsMenu()==0)
-            // If the gamer don't want to beging other game!
-          //      break;
+        // Game main loop
+        if(Debugger.debugging()) 
+        {
+            for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
+            System.exit(0);
+        }
         
-            for(int i = 0; i < args.length && i < Game.ROBOTS_NUM_INITIAL; i++)
-                p[1].insertArmy(names[i], args[i]);
-            
-            // Game main loop
-            if(Debugger.debugging()) 
-            {
-                for(int ts = 0; ts < 1000 && World.timeStep(); ts++);
-                System.exit(0);
-            }
-            
-            // Run ad infinitum if not debugging
-            while(World.timeStep());            
-       // }
-        System.exit(0);
-        
+        // Run ad infinitum if not debugging
+        while(World.timeStep());
     }
     
     /**
@@ -193,6 +214,7 @@ public class Main
                 //
                 case 't': // --textual
                     GUI = Interfaces.TEXTUAL;
+                    MENU = new gui.textual.Menu();
                     break;
                 //
                 case 's': Game.MAP_SIZE = 16; break; // --small

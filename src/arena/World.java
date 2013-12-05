@@ -409,13 +409,5 @@ final public class World
        throws InvalidOperationException
     {
         return Action.ctrl(map, turn, op);
-    }
-    
-    
-    public static int optionsMenu()
-    {
-        System.out.println("----- ");
-        return players[0].GUI.menu();
-    }
-    
+    }    
 }
