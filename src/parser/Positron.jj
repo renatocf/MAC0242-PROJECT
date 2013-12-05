@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.lang.reflect.Field;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -37,6 +38,7 @@ import java.io.FileNotFoundException;
 import parser.*;
 import stackable.*;
 import robot.Command;
+import robot.Returns;
 
 // Exceptions
 import exception.WrongTypeException;
@@ -181,7 +183,7 @@ SKIP : {
 }
 
 // Magic Variables
-TOKEN : {< MAGIC  : "&"("X"|"Y"|"BASE_X"|"BASE_Y")     >}
+TOKEN : {< MAGIC  : "&"("ROBOT"|"BASE")     >}
 
 // Dividers
 TOKEN : {< LBRACE : "(" >}
@@ -266,6 +268,7 @@ Vector<Command> Start()
         blocks.push(prog);
         
         // Magic variables
+        allocError();
         allocMagic();
         
         // Auxiliar variables
@@ -296,6 +299,7 @@ Vector<Command> Start()
         // Free variables
         insertArg("FREE", BLOCK_FLAG);
         freeMagic();
+        freeError();
         
         // Finish program
         insertCmd   ("END");
@@ -1202,12 +1206,102 @@ void attr(String var, String attr, String type, String sc)
     insertArg("SET", new Variable(s)); insertArg("GET", new Variable(s));
 }}
 
-void free(String s) :
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                  AUXILIAR FUNCTIONS - ERROR VARS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/**
+ * Auxiliar function to alloc error variables.
+ */
+void allocError() :
 {}
 {{
-    if(s.charAt(0) != '_' || s.charAt(1) != '_')
-        insertArg("FREE", new Variable(flow + "::" + s));
+    insertLabel("error_variables");
+    
+    for(Returns r: Returns.values())
+    {
+        Variable name = new Variable("_" + r);
+        insertArg("ALOC", name);
+        insertArg("PUSH", new Num(r.getValue()));
+        insertArg("SET", name);
+    }
 }}
+
+/**
+ * Auxiliar function to free the magic variables.
+ */
+void freeError() :
+{}
+{{
+    for(Returns r: Returns.values())
+        insertArg("FREE", new Variable("_" + r));
+}}
+
+/**
+ * Insert a GET for an error variable.
+ * @param var String with the name of the variable
+ */
+void getError(String var) 
+    throws WrongTypeException :
+{}
+{{
+    insertArg("GET", new Variable(var));
+}}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                  AUXILIAR FUNCTIONS - MAGIC VARS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/**
+ * Auxiliar function to alloc magic variables.
+ */
+void allocMagic() :
+{}
+{{
+    magic.add("&ROBOT");
+    magic.add("&BASE");
+    
+    insertLabel("magic_variables");
+    for(String var: magic)
+        insertArg("ALOC", new Variable(var));
+}}
+
+/**
+ * Auxiliar function to free the magic variables.
+ */
+void freeMagic() :
+{}
+{{
+    for(String var: magic)
+        insertArg("FREE", new Variable(var));
+}}
+
+/**
+ * Insert a GET for a magic variable.
+ * @param var String with the name of the variable
+ */
+void getMagic(String var) 
+    throws WrongTypeException :
+{}
+{{
+    insertArg("GET", new Variable(var));
+}}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                   AUXILIAR FUNCTIONS - VARIABLES
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
 
 /**
  * Insert a GET for a variable.
@@ -1230,41 +1324,11 @@ String get(String var)
     return typeof(var);
 }}
 
-/**
- * Auxiliar function for magic variables.
- */
-void allocMagic() :
+void free(String s) :
 {}
 {{
-    magic.add("&X");
-    magic.add("&Y");
-    magic.add("&BASE_X");
-    magic.add("&BASE_Y");
-    
-    insertLabel("magic_variables");
-    for(String var: magic)
-        insertArg("ALOC", new Variable(var));
-}}
-
-/**
- * Auxiliar function to free the magic variables.
- */
-void freeMagic() :
-{}
-{{
-    for(String var: magic)
-        insertArg("FREE", new Variable(var));
-}}
-
-/**
- * Insert a GET for a magic variable.
- * @param var  Token of the variable
- */
-void getMagic(String var) 
-    throws WrongTypeException :
-{}
-{{
-    insertArg("GET", new Variable(var));
+    if(s.charAt(0) != '_' || s.charAt(1) != '_')
+        insertArg("FREE", new Variable(flow + "::" + s));
 }}
 
 String declared(String var) :
@@ -1304,6 +1368,14 @@ String typeof(String var) :
     }
     return null;
 }}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                   AUXILIAR FUNCTIONS - ARITHMETIC
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
 
 /**
  * Auxiliar function - sign.
@@ -1389,6 +1461,14 @@ double atof(Token t) :
 {{    
     return Double.parseDouble(t.image);
 }}
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                     AUXILIAR FUNCTIONS - DEBUG
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
 
 /**
  * Auxiliar function - say.<br>
