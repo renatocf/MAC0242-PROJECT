@@ -123,7 +123,7 @@ final public class Check
         }
         else if(stk instanceof stackable.item.Item)
         {
-            s = stk.getClass().getName();
+            s = stk.getClass().getName().replaceFirst("^.*\\.", "");
             index = 1;
         }
         else throw new WrongTypeException("Text or Item");
@@ -136,17 +136,7 @@ final public class Check
             if(a.matrix[index][i] != null 
             && s.equals(a.matrix[index][i]) )
             {
-                if(i < 7)
-                {
-                    rvm.DATA.push(new Direction(0, i));
-                    rvm.DATA.push(new Num(1));    
-                }
-                else
-                {
-                    rvm.DATA.push(new Direction(1, i));
-                    rvm.DATA.push(new Direction(0, i));
-                    rvm.DATA.push(new Num(2));
-                }
+                rvm.DATA.push(a.getCoordinate(i));
                 cont++;
             }
         }
@@ -161,5 +151,6 @@ final public class Check
             ? stk.toString() 
             : "NONE";
         Debugger.say("    [SEEK] ", arnd, stack);
+        Debug.printStack(rvm);
     }
 }
