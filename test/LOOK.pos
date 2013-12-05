@@ -1,0 +1,16 @@
+x = look( %stone );
+if(x != null)
+{
+    drag(->SE);
+    drag(->NE);
+    drag(->SW);
+    drag(->E);
+    drag(->W);
+    drag(->NW);
+    drop(->E);
+}
+if(move(->NW) < 1)
+{
+    while(hit(->NW) > 0);
+}
+
