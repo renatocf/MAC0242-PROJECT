@@ -903,8 +903,6 @@ void function()
     {
         if(!returned && returns.get(actual) != null)
             throw new MissingReturnException(actual);
-        insertArg("PUSH", new Num(1));
-        insertArg("SET", BLOCK_FLAG);
     }
 }
 
@@ -970,6 +968,8 @@ boolean block(ArrayList<String[]> vars)
         
         if (vars != null)
         {
+            insertArg("PUSH", new Num(1));
+            insertArg("SET", BLOCK_FLAG);
             insertCmd("RET");
         }
         dev = blocks.peek().size();
