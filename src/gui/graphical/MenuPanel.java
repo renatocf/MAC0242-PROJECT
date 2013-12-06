@@ -24,6 +24,9 @@ import java.awt.event.*;
 // Graphical Libraries (Swing)
 import javax.swing.*;
 
+/**
+ * Is the class representing the initial screen.
+ */
 public class MenuPanel extends JPanel 
                        implements ActionListener
 {
@@ -35,6 +38,10 @@ public class MenuPanel extends JPanel
     
     public MenuPanel()
     {
+        // Create a RGB color
+        Color myColor = Color.decode("#a69f8f");
+        this.setBackground(myColor);
+    
         this.pressed = false;
         
         exitB    = new JButton("Exit");
@@ -44,7 +51,11 @@ public class MenuPanel extends JPanel
         add(new_game);
     } 
     
-    public void testando()
+    /**
+     * Is called by Menu and set the configurations
+     * of the initial screen.
+     */
+    public void ListenButtonsInit()
     {
         while(!this.pressed)
         {
@@ -53,12 +64,14 @@ public class MenuPanel extends JPanel
         }
     }
 
-    
+    /**
+     * Control the image.
+     */
     private void image(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
 
-        Image red = Images.MENU_ROBOT.img().getSubimage(0, 0, 610, 400);
+        Image red = Images.MENU_ROBOT.img().getSubimage(0, 0, 610, 719);
         
         g2d.drawImage(red, 0, 0, null);
     }
@@ -67,14 +80,17 @@ public class MenuPanel extends JPanel
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
-        new_game.setBounds(640,30,120,80);
-        // new_game.setBackground(Color.white);
-        exitB.setBounds(640,140,120,80);
+        
+        // Position of Buttons
+        new_game.setBounds(590,30,120,80);
+        exitB.setBounds(590,140,120,80);
+        
+        // Color of Buttons
+        exitB.setBackground(Color.white);
+        new_game.setBackground(Color.white);
+        
         image(g);      
     }
-    
-    
-    
     
     // Button Event
     public void actionPerformed(ActionEvent evt) 

@@ -61,7 +61,7 @@ public class Menu extends JFrame implements MENU
         add(menu);
         
         // Screen config.     
-        this.setSize(790, 400);   
+        this.setSize(740, 719);   
         this.setLocationRelativeTo(null);
         
         
@@ -82,7 +82,7 @@ public class Menu extends JFrame implements MENU
         
         this.setVisible(true);
         
-        menu.testando();
+        menu.ListenButtonsInit();
 
         // Wait the press of some buttonJpanel 
         //while(!menu.getPressed());
