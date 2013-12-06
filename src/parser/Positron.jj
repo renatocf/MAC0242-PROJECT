@@ -153,7 +153,7 @@ public class Positron
             Positron.ReInit(txtReader);
             main.addAll(Positron.Import("stdlib"));
             
-            if(main == null) System.out.println("ERROR: Impossible to open" + "/behaviors/stdlib.pos";
+            if(main == null) System.out.println("ERROR: Impossible to open" + "/behaviors/stdlib.pos");
             // Add a final prog to identify 
             // when the 'file' is finished
             main.add(null);
@@ -990,15 +990,25 @@ String factor ()
 }
 { 
     (
-        (   
-            u = <SCOPE>
-        )?
-        t = <WORD> 
         (
+            (   
+                u = <SCOPE>
+            )?
+            t = <WORD>
             (
-                v = <ATTR>
-                s = expression()
-                { attr(t.image, v.image, s, u != null ? u.image : null); }
+                    v = <ATTR>
+                    s = expression()
+                    { attr(t.image, v.image, s, u != null ? u.image : null); }
+            )
+        )
+        { return s; }
+        |
+        (
+            t = <MAGIC>
+            (
+                    v = <ATTR>
+                    s = expression()
+                    { attrMagic(t.image, v.image, s); }
             )
         )
         { return s; }
@@ -1047,7 +1057,7 @@ String factor ()
     )
     |
         t = <MAGIC>
-        { insertArg("GET", new Text("["+t.image+"]")); }
+        { getMagic(t.image); }
         { return "coord"; }
     |
         t = <WORD>
@@ -1188,7 +1198,7 @@ String call(String f)
 }}
 
 /**
- * Insert a attribution of a double variable.
+ * Insert a attribution of a variable.
  * @param var  Token of the variable
  * @param attr Token of the attribution  
  */
@@ -1265,6 +1275,53 @@ void attr(String var, String attr, String type, String sc)
     
     insertArg("SET", new Variable(s)); insertArg("GET", new Variable(s));
 }}
+
+/**
+ * Insert a attribution of a magic variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
+ */
+void attrMagic(String var, String attr, String type) 
+    throws WrongTypeException,
+           InvalidOperationException :
+{}
+{{
+    say(var);
+    switch(attr)
+    {
+        case "="  : break;
+        case "+=" : checkTypeError(type);
+                    insertArg("GET", new Variable(var)); 
+                    insertCmd("ADD"); 
+                    break;
+        
+        case "-=" : checkTypeError(type);
+                    insertArg("GET", new Variable(var)); 
+                    insertCmd("SWAP"); 
+                    insertCmd("SUB"); 
+                    break;
+                    
+        case "*=" : checkTypeError(type);
+                    insertArg("GET", new Variable(var)); 
+                    insertCmd("MUL"); 
+                    break;
+                    
+        case "/=" : checkTypeError(type);
+                    insertArg("GET", new Variable(var)); 
+                    insertCmd("SWAP");
+                    insertCmd("DIV"); 
+                    break;
+                    
+        case "%=" : checkTypeError(type);
+                    insertArg("GET", new Variable(var));
+                    insertCmd("SWAP");
+                    insertCmd("MOD"); 
+                    break;
+    } 
+    
+    insertArg("SET", new Variable(var)); insertArg("GET", new Variable(var));
+}}
+
 
 /*
 ////////////////////////////////////////////////////////////////////////
