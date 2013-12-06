@@ -35,12 +35,10 @@ import players.Player;
  * @see Graphical
  * @see arena.Map
  * @see arena.World
- * 
- * @author Renato Cordeiro Ferreira
  */
 class UserInterface extends JPanel
-                    implements Runnable
 {
+    // Private variables
     private Player player;
     private MiniMapFrame minimap;
         
@@ -52,12 +50,15 @@ class UserInterface extends JPanel
         this.minimap = miniMapFrame;
         this.player  = p;
         
-        Thread threadButtons = new Thread(this);
-        threadButtons.start();
+        // Launch a new thread to deal with buttons
+        new Thread() { public void run() {
+            while(true) {
+                try { Thread.sleep(200); }
+                catch (InterruptedException e) {}
+            }}
+        }.start();
             
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        
-        ImageIcon im = new ImageIcon("data/img/util/Menu.jpg");
         
         //* MINIMAP **************************************************/
             JButton minimapButton = new JButton("m");//(im);
@@ -102,14 +103,5 @@ class UserInterface extends JPanel
             });
             
             this.add(exitButton);
-    }
-    
-    public void run()
-    {
-        while(true)
-        {
-            try { Thread.sleep(200); }
-                    catch (InterruptedException e) {}
-        }
     }
 }

@@ -89,14 +89,13 @@ class Panel extends JPanel
      *
      * @param map    Map over which the panel will
      *               create the GUI hexagons
-     * @param plajButton listener paralelo a outras classeyer Player who is visualizing the
+     * @param player Player who is visualizing the
      *               panel (for his specific view)
      * @param R      Hexagon radius
      * @param y0     Desired vertical shift
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
      */
-  
     Panel(Map map, Player player, int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
@@ -609,54 +608,4 @@ class Panel extends JPanel
             Panel.super.remove(this.power);
         }
     }
-}
-
-
-
-
-
-
-class MiniMapControl extends JPanel
-                     implements ActionListener
-{
-    private MiniMapFrame minimapframe;
-    
-    private boolean minimapVisible = false;
-    private JButton minimap;
-//    private JButton exitB;
-    
-
-    public MiniMapControl(MiniMapFrame minimapf)
-    {
-        this.setVisible(true);
-        minimap    = new JButton("------------");
-        
-        this.minimapframe = minimapf;
-        while(true)
-        {
-            minimap.addActionListener(this);
-        }
-    
-    }
-    
-    
-    public void actionPerformed(ActionEvent evt) 
-    {  
-        Object obj=evt.getSource();  
-                  
-        if(obj == minimap)
-        {
-            if(minimapVisible)
-            {
-                minimapVisible = false;
-                minimapframe.setVisible(false);
-            }
-            else
-            {
-                minimapVisible = true;
-                minimapframe.setVisible(true);
-            }
-        }  
-    } 
-    
 }
