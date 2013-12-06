@@ -6,9 +6,9 @@
     [X] Paint additional info in the end of the game.
     [X] Put the phases of the game in the correct time.
     [X] Correct documentations. (PHASE 3)
-    [ ] Add option for playing again.
+    [X] Add option for playing again.
+    [X] Create menu.
     [ ] Add buttons to put new robots.
-    [ ] Create menu.
     
 [Renato]
     [X] Fix parser.pl to accept many files.
@@ -30,7 +30,6 @@
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
     [ ] Find a way to identify which robot sent a message.
-    [ ] Accept 'import' of other files in Positron.jj.
     
 [Vinícius]
     [X] Add new maps. 
@@ -86,7 +85,8 @@
     [X] Create magical variables to Positron.jj
     [X] Make ASK a zero-cost syscall.
     [X] Stackable of coordinates.
-    [ ] Implement ASK for getting info.
+    [X] Implement ASK for getting info.
+    [X] Accept 'import' of other files in Positron.jj.
     [ ] Try (try) to add arrays of stackables.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
