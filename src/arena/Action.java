@@ -120,21 +120,30 @@ public class Action
         if(newI >= MAP_SIZE 
         || newJ >= MAP_SIZE  
         || newI < 0  
-        || newJ < 0  
-        || map.map[newI][newJ].scenario != null)
+        || newJ < 0)  
         {
             ret[0] = returnValue(END_OF_MAP);
+            return ret;
+        }
+        
+        // Takes out from original position
+        Robot robot = (Robot) map.map[turn.i][turn.j].removeScenario();
+        
+        if (map.map[newI][newJ].scenario != null)
+        {
+            map.map[turn.i][turn.j].setScenario(robot);
+            ret[0] = returnValue(OBSTACLE);
             return ret;
         }
         
         Type type = map.map[newI][newJ].type;
         switch(type)
         {
-            case BLOCKED: ret[0] = returnValue(BLOCKED); return ret;
+            case BLOCKED: 
+                ret[0] = returnValue(BLOCKED); 
+                map.map[turn.i][turn.j].setScenario(robot); 
+                return ret; 
         }
-        
-        // Takes out from original position
-        Robot robot = (Robot) map.map[turn.i][turn.j].removeScenario();
         
         // Update robot attributes
         turn.i = newI; 
@@ -225,8 +234,6 @@ public class Action
         int lookJ = turn.j + update[1];
         
         int cont = 0;
-        
-        System.out.println("entrei");
         
         if(lookI >= MAP_SIZE 
         || lookJ >= MAP_SIZE  
@@ -579,17 +586,14 @@ public class Action
                 Base b   = turn.getTeam().getBase();
                 Num posX = new Num(b.getPosX(turn));
                 Num posY = new Num(b.getPosY(turn));
-                stk      = new Stackable[3];
-                stk[2]   = one; 
+                stk      = new Stackable[2];
                 stk[1]   = posX;
                 stk[0]   = posY;
                 break;
                 
             case "edge":
             case "Edge":
-                stk      = new
-                 Stackable[2];
-                stk[1]   = one;
+                stk      = new Stackable[1];
                 stk[0]   = new Num(MAP_SIZE);
                 break;                
             
