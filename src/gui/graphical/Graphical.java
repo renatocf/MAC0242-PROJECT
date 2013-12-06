@@ -48,8 +48,8 @@ public class Graphical implements GUI
 
         /* TODO: Finish editor frame */
         /* this.editorFrame    = new EditorFrame(); */
-        this.mapFrame       = new MapFrame(map, player, miniMapFrame);
         this.miniMapFrame   = new MiniMapFrame(map, player);
+        this.mapFrame       = new MapFrame(map, player, miniMapFrame);
     }
     
     /* Implementing interface GUI */
