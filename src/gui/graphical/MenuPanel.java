@@ -36,13 +36,10 @@ public class MenuPanel extends JPanel
     public MenuPanel()
     {
         this.pressed = false;
-        //setLayout(new GridLayout(1, 2));
-        exitB    = new JButton("Exit");
-        new_game = new JButton("Restart");
         
-        // TODO: Alterar coordenada e tamanho!!!!!
-        exitB.setBounds(700,100,100,100);
-
+        exitB    = new JButton("Exit");
+        new_game = new JButton("New Game");
+        
         add(exitB);
         add(new_game);
     } 
@@ -61,7 +58,7 @@ public class MenuPanel extends JPanel
     {
         Graphics2D g2d = (Graphics2D) g;
 
-        Image red = Images.MENU_ROBOT.img().getSubimage(0, 32, 400, 600);
+        Image red = Images.MENU_ROBOT.img().getSubimage(0, 0, 610, 400);
         
         g2d.drawImage(red, 0, 0, null);
     }
@@ -70,6 +67,9 @@ public class MenuPanel extends JPanel
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
+        new_game.setBounds(640,30,120,80);
+        // new_game.setBackground(Color.white);
+        exitB.setBounds(640,140,120,80);
         image(g);      
     }
     
@@ -85,9 +85,10 @@ public class MenuPanel extends JPanel
         {
             this.pressed = true;
         }  
-        if(obj == exitB)
+        else if(obj == exitB)
         {
             System.exit(0);
         }
+
     } 
 }

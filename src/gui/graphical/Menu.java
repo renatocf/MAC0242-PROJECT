@@ -61,7 +61,7 @@ public class Menu extends JFrame implements MENU
         add(menu);
         
         // Screen config.     
-        this.setSize(1000, 300);   
+        this.setSize(790, 400);   
         this.setLocationRelativeTo(null);
         
         
