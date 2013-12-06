@@ -30,6 +30,7 @@ public enum Returns
     FULL_SLOTS     (-3), // =  0;
     EMPTY_SLOTS    (-3), // =  0;
     OUT_OF_RANGE   (-3), // =  0;
+    OBSTACLE       (-4), // =  0;
     FRIENDLY_FIRE  (-4), // =  0;
     INVALID_ACTION (-5); // =  0;
         
