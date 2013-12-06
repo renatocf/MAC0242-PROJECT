@@ -2,3 +2,257 @@ string sete()
 {
     return "sete";
 }
+
+number dragNearCrystal()
+{
+    my ret = 0;
+    my c = [0,0];
+    if((c = lookCrystal()) != null)
+    {
+        moveNextTo(c);
+        ret = drag(straightWayToPoint(c));
+        say ret;
+    }
+    return ret;
+}
+
+number moveNextTo(coord c)
+{
+    my ret = -1;
+    while(ret == -1)
+    {
+        my dist = distance(c);
+        ret = 1;
+        while(dist > 1 && ret > 0)
+        {
+            ret = moveTowards(c);
+            dist = distance(c);
+        }
+    }
+    return ret;
+}
+
+number distance(coord c)
+{
+    my d = &ROBOT;
+    my i = 0;
+    while (&ROBOT != c)
+    {   
+        i += 1;
+        my dir = straightWayToPoint(c);
+        &ROBOT += relativeCoord(dir);
+    }
+    &ROBOT = d;
+    return i;
+}
+
+way invertWay(way dir)
+{
+    my e = ->;
+    if(dir == ->NW)
+    {e = ->SE; }
+    if(dir == ->W)
+    {e = ->E; }
+    if(dir == ->SW)
+    {e = ->NE; }
+    if(dir == ->SE)
+    {e = ->NW; }
+    if(dir == ->E)
+    {e = ->W; }
+    if(dir == ->NE)
+    {e = ->SW; }
+    return e;
+}
+
+coord lookCrystal()
+{
+    return look(%Crystal);
+}
+
+number removeObstacle(coord c)
+{
+    my ret = -1;
+    while(ret == -1)
+    {
+        while((ret = hitObstacle(c)) > 0);
+    }
+    if(ret == 0)
+    {ret = 1;}
+    return ret;
+}
+
+number hitObstacle(coord c)
+{
+    return hit(straightWayToPoint(c));
+}
+
+number moveTo(coord c)
+{
+    my ret = -1;
+    while(ret == -1)
+    {
+        while((ret = moveTowards(c)) > 0);
+    }
+    if(ret == 0)
+    {ret = 1;}
+    return ret;
+}
+
+number evade(coord c)
+{
+    my dir = straightWayToPoint(c);
+    my ret = 0;
+    my dirACW = rotAntiClockWise(dir);
+    if(move(dirACW) > 0)
+    { ret = 1; }
+    else
+    {
+        my dirCW = rotClockWise(dir);
+        if(move(dirCW) > 0)
+        { ret = 1; }   
+    }
+    return ret;
+}
+
+way rotAntiClockWise(way w)
+{
+    my e = ->;
+    if(w == ->NW)
+    {e = ->NE; }
+    if(w == ->W)
+    {e = ->NW; }
+    if(w == ->SW)
+    {e = ->W; }
+    if(w == ->SE)
+    {e = ->SW; }
+    if(w == ->E)
+    {e = ->SE; }
+    if(w == ->NE)
+    {e = ->E; }
+    return e;
+}
+
+way rotClockWise(way w)
+{
+    my e = ->;
+    if(w == ->E)
+    {e = ->NE; }
+    if(w == ->NE)
+    {e = ->NW; }
+    if(w == ->NW)
+    {e = ->W; }
+    if(w == ->W)
+    {e = ->SW; }
+    if(w == ->SW)
+    {e = ->SE; }
+    if(w == ->SE)
+    {e = ->E; }
+    return e;
+}
+
+number moveTowards(coord c)
+{   
+    my ret = 0;
+    if(c != &ROBOT)
+    {
+        ret = move(straightWayToPoint(c));
+    }
+    return ret;
+}
+
+way straightWayToPoint(coord IJ)
+{
+    my rIJ = &ROBOT;
+    my dIJ = IJ - rIJ;
+    my w = ->;
+    if(toNumberI(dIJ) == 0)
+    {
+        if(toNumberJ(dIJ) == 0)
+        {w = ->;}
+        if(toNumberJ(dIJ) > 0)
+        {w = ->E;}
+        if(toNumberJ(dIJ) < 0)
+        {w = ->W;}
+    }
+    if(toNumberJ(dIJ) == 0)
+    {
+        if(toNumberI(dIJ) > 0)
+        {
+            if(toNumberI(rIJ)%2)
+            {w = ->SW;}
+            else
+            {w = ->SE;}
+        }
+        if(toNumberI(dIJ) < 0)
+        {
+            if(toNumberI(rIJ)%2)
+            {w = ->NW;}
+            else
+            {w = ->NE;}
+        }
+    }
+    if(toNumberI(dIJ) > 0 && toNumberJ(dIJ) > 0)
+        {w = ->SE;}
+    if(toNumberI(dIJ) > 0 && toNumberJ(dIJ) < 0)
+        {w = ->SW;}
+    if(toNumberI(dIJ) < 0 && toNumberJ(dIJ) > 0)
+        {w = ->NE;}
+    if(toNumberI(dIJ) < 0 && toNumberJ(dIJ) < 0)
+        {w = ->NW;}
+       
+    return w;
+}
+
+void updateVars()
+{
+    &ROBOT = toCoord(ask("Position"));
+    &BASE  = toCoord(ask("Base"));
+    &EDGE  = ask("Edge");
+}
+
+coord relativeCoord(way d)
+{
+    my iE = toNumberI(&ROBOT)%2;
+    my iW = (toNumberI(&ROBOT)+1)%2;
+    my c = [0,0];
+
+    if (d == ->E)
+    {
+        c = [0,1];       
+    }
+    elsif (d == ->NE)
+    {
+        c = [-1,1*iE];
+    }
+    elsif (d == ->NW)
+    {
+        c = [-1,-1*iW];
+    }
+    elsif (d == ->W)
+    {
+        c = [0,-1];
+    }
+    elsif (d == ->SW)
+    {
+        c = [1,-1*iW];
+    }
+    elsif (d == ->SE)
+    {
+        c = [1,1*iE];
+    }
+    else
+    {
+        c = [0,0];
+    }
+    return c; 
+}
+
+number move(way d)
+{
+    my x = _move(d);
+    if(x > 0)
+    {
+        &ROBOT += relativeCoord(d);
+    }
+    return x;
+}
