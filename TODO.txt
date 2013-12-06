@@ -8,7 +8,8 @@
     [X] Correct documentations. (PHASE 3)
     [X] Add option for playing again.
     [X] Create menu.
-    [ ] Add buttons to put new robots.
+    [X] Add buttons to put new robots.
+    [ ] Finish documentation (LaTeX). (PHASE 4)
     
 [Renato]
     [X] Fix parser.pl to accept many files.
@@ -87,8 +88,12 @@
     [X] Stackable of coordinates.
     [X] Implement ASK for getting info.
     [X] Accept 'import' of other files in Positron.jj.
-    [ ] Try (try) to add arrays of stackables.
+    [ ] Get and change button icons in the Map Frame.
+    [ ] Fix the scroll system (add mouse if possible).
+    [ ] Get program when inserting new robot.
+    [ ] Add error tokens in the parser.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
     [ ] Create new system for priorities.
     [ ] Add priority switch-case in the language.
+    [ ] Try (try) to add arrays of stackables.
