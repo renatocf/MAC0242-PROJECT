@@ -33,11 +33,13 @@ import java.util.ListIterator;
 import java.lang.reflect.Field;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
 
 // Libraries
 import parser.*;
 import stackable.*;
-import stackable.item.*;
 import robot.Command;
 import robot.Returns;
 
@@ -123,12 +125,45 @@ public class Positron
                MissingReturnException,
                InvalidOperationException
     {
+        Vector<Command> main; 
         try {
             Positron.Init();
-            Positron.ReInit(new FileInputStream(path));
-            return Positron.Start();
             
-        } catch(FileNotFoundException e) {
+            InputStream is = parser.getClass().getResourceAsStream("/behaviors/stdlib.e");
+            InputStreamReader file = new InputStreamReader(is);
+            BufferedReader txtReader = new BufferedReader(file);           
+                        
+            // Header of stdlib
+            Positron.ReInit(txtReader);
+            main = Positron.Import("stdlib");
+            
+            if(main == null) System.out.println("Erro1");
+            
+            // Main program
+            Positron.ReInit(new FileInputStream(path));
+            main.addAll(Positron.Start());
+            
+            if(main == null) System.out.println("Erro2");
+            
+            is = parser.getClass().getResourceAsStream("/behaviors/stdlib.pos");
+            file = new InputStreamReader(is);
+            txtReader = new BufferedReader(file);
+            
+            // stdlib
+            Positron.ReInit(txtReader);
+            main.addAll(Positron.Import("stdlib"));
+            
+            for(Command c : main)
+                System.out.println(c);
+            
+            if(main == null) System.out.println("Erro3");
+            // Add a final prog to identify 
+            // when the 'file' is finished
+            main.add(null);
+            
+            return main;
+            
+        } catch(/*FileNotFound*/Exception e) {
             System.err.println("[POSITRON] File not found!");
             e.printStackTrace();
             return null;
@@ -172,6 +207,13 @@ public class Positron
     {
         if(Positron.parser == null)
             Positron.parser = new Positron(System.in);
+        
+        Positron.count     = 1;
+        Positron.magic     = new ArrayList <String>                 ();
+        Positron.scope     = new Stack     <HashMap<String,String>> ();
+        Positron.blocks    = new Stack     <Vector<Command>>        ();
+        Positron.returns   = new HashMap   <String,String>          ();
+        Positron.functions = new HashMap   <String,Parameters>      ();
     }
 }
 
@@ -186,6 +228,9 @@ SKIP : {
 // Magic Variables
 TOKEN : {< MAGIC  : "&"("ROBOT"|"BASE")     >}
 
+// Pre-proc (One of these days)
+TOKEN : {< IMPORT : "import" >}
+
 // Dividers
 TOKEN : {< LBRACE : "(" >}
 TOKEN : {< RBRACE : ")" >}
@@ -193,9 +238,8 @@ TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
 
 // Types
-TOKEN : {< TYPE : "way" | "number" | "string" | "void" | "coord" | "item" >}
+TOKEN : {< TYPE : "way" | "number" | "string" | "void" | "coord" >}
 TOKEN : {< SCOPE : "my" | "our" >}
-TOKEN : {< NULL : "null" >}
 
 // Syscalls
 TOKEN : {< ASK    : "ask"      >}
@@ -207,7 +251,6 @@ TOKEN : {< DRAG   : "drag"     >}
 TOKEN : {< DROP   : "drop"     >}
 
 // Auxiliar Methods
-
 TOKEN : {< TOCOORD: "toCoord"   >}
 TOKEN : {< TONUM_I: "toNumberI" >}
 TOKEN : {< TONUM_J: "toNumberJ" >}
@@ -231,7 +274,6 @@ TOKEN : {< DEF   : "def"    >}
 TOKEN : {< RET   : "return" >}
 
 // Primitive types
-TOKEN : {< ITEM     : "%"(["A"-"Z"] |  ["a"-"z"])+ >}
 TOKEN : {< WAY      : "->" ( ( "N" | "S" ) ? ( "W" | "E" ) )? >}
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
@@ -243,8 +285,11 @@ TOKEN : {< CMP      : "==" | "!=" | "<" | "<=" | ">=" | ">" >}
 TOKEN : {< ATTR     : "="  | "+=" | "-=" | "*=" | "/=" | "%=" >}
 TOKEN : {< LOGICAL  : "&&" | "||" >}
 
+// Variables
 TOKEN : {< WORD   : (["A"-"Z"] |  ["a"-"z"] | "_")+ >}
-TOKEN : {< EOL : ";" >}
+
+// End of Line
+TOKEN : {< EOL    : ";" >}
 /**
  * 
  * 
@@ -253,31 +298,22 @@ TOKEN : {< EOL : ";" >}
 
 /**
  * Defines program expressions.
- */ 
+ */
 Vector<Command> Start() 
     throws WrongTypeException, 
            UndefinedFunctionException,
            MissingReturnException,
            InvalidOperationException :
 {
-    Positron.count     = 1;
-    Positron.flow      = "main";
-    Positron.actual    = "main";
-    Positron.magic     = new ArrayList <String>                 ();
-    Positron.scope     = new Stack     <HashMap<String,String>> ();
-    Positron.blocks    = new Stack     <Vector<Command>>        ();
-    Positron.returns   = new HashMap   <String,String>          ();
-    Positron.functions = new HashMap   <String,Parameters>      ();
-    
     HashMap<String,String> main   = new HashMap<String,String>();
-    Vector<Command>        prog   = new Vector<Command>();
     Iterator<String>       keys;
+    Vector<Command> prog = new Vector<Command>();
 }    
 {
     {   
+        blocks.push(prog);
         main.put("__SCOPE__", "main");
         scope.push(main);
-        blocks.push(prog);
         
         // Magic variables
         allocError();
@@ -287,21 +323,9 @@ Vector<Command> Start()
         insertArg("ALOC", BLOCK_FLAG);
         insertArg("PUSH", new Num(1));
         insertArg("SET" , BLOCK_FLAG);
-    }
-    (
-        (
-                command()
-            |
-                prototype()
-            |
-                function()
-            |
-                <EOL>
-        )
-        { actual = "main"; }
-        { flow   = "main"; }
-    )*
-    {
+    
+        prog.addAll(Import("main"));
+    
         // Free all the remaining variables;
         keys = scope.peek().keySet().iterator();
         while(keys.hasNext()) free(keys.next());
@@ -316,13 +340,42 @@ Vector<Command> Start()
         // Finish program
         insertCmd   ("END");
         
-        // Add a final prog to identify 
-        // when the 'file' is finished
-        prog.add(null);
-        
-        return prog;
+        return prog;;
     }
 }
+
+Vector<Command> Import(String namespace)
+throws WrongTypeException, 
+           UndefinedFunctionException,
+           MissingReturnException,
+           InvalidOperationException :
+{
+    Positron.flow      = namespace;
+    Positron.actual    = namespace;
+}
+{
+    {
+        blocks.push(new Vector<Command>());
+        scope.push(new HashMap<String,String>());
+        scope.peek().put("__SCOPE__", namespace);
+    }
+    (
+        (
+                command()
+            |
+                prototype()
+            |
+                function()
+            |
+                <EOL>
+        )
+        { actual = namespace; }
+        { flow   = namespace; }
+    )*
+    
+    { return blocks.pop(); }
+}
+
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -559,12 +612,6 @@ String syscall()
 }
 {
     (
-        s = drag()
-        |
-        s = drop()
-        |
-        s = look()
-        |
         s = ask()
         |
         s = fire()
@@ -574,106 +621,6 @@ String syscall()
         s = move()
     )
     { return s; }
-}
-
-//* DRAG **************************************************************/
-String drag()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{           
-    <DRAG>
-    (
-        (
-            <LBRACE>
-            expression()
-            { insertCmd("DRAG"); }
-            <RBRACE>
-        )
-        |
-        expression()
-        { insertCmd("DRAG"); }
-    )
-    { return "number"; }
-}
-//* DROP **************************************************************/
-String drop()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{
-    <DROP>
-    (
-        (
-            <LBRACE>
-            expression()
-            { insertCmd("DROP"); }
-            <RBRACE>
-        )
-        |
-        expression()
-        { insertCmd("DROP"); }
-    )
-    { return "number"; }
-}
-
-//* LOOK **************************************************************/
-
-String look()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{
-    <LOOK>
-    <LBRACE>
-    {
-        insertLabel("lookStart" + count);
-        insertCmd("SEE");
-        
-        // Checking if SEE worked
-        insertArg("PUSH", new Num(0));
-        insertCmd("LE"  );
-        insertArg("JIT" , new Num(9));
-    }
-        expression()
-    {
-        
-        insertCmd("SEEK");
-        
-        // Checks if false 
-        insertArg("STO" , new Num(0));
-        insertArg("RCL" , new Num(0));
-        insertArg("PUSH", new Num(0));
-        insertCmd("EQ"  );
-        insertArg("JIF" , new Num(3));
-        insertArg("PUSH", Nil.get());
-        insertArg("JMP" , new Num(13));
-        
-        // Store the coordinate
-        insertArg("STO" , new Num(1));
-        insertArg("RCL" , new Num(1));
-        
-        // Cleaning the Stack
-        insertCmd("POP" );
-        insertArg("RCL" , new Num(0));
-        insertArg("PUSH", new Num(1));
-        insertCmd("SUB"  );
-        insertArg("STO" , new Num(0));
-        insertArg("RCL" , new Num(0));
-        insertArg("PUSH", new Num(0));
-        insertCmd("EQ"  );
-        insertArg("JIF" , new Num(-8));
-        
-        // Return the stored coordinate
-        insertArg("RCL" , new Num(1));
-        insertLabel("lookEnd" + count++);
-    }
-    <RBRACE>
-    
-    {return "coord";}
 }
 
 //* ASK ***************************************************************/
@@ -695,7 +642,7 @@ String ask()
         expression()
         { insertCmd("ASK"); }
     )
-    { return "number"; }
+    { return "coord"; }
 }
 
 //* ATTACKS ***********************************************************/
@@ -930,78 +877,6 @@ boolean block(ArrayList<String[]> vars)
 /*
 ////////////////////////////////////////////////////////////////////////
 -----------------------------------------------------------------------
-                          AUXILIAR METHODS
------------------------------------------------------------------------
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-*/
-
-String auxMethods() 
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{
-    String s;
-}
-{
-    (
-        s = toCoord()
-        |
-        s = toNumI()
-        |
-        s = toNumJ()
-    )
-    { return s; }
-}
-
-String toCoord()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{
-    <TOCOORD>
-    <LBRACE>
-    expression()
-    { insertCmd("COOR"); }
-    <RBRACE>
-    {return "coord";}
-}
-
-String toNumI()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{
-    <TONUM_I>
-    <LBRACE>
-    expression()
-    { insertCmd("GTIJ"); }
-    { insertCmd("POP" ); }
-    <RBRACE>
-    {return "number";}
-}
-
-String toNumJ()
-    throws WrongTypeException, 
-           UndefinedFunctionException,
-           InvalidOperationException :
-{}
-{
-    <TONUM_J>
-    <LBRACE>
-    expression()
-    { insertCmd("GTIJ"); }
-    { insertCmd("SWAP"); }
-    { insertCmd("POP" ); }
-    <RBRACE>
-    {return "number";}
-}
-
-
-/*
-////////////////////////////////////////////////////////////////////////
------------------------------------------------------------------------
                             EXPRESSIONS
 -----------------------------------------------------------------------
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1174,15 +1049,13 @@ String factor ()
         { return s; }
     )
     |
+        t = <MAGIC>
+        { insertArg("GET", new Text("["+t.image+"]")); }
+        { return "coord"; }
+    |
         t = <WORD>
         { s = get(t.image); }
         { return s; }
-    |
-    (
-        t = <MAGIC>
-        { getMagic(t.image); }
-        { return "number"; }
-    )
     |
     (
         coord()
@@ -1192,17 +1065,6 @@ String factor ()
     (
         s = syscall()
         { return s; }
-    )
-    |
-    (
-        s = auxMethods()
-        { return s; }
-    )
-    |
-    (
-        t = <ITEM>
-        { pushItem(t.image.replaceFirst("%", "")); }
-        { return "item";     }                         
     )
     |
     (
@@ -1223,10 +1085,6 @@ String factor ()
         { pushNumber(value);    }
         { return "number";      }
     )
-    |
-        <NULL>
-        { insertArg("PUSH", Nil.get()); }
-        { return "number";              }
     |
     (
         <LBRACE> 
@@ -1266,25 +1124,8 @@ void pushString(String s) :
 
 /**
  * Auxiliar function for pushing 
- * items in the assembly.
- * @param s Pushed item
- */
-void pushItem(String s)
-    throws InvalidOperationException :
-{}
-{{    
-    switch (s.toUpperCase())
-    {
-        case "CRYSTAL" : insertArg("PUSH", new Crystal()); break;
-        case "STONE"   : insertArg("PUSH", new Stone());   break;
-        default        : throw new InvalidOperationException(s + " do not exists");
-    }
-}}
-
-/**
- * Auxiliar function for pushing 
  * directions in the assembly.
- * @param s Pushed direction
+ * @param o Pushed direction
  */
 void pushWay(String s)
     throws InvalidOperationException :
