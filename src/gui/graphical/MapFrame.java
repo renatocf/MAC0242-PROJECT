@@ -54,7 +54,6 @@ class MapFrame extends JFrame
     
     // Internal structures
     protected Panel screen;
-    protected MiniMapControl miniMapControl;
 
     private JTextArea log;
     
