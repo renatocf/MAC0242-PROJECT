@@ -40,6 +40,7 @@ import java.io.InputStream;
 // Libraries
 import parser.*;
 import stackable.*;
+import stackable.item.*;
 import robot.Command;
 import robot.Returns;
 
@@ -235,8 +236,9 @@ TOKEN : {< LCURLY : "{" >}
 TOKEN : {< RCURLY : "}" >}
 
 // Types
-TOKEN : {< TYPE : "way" | "number" | "string" | "void" | "coord" >}
+TOKEN : {< TYPE : "way" | "number" | "string" | "void" | "coord" | "item" >}
 TOKEN : {< SCOPE : "my" | "our" >}
+TOKEN : {< NULL : "null" >}
 
 // Syscalls
 TOKEN : {< ASK    : "ask"      >}
@@ -271,6 +273,7 @@ TOKEN : {< DEF   : "def"    >}
 TOKEN : {< RET   : "return" >}
 
 // Primitive types
+TOKEN : {< ITEM     : "%"(["A"-"Z"] |  ["a"-"z"])+ >}
 TOKEN : {< WAY      : "->" ( ( "N" | "S" ) ? ( "W" | "E" ) )? >}
 TOKEN : {< NUMBER   : (["0"-"9"])+  ("." (["0"-"9"])+)? >}
 TOKEN : {< STRING   : ( ("\"") (~["\""])* ("\"")) >}
@@ -609,6 +612,12 @@ String syscall()
 }
 {
     (
+        s = drag()
+        |
+        s = drop()
+        |
+        s = look()
+        |        
         s = ask()
         |
         s = fire()
@@ -618,6 +627,106 @@ String syscall()
         s = move()
     )
     { return s; }
+}
+
+//* DRAG **************************************************************/
+String drag()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{           
+    <DRAG>
+    (
+        (
+            <LBRACE>
+            expression()
+            { insertCmd("DRAG"); }
+            <RBRACE>
+        )
+        |
+        expression()
+        { insertCmd("DRAG"); }
+    )
+    { return "number"; }
+}
+//* DROP **************************************************************/
+String drop()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <DROP>
+    (
+        (
+            <LBRACE>
+            expression()
+            { insertCmd("DROP"); }
+            <RBRACE>
+        )
+        |
+        expression()
+        { insertCmd("DROP"); }
+    )
+    { return "number"; }
+}
+
+//* LOOK **************************************************************/
+
+String look()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <LOOK>
+    <LBRACE>
+    {
+        insertLabel("lookStart" + count);
+        insertCmd("SEE");
+        
+        // Checking if SEE worked
+        insertArg("PUSH", new Num(0));
+        insertCmd("LE"  );
+        insertArg("JIT" , new Num(9));
+    }
+        expression()
+    {
+        
+        insertCmd("SEEK");
+        
+        // Checks if false 
+        insertArg("STO" , new Num(0));
+        insertArg("RCL" , new Num(0));
+        insertArg("PUSH", new Num(0));
+        insertCmd("EQ"  );
+        insertArg("JIF" , new Num(3));
+        insertArg("PUSH", Nil.get());
+        insertArg("JMP" , new Num(13));
+        
+        // Store the coordinate
+        insertArg("STO" , new Num(1));
+        insertArg("RCL" , new Num(1));
+        
+        // Cleaning the Stack
+        insertCmd("POP" );
+        insertArg("RCL" , new Num(0));
+        insertArg("PUSH", new Num(1));
+        insertCmd("SUB"  );
+        insertArg("STO" , new Num(0));
+        insertArg("RCL" , new Num(0));
+        insertArg("PUSH", new Num(0));
+        insertCmd("EQ"  );
+        insertArg("JIF" , new Num(-8));
+        
+        // Return the stored coordinate
+        insertArg("RCL" , new Num(1));
+        insertLabel("lookEnd" + count++);
+    }
+    <RBRACE>
+    
+    {return "number";}
 }
 
 //* ASK ***************************************************************/
@@ -870,6 +979,77 @@ boolean block(ArrayList<String[]> vars)
     }
     { return returned; }
 }
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                          AUXILIAR METHODS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+String auxMethods() 
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{
+    String s;
+}
+{
+    (
+        s = toCoord()
+        |
+        s = toNumI()
+        |
+        s = toNumJ()
+    )
+    { return s; }
+}
+
+String toCoord()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <TOCOORD>
+    <LBRACE>
+    expression()
+    { insertCmd("COOR"); }
+    <RBRACE>
+    {return "coord";}
+}
+
+String toNumI()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <TONUM_I>
+    <LBRACE>
+    expression()
+    { insertCmd("GTIJ"); }
+    { insertCmd("POP" ); }
+    <RBRACE>
+    {return "number";}
+}
+
+String toNumJ()
+    throws WrongTypeException, 
+           UndefinedFunctionException,
+           InvalidOperationException :
+{}
+{
+    <TONUM_J>
+    <LBRACE>
+    expression()
+    { insertCmd("GTIJ"); }
+    { insertCmd("SWAP"); }
+    { insertCmd("POP" ); }
+    <RBRACE>
+    {return "number";}
+}
+
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -1075,6 +1255,17 @@ String factor ()
     )
     |
     (
+        s = auxMethods()
+        { return s; }
+    )
+    |
+    (
+        t = <ITEM>
+        { pushItem(t.image.replaceFirst("%", "")); }
+        { return "item";}                         
+    )
+    |
+    (
         t = <WAY>
         { pushWay(t.image.replaceFirst("->", "")); }
         { return "way";                            }
@@ -1092,6 +1283,10 @@ String factor ()
         { pushNumber(value);    }
         { return "number";      }
     )
+    |
+        <NULL>
+        { insertArg("PUSH", Nil.get()); }
+        { return "number";              }
     |
     (
         <LBRACE> 
@@ -1131,8 +1326,25 @@ void pushString(String s) :
 
 /**
  * Auxiliar function for pushing 
+ * items in the assembly.
+ * @param s Pushed item
+ */
+void pushItem(String s)
+    throws InvalidOperationException :
+{}
+{{    
+    switch (s.toUpperCase())
+    {
+        case "CRYSTAL" : insertArg("PUSH", new Crystal()); break;
+        case "STONE"   : insertArg("PUSH", new Stone());   break;
+        default        : throw new InvalidOperationException(s + " do not exists");
+    }
+}}
+
+/**
+ * Auxiliar function for pushing 
  * directions in the assembly.
- * @param o Pushed direction
+ * @param s Pushed direction
  */
 void pushWay(String s)
     throws InvalidOperationException :
