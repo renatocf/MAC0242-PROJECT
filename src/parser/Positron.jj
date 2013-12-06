@@ -137,13 +137,13 @@ public class Positron
             Positron.ReInit(txtReader);
             main = Positron.Import("stdlib");
             
-            if(main == null) System.out.println("Erro1");
+            if(main == null) System.out.println("ERROR: Impossible to open" + "/behaviors/stdlib.e");
             
             // Main program
             Positron.ReInit(new FileInputStream(path));
             main.addAll(Positron.Start());
             
-            if(main == null) System.out.println("Erro2");
+            if(main == null) System.err.println("ERROR: Impossible to open" + path);
             
             is = parser.getClass().getResourceAsStream("/behaviors/stdlib.pos");
             file = new InputStreamReader(is);
@@ -153,10 +153,7 @@ public class Positron
             Positron.ReInit(txtReader);
             main.addAll(Positron.Import("stdlib"));
             
-            for(Command c : main)
-                System.out.println(c);
-            
-            if(main == null) System.out.println("Erro3");
+            if(main == null) System.out.println("ERROR: Impossible to open" + "/behaviors/stdlib.pos";
             // Add a final prog to identify 
             // when the 'file' is finished
             main.add(null);
