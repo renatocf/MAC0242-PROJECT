@@ -1498,7 +1498,6 @@ void attrMagic(String var, String attr, String type)
            InvalidOperationException :
 {}
 {{
-    say(var);
     switch(attr)
     {
         case "="  : break;

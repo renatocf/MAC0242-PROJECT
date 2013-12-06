@@ -347,7 +347,7 @@ public class Action
                 }
                 else
                 {
-                    if(Δj < 0) lookJ += -1 * (lookI)%2;
+                    if(Δj < 0) lookJ += -1 * (lookI+1)%2;
                     if(Δj > 0) lookJ +=  1 * (lookI)%2;
                     lookI += (Δi > 0) ? 1 : -1;
                 }
