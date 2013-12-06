@@ -159,6 +159,8 @@ public class Positron
             // when the 'file' is finished
             main.add(null);
             
+            System.out.println(main.size());
+            
             return main;
             
         } catch(/*FileNotFound*/Exception e) {
@@ -224,7 +226,7 @@ SKIP : {
 }
 
 // Magic Variables
-TOKEN : {< MAGIC  : "&"("ROBOT"|"BASE")     >}
+TOKEN : {< MAGIC  : "&"("ROBOT"|"BASE"|"EDGE") >}
 
 // Pre-proc (One of these days)
 TOKEN : {< IMPORT : "import" >}
@@ -243,7 +245,7 @@ TOKEN : {< NULL : "null" >}
 // Syscalls
 TOKEN : {< ASK    : "ask"      >}
 TOKEN : {< HIT    : "hit"      >}
-TOKEN : {< MOVE   : "move"     >}
+TOKEN : {< MOVE   : "_move"    >}
 TOKEN : {< FIRE   : "fire"     >}
 TOKEN : {< LOOK   : "look"     >}
 TOKEN : {< DRAG   : "drag"     >}
@@ -514,6 +516,7 @@ boolean loop()
     (
         l = <LOGICAL>
         s = expression()
+        { insertCmd(logical(l)); }
     )*
     <RBRACE>
     (
@@ -531,6 +534,7 @@ boolean loop()
         |
         <EOL>
         { insertArg("JIT", new Text(flow)); }
+        { flow = oldFlow;                   }
     )
     { return false; }
 }
@@ -726,7 +730,7 @@ String look()
     }
     <RBRACE>
     
-    {return "number";}
+    {return "coord";}
 }
 
 //* ASK ***************************************************************/
@@ -901,7 +905,7 @@ void function()
     }
     returned = block(vars)
     {
-        if(!returned && returns.get(actual) != null)
+        if(!returned && !returns.get(actual).equals("void"))
             throw new MissingReturnException(actual);
     }
 }
@@ -1233,6 +1237,10 @@ String factor ()
         }
         <RBRACE>
         { s = call(t.image); }
+        {
+            if(returns.get(t.image).equals("void"))
+                insertArg("PUSH", Nil.get()); 
+        }
         { return s; }
     )
     |
@@ -1596,6 +1604,7 @@ void allocMagic() :
 {{
     magic.add("&ROBOT");
     magic.add("&BASE");
+    magic.add("&EDGE");
     
     insertLabel("magic_variables");
     for(String var: magic)
