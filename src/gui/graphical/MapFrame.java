@@ -27,7 +27,6 @@ import java.awt.event.*;
 
 // Graphical Libraries (Swing)
 import javax.swing.*;
-import java.lang.*;
 
 // Libraries
 import arena.Map;
@@ -56,11 +55,10 @@ class MapFrame extends JFrame
     // Internal structures
     protected Panel screen;
     protected MiniMapControl miniMapControl;
-    protected static Menu menu;
+
     private JTextArea log;
     
     private MiniMapFrame miniMapFrame;
-    
     
     /** 
      * Default constructor.<br>
@@ -71,14 +69,12 @@ class MapFrame extends JFrame
      */
     MapFrame(Map map, Player player, MiniMapFrame miniMapFrame)
     {
-    
         // Setting MapFrame attributes
         this.map    = map;
         this.player = player;
         this.miniMapFrame = miniMapFrame;
         
         //* MAP FRAME INFO *******************************************//
-            /* TODO: Take out hardcoded stimplements ActionListenerrings */
             this.setSize                  (SCREEN_WIDTH,SCREEN_HEIGHT);
             this.setTitle                 ("Robot's Battle");
             this.validate                 ();
@@ -92,20 +88,9 @@ class MapFrame extends JFrame
             int MAP_WIDTH  = 2*x0 + (int)(RADIUS * MAP_SIZE * Math.sqrt(3));
             int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2);
             
-            
-            //TODO: --- this.miniMapControl = new MiniMapControl(this.miniMapFrame);
-            this.setVisible(true);
-            
-            //TODO: Thread threadMMC = new Thread(this.miniMapControl);
-            //TODO: threadMMC.start();
-            
-            //TODO: add(miniMapControl);
-            
             this.screen = new Panel(
                 map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
             );
-            //TODO: Thread threadScreen = new Thread(this.screen);
-            //TODO: threadScreen.start();
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
             this.screen.setFocusable (true);
@@ -116,14 +101,29 @@ class MapFrame extends JFrame
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
             );
             
-            int BASE_X = (int) (player.getBase().getPosY(player)* RADIUS * Math.sqrt(3));
+            int BASE_X = (int) (player.getBase().getPosY(player) * RADIUS * Math.sqrt(3));
             int BASE_Y = (int) (player.getBase().getPosX(player) * RADIUS * 1.5);
             
             scrollPane.getVerticalScrollBar().setMaximum   (MAP_HEIGHT);
             scrollPane.getHorizontalScrollBar().setMaximum (MAP_WIDTH);
             scrollPane.getHorizontalScrollBar().setValue   (BASE_X);
             scrollPane.getVerticalScrollBar().setValue     (BASE_Y);
-        
+            
+            UserInterface ui = new UserInterface(player, miniMapFrame);
+                        
+        //* ARENA + MENU *********************************************//
+            ui.setLayout(new BoxLayout(ui, BoxLayout.PAGE_AXIS));
+            ui.setBackground(Color.black);
+            ui.setFocusable(true); 
+                         
+            JSplitPane game = new JSplitPane( 
+                JSplitPane.HORIZONTAL_SPLIT, false, scrollPane, ui 
+            ); 
+             
+            game.setDividerLocation (0.93); 
+            game.setResizeWeight    (1); 
+            game.setFocusable       (true);  
+            
         //* LOG BOX **************************************************//
             this.log = new JTextArea(5, 72);
             this.log.setFont      (new Font("Serif", Font.BOLD, 12));
@@ -141,12 +141,12 @@ class MapFrame extends JFrame
         
         //* ARENA + LOG **********************************************//
             JSplitPane split = new JSplitPane(
-                JSplitPane.VERTICAL_SPLIT, false, scrollPane, scrollLog
+                JSplitPane.VERTICAL_SPLIT, false, game, scrollLog
             );
             
             split.setDividerLocation (0.9);
             split.setResizeWeight    (0.9);
-        
+                    
         //* VISIBILITY ***********************************************//
             this.add(split);
             
@@ -180,10 +180,10 @@ class MapFrame extends JFrame
         this.screen.repaint();
     }
     
-    void menuVisit()
-    {
-        this.screen.setVisible(false);
-    }
+    /* void menuVisit() */
+    /* { */
+        /* this.screen.setVisible(false); */
+    /* } */
     
     /** 
      * Auxilar function for painting in the arena
@@ -245,6 +245,4 @@ class MapFrame extends JFrame
             }
         });
     }    
-    
-
 }
