@@ -113,7 +113,7 @@ public class Map
             throw new SegmentationFaultException();
         
         // Initilixe the new robot and place it in the map
-        Robot r = new Robot(name, player, ID, i, j, map[i][j], pathToProg);
+        Robot r = new Robot(name, player, ID, i, j, this.map[i][j], pathToProg);
         this.map[i][j].setScenario(r);
         return r;
     }
