@@ -1,0 +1,9 @@
+updateVars();
+my dir = ->E;  
+
+if (moveTowards([0,13]) < 1)
+    {removeObstacle([0,13]);}
+if (dragNearCrystal() > 0)
+   { drop(straightWayToPoint([0,13])); }
+
+
