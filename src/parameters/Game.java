@@ -128,5 +128,5 @@ public final class Game
      * Maximum of assembly lines to be run 
      * by a program that makes no syscall.
      */
-    public static int ASM_MAX_RUN = 300;
+    public static int ASM_MAX_RUN = 30000;
 }
