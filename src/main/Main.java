@@ -68,6 +68,7 @@ public class Main
     {
         String[] args = getopt(argv); // Get options
         System.out.println("");
+        
         // Help and Usage
         if(help) { help(); return; }
         if(args.length > Game.ROBOTS_NUM_INITIAL) 
@@ -91,7 +92,8 @@ public class Main
     private static boolean menu(String[] args)
         throws InvalidOperationException
     {
-        switch(MENU.exhibit())
+        if(Debugger.debugging()) newGame(args);
+        else switch(MENU.exhibit())
         {
             case NEW_GAME: newGame(args); break;
             case EXIT: return false;
