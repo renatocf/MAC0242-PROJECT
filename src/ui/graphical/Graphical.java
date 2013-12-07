@@ -37,11 +37,19 @@ import static parameters.Game.*;
  */
 public class Graphical implements UI
 {
+    // GUI owner
     Player player;
+    
+    // Main GUI components
     MapFrame     mapFrame;
     EditorFrame  editorFrame;
     MiniMapFrame miniMapFrame;
     
+    /**
+     * Default constructor.<br>
+     * @param map    Map of the arena
+     * @param player Owner of the User Interface
+     */
     public Graphical(Map map, Player player)
     {
         this.player = player;   
