@@ -39,9 +39,6 @@ class EditorFrame extends JFrame
         StyleConstants.setForeground(red, Color.RED);
         StyleConstants.setBold(red, true);
        
-        append("if", red);
-        append(" ", null);
-        
         this.add(new JScrollPane(txtPane), BorderLayout.CENTER);
         
         SwingUtilities.invokeLater(new Runnable() {
