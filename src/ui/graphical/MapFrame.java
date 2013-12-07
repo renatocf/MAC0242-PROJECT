@@ -37,10 +37,10 @@ import players.Player;
 import static parameters.Game.*;
 
 /**
- * <b>Graphical - MapFrame Mode</b><br>
- * Creates a panel with the main workflow
- * for the game, as the complete arena and
- * a log-message with robot info.
+ * <b>Graphical - MapFrame</b><br>
+ * Creates a panel with the main components
+ * of the game, as the complete arena and
+ * a log-messenger with all robots' info.
  * 
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
