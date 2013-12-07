@@ -30,6 +30,15 @@ import players.Player;
 // Import links
 import static parameters.Game.*;
 
+/**
+ * <b>Graphical - MiniMapFrame</b><br>
+ * Provides a small screen with the
+ * user's view of all terrains.
+ * 
+ * @author Karina Suemi
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
+ */
 public class MiniMapFrame extends JFrame
 {
     // View data model
@@ -39,6 +48,14 @@ public class MiniMapFrame extends JFrame
     // Internal structures
     protected Panel miniMap;
     
+    // Internal variables
+    private boolean visible = true;
+    
+    /**
+     * Default constructor.<br>
+     * @param map    Map of the arena
+     * @param player Owner of the User Interface
+     */
     MiniMapFrame(Map map, Player player)
     {
         // Setting MiniMapFrame attributes
@@ -64,7 +81,7 @@ public class MiniMapFrame extends JFrame
             
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
-                public void run() { setVisible(true); }
+                public void run() { setVisible(visible); }
             });
     }
     
@@ -72,4 +89,14 @@ public class MiniMapFrame extends JFrame
      * Auxiliar method to repaint frame.
      */
     void paint() { this.miniMap.repaint(); }
+        
+    /**
+     * Auxiliar method to toggle the
+     * Mini Map exhibition.
+     */
+    void toggle() 
+    {
+        this.visible = !this.visible;
+        setVisible(this.visible);
+    }
 }
