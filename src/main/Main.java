@@ -81,6 +81,7 @@ public class Main
         }
         
         while(menu(args));
+        System.exit(0);
     }
     
     /**
@@ -96,7 +97,7 @@ public class Main
         else switch(MENU.exhibit())
         {
             case NEW_GAME: newGame(args); break;
-            case EXIT: return false;
+            case EXIT:     return false;
         }
         return true;
     }
