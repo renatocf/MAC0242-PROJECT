@@ -36,61 +36,26 @@ import javax.swing.*;
  */
 public class Menu extends JFrame implements MENU
 {   
-    private boolean pressed = false;
-    private JButton new_game;
-    private JButton exitB;    
-    
-    private MenuPanel menu;
-    
-    
-    
     // Interface MENU
-    /*private JPanel Grid()
-    {
-        setLayout(new GridLayout(2, 1));
-        add(new JButton("1"));
-        add(new JButton("2"));        
-    }*/
-    
     public Opts exhibit()
     {
-        // Close the frame
-        this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        //this.setComponentPanel(new MenuPanel());
-        menu = new MenuPanel();
-        add(menu);
-        
-        // Screen config.     
+        // Screen options
         this.setSize(740, 719);   
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         
-        
-        // Create buttons
-       /* new_game = new JButton(":: Restart ::");
-        exitB = new JButton("Exit");
-        */
-        
-        
-        
-        // Button new game config.
-       /* this.add(new_game);
-        this.add(exitB);
-
-        // Listeners
-        new_game.addActionListener(this);
-        exitB.addActionListener(this); */
-        
+        // Make menu visible
         this.setVisible(true);
         
-        menu.ListenButtonsInit();
-
-        // Wait the press of some buttonJpanel 
-        //while(!menu.getPressed());
-            //new_game.addActionListener(this);
-            
+        // Untill user choose an option
+        MenuPanel menu = new MenuPanel();
+        this.add(menu);
+        MENU.Opts option = menu.getOpt();
+        
+        // Then, get invisible
         this.setVisible(false);
-        return MENU.Opts.NEW_GAME;
+        
+        // And return player's option
+        return option;
     }
-
-
 }
