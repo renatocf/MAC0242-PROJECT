@@ -50,7 +50,7 @@ class UserInterface extends JPanel
     private Player player;
     private MiniMapFrame minimap;
     private JTextArea tex;
-    private JFrame texto;
+    private JFrame text;
     private boolean texBool;
         
     /**
@@ -65,11 +65,11 @@ class UserInterface extends JPanel
         this.player  = p;
         
         // Prog Editor
-        texto = new JFrame();
-        texto.setSize(300, 500);
+        text = new JFrame();
+        text.setSize(300, 500);
         tex = new JTextArea("");
-        texto.add(tex);
-        texto.setVisible(false);
+        text.add(tex);
+        text.setVisible(false);
         texBool = false;
 
 
@@ -102,14 +102,12 @@ class UserInterface extends JPanel
                     try( FileWriter fw = new FileWriter(arquivo) ){
                         fw.write(program);
                         fw.flush();
-                    }catch(Exception e){
+                    } catch(Exception e) {
                         System.out.println("Erro ao salvar o arquivo!");
                     }
           
-                    
                     if (program.equals(""))
                         prog = "test/" + JOptionPane.showInputDialog("Which program controls " + robotName + "?") + ".pos";
-        
                     else
                          prog = "test/user.pos";
                     player.insertArmy(robotName, prog);
@@ -122,7 +120,7 @@ class UserInterface extends JPanel
                 public void exec() 
                 {
                     texBool = !texBool;
-                    texto.setVisible(texBool);
+                    text.setVisible(texBool);
                     System.out.println(tex.getText());        
                 }
             }); 
