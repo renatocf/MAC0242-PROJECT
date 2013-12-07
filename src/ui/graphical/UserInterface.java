@@ -18,12 +18,15 @@ package ui.graphical;
 
 // Graphical Libraries (AWT)
 import java.awt.Color;
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 // Graphical Libraries (Swing)
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 
 // Libraries
 import players.Player;
@@ -44,6 +47,9 @@ class UserInterface extends JPanel
         
     /**
      * Default Constructor.<br>
+     * @param p            Player owner of this GUI
+     * @param miniMapFrame MiniMap window to be 
+     *                     toggled
      */
     UserInterface(Player p, MiniMapFrame miniMapFrame)
     {
@@ -61,57 +67,72 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            JGameAction toggle = new JGameAction() 
-            {
+            new JGameButton(null, new JGameAction() {
                 boolean minControl = true;
-                public void exec() 
-                {
+                public void exec() {
                     minimap.setVisible(minControl ? false : true);
                     minControl = !minControl;
                 }
-            };
-            this.add(new JGameButton(null, toggle));
+            });
             
         //* ADD BUTTON ************************************************/
-            JGameAction addNew = new JGameAction() 
-            {
-                public void exec() 
-                {
+            new JGameButton(null, new JGameAction() {
+                public void exec() {
                     player.insertArmy("Terminator", "test/scoutHL.pos");
                 }
-            };
-            this.add(new JGameButton(null, addNew));
+            });
         
         //* EXIT *****************************************************/
-            JGameAction exit = new JGameAction() 
-            {
+            new JGameButton(null, new JGameAction() {
                 public void exec() { System.exit(0); }
-            };
-            
-            this.add(new JGameButton(null, exit));
+            });
     }
     
+    /**
+     * <b>User Interface - JGameAction</b><br>
+     * Auxiliar interface to hold an action
+     * that should be executed by a JGameButton.
+     */
     private interface JGameAction
     {
+        /**
+         * Method to be executed by a JGameButton.
+         */
         void exec();
     }
     
+    /**
+     * <b>User Interface - JGameButton</b><br>
+     * Auxiliar class to initialize a new button,
+     * with its own design and a JGameAction.
+     */
     private class JGameButton extends JButton
     {
+        // Buttons size
         private final Dimension d = new Dimension(5,5);
         
+        /**
+         * Default constructor<br>
+         * @param img    Icon to be exhibited as a button
+         * @param action JGameAction to be executed by the
+         *               button when it is clicked
+         */
         JGameButton(ImageIcon img, final JGameAction action)
         {
             super(img);
             
             this.setEnabled(true);
             this.setPreferredSize(d);
+            
+            // Executing JGameAction
             this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     action.exec();
                 }
             });
+            
+            UserInterface.this.add(this);
         }
     }
 }
