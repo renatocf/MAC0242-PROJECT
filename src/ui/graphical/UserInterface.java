@@ -68,11 +68,7 @@ class UserInterface extends JPanel
         
         //* MINIMAP **************************************************/
             new JGameButton(null, new JGameAction() {
-                boolean minControl = true;
-                public void exec() {
-                    minimap.setVisible(minControl ? false : true);
-                    minControl = !minControl;
-                }
+                public void exec() { minimap.toggle(); }
             });
             
         //* ADD BUTTON ************************************************/
