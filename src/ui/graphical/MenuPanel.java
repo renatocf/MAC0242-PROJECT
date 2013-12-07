@@ -14,8 +14,7 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-
-package gui.graphical;
+package ui.graphical;
 
 // Graphical Libraries (AWT)
 import java.awt.*;
@@ -30,7 +29,6 @@ import javax.swing.*;
 public class MenuPanel extends JPanel 
                        implements ActionListener
 {
-
     private JButton new_game;
     private JButton exitB;
     
@@ -75,7 +73,6 @@ public class MenuPanel extends JPanel
         
         g2d.drawImage(red, 0, 0, null);
     }
-    
     
     protected void paintComponent(Graphics g) 
     {

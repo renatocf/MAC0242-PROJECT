@@ -20,9 +20,9 @@ package arena;
 import java.util.Random;
 
 // Graphical Libraries (Internal)
-import gui.*;
-import gui.textual.*;
-import gui.graphical.*;
+import ui.*;
+import ui.textual.*;
+import ui.graphical.*;
 
 // Libraries
 import robot.*;
@@ -69,9 +69,6 @@ final public class World
     private static RobotList armies;
     private static Player[] players;
     
-    // Graphical User Interface (GUI)
-    /* private static GUI GUI; */
-    
     // No instances of this class allowed
     private World() {}
     
@@ -100,28 +97,28 @@ final public class World
         // Create new players
         for(int i = 0; i < nPlayers; i++)
         {
-            GUI GUI = null;
+            UI UI = null;
             
-            // Set up player with its base and GUI
+            // Set up player with its base and UI
             players[i] = new Player(bases[i]);
             
-            // Initializes GUI for non-AI players
+            // Initializes UI for non-AI players
             if(i < nAI) continue;
             
             Player p = players[i];
             switch(gui)
             {
-                case NONE      : GUI = null;                   break;
-                case TEXTUAL   : GUI = new Textual   (map, p); break;
-                case GRAPHICAL : GUI = new Graphical (map, p); break;
-                default:         GUI = new Graphical (map, p);
+                case NONE      : UI = null;                   break;
+                case TEXTUAL   : UI = new Textual   (map, p); break;
+                case GRAPHICAL : UI = new Graphical (map, p); break;
+                default:         UI = new Graphical (map, p);
             }
-            p.setGUI(GUI);
+            p.setUI(UI);
         }
         
         if(Debugger.debugging()) 
             for(Player p: players) 
-                if(p.GUI != null) p.GUI.printMiniMap();
+                if(p.UI != null) p.UI.printMiniMap();
         
         return players;
     }
@@ -179,7 +176,7 @@ final public class World
         
         // Paint one frame
         for(Player p: players)
-            if(p.GUI != null) p.GUI.paint();
+            if(p.UI != null) p.UI.paint();
         
         // Stops only when the game is over
         return gameOver();
@@ -192,7 +189,7 @@ final public class World
      */
     public static void chat(Player player, String msg)
     {
-        if(player.GUI != null) player.GUI.printText(msg);
+        if(player.UI != null) player.UI.printText(msg);
     }
     
     /**
@@ -350,9 +347,9 @@ final public class World
             /* More than 5 crystals: player looses */
             if( players[i].getBase().getCrystals() >= MAX_CRYSTALS )
             {
-                if(players[i].GUI != null)
+                if(players[i].UI != null)
                 {
-                    players[i].GUI.looser();
+                    players[i].UI.looser();
                     try { Thread.sleep(5000); }
                     catch (InterruptedException e) {}
                 }
@@ -369,8 +366,8 @@ final public class World
                 for(Player p: players) if(p != null) winner = p;
                 
                 /* Sets the winner */
-                if(winner.GUI != null)
-                    winner.GUI.winner(
+                if(winner.UI != null)
+                    winner.UI.winner(
                         time, nPlayers, armies.getPopulation()
                     );
                 

@@ -14,11 +14,11 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui;
+package ui;
 
 // Graphical Libraries (Internal)
-import gui.textual.Textual;
-import gui.graphical.Graphical;
+import ui.textual.Textual;
+import ui.graphical.Graphical;
 
 /**
  * <b>Interfaces</b><br>
@@ -26,7 +26,7 @@ import gui.graphical.Graphical;
  * of interfaces implemented inside package
  * GUI (useful for switching the implementations).
  * 
- * @see GUI
+ * @see UI
  * @see main.Main
  * @author Renato Cordeiro Ferreira
  */

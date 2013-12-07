@@ -20,7 +20,7 @@ package players;
 import java.util.ArrayList;
 
 // Libraries
-import gui.GUI;
+import ui.UI;
 import arena.Robot;
 import arena.World;
 import parameters.*;
@@ -71,7 +71,7 @@ public class Player
     public ArrayList<Robot> armies = new ArrayList<Robot>();
     
     // Player's view of the game
-    public GUI GUI = null;
+    public UI UI = null;
     
     /*
     ////////////////////////////////////////////////////////////////////
@@ -163,12 +163,12 @@ public class Player
     */
     
     /**
-     * Sets player's GUI.
-     * @param GUI  Player's own visualization
-     *             of what is happening on the
-     *             game
+     * Sets player's UI.
+     * @param UI  Player's own visualization
+     *            of what is happening on the
+     *            game
      */
-    public void setGUI(GUI GUI) { this.GUI = GUI; }
+    public void setUI(UI UI) { this.UI = UI; }
     
     /** 
      * Getter for player's robots

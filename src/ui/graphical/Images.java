@@ -14,7 +14,7 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.graphical;
+package ui.graphical;
 
 // Default Libraries
 import java.util.HashMap;
@@ -38,7 +38,7 @@ import stackable.item.Item;
 
 // Import links
 import static parameters.Game.*;
-import static gui.graphical.Type.*;
+import static ui.graphical.Type.*;
 
 /**
  * <b>Graphical - ROOT</b><br>

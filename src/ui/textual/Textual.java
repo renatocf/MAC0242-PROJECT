@@ -14,13 +14,13 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.textual;
+package ui.textual;
 
 // Default libraries
 import java.util.Scanner;
 
 // Libraries
-import gui.*;
+import ui.*;
 import arena.*;
 import players.*;
 import scenario.*;
@@ -30,9 +30,9 @@ import stackable.item.*;
 import static parameters.Game.*;
 
 /**
- * <b>GUI - Textual Mode</b><br>
+ * <b>UI - Textual Mode</b><br>
  * Makes an implementation of the interface
- * GUI for exhibiting the game, with colors,
+ * UI for exhibiting the game, with colors,
  * in a Unix shell.
  * <p>
  * The program may also work if the shell
@@ -40,7 +40,7 @@ import static parameters.Game.*;
  * 
  * @author Renato Cordeiro Ferreira
  */
-public class Textual implements Colors, GUI
+public class Textual implements Colors, UI
 {
     private Map map;
     private Player player;

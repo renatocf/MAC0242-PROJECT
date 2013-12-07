@@ -14,11 +14,11 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.textual;
+package ui.textual;
 
 // Libraries
-import gui.MENU;
-import gui.MENU.Opts;
+import ui.MENU;
+import ui.MENU.Opts;
 
 // Default libraries
 import java.util.Scanner;

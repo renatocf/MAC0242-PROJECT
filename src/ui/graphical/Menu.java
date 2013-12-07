@@ -14,11 +14,11 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.graphical;
+package ui.graphical;
 
 // Default libraries
-import gui.MENU;
-import gui.MENU.Opts;
+import ui.MENU;
+import ui.MENU.Opts;
 
 // Graphical Libraries (AWT)
 import java.awt.*;

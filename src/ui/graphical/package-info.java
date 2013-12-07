@@ -19,6 +19,6 @@
  * Defines a Graphical User Interface 
  * for the game (using AWT and Swing).
  * </b>
- * @see gui
+ * @see ui
  */
-package gui.graphical;
+package ui.graphical;

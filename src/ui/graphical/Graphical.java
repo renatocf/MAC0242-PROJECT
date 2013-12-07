@@ -14,10 +14,10 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.graphical;
+package ui.graphical;
 
 // Libraries
-import gui.*;
+import ui.*;
 import arena.Map;
 import parameters.*;
 import players.Player;
@@ -26,16 +26,16 @@ import players.Player;
 import static parameters.Game.*;
 
 /**
- * <b>GUI - Graphical Mode</b><br>
+ * <b>UI - Graphical Mode</b><br>
  * Makes an implementation of the interface
- * GUI for exhibiting the game, using Java's
+ * UI for exhibiting the game, using Java's
  * default graphic libraries (AWT and Swing).
  * 
  * @author Karina Suemi
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-public class Graphical implements GUI
+public class Graphical implements UI
 {
     Player player;
     MapFrame     mapFrame;

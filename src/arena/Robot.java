@@ -24,7 +24,7 @@ import robot.*;
 import players.*;
 import exception.*;
 import stackable.*;
-import gui.Printable;
+import ui.Printable;
 import parser.Cortex;
 import scenario.Scenario;
 import stackable.item.Item;

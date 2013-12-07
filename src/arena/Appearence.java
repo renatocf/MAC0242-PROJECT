@@ -17,7 +17,7 @@
 package arena;
 
 // Libraries
-import gui.Printable;
+import ui.Printable;
 
 /**
  * <b>Appearence</b><br>

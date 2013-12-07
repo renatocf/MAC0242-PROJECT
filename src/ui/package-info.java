@@ -19,4 +19,4 @@
  * exhibition of the game (GUI).</b>
  * <p>
  */
-package gui;
+package ui;

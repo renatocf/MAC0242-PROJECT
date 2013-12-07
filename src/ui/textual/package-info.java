@@ -20,6 +20,6 @@
  * game (using <em>Ansi Escape Colors</em>
  * for terminals).
  * </b>
- * @see gui
+ * @see ui
  */
-package gui.textual;
+package ui.textual;

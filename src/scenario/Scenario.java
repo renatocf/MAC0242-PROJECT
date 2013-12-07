@@ -17,7 +17,7 @@
 package scenario;
 
 // Libraries
-import gui.Printable;
+import ui.Printable;
 import players.Player;
 
 /** 

@@ -29,11 +29,11 @@ import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
-import gui.MENU;
-import gui.MENU.Opts;
+import ui.MENU;
+import ui.MENU.Opts;
 
 // Configs interfaces
-import gui.Interfaces;
+import ui.Interfaces;
 import random.Weather;
 
 // External Libraries (.jar)
@@ -55,8 +55,8 @@ public class Main
     static private boolean help   = false;
     static private boolean usage  = false;
     static private boolean multi  = false;
-    static private Interfaces GUI = Interfaces.GRAPHICAL;
-    static private MENU MENU = new gui.graphical.Menu();
+    static private Interfaces UI = Interfaces.GRAPHICAL;
+    static private MENU MENU = new ui.graphical.Menu();
     
     /**
      * <b>Main method</b><br>
@@ -109,7 +109,7 @@ public class Main
         throws InvalidOperationException
     {
         // Generate map
-        Player[] p = World.genesis(2, 1, Game.WEATHER, GUI, Game.RAND);
+        Player[] p = World.genesis(2, 1, Game.WEATHER, UI, Game.RAND);
         
         // Menu
         // TODO: automate inserction of programs
@@ -193,7 +193,7 @@ public class Main
                 //
                 case 'd': // --debug
                     Debugger.init();
-                    GUI = Interfaces.NONE;
+                    UI = Interfaces.NONE;
                     break;
                 //
                 case 1: Game.WEATHER = Weather.ARTICAL;     break;
@@ -215,8 +215,8 @@ public class Main
                 case 7: multi = false;  break; // --single
                 //
                 case 't': // --textual
-                    GUI = Interfaces.TEXTUAL;
-                    MENU = new gui.textual.Menu();
+                    UI = Interfaces.TEXTUAL;
+                    MENU = new ui.textual.Menu();
                     break;
                 //
                 case 's': Game.MAP_SIZE = 16; break; // --small

@@ -14,10 +14,10 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui.textual;
+package ui.textual;
 
 /**
- * <b>Interfaces</b><br>
+ * <b>Colors</b><br>
  * Holds the default <em>ANSI Escape Colors</em>,
  * supported in Unix-alike shells and others.
  * <p>

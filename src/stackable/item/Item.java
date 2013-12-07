@@ -17,7 +17,7 @@
 package stackable.item;
 
 // Libraries
-import gui.Printable;
+import ui.Printable;
 import stackable.Stackable;
 
 /** 

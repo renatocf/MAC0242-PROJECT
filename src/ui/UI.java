@@ -14,19 +14,19 @@
 /* See the License for the specific language governing permissions    */
 /* and limitations under the License.                                 */
 /**********************************************************************/
-package gui;
+package ui;
 
 // Libraries
 import players.Player;
 import parameters.Game;
 
 /**
- * <b>GUI</b><br>
- * Methods that a GUI must provide to 
+ * <b>UI</b><br>
+ * Methods that a UI must provide to 
  * work with the game characteristics.
  * @see parameters.Game
  */
-public interface GUI
+public interface UI
 {
     /**
      * Shows Map.<br>
