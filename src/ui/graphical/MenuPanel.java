@@ -23,85 +23,90 @@ import java.awt.event.*;
 // Graphical Libraries (Swing)
 import javax.swing.*;
 
+// Libraries
+import ui.MENU;
+
 /**
- * Is the class representing the initial screen.
+ * <b>MENU - Menu Panel</b><br>
+ * Panel with the menu screen and the
+ * buttons with its properties.
  */
 public class MenuPanel extends JPanel 
-                       implements ActionListener
 {
-    private JButton new_game;
-    private JButton exitB;
+    // Buttons
+    private JButton exitButton;
+    private JButton newGameButton;
     
-    private boolean pressed;
+    // Flag to interrupt menu execution
+    private MENU.Opts option  = null;
     
-    public MenuPanel()
+    /**
+     * Default constructor.<br>
+     */
+    MenuPanel()
     {
         // Create a RGB color
-        Color myColor = Color.decode("#a69f8f");
-        this.setBackground(myColor);
-    
-        this.pressed = false;
+        this.setBackground(Color.decode("#a69f8f"));
         
-        exitB    = new JButton("Exit");
-        new_game = new JButton("New Game");
+        //* EXIT *****************************************************/
+            this.exitButton = new JButton("Exit");
+            this.exitButton.setEnabled(true);
+            this.exitButton.setBackground(Color.white);
+            
+            this.exitButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    MenuPanel.this.option  = MENU.Opts.EXIT;
+                }
+            });
+            
+            this.add(this.exitButton);
         
-        add(exitB);
-        add(new_game);
+        //* NEW GAME *************************************************/
+            this.newGameButton = new JButton("New Game");
+            this.newGameButton.setEnabled(true);
+            this.newGameButton.setBackground(Color.white);
+            
+            this.newGameButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    MenuPanel.this.option = MENU.Opts.NEW_GAME;
+                }
+            });
+            
+            this.add(this.newGameButton);
     } 
     
     /**
-     * Is called by Menu and set the configurations
-     * of the initial screen.
+     * Keeps the menu panel in an infinite loop,
+     * listening for buttons' actions.
+     * @return MENU option
      */
-    public void ListenButtonsInit()
+    MENU.Opts getOpt()
     {
-        while(!this.pressed)
-        {
-            new_game.addActionListener(this);
-            exitB.addActionListener(this);
-        }
-    }
-
-    /**
-     * Control the image.
-     */
-    private void image(Graphics g)
-    {
-        Graphics2D g2d = (Graphics2D) g;
-
-        Image red = Images.MENU_ROBOT.img().getSubimage(0, 0, 610, 719);
-        
-        g2d.drawImage(red, 0, 0, null);
+        while(this.option == null)
+            try { Thread.sleep(200); }
+            catch (InterruptedException e) {}
+        return option;
     }
     
+    /**
+     * Draw the menu with an image in the 
+     * background and the buttons in the 
+     * correct positions.
+     * @param g Graphical context
+     */
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
         
-        // Position of Buttons
-        new_game.setBounds(590,30,120,80);
-        exitB.setBounds(590,140,120,80);
+        // Put buttons in the menu screen
+        this.exitButton.setBounds    (590,140,120,80);
+        this.newGameButton.setBounds (590, 30,120,80);
         
-        // Color of Buttons
-        exitB.setBackground(Color.white);
-        new_game.setBackground(Color.white);
-        
-        image(g);      
+        // Set image in the background
+        Graphics2D g2d = (Graphics2D) g;
+        Image red = Images.MENU_ROBOT.img().getSubimage(0, 0, 610, 719);
+        g2d.drawImage(red, 0, 0, null);
     }
-    
-    // Button Event
-    public void actionPerformed(ActionEvent evt) 
-    {  
-        Object obj=evt.getSource();  
-          
-        if(obj == new_game)
-        {
-            this.pressed = true;
-        }  
-        else if(obj == exitB)
-        {
-            System.exit(0);
-        }
-
-    } 
 }
