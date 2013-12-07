@@ -61,47 +61,89 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            JButton minimapButton = new JButton("m");//(im);
-            minimapButton.setEnabled(true);
-            minimapButton.setPreferredSize(new Dimension(5,5));
-            
-            minimapButton.addMouseListener(new MouseAdapter() {
+            //JButton minimapButton = new JButton("m");//(im);
+            //minimapButton.setEnabled(true);
+            //minimapButton.setPreferredSize(new Dimension(5,5));
+            //
+            //minimapButton.addMouseListener(new MouseAdapter() {
+            //    boolean minControl = true;
+            //    @Override
+            //    public void mouseClicked(MouseEvent e) {
+            //        minimap.setVisible(minControl ? false : true);
+            //        minControl = !this.minControl;
+            //    }
+            //});
+            JGameAction toggle = new JGameAction() 
+            {
                 boolean minControl = true;
-                @Override
-                public void mouseClicked(MouseEvent e) {
+                public void exec() 
+                {
                     minimap.setVisible(minControl ? false : true);
-                    minControl = !this.minControl;
+                    minControl = !minControl;
                 }
-            });
-            
-            this.add(minimapButton);
+            };
+            this.add(new JGameButton(null, toggle));
             
         //* ADD BUTTON ************************************************/
-            JButton newRobotButton = new JButton("A");
-            newRobotButton.setEnabled(true);
-            newRobotButton.setPreferredSize(new Dimension(5,5));
-            
-            newRobotButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
+            JGameAction addNew = new JGameAction() 
+            {
+                public void exec() 
+                {
                     player.insertArmy("Terminator", "test/scoutHL.pos");
                 }
-            });
-            
-            this.add(newRobotButton);
+            };
+            this.add(new JGameButton(null, addNew));
+            // JButton newRobotButton = new JButton("A");
+            // newRobotButton.setEnabled(true);
+            // newRobotButton.setPreferredSize(new Dimension(5,5));
+            // 
+            // newRobotButton.addMouseListener(new MouseAdapter() {
+            //     @Override
+            //     public void mouseClicked(MouseEvent e) {
+            //         player.insertArmy("Terminator", "test/scoutHL.pos");
+            //     }
+            // });
         
         //* EXIT *****************************************************/
-            JButton exitButton = new JButton("X");
-            exitButton.setEnabled(true);
-            exitButton.setPreferredSize(new Dimension(5,5));
+            JGameAction exit = new JGameAction() 
+            {
+                public void exec() { System.exit(0); }
+            };
             
-            exitButton.addMouseListener(new MouseAdapter() {
+            this.add(new JGameButton(null, exit));
+            //JButton exitButton = new JButton("X");
+            //exitButton.setEnabled(true);
+            //exitButton.setPreferredSize(new Dimension(5,5));
+            //
+            //exitButton.addMouseListener(new MouseAdapter() {
+            //    @Override
+            //    public void mouseClicked(MouseEvent e) {
+            //        System.exit(0);
+            //    }
+            //});
+    }
+    
+    private interface JGameAction
+    {
+        void exec();
+    }
+    
+    private class JGameButton extends JButton
+    {
+        private final Dimension d = new Dimension(5,5);
+        
+        JGameButton(ImageIcon img, final JGameAction action)
+        {
+            super(img);
+            
+            this.setEnabled(true);
+            this.setPreferredSize(d);
+            this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.exit(0);
+                    action.exec();
                 }
             });
-            
-            this.add(exitButton);
+        }
     }
 }
