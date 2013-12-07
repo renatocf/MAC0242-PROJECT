@@ -47,8 +47,9 @@ public class Textual implements Colors, UI
 
     /** 
      * Default constructor.<br>
-     * @param map Object of the class map
-     *            from package arena.
+     * @param map    Object of the class map
+     *               from package arena.
+     * @param player Owner of the User Interface
      */
     public Textual(Map map, Player player)
     {
