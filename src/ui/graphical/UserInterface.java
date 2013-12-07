@@ -123,7 +123,7 @@ class UserInterface extends JPanel
             // Executing JGameAction
             this.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseReleased(MouseEvent e) {
                     action.exec();
                 }
             });
