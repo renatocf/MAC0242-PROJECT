@@ -71,8 +71,6 @@ class UserInterface extends JPanel
         text.add(tex);
         text.setVisible(false);
         texBool = false;
-
-
         
         // Launch a new thread to deal with buttons
         new Thread() { public void run() {
@@ -85,12 +83,12 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            new JGameButton(null, new JGameAction() {
+            new JGameButton("m", new JGameAction() {
                 public void exec() { minimap.toggle(); }                
             });
             
         //* ADD BUTTON ************************************************/
-            new JGameButton(null, new JGameAction() {
+            new JGameButton("A", new JGameAction() {
                 public void exec() {
                     String program;
                     String prog;
@@ -116,7 +114,7 @@ class UserInterface extends JPanel
             });
         
         //* PROG  ****************************************************/
-            new JGameButton(null, new JGameAction() {
+            new JGameButton("E", new JGameAction() {
                 public void exec() 
                 {
                     texBool = !texBool;
@@ -126,13 +124,13 @@ class UserInterface extends JPanel
             }); 
         
         //* CLEAN TEXT AREA  *****************************************/
-            new JGameButton(null, new JGameAction() {
+            new JGameButton("C", new JGameAction() {
                 public void exec() { tex.setText(""); }                
             });
             
         
         //* EXIT *****************************************************/
-            new JGameButton(null, new JGameAction() {
+            new JGameButton("X", new JGameAction() {
                 public void exec() { System.exit(0); }
             });
     }
@@ -158,7 +156,7 @@ class UserInterface extends JPanel
     private class JGameButton extends JButton
     {
         // Buttons size
-        private final Dimension d = new Dimension(5,5);
+        private final Dimension d = new Dimension(5,10);
         
         /**
          * Default constructor<br>
@@ -168,10 +166,28 @@ class UserInterface extends JPanel
          */
         JGameButton(ImageIcon img, final JGameAction action)
         {
-            super(img);
-            
+            super(img); init(action);
+        }
+        
+        /**
+         * Secondary constructor<br>
+         * @param text   Text to te the label of the button
+         * @param action JGameAction to be executed by the
+         *               button when it is clicked
+         */
+        JGameButton(String text, final JGameAction action)
+        {
+            super(text); init(action);
+        }
+        
+        /**
+         * Initialize Button.
+         * @param action JGameAction to be executed by the
+         *               button when it is clicked
+         */
+        private void init(final JGameAction action)
+        {
             this.setEnabled(true);
-            this.setSize(5, 10);
             this.setPreferredSize(d);
             
             // Executing JGameAction
