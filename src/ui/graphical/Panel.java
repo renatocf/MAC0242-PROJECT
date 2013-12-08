@@ -56,7 +56,7 @@ import static parameters.Game.*;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-class Panel extends JPanel
+class Panel extends JLayeredPane
 {
     // Map made with cells
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
@@ -85,7 +85,7 @@ class Panel extends JPanel
      * Create a Panel with dimensions width x height,
      * containing MAP_SIZE² hexagons (built from a map).
      * @see Cell
-     * @see GraphjButton listener paralelo a outras classeical
+     * @see Graphical
      *
      * @param map    Map over which the panel will
      *               create the GUI hexagons
@@ -112,6 +112,7 @@ class Panel extends JPanel
         
         // Preferences
         this.insets = this.getInsets ();
+        this.setOpaque        (true);
         this.setLayout        (null);
         this.setBackground    (Color.black);
         this.setPreferredSize (new Dimension(width, height));
@@ -142,6 +143,14 @@ class Panel extends JPanel
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(X,Y,3);
+        
+        // this.addMouseListener(new MouseAdapter() {
+        //     @Override
+        //     public void mouseEntered(MouseEvent e) {
+        //         Object source = e.getSource();
+        //         System.out.println(source);
+        //     }
+        // });
     }
     
     /**
@@ -260,7 +269,7 @@ class Panel extends JPanel
             for(int j = 0; j < MAP_SIZE; j++)
                 cell[i][j].terrain.setInvisible(this.player);
         
-        // But lejButton listener paralelo a outras classet the base's around be visible
+        // But let the base's around be visible
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(Y,X,7);
@@ -322,36 +331,17 @@ class Panel extends JPanel
             if(s instanceof Robot)
             {
                 // Does not print if not visible
-                if(!vis) 
-                {
-                //    Images inv = Images.INVISIBLE;
-                  //  if(!vis) g2d.drawImage(
-                    //    inv.img(), x-inv.dx(), y-inv.dy(), null
-                    //);
-                    return;
-                }
+                if(!vis) return;
                 
                 // Get the robot and its animation phase
                 Robot r = (Robot) s;
-                int[] phase = r.getPhase();
                 
                 // Add new JRobots for new Robots
                 if(!this.robots.containsKey(r))
                     this.robots.put(r, new JRobot(r));
                 
-                // Get the right sprite and corrects the robot
-                g2d.drawImage(
-                    scen.img().getSubimage(phase[0], phase[1], 32, 32), 
-                    x-scen.dx(), y-scen.dy(), null
-                );
-                
-                // Update robot's position
-                r.setPhase(32, phase[1]);
-                
                 // Add JRobot in the Panel
-                JRobot jr = robots.get(r);
-                jr.update(x-scen.dx(), y-scen.dy());
-                jr.add();
+                robots.get(r).add(x, y);
             }
             else
             {
@@ -369,12 +359,6 @@ class Panel extends JPanel
             }
             
         } // s != null
-            
-        // If there is no visibility, masks player's view
-        //Images inv = Images.INVISIBLE;
-        //if(!vis) g2d.drawImage(
-        //    inv.img(), x-inv.dx(), y-inv.dy(), null
-        //);
     }
     
         
@@ -388,7 +372,7 @@ class Panel extends JPanel
     private void item(Graphics2D g2d, int i, int j)
     {
         Cell hex = cell[i][j];
-        int x = hex.x, y = hex.y;
+        int x0 = hex.x, y0 = hex.y;
         
         // Print items
         if(hex.terrain.getItem() != null)
@@ -397,7 +381,7 @@ class Panel extends JPanel
                 hex.terrain.getItem().name()
             );
             g2d.drawImage(
-                item.img(), x-item.dx(), y-item.dy(), null
+                item.img(), x0-item.dx(), y0-item.dy(), null
             );
         }
     }
@@ -507,33 +491,77 @@ class Panel extends JPanel
         }
     }
     
-    /**jButton listener paralelo a outras classe
+    /**
      * <b>JRobot - Robot with more than images</b><br>
      * Print a robot exhibiting a status bar and other
      * useful info for the player.
      */
-    private class JRobot 
+    private class JRobot
     {
-        private Robot robot;
+        // Configurations
         private Dimension size = new Dimension(30,5); // Bar size
+        
+        // Parameters
+        private Robot robot;
+        
+        // Graphical context
+        private Images scen;
+        private Graphics2D g2d;
+        
+        // Position info
+        private int x0, y0;
         
         // Additional info for settings
         private int maxHP;
         private int maxPower;
         
-        // Progress Bars
+        // Graphical Components
+        private JLabel name;
+        private JLabel jrobot;
         private JProgressBar hp;
         private JProgressBar power;
         
+        private boolean exhibitName = false;
+        
         /**
          * Default Constructor.
+         * @param g2d   Graphical context
          * @param robot Robot to be stored
          */
         JRobot(Robot robot)
         {
             // Stores parameters in attributes
             this.robot = robot;
-
+            this.scen  = Images.valueOf(
+                this.robot.name(), this.robot.getTeam()
+            );
+            
+            // Creates and sets its image
+            this.jrobot = new JLabel();
+            
+            // Creates label to the name
+            this.name = new JLabel(this.robot.toString());
+            this.name.setOpaque(true);
+            this.name.setForeground(Color.WHITE);
+            this.name.setBackground(Color.BLACK);
+            
+            this.jrobot.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JRobot.this.exhibitName = true;
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    JRobot.this.exhibitName = false;
+                }
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println(e);
+                    /* JRobot.this.openEditor++; */
+                    /* System.out.println(e); */
+                }
+            });
+            
             // Creates and sets HP bar
             this.maxHP = robot.getMaxHP       ();
             this.hp = new JProgressBar        ();
@@ -550,13 +578,68 @@ class Panel extends JPanel
         }
         
         /**
-         * Update infos exhibited by a robot.
-         * @param x0 Initial horizontal position to paint 
-         *           info bars
-         * @param y0 Initial vertical position to paint 
-         *           info bars
+         * Add bars in the Panel.<br>
          */
-        void update(int x0, int y0)
+        protected void add(int x, int y)
+        {
+            // Update position
+            this.g2d = g2d;
+            this.x0  = x-this.scen.dx(); 
+            this.y0  = y-this.scen.dy();
+            
+            // Painting
+            this.paintRobot();
+            this.paintBars();
+            this.paintName();
+                
+            Rectangle rec = new Rectangle(x0,y0,32,32);
+        }
+        
+        /**
+         * Remove bars from the Panel.<br>
+         */
+        protected void remove()
+        {
+            Panel.this.remove(this.hp);
+            Panel.this.remove(this.name);
+            Panel.this.remove(this.power);
+            Panel.this.remove(this.jrobot);
+        }
+        
+        /**
+         * Paint label with robot name 
+         * in its new position.
+         */
+        private void paintName()
+        {
+            if(!this.exhibitName) return;
+            this.name.setBounds   (x0, y0, 50, 20);
+            this.name.setLabelFor (this.jrobot);
+            Panel.this.add        (name, 3);
+        }
+            
+        /**
+         * Paint robot in its new position.
+         */
+        private void paintRobot()
+        {
+            // Set new JRobot info
+            int[] phase = this.robot.getPhase();
+            
+            BufferedImage img = this.scen.img().getSubimage(phase[0], phase[1], 32, 32);
+            ImageIcon ico = new ImageIcon(img);
+            this.jrobot.setIcon   (ico);
+            this.jrobot.setBounds (x0, y0, 32, 32);
+            Panel.this.add        (jrobot, 1);
+            
+            // Update robot's position
+            this.robot.setPhase(32, phase[1]);
+        }
+        
+        /**
+         * Update bars with infos exhibited by a robot.
+         */
+        private void paintBars()
         {
             int hp    = this.robot.getHP    ();
             int power = this.robot.getPower ();
@@ -571,6 +654,10 @@ class Panel extends JPanel
             // Configure and paint power bar
             this.power.setBounds (x0, y0-10, size.width, size.height);
             this.power.setValue  (power);
+            
+            // Add HP and Power bars
+            Panel.this.add(this.hp, 2);
+            Panel.this.add(this.power, 2);
         }
         
         /**
@@ -588,24 +675,6 @@ class Panel extends JPanel
             if(per > 2.0/3 * max) c = Color.GREEN;
             if(per < 1.0/3 * max) c = Color.RED;
             pb.setForeground(c);
-        }
-        
-        /**
-         * Add bars in the Panel.<br>
-         */
-        protected void add()
-        {
-            Panel.super.add(this.hp);
-            Panel.super.add(this.power);
-        }
-        
-        /**
-         * Remove bars from the Panel.<br>
-         */
-        protected void remove()
-        {
-            Panel.super.remove(this.hp);
-            Panel.super.remove(this.power);
         }
     }
 }
