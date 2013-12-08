@@ -87,6 +87,8 @@ class Panel extends JLayeredPane
      * @see Cell
      * @see Graphical
      *
+     * @param gui    Graphical set in which the 
+     *               Panel is set
      * @param map    Map over which the panel will
      *               create the GUI hexagons
      * @param player Player who is visualizing the
@@ -96,7 +98,8 @@ class Panel extends JLayeredPane
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
      */
-    Panel(Map map, Player player, int R, int x0, int y0, int width, int height)
+    Panel(Graphical gui, Map map, Player player, 
+          int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
         this.map      = map;

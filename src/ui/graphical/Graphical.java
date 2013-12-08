@@ -55,9 +55,9 @@ public class Graphical implements UI
         this.player = player;   
 
         /* TODO: Finish editor frame */
-        /* this.editorFrame    = new EditorFrame(); */
-        this.miniMapFrame   = new MiniMapFrame(map, player);
-        this.mapFrame       = new MapFrame(map, player, miniMapFrame);
+        this.editorFrame    = new EditorFrame  (this);
+        this.miniMapFrame   = new MiniMapFrame (this, map, player);
+        this.mapFrame       = new MapFrame     (this, map, player);
     }
     
     /* Implementing interface GUI */
