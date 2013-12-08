@@ -525,7 +525,7 @@ class Panel extends JLayeredPane
         private Images scen;
         
         // Position info
-        private int x0, y0;
+        private int x, y, x0, y0;
         
         // Additional info for settings
         private int maxHP;
@@ -597,9 +597,12 @@ class Panel extends JLayeredPane
          */
         protected void add(int x, int y)
         {
-            // Update position
-            this.x0  = x-this.scen.dx(); 
-            this.y0  = y-this.scen.dy();
+            // Original positions
+            this.x = x; this.y = y;
+            
+            // Updated positions
+            this.x0 = x-this.scen.dx(); 
+            this.y0 = y-this.scen.dy();
             
             // Painting
             this.paintRobot();
@@ -628,7 +631,7 @@ class Panel extends JLayeredPane
             Dimension d = this.name.getPreferredSize();
             int W = (int) d.getWidth(), H = (int) d.getHeight();
             // TODO: Take out hardcoded constants
-            this.name.setBounds   (x0-H/2, y0+35, W, H);
+            this.name.setBounds   (x-W/2, y+20, W, H);
             this.name.setLabelFor (this.jrobot);
             Panel.this.add        (this.name, Level.LABEL.get());
         }
