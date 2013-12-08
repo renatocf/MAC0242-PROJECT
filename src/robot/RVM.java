@@ -150,8 +150,11 @@ public class RVM
                 // OR a syscall.
                 
                 this.syscall = false; int c = 0; 
-                while(!this.syscall && c < ASM_MAX_RUN) 
+                while(!this.syscall) 
                 { 
+                    // Above ASM_MAX_RUN, skip
+                    if(c == ASM_MAX_RUN) Syst.SKIP(this);
+                    
                     if(this.PROG.elementAt(this.PC) == null) this.PC = 0;
                     Debug.printPC(this.PC);
                     exec(); this.PC++; c++; 
