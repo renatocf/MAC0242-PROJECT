@@ -185,14 +185,32 @@
 		\subsubsection{ Action.java }
 		    Aqui é onde encontramos a implementação das funções
 		    utilizadas diretamente pelos robôs, tais como 
-		    {\textcolor{NavyBlue}{HIT},
-		    {\textcolor{NavyBlue}{DRAG},
-		    {\textcolor{NavyBlue}{DROP},
-		    {\textcolor{NavyBlue}{MOVE},
-		    {\textcolor{NavyBlue}{SKIP},
-		    {\textcolor{NavyBlue}{ASK},
-		    {\textcolor{NavyBlue}{SEE} e 
+		    {\textcolor{NavyBlue}{HIT} 
+		    | bate em outro robô |
+		    
+		    {\textcolor{NavyBlue}{DRAG}
+		    | Pegar itens (cristal) |
+		    
+		    {\textcolor{NavyBlue}{DROP}
+		    | Deposita itens (cristal) |
+		    
+		    {\textcolor{NavyBlue}{MOVE}
+		    | Move para determinada direção |
+		    
+		    {\textcolor{NavyBlue}{SKIP}
+		    | Não faz nada |
+		    
+		    {\textcolor{NavyBlue}{ASK}
+		    | Devolve a sua localização |
+		    
+		    {\textcolor{NavyBlue}{SEND} 
+		    | manda mensagem para todos os robôs |
+		    
+		    {\textcolor{NavyBlue}{SEE}
+		    | Observa a presença de algo na sua vizinhança |
+		    
 		    {\textcolor{NavyBlue}{LOOK}.
+		    | Observa a presença de algo em determina posição |
 		    
 		    e tratamos a saída de modo que os dados que sejam 
 		    emitidos na pilha ao usar a função, são devolvidos em
@@ -336,110 +354,12 @@
 		
 		As classes desse package são chamadas pelas outras classes
 		que utilizam essa forma de mandar exceção.
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip 
 		
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-		
-	\subsection{GUI}
-		A classe para modo texto da GUI percorre a matriz hexagonal 
-		observando as características presentes em cada um dos terrenos 
-		(tipo, itens e cenários). Então, realiza a impressão desses 
-		elementos com auxílio de bibliotecas JAVA, simulando visualmente 
-		o jogo em interface gráfica.
-        
-        \subsubsection{ graphical/Cell.java }
-            É responsável pela criação dos terrenos em si.
-            Desenha as células em forma hexagonal de acordo com as
-            coordenadas x e y e o raio do hexágono que são recebidos
-            por parâmetros no construtor.
-        
-        \subsubsection{ graphical/EditorFrame.java }
-            Essa classe é responsável pela criação de um frame
-            que contenha um JTextPanel.
-            Que será uma nova janela onde o usuário poderá digitar o
-            código que manipulará determinado robô de seu exército.
-            Será um receptor do código em alto nível na fase seguinte.
-            
-        \subsubsection{ graphical/Graphical.java }
-                A Graphical irá controlar toda a parte gráfica.
-                Como agora possuímos dois tipos de frames sendo exibidos,
-                precisamos de algo mais externo para controlar tudo.
-                Portanto a Graphical irá manipular o que ocorre nos dois
-                Frames, no que imprime o mapa e no que permite que o
-                código dos robôs seja alterado.
-                
-                Nessa classe, usamos as bibliotecas Swing e AWT para
-                utilizar os recursos gráficos destas.S
-                
-        \subsubsection{ graphical/Images.java }
-            Cuida das imagens do jogo.
-            Faz isso de tal forma que, apenas utilizando um nome
-            atribuido a imagem, podemos acessá-la em seu  respectivo    
-            diretório.
-            E também possui uma função que transforma essa imagem
-            como uma variável do tipo BufferedImage para que esta
-            possa ser manipulada pelas funções das bibliotecas do
-            JAVA.
-            
-            Possui getters para largura e comprimento da imagem.
-            
-        \subsubsection{ graphical/MapFrame.java }
-            Responsável pelo frame em que será exibido o mapa do
-            jogo. Além de ser um meio de comunicação entre a Graphical
-            e o Panel.
-            
-            Ele também cria a área de texto onde são exibidas as 
-            mensagens do jogo, como erro de código do programa do 
-            usuário ou carregamento de determina imagem.
-
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
-        \subsubsection{ graphical/Panel.java }
-            É responsável pela imagem que será impressa no painel,
-            portanto controla, desde árvores e cristais, a configurações
-            dos hexágonos no mapa. Portanto possui uma matriz de cúlulas
-            e o mapa como parâmetros.
-            
-            Percorre a matriz de terrenos do mapa e imprime cada célula 
-            de acordo com a sua configuração.
-            Se possuir robôs, pedras, árvores ou bases, estes também 
-            serão impressos no painel.
-            
-            Também é responsável, por settar as fases do jogo, informando
-            o mesmo de quando podemos continuar o jogo normalmente ou
-            jogo, ou informar sobre perdedores e ganhadores. 
-        
-        \subsubsection{ textual/* }
-            Esse jogo também pode ser exibido em modo texto (caractéres),
-            (como foi feito na versão passado) para que possa ser exibido
-            no terminal.
-            Essa pasta contém classes que printam o jogo no terminal.
-                        
-        \subsubsection{ GUI.java }
-            É uma interface que padroniza as funções que todos
-            os modos de exibição (interfaces) devem ter.
-            De acordo com ela, tanto a inteface gráfica quanto a textual
-            devem ter as funções que pintam, pintam mapa, pintam o mini
-            mapa, imprimem texto e avisam quem é o ganhador e o 
-            perdedor.
-        
-        \subsubsection{ Interfaces.java }
-		    É uma estrutura chamada Enum, onde dizemos que as
-		    interfaces podem ser somente as mostradas a seguir:
-		    {\textcolor{NavyBlue}{TEXTUAL} e
-		    {\textcolor{NavyBlue}{GRAPHICAL}
-        
-        \subsubsection{ Printable.java }
-            É uma interface que reprenta tudo que pode ser graficamente
-            impresso.
-            Todas os objetos desse tipo devem ter uma função que retorna
-            seu nome (String).
-        
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 	\subsection{Main}
         O package main contém a classe de mesmo nome, com o método
         main como principal. Esta classe é a responsável por receber
@@ -642,6 +562,28 @@
 		    Tudo isso é manipulado na pilha de dados,
 		    recebemos os valores de lá, e mandamos a resposta
 		    para o topo da mesma. de dados pelas funções aritméticas.
+		
+		\subsubsection{ Cast.java }
+		    Essa classe está ligada ao tipo de variável que se refere
+		    a coordenadas. 
+		    Como coordenadas são a junção de 2 números, um I e um J,
+		    essa classe possui funções que:
+		    
+		    {\textcolor{NavyBlue}{static void COOR(RVM rvm)}}
+		    que pega dois Stackables da pilha que sejam do tipo Num
+		    e os transforma em uma coordenada, empilhando esta na pilha
+		    em forma de coordenada.
+		    Ela desempilha antes o J e depois o I, portanto, na pilha,
+		    para que essa função seja usada corretamente, o J deve estar
+		    acima do I.
+		    
+		    {\textcolor{NavyBlue}{static void GTIJ(RVM rvm)}}
+		    que pega um Stackable da pilha que seja do tipo coordenada
+		    e o tranforma em dois números do tipo Num, jogando-os no
+		    topo dessa mesma pilha.
+		    Ele coloca primeiro o I e depois o J, de forma que o J fique
+		    acima do I na pilha.
+		    
 		        
 		\subsubsection{ Check.java }
 		    Essa função tem como objetivo checar o terreno em
@@ -689,6 +631,14 @@
 		    {\textcolor{NavyBlue}{DROP}, 
 		    {\textcolor{NavyBlue}{SEE} e 
 		    {\textcolor{NavyBlue}{LOOK}.
+		
+		\subsubsection{ Debug.java }
+		    Essa clase é responsável por captar os erros coletados na
+		    RVM, os erros dos programas em assembly.
+		    Ela possui funções que imprimem onde o erro ocorreu, os 
+		    comandos executas, e a situação da pilha de dados em cada
+		    comando. E isso é feito de forma colorida para facilitar o
+		    encontro de erros do programa.
 		    
 		\subsubsection{ Func.java }
 		    É responsável pelas funções CALL e RET que controlam
@@ -751,6 +701,9 @@
 		    que recupera o que foi armazenado em um determinado
 		    endereço de memória, que é passado pelo usuário como
 		    parâmetro, e joga esse dado na pilha de dados.
+		    
+		\subsubsection{ Net.java }
+		    
 		    
 		\subsubsection{ Prog.java }
 		    Controla as funções que não tem uma função específica
@@ -1130,5 +1083,106 @@
     		{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
+			
+			
+	    \bigskip
+\bigskip
+\bigskip
+\bigskip
+		
+	\subsection{GUI}
+		A classe para modo texto da GUI percorre a matriz hexagonal 
+		observando as características presentes em cada um dos terrenos 
+		(tipo, itens e cenários). Então, realiza a impressão desses 
+		elementos com auxílio de bibliotecas JAVA, simulando visualmente 
+		o jogo em interface gráfica.
+        
+        \subsubsection{ graphical/Cell.java }
+            É responsável pela criação dos terrenos em si.
+            Desenha as células em forma hexagonal de acordo com as
+            coordenadas x e y e o raio do hexágono que são recebidos
+            por parâmetros no construtor.
+        
+        \subsubsection{ graphical/EditorFrame.java }
+            Essa classe é responsável pela criação de um frame
+            que contenha um JTextPanel.
+            Que será uma nova janela onde o usuário poderá digitar o
+            código que manipulará determinado robô de seu exército.
+            Será um receptor do código em alto nível na fase seguinte.
+            
+        \subsubsection{ graphical/Graphical.java }
+                A Graphical irá controlar toda a parte gráfica.
+                Como agora possuímos dois tipos de frames sendo exibidos,
+                precisamos de algo mais externo para controlar tudo.
+                Portanto a Graphical irá manipular o que ocorre nos dois
+                Frames, no que imprime o mapa e no que permite que o
+                código dos robôs seja alterado.
+                
+                Nessa classe, usamos as bibliotecas Swing e AWT para
+                utilizar os recursos gráficos destas.S
+                
+        \subsubsection{ graphical/Images.java }
+            Cuida das imagens do jogo.
+            Faz isso de tal forma que, apenas utilizando um nome
+            atribuido a imagem, podemos acessá-la em seu  respectivo    
+            diretório.
+            E também possui uma função que transforma essa imagem
+            como uma variável do tipo BufferedImage para que esta
+            possa ser manipulada pelas funções das bibliotecas do
+            JAVA.
+            
+            Possui getters para largura e comprimento da imagem.
+            
+        \subsubsection{ graphical/MapFrame.java }
+            Responsável pelo frame em que será exibido o mapa do
+            jogo. Além de ser um meio de comunicação entre a Graphical
+            e o Panel.
+            
+            Ele também cria a área de texto onde são exibidas as 
+            mensagens do jogo, como erro de código do programa do 
+            usuário ou carregamento de determina imagem.
+            
+            
+        \subsubsection{ graphical/Panel.java }
+            É responsável pela imagem que será impressa no painel,
+            portanto controla, desde árvores e cristais, a configurações
+            dos hexágonos no mapa. Portanto possui uma matriz de cúlulas
+            e o mapa como parâmetros.
+            
+            Percorre a matriz de terrenos do mapa e imprime cada célula 
+            de acordo com a sua configuração.
+            Se possuir robôs, pedras, árvores ou bases, estes também 
+            serão impressos no painel.
+            
+            Também é responsável, por settar as fases do jogo, informando
+            o mesmo de quando podemos continuar o jogo normalmente ou
+            jogo, ou informar sobre perdedores e ganhadores. 
+        
+        \subsubsection{ textual/* }
+            Esse jogo também pode ser exibido em modo texto (caractéres),
+            (como foi feito na versão passado) para que possa ser exibido
+            no terminal.
+            Essa pasta contém classes que printam o jogo no terminal.
+                        
+        \subsubsection{ GUI.java }
+            É uma interface que padroniza as funções que todos
+            os modos de exibição (interfaces) devem ter.
+            De acordo com ela, tanto a inteface gráfica quanto a textual
+            devem ter as funções que pintam, pintam mapa, pintam o mini
+            mapa, imprimem texto e avisam quem é o ganhador e o 
+            perdedor.
+        
+        \subsubsection{ Interfaces.java }
+		    É uma estrutura chamada Enum, onde dizemos que as
+		    interfaces podem ser somente as mostradas a seguir:
+		    {\textcolor{NavyBlue}{TEXTUAL} e
+		    {\textcolor{NavyBlue}{GRAPHICAL}
+        
+        \subsubsection{ Printable.java }
+            É uma interface que reprenta tudo que pode ser graficamente
+            impresso.
+            Todas os objetos desse tipo devem ter uma função que retorna
+            seu nome (String).
+
 
 \end{document}
