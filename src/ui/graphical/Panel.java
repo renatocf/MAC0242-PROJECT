@@ -130,27 +130,23 @@ class Panel extends JLayeredPane
             for (int j = 0; j < MAP_SIZE; j++) 
             {
                 cell[i][j] = new Cell(
-                    this.player,            // Player
-                    x0 + Δ + R + i*Dx,      // Horizontal position
-                    y0 + R + j*Dy,          // Vertical position
-                    R,                      // Hexagon radius
-                    map.map[j][i]           // Terrain in map[j,i]
+                    this.player,       // Player
+                    x0 + Δ + R + i*Dx, // Horizontal position
+                    y0 + R + j*Dy,     // Vertical position
+                    R,                 // Hexagon radius
+                    map.map[j][i]      // Terrain in map[j,i]
                 ); 
                 Δ = (Δ == 0) ? Dx/2 : 0;
+                
+                // Add statical events
+                this.add(cell[i][j].invs, Level.FOG.get());
+                this.add(cell[i][j].hit,  Level.BATTLE.get());
             }
         
         // Visibility around player's bases
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
         this.setVisible(X,Y,3);
-        
-        // this.addMouseListener(new MouseAdapter() {
-        //     @Override
-        //     public void mouseEntered(MouseEvent e) {
-        //         Object source = e.getSource();
-        //         System.out.println(source);
-        //     }
-        // });
     }
     
     /**
@@ -185,7 +181,7 @@ class Panel extends JLayeredPane
     
     /**
      * Set if the scenarios and items
-     * sound or not be showed.
+     * should or not be showed.
      * @param show True if show invisible mask and 
      *             scenarios, false otherwise
      */
@@ -221,8 +217,7 @@ class Panel extends JLayeredPane
     {
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
-                if(!cell[i][j].terrain.getFogWar(this.player))
-                    cell[i][j].draw(g); 
+                cell[i][j].draw(g); 
     }
     
     /**
@@ -232,30 +227,24 @@ class Panel extends JLayeredPane
      */
     private void paintLife(Graphics g)
     {
-        Graphics2D g2d = (Graphics2D) g;
         for (int i = 0; i < MAP_SIZE; i++) 
             for (int j = 0; j < MAP_SIZE; j++)
             {
                 // Get fog war (and print properly)
-                boolean fog = cell[j][i].terrain.getFogWar(this.player);
+                boolean fog = cell[i][j].terrain.getFogWar(this.player);
+                cell[i][j].hit.setVisible(false);
                 
                 // Print items and scenarios if there is no fog
                 if(fog) continue;
-                item(g2d, j, i); // Items (crystals, stones...)
-                scen(g2d, j, i); // Scenarios (robots, trees, rocks...)
-            }
-            
-        Images inv = Images.INVISIBLE;
-        boolean vis;
-        for (int i = 0; i < MAP_SIZE; i++) 
-            for (int j = 0; j < MAP_SIZE; j++)
-            {
-                vis = cell[i][j].terrain.getVisibility(this.player);
-                if(!vis) g2d.drawImage(
-                    inv.img(), cell[i][j].x-inv.dx(), cell[i][j].y-inv.dy(), null
-                );
-            }
                 
+                item(i, j); // Items (crystals, stones...)
+                scen(i, j); // Scenarios (robots, trees, rocks...)
+                
+                // Invisibility
+                boolean vis = cell[i][j].terrain.getVisibility(this.player);
+                if(!vis) cell[i][j].invs.setVisible(true);
+                else cell[i][j].invs.setVisible(false);
+            }
     }
     
     /**
@@ -292,6 +281,7 @@ class Panel extends JLayeredPane
         if(Y < 0 || Y >= MAP_SIZE) return;
         
         cell[X][Y].terrain.setVisible(this.player);
+        
         if(S == 0) return;
             
         try {
@@ -312,27 +302,23 @@ class Panel extends JLayeredPane
     /**
      * Auxiliar function for painting a 
      * scenario over a terrain in the game.
-     * @param g Game graphical context
      * @param i Vertical position of the scenario
      * @param j Horizontal position of the scenario
      */
-    private void scen(Graphics2D g2d, int i, int j)
+    private void scen(int i, int j)
     {
         Cell hex = cell[i][j];
         int x = hex.x, y = hex.y;
         boolean vis = hex.terrain.getVisibility(this.player);
         
+        if(!vis) return;
+        
         Scenario s = hex.terrain.getScenario();
         if(s != null)
         {
-            Images scen = Images.valueOf(s.name(), s.getTeam());
-            
             // Special treatment for robots
             if(s instanceof Robot)
             {
-                // Does not print if not visible
-                if(!vis) return;
-                
                 // Get the robot and its animation phase
                 Robot r = (Robot) s;
                 
@@ -343,25 +329,24 @@ class Panel extends JLayeredPane
                 // Add JRobot in the Panel
                 robots.get(r).add(x, y);
             }
-            else
+            else if(hex.scen == null) // && s is not robot
             {
-                // Always draw other's scenarios
-                g2d.drawImage(scen.img(), x-scen.dx(), y-scen.dy(), null);
+                hex.insertScenario();
+                this.add(hex.scen, Level.SCEN.get());
+                this.moveToFront(hex.scen);
             }
             
             // When something is being hit, show it!
-            if(s.sufferedDamage())
-            {
-                scen = Images.valueOf("HIT");
-                g2d.drawImage(
-                    scen.img(), x-scen.dx(), y-scen.dy(), null
-                );  
-            }
+            if(s.sufferedDamage()) hex.hit.setVisible(true);
             
         } // s != null
+        else if(hex.scen != null) // && s == null
+        {
+            this.remove(hex.scen);
+            hex.scen = null;
+        }
     }
     
-        
     /**
      * Auxiliar function for painting an 
      * item over a terrain in the game.
@@ -369,20 +354,20 @@ class Panel extends JLayeredPane
      * @param i Vertical position of the item
      * @param j Horizontal position of the item
      */
-    private void item(Graphics2D g2d, int i, int j)
+    private void item(int i, int j)
     {
         Cell hex = cell[i][j];
-        int x0 = hex.x, y0 = hex.y;
         
         // Print items
-        if(hex.terrain.getItem() != null)
+        if(hex.item != null && hex.terrain.getItem() == null)
         {
-            Images item = Images.valueOf(
-                hex.terrain.getItem().name()
-            );
-            g2d.drawImage(
-                item.img(), x0-item.dx(), y0-item.dy(), null
-            );
+            this.remove(hex.item);
+            hex.item = null;
+        }
+        if(hex.terrain.getItem() != null && hex.item == null)
+        {
+            hex.insertItem();
+            this.add(hex.item, Level.ITEM.get());
         }
     }
     
@@ -499,9 +484,12 @@ class Panel extends JLayeredPane
      */
     enum Level
     {
-        LABEL(3),
-        ROBOT(2),
-        BAR  (1);
+        FOG    (5),
+        LABEL  (4),
+        BATTLE (4),
+        SCEN   (3),
+        ITEM   (2),
+        BAR    (1);
         
         // Integer representing the level
         private Integer level;
@@ -535,7 +523,6 @@ class Panel extends JLayeredPane
         
         // Graphical context
         private Images scen;
-        private Graphics2D g2d;
         
         // Position info
         private int x0, y0;
@@ -554,7 +541,6 @@ class Panel extends JLayeredPane
         
         /**
          * Default Constructor.
-         * @param g2d   Graphical context
          * @param robot Robot to be stored
          */
         JRobot(Robot robot)
@@ -586,9 +572,7 @@ class Panel extends JLayeredPane
                 }
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println(e);
-                    /* JRobot.this.openEditor++; */
-                    /* System.out.println(e); */
+                    System.out.println("Open editor!");
                 }
             });
             
@@ -613,7 +597,6 @@ class Panel extends JLayeredPane
         protected void add(int x, int y)
         {
             // Update position
-            this.g2d = g2d;
             this.x0  = x-this.scen.dx(); 
             this.y0  = y-this.scen.dy();
             
@@ -660,7 +643,8 @@ class Panel extends JLayeredPane
             ImageIcon ico = new ImageIcon(img);
             this.jrobot.setIcon   (ico);
             this.jrobot.setBounds (x0, y0, 32, 32);
-            Panel.this.add        (jrobot, Level.ROBOT.get());
+            Panel.this.add        (jrobot, Level.SCEN.get());
+            Panel.this.moveToFront(jrobot);
             
             // Update robot's position
             this.robot.setPhase(32, phase[1]);

@@ -53,11 +53,12 @@ class MapFrame extends JFrame
     private Player player;
     
     // Internal structures
-    protected Panel screen;
-
-    private JTextArea log;
-    
+    private Panel        screen;
+    private JTextArea    log;
+    private JScrollPane  arena;
     private MiniMapFrame miniMapFrame;
+    
+    private boolean pressed = false;
     
     /** 
      * Default constructor.<br>
@@ -94,19 +95,38 @@ class MapFrame extends JFrame
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);
             this.screen.setFocusable (true);
                 
-            JScrollPane scrollPane = new JScrollPane(
+            this.arena = new JScrollPane(
                 this.screen,
                 JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
             );
+              
+            this.screen.addMouseListener(new MouseAdapter() {
+                int MOUSE_X, MOUSE_Y;
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    MapFrame.this.pressed = true;
+                    this.MOUSE_X = e.getX(); 
+                    this.MOUSE_Y = e.getY();
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    MapFrame.this.pressed = false;
+                    MapFrame.this.centralizeView(this.MOUSE_X, this.MOUSE_Y);
+                }
+            });
+        
+            this.screen.addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    MapFrame.this.centralizeView(e.getX(), e.getY());
+                }
+            });
             
+            // Initial position
             int BASE_X = (int) (player.getBase().getPosY(player) * RADIUS * Math.sqrt(3));
             int BASE_Y = (int) (player.getBase().getPosX(player) * RADIUS * 1.5);
-            
-            scrollPane.getVerticalScrollBar().setMaximum   (MAP_HEIGHT);
-            scrollPane.getHorizontalScrollBar().setMaximum (MAP_WIDTH);
-            scrollPane.getHorizontalScrollBar().setValue   (BASE_X);
-            scrollPane.getVerticalScrollBar().setValue     (BASE_Y);
+            this.centralizeView(BASE_X, BASE_Y);
             
             UserInterface ui = new UserInterface(player, miniMapFrame);
                         
@@ -116,7 +136,7 @@ class MapFrame extends JFrame
             ui.setFocusable(true); 
                          
             JSplitPane game = new JSplitPane( 
-                JSplitPane.HORIZONTAL_SPLIT, false, scrollPane, ui 
+                JSplitPane.HORIZONTAL_SPLIT, false, this.arena, ui 
             ); 
              
             game.setDividerLocation (0.93); 
@@ -179,11 +199,6 @@ class MapFrame extends JFrame
         this.screen.repaint();
     }
     
-    /* void menuVisit() */
-    /* { */
-        /* this.screen.setVisible(false); */
-    /* } */
-    
     /** 
      * Auxilar function for painting in the arena
      * info about a player that lost the game.
@@ -244,4 +259,17 @@ class MapFrame extends JFrame
             }
         });
     }    
+    
+    private void centralizeView(int X, int Y)
+    {
+        // Get ViewPort info
+        JViewport viewPort = this.arena.getViewport();
+        int ΔH = (int) viewPort.getSize().getHeight()/2;
+        int ΔW = (int) viewPort.getSize().getWidth()/2;
+        
+        // Correct X and Y position
+        Point vpp = new Point(X-ΔW, Y-ΔH);
+        Rectangle newVision = new Rectangle(vpp, viewPort.getSize());
+        this.screen.scrollRectToVisible(newVision);
+    }
 }

@@ -24,9 +24,16 @@ import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
+// Graphical Libraries (Swing)
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+
 // Libraries
+import arena.Robot;
 import arena.Terrain;
 import players.Player;
+import scenario.Scenario;
+import stackable.item.Item;
 
 /** 
  * <b>Graphical - Cell</b><br>
@@ -38,12 +45,13 @@ import players.Player;
  * @author Renato Cordeiro Ferreira
  * @author Vinicius Silva
  */
-class Cell 
+class Cell
 { 
-    // Fog War
-    private final TexturePaint fog = new TexturePaint(
-        Images.FOG_WAR.img(), new Rectangle(0,0,32,32)
-    );
+    // Visual representation of terrain attributes
+    JLabel hit  = null;
+    JLabel invs = null;
+    JLabel scen = null;
+    JLabel item = null;
     
     // Characteristics
     private final Polygon hex = new Polygon();
@@ -89,8 +97,12 @@ class Cell
         
         // Create texture
         this.bg = new TexturePaint(appearence, rec);
+        
+        // Initialize fog/item/scen
+        this.insertHit();
+        this.insertInv();
     }
-
+    
     /**
      * Add the texture to the cell, using an image
      * inside a rectangle with dimensions 32x32.
@@ -103,8 +115,77 @@ class Cell
         
         // Paint the background
         boolean fogWar = terrain.getFogWar(this.player);
+        if(fogWar) return;
         
-        g2d.setPaint (fogWar ? fog : this.bg);
+        g2d.setPaint (this.bg);
         g2d.fill     (this.hex);
     }   
+    
+    /**
+     * Insert a scenario if there is one
+     * in the terrain of the cell.
+     */
+    void insertScenario()
+    {
+        Scenario s = this.terrain.getScenario();
+        if(s == null || s instanceof Robot) return;
+        
+        Images scenario = Images.valueOf(s.name(), s.getTeam());
+        
+        int x0 = x-scenario.dx();
+        int y0 = y-scenario.dy();
+        int w  = scenario.getWidth();
+        int h  = scenario.getHeight();
+        
+        this.scen = new JLabel(scenario.ico());
+        this.scen.setBounds (x0, y0, w, h);
+    }
+        
+    /**
+     * Insert an item if there is one
+     * in the terrain of the cell.
+     */
+    void insertItem()
+    {
+        Item itm = this.terrain.getItem();
+        if(itm == null) return;
+        
+        Images i = Images.valueOf(itm.name());
+        
+        int x0 = x-i.dx();
+        int y0 = y-i.dy();
+        int w  = i.getWidth();
+        int h  = i.getHeight();
+        
+        this.item = new JLabel(i.ico());
+        this.item.setBounds (x0, y0, w, h);
+    }
+    
+    /**
+     * Insert the Fog War.
+     */
+    private void insertHit()
+    {
+        int x0 = x-Images.HIT.dx();
+        int y0 = y-Images.HIT.dy();
+        int w  = Images.HIT.getWidth();
+        int h  = Images.HIT.getHeight();
+        
+        this.hit = new JLabel(Images.HIT.ico());
+        this.hit.setBounds (x0, y0, w, h);
+    }
+    
+    /**
+     * Insert the Fog War.
+     */
+    private void insertInv()
+    {
+        int x0 = x-Images.INVISIBLE.dx();
+        int y0 = y-Images.INVISIBLE.dy();
+        int w  = Images.INVISIBLE.getWidth();
+        int h  = Images.INVISIBLE.getHeight();
+        
+        this.invs = new JLabel(Images.INVISIBLE.ico());
+        this.invs.setBounds (x0, y0, w, h);
+    }
 }
