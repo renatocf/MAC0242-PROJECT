@@ -953,6 +953,20 @@
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.	
 		
+		\subsubsection { Coordinate.java }
+		    Como empilhável, também temos o tipo Coordinate,
+		    onde é possível representar as coorenadas de cada
+		    hexágono em relação a Arena.
+		    
+		    Para ser criado, ele precisa de duas dimensões, I
+		    e J (que podem ser passadas como int ou como Num
+		    --- polimorfismo ---) de acordo com a representação
+		    quadrada da matriz hexagonal.
+		    
+		    Essa classe tem métodos getters que devolvem as
+		    coordenadas ou os pontos I e J e possui o toString
+		    que devolve no formato [I,J];
+		
 		\subsubsection { Direction.java }
 			Os objetos do tipo Direction são do tipo que
 			orientará os robôs na arena em relação a 
@@ -1011,7 +1025,7 @@
 			preenche a matriz com as direções que são recebidas
 			como parâmetro.
 		
-	**	\subsubsection { Item }
+		\subsubsection { Item }
 			Item não é uma classe, é uma pasta com as 
 			classes que representam objetos do tipo item
 			(implementam a interface de itens),
@@ -1084,8 +1098,16 @@
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
 			
+	    \subsubsection { Variable.java }
+	        Essa classe representa as variáveis de modo que elas
+	        sejam empilháveis. Desse modo, quando um usuário criar
+	        uma variável em seu programa, esta poderá ser passada
+	        para a pilha com comandos push e pop (internamente).
+	        
+	        Ela possui um contrutor que armazena somente o seu
+	        nome em tipo String, um settter e um toString;
 			
-	    \bigskip
+\bigskip
 \bigskip
 \bigskip
 \bigskip
