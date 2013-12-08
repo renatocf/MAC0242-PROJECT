@@ -89,10 +89,10 @@
     [X] Stackable of coordinates.
     [X] Implement ASK for getting info.
     [X] Accept 'import' of other files in Positron.jj.
+    [X] Fix the scroll system (add mouse if possible).
+    [X] Add option to edit robot when clicking on it.
     [ ] Get and change button icons in the Map Frame.
-    [ ] Fix the scroll system (add mouse if possible).
     [ ] Get program when inserting new robot.
-    [ ] Add option to edit robot when clicking on it.
     [ ] Add error tokens in the parser.
     [ ] Configure editor for writing.
     [ ] Find more theme-specific images.
