@@ -111,7 +111,7 @@ final class Debug
         if(!Debugger.debugging()) return;
         
         Debugger.print(ColorPC);
-        Debugger.printf("%3d ", PC); 
+        Debugger.printf("%4d ", PC); 
         Debugger.print(RESTORE);
     }
     
