@@ -23,14 +23,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 // Libraries
+import ui.MENU;
 import arena.*;
 import players.*;
 import exception.*;
 import stackable.*;
 import parameters.*;
 import robot.Command;
-import ui.MENU;
-import ui.MENU.Opts;
 
 // Configs interfaces
 import ui.Interfaces;
