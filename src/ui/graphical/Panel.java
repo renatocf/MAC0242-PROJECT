@@ -572,7 +572,8 @@ class Panel extends JLayeredPane
                 }
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("Open editor!");
+                    if(e.getClickCount() >= 2)
+                        System.out.println("Open editor!");
                 }
             });
             
@@ -604,8 +605,6 @@ class Panel extends JLayeredPane
             this.paintRobot();
             this.paintBars();
             this.paintName();
-                
-            Rectangle rec = new Rectangle(x0,y0,32,32);
         }
         
         /**
@@ -626,7 +625,10 @@ class Panel extends JLayeredPane
         private void paintName()
         {
             if(!this.exhibitName) return;
-            this.name.setBounds   (x0, y0, 50, 20);
+            Dimension d = this.name.getPreferredSize();
+            int W = (int) d.getWidth(), H = (int) d.getHeight();
+            // TODO: Take out hardcoded constants
+            this.name.setBounds   (x0-H/2, y0+35, W, H);
             this.name.setLabelFor (this.jrobot);
             Panel.this.add        (this.name, Level.LABEL.get());
         }
