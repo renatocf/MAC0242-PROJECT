@@ -185,32 +185,35 @@
 		\subsubsection{ Action.java }
 		    Aqui é onde encontramos a implementação das funções
 		    utilizadas diretamente pelos robôs, tais como 
+		    
 		    {\textcolor{NavyBlue}{HIT} 
-		    | bate em outro robô |
-		    
-		    {\textcolor{NavyBlue}{DRAG}
-		    | Pegar itens (cristal) |
-		    
-		    {\textcolor{NavyBlue}{DROP}
-		    | Deposita itens (cristal) |
-		    
-		    {\textcolor{NavyBlue}{MOVE}
-		    | Move para determinada direção |
+		    -- bate em outro robô -- 
+		   
+		    {\textcolor{NavyBlue}{ASK}
+		    -- Devolve a sua localização --
+		   
+		    {\textcolor{NavyBlue}{SEE}
+		    -- Observa a presença de algo na sua vizinhança --
 		    
 		    {\textcolor{NavyBlue}{SKIP}
-		    | Não faz nada |
-		    
-		    {\textcolor{NavyBlue}{ASK}
-		    | Devolve a sua localização |
-		    
+		    -- Não faz nada --
+		    		    
 		    {\textcolor{NavyBlue}{SEND} 
-		    | manda mensagem para todos os robôs |
+		    -- manda mensagem para todos os robôs --
 		    
-		    {\textcolor{NavyBlue}{SEE}
-		    | Observa a presença de algo na sua vizinhança |
+		    {\textcolor{NavyBlue}{DROP}
+		    -- Deposita itens (cristal) --
 		    
-		    {\textcolor{NavyBlue}{LOOK}.
-		    | Observa a presença de algo em determina posição |
+		    {\textcolor{NavyBlue}{LOOK}
+		    -- Observa a presença de algo em determina posição --
+		    		    		    
+		    {\textcolor{NavyBlue}{DRAG}
+		    -- Pegar itens (cristal) --
+		    
+		    {\textcolor{NavyBlue}{MOVE}
+		    -- Move para determinada direção --
+
+		    \bigskip
 		    
 		    e tratamos a saída de modo que os dados que sejam 
 		    emitidos na pilha ao usar a função, são devolvidos em
@@ -260,6 +263,9 @@
             o seu ID e as suas coordenadas.
             Essa função irá criar esse robô e implementá-lo no como 
             um Scenario nas coordenadas indicadas da arena.
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 		    
 		\subsubsection{ Robot.java }
 			Essa classe é a que define as características dos robôs
@@ -289,7 +295,6 @@
 			String com o nome dele. Além de possuir também os getters
 			e setters de determinadas características.
 			
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		
 		\subsubsection{ RobotList.java }
 			Ele cuida dos exércitos de robôs de tal forma
@@ -374,21 +379,7 @@
         do Ant. Ambas as bibliotecas são distribuídas com a licensa
         GNU GLP v3.0, e são o porte para Java da biblioteca getopt
         do C.
-        
-\bigskip
-\bigskip
-\bigskip
-\bigskip     
-		 
-	\subsection{Operation}
-		\subsubsection{ Operation.java }
-			Essa classe é um meio de comunicação entre a arena e a RVM,
-			pois ela manda como retorno a resposta da função, se ela pode
-			ou não pode ser realizada.
-			
-			Para a sua construção, ela necessita receber a RVM, juntamente
-			com a ação que o robô deseja realizar.
-			
+      
 \bigskip
 \bigskip
 \bigskip
@@ -530,7 +521,22 @@
 		    gerar um rio congelado (água) no centro da arena.
 		    
 
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+		 
+	\subsection{Remote}
+		\subsubsection{ Operation.java }
+			Essa classe é um meio de comunicação entre a arena e a RVM,
+			pois ela manda como retorno a resposta da função, se ela pode
+			ou não pode ser realizada.
+			
+			Para a sua construção, ela necessita receber a RVM, juntamente
+			com a ação que o robô deseja realizar.
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip 			
 
 	\subsection{Robot}
 	    Esse package cuida das funções atreladas aos robôs em
@@ -1112,7 +1118,7 @@
 \bigskip
 \bigskip
 		
-	\subsection{GUI}
+	\subsection{UI}
 		A classe para modo texto da GUI percorre a matriz hexagonal 
 		observando as características presentes em cada um dos terrenos 
 		(tipo, itens e cenários). Então, realiza a impressão desses 
@@ -1156,15 +1162,34 @@
             Possui getters para largura e comprimento da imagem.
             
         \subsubsection{ graphical/MapFrame.java }
-            Responsável pelo frame em que será exibido o mapa do
+            Representa o frame em que será exibido o mapa do
             jogo. Além de ser um meio de comunicação entre a Graphical
-            e o Panel.
+            e o Panel e o UserInterface.
             
             Ele também cria a área de texto onde são exibidas as 
             mensagens do jogo, como erro de código do programa do 
             usuário ou carregamento de determina imagem.
-            
-            
+        
+        \subsubsection{ graphical/Menu.java }
+            Representa o frame em que será exibido o menu inicial.
+            Nessa classe estão contidas apenas as características da
+            janela.
+            É chamado pelo main, que trabalha recursivamente enquanto
+            o usuário não quiser se sair do jogo, e manda informações 
+            para MenuPanel.
+       
+        \subsubsection{ graphical/MenuPanel.java }
+            Representa o painel que está contido no frame Menu
+            e controla a imagem exibida e os eventos de botões,
+            devolvendo a resposta dos cliques para o Menu.
+        
+        \subsubsection{ graphical/MiniMapFrame.java }
+            Representa o frame em que será exibido o mini mapa,
+            usando as informações da classe mapa para imprimi-lo
+            em tela.
+       
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
         \subsubsection{ graphical/Panel.java }
             É responsável pela imagem que será impressa no painel,
             portanto controla, desde árvores e cristais, a configurações
@@ -1178,33 +1203,69 @@
             
             Também é responsável, por settar as fases do jogo, informando
             o mesmo de quando podemos continuar o jogo normalmente ou
-            jogo, ou informar sobre perdedores e ganhadores. 
-        
+            jogo, ou informar sobre perdedores e ganhadores.
+            
+        \subsubsection{ graphical/Phase.java }
+            É uma estrutura Enum que define o Status atual do jogo,
+            se ele está rodando normalmente, se o jogador foi vendeu
+            ou perdeu.
+            
+            {\textcolor{NavyBlue}{ACTIVE},
+		    
+		    {\textcolor{NavyBlue}{LOOSER} e
+            
+            {\textcolor{NavyBlue}{WINNER}.
+            
+        \subsubsection{ graphical/UserInterface.java }
+            Representa o painel de menu do jogo que está no mesmo
+            frame que o mapa.
+            É uma Thread que rodará paralelamente ao jogo em si, pois
+            precisa estar constantemente atenta aos eventos dos botões.
+            
+            Nela temos o botão que oculta o aparecimento do mini mapa,
+            o que cria novos robôs (perguntando seu nome) permitindo que
+            esses sejam criados com arquivos já existentes ou com
+            programas escritos pelo usuário.
+            Há também o botão que controla a visibilidade da janela do
+            editor de texto (onde o usuário irá digitar os seus 
+            programas), outro botão que limpa o editor de texto e por
+            fim, o que finaliza o jogo.
+            
         \subsubsection{ textual/* }
             Esse jogo também pode ser exibido em modo texto (caractéres),
             (como foi feito na versão passado) para que possa ser exibido
             no terminal.
             Essa pasta contém classes que printam o jogo no terminal.
-                        
-        \subsubsection{ GUI.java }
+        
+        \subsubsection{ Interfaces.java }
+		    É uma estrutura chamada Enum, onde dizemos que as
+		    interfaces podem ser somente as mostradas a seguir:
+		    
+		    {\textcolor{NavyBlue}{TEXTUAL} e
+		    
+		    {\textcolor{NavyBlue}{GRAPHICAL}.
+        
+        \subsubsection{ MENU.java }
+            É uma estrutura Enum que representa o que a tela de menu
+            deverá fazer, se ela irá iniciar um novo jogo ou se ela
+            deverá fechar as telas, termiando a sessão de jogo.
+            
+            {\textcolor{NavyBlue}{EXIT} e
+            
+            {\textcolor{NavyBlue}{NEW\_GAME}.
+		    
+        \subsubsection{ Printable.java }
+            É uma interface que reprenta tudo que pode ser graficamente
+            impresso.
+            Todas os objetos desse tipo devem ter uma função que retorna
+            seu nome (String).
+        
+        \subsubsection{ UI.java }
             É uma interface que padroniza as funções que todos
             os modos de exibição (interfaces) devem ter.
             De acordo com ela, tanto a inteface gráfica quanto a textual
             devem ter as funções que pintam, pintam mapa, pintam o mini
             mapa, imprimem texto e avisam quem é o ganhador e o 
             perdedor.
-        
-        \subsubsection{ Interfaces.java }
-		    É uma estrutura chamada Enum, onde dizemos que as
-		    interfaces podem ser somente as mostradas a seguir:
-		    {\textcolor{NavyBlue}{TEXTUAL} e
-		    {\textcolor{NavyBlue}{GRAPHICAL}
-        
-        \subsubsection{ Printable.java }
-            É uma interface que reprenta tudo que pode ser graficamente
-            impresso.
-            Todas os objetos desse tipo devem ter uma função que retorna
-            seu nome (String).
-
 
 \end{document}
