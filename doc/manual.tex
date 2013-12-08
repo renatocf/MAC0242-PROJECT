@@ -379,7 +379,7 @@ como fazer isso em "Utilitários".
             \}
         
         \bigskip   
-                   
+                           
         \item \textbf{FUNÇÕES :}
             
             Nas linguagens de programação usuais, vemos a
@@ -391,48 +391,83 @@ como fazer isso em "Utilitários".
             \begin{enumerate}
                 
                 \item Para declarar a função, usamos 
-           	    \textcolor{NavyBlue}{def}, tipo de retorno, nome
-            	da função e (tipo de parâmetros)
+           	        \textcolor{NavyBlue}{def}, tipo de retorno, nome
+            	    da função e (tipo de parâmetros)
             	
-            	\textcolor{NavyBlue}{Ex.:}
-            	
-            	\textcolor{NavyBlue}{def}
-            	number square(number);
-            	
+                	\textcolor{NavyBlue}{Ex.:}
+                	
+                	\textcolor{NavyBlue}{def}
+                	number square(number);
+                	
             	\bigskip
 
                 \item Para chamá-la usamos
-                o nome da função e seus parâmetros entre 
-                parênteses, em ordem.
-                
-                \textcolor{NavyBlue}{Ex.:}
-                
-                hSquared = square(catA);
+                    o nome da função e seus parâmetros entre 
+                    parênteses, em ordem.
+                    
+                    \textcolor{NavyBlue}{Ex.:}
+                    
+                    hSquared = square(catA);
                 
                 \bigskip
                 
                 \item Para contruí-las basta usar  o tipo
-                de retorno + o nome da função e entre
-                parênteses os nomes dos parâmetros acompanhados de 
-                seus respectivos tipos. Tudo isso seguido da ação que
-                ela irá realizar entre chaves {}.
+                    de retorno + o nome da função e entre
+                    parênteses os nomes dos parâmetros acompanhados de 
+                    seus respectivos tipos. Tudo isso seguido da ação que
+                    ela irá realizar entre chaves {}.
+                    
+                    Não esquecendo de dar
+                    \textcolor{NavyBlue}{return}
+                    nas funções que retornam algum tipo de dado.
+                    
+                    \textcolor{NavyBlue}{Ex.:}
+                    
+                        number square(number x)
+                        
+                        \{
+                        
+                        \ \ \ \ my j = x;
+                        
+                        \ \ \ \ return x*j;
+                        
+                        \}
                 
-                Não esquecendo de dar
-                \textcolor{NavyBlue}{return}
-                nas funções que retornam algum tipo de dado.
-                
-                \textcolor{NavyBlue}{Ex.:}
-                
-                    number square(number x)
-                    
-                    \{
-                    
-                    \ \ \ \ my j = x;
-                    
-                    \ \ \ \ return x*j;
-                    
-                    \}
             \end{enumerate}
+            
+        \bigskip      
+       
+        \item \textbf{toCOORD :}
+            
+            Transforma dois números I e J em coordenadas
+        
+        \bigskip      
+        
+        \item \textbf{toNumberI :}
+            
+            Pega uma coordenada e devolve o número relacionado
+            a posição I
+            
+            \textcolor{NavyBlue}{Ex.:}
+            
+            toNumberI(c);
+            
+            sendo c uma coordenada.
+            
+        \bigskip
+        
+        \item \textbf{toNumberJ :}
+            
+            Pega uma coordenada e devolve o número relacionado
+            a posição J
+            
+            \textcolor{NavyBlue}{Ex.:}
+            
+            toNumberJ(c);
+            
+            sendo c uma coordenada.
+            
+       
        
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
