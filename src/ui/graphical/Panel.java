@@ -492,9 +492,38 @@ class Panel extends JLayeredPane
     }
     
     /**
-     * <b>JRobot - Robot with more than images</b><br>
-     * Print a robot exhibiting a status bar and other
-     * useful info for the player.
+     * <b>Panel - Level</b>
+     * Auxiliar enum for the levels
+     * in which the elements will be 
+     * displayed inside the Panel.
+     */
+    enum Level
+    {
+        LABEL(3),
+        ROBOT(2),
+        BAR  (1);
+        
+        // Integer representing the level
+        private Integer level;
+        
+        /**
+         * Default contructor.<br>
+         * @param l Level
+         */
+        private Level(int l) { this.level = new Integer(l); }
+        
+        /**
+         * Getter for the level.
+         * @return Integer with the level of the element
+         */
+        Integer get() { return this.level; }
+    }
+    
+    /**
+     * <b>Panel - JRobot</b><br>
+     * Print a robot exhibiting a 
+     * status bar and other useful 
+     * info for the player.
      */
     private class JRobot
     {
@@ -545,7 +574,8 @@ class Panel extends JLayeredPane
             this.name.setForeground(Color.WHITE);
             this.name.setBackground(Color.BLACK);
             
-            this.jrobot.addMouseListener(new MouseAdapter() {
+            this.jrobot.addMouseListener(new MouseAdapter() 
+            {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JRobot.this.exhibitName = true;
@@ -615,7 +645,7 @@ class Panel extends JLayeredPane
             if(!this.exhibitName) return;
             this.name.setBounds   (x0, y0, 50, 20);
             this.name.setLabelFor (this.jrobot);
-            Panel.this.add        (name, 3);
+            Panel.this.add        (this.name, Level.LABEL.get());
         }
             
         /**
@@ -630,7 +660,7 @@ class Panel extends JLayeredPane
             ImageIcon ico = new ImageIcon(img);
             this.jrobot.setIcon   (ico);
             this.jrobot.setBounds (x0, y0, 32, 32);
-            Panel.this.add        (jrobot, 1);
+            Panel.this.add        (jrobot, Level.ROBOT.get());
             
             // Update robot's position
             this.robot.setPhase(32, phase[1]);
@@ -656,8 +686,8 @@ class Panel extends JLayeredPane
             this.power.setValue  (power);
             
             // Add HP and Power bars
-            Panel.this.add(this.hp, 2);
-            Panel.this.add(this.power, 2);
+            Panel.this.add(this.hp,    Level.BAR.get());
+            Panel.this.add(this.power, Level.BAR.get());
         }
         
         /**
