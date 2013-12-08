@@ -163,6 +163,46 @@ enum Images implements ROOT
      * @return Buffered image for the element
      */
     BufferedImage img() { return this.img; }
+    
+    /**
+     * Getter for the internal image as icon.<br>
+     * @return Image Icon for the element
+     */
+    ImageIcon ico() { return new ImageIcon(this.img); }
+    
+    /**
+     * Getter for subimage of the internal 
+     * image as an Image Icon.<br>
+     * @param  x The X coordinate of the 
+     *           upper-left corner of the
+     *           specified rectangular region
+     * @param  y The Y coordinate of the 
+     *           upper-left corner of the
+     *           specified rectangular region
+     * @param  w The width of the specified 
+     *           rectangular region
+     * @param  h The height of the specified 
+     *           rectangular region
+     * @return Subimage Icon
+     */
+    ImageIcon ico(int x, int y, int w, int h) 
+    { 
+        BufferedImage subimg;
+        subimg = this.img.getSubimage(x,y,w,h);
+        return new ImageIcon(subimg); 
+    }
+    
+    /**
+     * Returns the height of the Image.
+     * @return The height of the Image
+     */
+    int getHeight() { return this.img.getHeight(); }
+    
+    /**
+     * Returns The width of the Image.
+     * @return The width of the Image
+     */
+    int getWidth() { return this.img.getWidth(); }
         
     /**
      * Getter for the internal image.<br>
