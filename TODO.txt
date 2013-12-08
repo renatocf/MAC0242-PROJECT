@@ -27,6 +27,7 @@
     [X] Join parser in the main program.
     [X] Make the RVM's read the Positron files.
     [X] Fix debug mode with colors.
+    [X] Add robot's label with name and clickable options.
     [ ] Fix '@author' on all files.
     [ ] Add player nickname.
     [ ] Update website info. (PHASE 4)
