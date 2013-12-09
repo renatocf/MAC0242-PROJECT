@@ -28,7 +28,7 @@
 \usepackage{calc}  
 \usepackage{enumitem}  
 
-\title  {Projeto de Laboratório de Programação II - Fase 2}
+\title  {Projeto de Laboratório de Programação II - Fase 4}
 \author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
 \date   {}
 
@@ -60,21 +60,17 @@ programadas. Eles irão executá-las até que o
 jogo acabe ou sejam destruídos.
 
 Nesta fase do desenvolvimento, a programação 
-deve  ser  feita   em  linguagem  *Assembly*,
-desenvolvida  especialmente  para  a máquina 
-virtual  em *Java*. 
+deve ser feita em uma linguagem desenvolvida
+especificamente para esse jogo.
 
 Os programas devem  ser criados com extensão 
-*.asm*.   Exemplos   estão   disponíveis  no 
-diretório `test/` junto ao código-fonte. 
-
-
+*.pos*.   Exemplos   estão   disponíveis  no 
+diretório `test/` junto ao código-fonte.
 
 \bigskip
 \bigskip
 \bigskip
 \bigskip
-
 
 {\textcolor{NavyBlue}{\LARGE INSTALAÇÃO }
                 
@@ -136,20 +132,52 @@ E para iniciar o jogo:
 \begin{enumerate}                                            
     \item Continuar no terminal
  	\item Digite: \texttt{java -jar dist/MAC0242-Project.jar
-          programa1.asm programa2.asm programa3.asm}
+          programa1.pos programa2.pos programa3.pos}
 \end{enumerate}
 
 Observação: Na pasta "behaviors" você pode encontrar exemplos de 
 programas de robô para testar.
-Eles são "Carrier.asm", "Protector.asm", "ScouDU.asm" e "ScoutUD.asm".
-
-Para poder utilizar esses programas, você deve carregá-los. Saiba 
-como fazer isso em "Utilitários".
+Eles são "Carrier.pos" e "Protector.pos".
 
 \bigskip
 
-
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+{\textcolor{NavyBlue}{\LARGE Usando a barra de Menu}
+
+Os botões da lateral direita da tela têm as seguintes
+funções:
+
+\begin{itemize}    
+                                        
+    \item {\textcolor{NavyBlue}{MiniMap :}
+        Habilita/Desabilita a janela do mini mapa.
+
+ 	\item {\textcolor{NavyBlue}{Add Robot :}
+ 	    Ao clicar nesse botão um robô é criado.
+ 	    
+ 	    Primeiramente ele pergunta o nome do robô
+ 	    ser criado.
+ 	    
+ 	    Depois, caso o editor de texto esteja vazio
+ 	    ou desabilitado, ele pede um nome de programa
+ 	    já criado, para que ele possa comandar o robô.
+ 	    
+ 	    Caso o contrário, ele irá carregar o programa
+ 	    que foi digitado no editor de texto e salvá-lo
+ 	    na pasta user/ .
+ 	    
+ 	\item {\textcolor{NavyBlue}{Editor :}
+ 	    Habilita/Desabilita a janela do editor de texto.
+ 	    
+ 	\item {\textcolor{NavyBlue}{Clear :}
+ 	    Limpa o editor de texto.
+ 	    
+ 	\item {\textcolor{NavyBlue}{Exit :}
+ 	    Sair do jogo.
+
+\end{itemize}
 
 
 

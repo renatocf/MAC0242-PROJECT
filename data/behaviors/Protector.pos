@@ -1,0 +1,38 @@
+updateVars();
+
+my c = &BASE - [1,1];
+my er = 0;
+my state = 0;
+my dir = ->SW;
+
+while(1)
+{
+    while(state == 0)
+    {
+        say 1;
+        er = moveTowards(c);
+        if(er == -4)
+        {
+            removeObstacle(c);
+        }
+        elsif(&ROBOT == c)
+        {
+            state = 1;
+        }
+    }
+    while(state == 1)
+    {
+        say dir = rotAntiClockWise(dir);
+        er = move(dir);
+        if(er == -4)
+        {
+            er = removeObstacle(&ROBOT + relativeCoord(dir));
+            if(er == 1)
+            {state = 0;}
+        }
+        if(distance(&BASE) > 4)
+        {
+            state = 0;
+        }
+    }
+}

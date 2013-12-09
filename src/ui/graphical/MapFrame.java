@@ -138,10 +138,11 @@ class MapFrame extends JFrame
             JSplitPane game = new JSplitPane( 
                 JSplitPane.HORIZONTAL_SPLIT, false, this.arena, ui 
             ); 
-             
+            
             game.setDividerLocation (0.93); 
             game.setResizeWeight    (1); 
             game.setFocusable       (true);  
+            game.setEnabled         (false);
             
         //* LOG BOX **************************************************//
             this.log = new JTextArea(5, 72);

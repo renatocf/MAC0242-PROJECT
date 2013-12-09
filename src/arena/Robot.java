@@ -171,6 +171,7 @@ public class Robot implements Scenario, Printable
     public void identify()
     {
         System.out.print  ("[" + this.i + "," + this.j + "] ");
+        System.out.print  ("  --  " + this.ID + "  --  ");
         System.out.println(this.toString());
         System.out.println("-------------------------");
         System.out.println("HP          = " + this.HP         );
@@ -185,7 +186,7 @@ public class Robot implements Scenario, Printable
         System.out.println("maxPower    = " + this.maxPower   );
         System.out.println("costMove    = " + this.costMove   );
         System.out.println("sight       = " + this.sight      );
-        System.out.println("buildTime   = " + buildTime   );
+        System.out.println("buildTime   = " + buildTime       );
     }
     
     /** 
@@ -358,6 +359,7 @@ public class Robot implements Scenario, Printable
     {
         return this.pathToProg;
     }
+    
     
     /**
      * Setter for the robot's phase.

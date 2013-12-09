@@ -113,12 +113,12 @@ public class Main
         
         // Menu
         // TODO: automate inserction of programs
-        String ROOT = "/data/behaviors/";
+        String ROOT = "test/";
         if(args.length > 1 && !multi)
         {
-            p[0].insertArmy("Caprica Six"     , ROOT + "Protector.asm");
-            p[0].insertArmy("Number Seventeen", ROOT + "Protector.asm");
-            p[0].insertArmy("Megatron"        , ROOT + "Carrier.asm"  );
+            p[0].insertArmy("Caprica Six"     , ROOT + "IF.pos");
+            p[0].insertArmy("Number Seventeen", ROOT + "IF.pos");
+            p[0].insertArmy("Megatron"        , ROOT + "IF.pos");
         }
         
         String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };

@@ -19,6 +19,7 @@ package ui.graphical;
 // Default libraries
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.BufferedReader;
 
 // Graphical Libraries (AWT)
@@ -30,6 +31,7 @@ import java.awt.event.ActionListener;
 // Graphical Libraries (Swing)
 import javax.swing.JMenu;
 import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JTextPane;
 import javax.swing.JMenuItem;
@@ -49,6 +51,7 @@ import javax.swing.JFileChooser;
 class EditorFrame extends JFrame
     implements ActionListener
 {
+    JButton compile;
     JTextPane txtPane;
     
     EditorFrame(Graphical gui)
@@ -68,9 +71,13 @@ class EditorFrame extends JFrame
             menu.add(makeMenuItem("Save" ));
             menu.add(makeMenuItem("Clear"));
             menu.add(makeMenuItem("Quit" ));
+            
+            compile = new JButton("Compile");
+            
                 
             JMenuBar menuBar = new JMenuBar();
             menuBar.add(menu);
+            menuBar.add(compile);
             this.setJMenuBar(menuBar);
     }
         
@@ -84,7 +91,13 @@ class EditorFrame extends JFrame
             case "Clear": this.clearPage();       break;
             case "Save" : this.saveFile();        break;
         }
+        if(e.getSource() ==compile)
+        {
+            this.uploadAndCompile();
+        }
     }
+ 
+    
     
     /**
      * Auxiliar method to load a user file.
@@ -98,7 +111,7 @@ class EditorFrame extends JFrame
         
         try {
             File file = chooser.getSelectedFile();
-            java.net.URL url = file.toURL();
+            java.net.URL url = file.toURI().toURL();
             txtPane.setPage(url);
             
         } catch(Exception e) {
@@ -125,6 +138,12 @@ class EditorFrame extends JFrame
         } catch (Exception k) {}  
     }
     
+    
+    public void uploadAndCompile()
+    {
+        System.out.println("000000000000000000000000000");
+    }
+    
     /**
      * Auxiliar method to save file
      * in the directory .robot-battle.
@@ -132,7 +151,17 @@ class EditorFrame extends JFrame
     private void saveFile() 
     {
         JFileChooser chooser = new JFileChooser();
-        chooser.showSaveDialog(this);
+        int result = chooser.showOpenDialog(this);
+        
+        if(result == JFileChooser.CANCEL_OPTION) return;
+        File destFile = chooser.getSelectedFile();
+        
+        try( FileWriter fw = new FileWriter(destFile) ){
+            fw.write(this.get());
+            fw.flush();
+        } catch(Exception e) {
+            System.out.println("Erro ao salvar o arquivo!");
+        }    
     }
     
     private void clearPage()
@@ -150,5 +179,10 @@ class EditorFrame extends JFrame
     public String get()
     {
         return this.txtPane.getText();
+    }
+    
+    public void set(String tex)
+    {
+        this.txtPane.setText(tex);
     }
 }

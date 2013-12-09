@@ -19,6 +19,7 @@ package ui.graphical;
 // Graphical Libraries (AWT)
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 
@@ -49,15 +50,13 @@ import players.Player;
 class UserInterface extends JPanel
 {
     // Private variables
-    private Player player;
-    //private JTextArea tex;
-    //private JFrame text;
-    
+    private Player player; 
     private EditorFrame editor;
-    
+    private int codRobot;
     private boolean texBool;
     final private Graphical gui;
-        
+    private int countHash = 0;
+            
     /**
      * Default Constructor.<br>
      * @param gui Graphical set in which the 
@@ -69,18 +68,11 @@ class UserInterface extends JPanel
         this.gui = gui;
         this.player  = p;
         
-        // Prog Editor
+        this.setLayout(new GridLayout(5, 1));
         
+        // Prog Editor
         editor = gui.editorFrame;
         editor.setVisible(false);
-      
-        
-        //text = new JFrame();
-        //text.setSize(300, 500);
-        //tex = new JTextArea("");
-        
-        //text.add(tex);
-        //text.setVisible(false);
         texBool = false;
         
         // Launch a new thread to deal with buttons
@@ -94,67 +86,68 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            new JGameButton(Images.MENU_MINMAP.ico(), new JGameAction() {
+            new JGameButton("MiniMap", new JGameAction() {
                 public void exec() { UserInterface.this.gui.miniMapFrame.toggle(); }                
             });
             
         //* ADD BUTTON ************************************************/
-            JGameButton newRobot = new JGameButton("A", new JGameAction() {
-                public void exec() {
-                    String program;
-                    String prog;
+            JGameButton newRobot = new JGameButton("Add Robot", new JGameAction() {
+                public void exec() 
+                {
+                    countHash++;
+                    
+                    // Get robot name
                     String robotName = JOptionPane.showInputDialog("What is the robot's name?");
+                    
+                    // Get editor content
+                    String program = editor.get();
+                    String pathToProg;
+                    
+                    // And checks if it is not empty
+                    if(program.equals("") || !texBool)
+                    {
+                        // If it is, asks the user for a base program
+                        pathToProg = "test/" 
+                        + JOptionPane.showInputDialog("Which program controls " + robotName + "?") 
+                        + ".pos";
+                        editor.loadFile(pathToProg);
+                    }
+                                        
+                    // Get editor content and stores in the user's file
                     program = editor.get();
                     
                     // Saving the user program in a file.
-                    File arquivo = new File("test/user.pos");
+                    File arquivo = new File("user/" + countHash + "_" + robotName + ".pos");
                     try( FileWriter fw = new FileWriter(arquivo) ){
                         fw.write(program);
                         fw.flush();
                     } catch(Exception e) {
                         System.out.println("Erro ao salvar o arquivo!");
                     }
-          
-                    if (program.equals(""))
-                    {
-                        prog = "test/" + JOptionPane.showInputDialog("Which program controls " + robotName + "?") + ".pos";
-                    System.out.println("Aquiiii");
                     
-                    }
-                    else
-                    {
-                         prog = "test/user.pos";
-                         System.out.println("Aquiiii2222");
-                    }
-                    player.insertArmy(robotName, prog);
- 
+                    player.insertArmy(robotName, "user/" + countHash + "_" + robotName + ".pos");
                 }
             });
         
         //* PROG  ****************************************************/
-             new JGameButton("E", new JGameAction() {
+             new JGameButton("Editor", new JGameAction() {
                  public void exec() 
                  {
-                     UserInterface.this.gui.editorFrame.setVisible(true);
+                     texBool = !texBool;
+                     UserInterface.this.gui.editorFrame.setVisible(texBool);
                  }
              }); 
         
         //* CLEAN TEXT AREA  *****************************************/
-            new JGameButton("C", new JGameAction() {
+            new JGameButton("Clear", new JGameAction() {
                 public void exec() { editor.set(""); }                
             });
             
         
         //* EXIT *****************************************************/
-            new JGameButton("X", new JGameAction() {
+            new JGameButton("Exit", new JGameAction() {
                 public void exec() { System.exit(0); }
             });
-        
-        //* LIST OF ROBOTS ******************************************/
-            // Robot[] robots = this.player.getRobots().toArray(new Robot[0]);
-            // JComboBox robotList = new JComboBox(robots);
-            // robotList.setSize(20,20);
-            // this.add(robotList);
     }
     
     /**
@@ -178,7 +171,7 @@ class UserInterface extends JPanel
     private class JGameButton extends JButton
     {
         // Buttons size
-        private final Dimension d = new Dimension(5,10);
+        private final Dimension d = new Dimension(110,30);
         
         /**
          * Default constructor<br>
@@ -210,7 +203,8 @@ class UserInterface extends JPanel
         private void init(final JGameAction action)
         {
             this.setEnabled(true);
-            this.setPreferredSize(d);
+            this.setMinimumSize(d);
+            this.setMaximumSize(d);
             
             // Executing JGameAction
             this.addMouseListener(new MouseAdapter() {
