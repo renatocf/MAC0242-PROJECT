@@ -37,7 +37,7 @@ import players.Player;
 import static parameters.Game.*;
 
 /**
- * <b>Graphical - MapFrame</b><br>
+ * <b>Graphical - Map Frame</b><br>
  * Creates a panel with the main components
  * of the game, as the complete arena and
  * a log-messenger with all robots' info.
