@@ -745,6 +745,7 @@
 		        \item PC:    Registrador para a posição atual de execução 
 		                     dos comandos dentro do vetor PROG;
 		        \item RAM:   Memória auxiliar, a ser utilizada para funções;
+		        
 		        \item CTRL:  Vetor de controle dos retornos das funções 
 		                     (callbacks);
 		        \item LABEL: Hash com as posições associadas a cada LABEL
@@ -888,8 +889,11 @@
 		    que se manterá intancto aos ataques sofridos.
 		    Ao imprimirmos uma árvore, temos "( ) Water".
 		    %"(≈) Water".
-		    
-\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip 	
 
 	\subsection{Stackable}
 		Nesse package, temos a interface Stackable que
@@ -913,6 +917,8 @@
 			{\textcolor{NavyBlue}{ public String toString() }
 			que além de retornar a String com o valor de
 			da variável, manda o texto para as funções IO.
+			
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%			
 		
 		\subsubsection { Around.java }
 			Tem como característica uma matriz de Strings
@@ -1054,6 +1060,13 @@
 			e a {\textcolor{NavyBlue}{Stone.java} que é 
 			responsável pela criação das pedras que são 
 			destruíveis e colecionáveis pelos robôs.
+			
+		\subsubsection { Nil.java }
+		    É um empilhável que representa as informações da 
+		    memória utilizada na comunicação entre os robôs
+		    (CACHE). 
+		    É um stackable simples que possui apenas função
+		    get(devolve o próprio objeto Nil) e toString;
 			 
 		\subsubsection { Num.java }
 			É um empilhável do tipo número.
@@ -1205,9 +1218,22 @@
             Se possuir robôs, pedras, árvores ou bases, estes também 
             serão impressos no painel.
             
+            Este também tem acesso aos robôs que estão contidos no mapa,
+            o que permite ver o quanto de vida ainda resta. 
+            Dessa forma é possível mostrar na tela uma barrinha de vida 
+            para cada robô.
+            
             Também é responsável, por settar as fases do jogo, informando
             o mesmo de quando podemos continuar o jogo normalmente ou
             jogo, ou informar sobre perdedores e ganhadores.
+            
+            
+            Nesse mesmo arquivo temos uma outra classe, a JRobot, que é
+            responsável pela mudança de programa em tempo real de um
+            robô. Nela, é permitido clicar em um robô e reescrever o 
+            programa que o rege. 
+            
+            Isso é feito com eventos de mouse nas imagens Graphical2D.
             
         \subsubsection{ graphical/Phase.java }
             É uma estrutura Enum que define o Status atual do jogo,
