@@ -28,7 +28,7 @@
 \usepackage{calc}  
 \usepackage{enumitem}  
 
-\title  {Projeto de Laboratório de Programação II - Fase 3}
+\title  {Projeto de Laboratório de Programação II - Fase 4}
 \author {Karina Suemi, Vinícius Silva, Renato Cordeiro}
 \date   {}
 
@@ -40,20 +40,18 @@
 
 \section{Introdução} \label{sec:introdução}
 
-    Nesta fase, o projeto consiste em representar o jogo em ambiente
-    gráfico usando bibliotecas já prontas do JAVA para conseguir 
-    tais efeitos. 
-    Assim, a arena e seus terrenos em formas hexagonais, os cristais, 
-    os robôs, as pedras, as árvores e os diferentes tipos de cenários
-    podem ser visualizados. Na fase anterior, foram criados diferentes
-    tipos de climas, que acarretam no aparecimento de diversos cenários
-    distintos.
+    Nesta fase final, temos um jogo "jogável", onde além da interface
+    gráfica, há a presença da linguagem própria para o jogo feita em 
+    javacc. Portanto, agora o usuário pode programar seus próprios 
+    robôs numa linguagem mais simples e confortável para ele, podendo 
+    assim montar robôs mais eficientes.
     
-    Há também a parte do sistema, onde damos características fixas aos 
-    robôs (como vida e energia), criamos cristais aleatóriamente e 
-    damos a opção de "desligar" ou "ligar" um robô, de modo que este 
-    possa ser paralizado quando não tiver mais vidas.
+    As especificações da linguagem estão no manual de usuário.
     
+    Também há a opção de criar robôs em tempo real (no meio de um jogo)
+    programando na hora, em um editor de texto fornecido pelo programa
+    e do mesmo modo também há a opção de modificar o programa dos robôs 
+    apenas clicando neles.    
     
     \subsection{Projeto}
     
@@ -61,14 +59,19 @@
     diretórios:
     \begin{itemize}
         \item \textbf{bin:}       Arquivo executável principal do programa;
+        
         \item \textbf{behaviors:} Onde estão os programas teste em assembly
-        						  do robô.
+        						  do robô;
+        						  
         \item \textbf{doc:}       Pasta para a documentação, com este arquivo 
                                   e a versão fonte em \LaTeX;
+                                  
         \item \textbf{lib:}       Arquivos com classes/pacotes de Perl 
                                   no formato \texttt{.pm};
+                                  
         \item \textbf{src:}       Pasta que contém os cógigos-fonte em JAVA,
         					      separados e organizados por pastas.
+        					      
         \item \textbf{test:}      Arquivos de teste com código em Assembly
                                   do montador/máquina virtual \texttt{.txt}.
     \end{itemize}
