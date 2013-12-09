@@ -29,11 +29,13 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.ImageIcon;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
  import java.io.*;
 
 // Libraries
+import arena.Robot;
 import players.Player;
 
 /**
@@ -114,14 +116,14 @@ class UserInterface extends JPanel
             });
         
         //* PROG  ****************************************************/
-            new JGameButton("E", new JGameAction() {
-                public void exec() 
-                {
-                    texBool = !texBool;
-                    text.setVisible(texBool);
-                    System.out.println(tex.getText());        
-                }
-            }); 
+            // new JGameButton("E", new JGameAction() {
+            //     public void exec() 
+            //     {
+            //         texBool = !texBool;
+            //         text.setVisible(texBool);
+            //         System.out.println(tex.getText());        
+            //     }
+            // }); 
         
         //* CLEAN TEXT AREA  *****************************************/
             new JGameButton("C", new JGameAction() {
@@ -133,6 +135,12 @@ class UserInterface extends JPanel
             new JGameButton("X", new JGameAction() {
                 public void exec() { System.exit(0); }
             });
+        
+        //* LIST OF ROBOTS ******************************************/
+            // Robot[] robots = this.player.getRobots().toArray(new Robot[0]);
+            // JComboBox robotList = new JComboBox(robots);
+            // robotList.setSize(20,20);
+            // this.add(robotList);
     }
     
     /**
