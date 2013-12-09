@@ -146,15 +146,22 @@ Eles são "Carrier.pos" e "Protector.pos".
 
 {\textcolor{NavyBlue}{\LARGE Usando a barra de Menu}
 
+\bigskip
+\bigskip
+\bigskip
+
 Os botões da lateral direita da tela têm as seguintes
 funções:
 
+\bigskip
+
 \begin{itemize}    
                                         
-    \item {\textcolor{NavyBlue}{MiniMap :}
+    \item \textcolor{NavyBlue}{MiniMap :}
         Habilita/Desabilita a janela do mini mapa.
-
- 	\item {\textcolor{NavyBlue}{Add Robot :}
+    \bigskip
+    
+ 	\item \textcolor{NavyBlue}{Add Robot :}
  	    Ao clicar nesse botão um robô é criado.
  	    
  	    Primeiramente ele pergunta o nome do robô
@@ -167,21 +174,115 @@ funções:
  	    Caso o contrário, ele irá carregar o programa
  	    que foi digitado no editor de texto e salvá-lo
  	    na pasta user/ .
- 	    
- 	\item {\textcolor{NavyBlue}{Editor :}
+    \bigskip
+     	    
+ 	\item \textcolor{NavyBlue}{Editor :}
  	    Habilita/Desabilita a janela do editor de texto.
- 	    
- 	\item {\textcolor{NavyBlue}{Clear :}
+ 	\bigskip
+ 	
+ 	\item \textcolor{NavyBlue}{Clear :}
  	    Limpa o editor de texto.
+ 	\bigskip
  	    
- 	\item {\textcolor{NavyBlue}{Exit :}
+ 	\item \textcolor{NavyBlue}{Exit :}
  	    Sair do jogo.
+ 	\bigskip
  	    
- 	\item {\textcolor{NavyBlue}{Exit :}
+ 	\item \textcolor{NavyBlue}{Exit :}
  	    Clicando nos robôs, abre-se a janela do editor
  	    de texto com o programa do respectivo robô 
  	    clicado.
 
+\end{itemize}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        
+{\textcolor{NavyBlue}{\LARGE Opções}
+
+Você pode escolher várias formas de jogar A Batalha de Robôs,
+sendo que cada uma delas envolve um tipo de cenário diferente.
+Entre eles temos:
+
+\begin{itemize}
+	\item Artical
+	\item Tropical
+	\item Desertic
+	\item Continental
+\end{itemize}
+
+Para jogar cada um deles, basta iniciar o programa do seguinte modo:
+
+\begin{itemize}
+
+	\item Artical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --artical\end{verbatim}
+
+	\item Continental --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --continental\end{verbatim}
+	
+	\item Desertic --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --desertic\end{verbatim}
+	
+	\item Tropical --> \begin{verbatim}java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --tropical\end{verbatim}
+
+\end{itemize}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\textcolor{NavyBlue}{\LARGE exemplos:}
+
+\bigskip
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[scale=0.3]{img/artical.png}
+    \caption{Artical}
+\end{figure}
+
+\bigskip
+
+\begin{figure}[h]
+   	\centering
+    \includegraphics[scale=0.3]{img/continental.png}
+    \caption{Continental}
+\end{figure}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+   	\centering
+    \includegraphics[scale=0.3]{img/desertic.png}
+    \caption{Desertic}
+\end{figure}
+
+\begin{figure}[h]
+   	\centering
+    \includegraphics[scale=0.3]{img/tropical.png}
+    \caption{Tropical}
+\end{figure}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\textcolor{NavyBlue}{\LARGE Utilitários}
+\begin{itemize}
+
+	\bigskip
+
+	\item Se quiser modificar o tamanho da arena,
+	coloque "-large" ao final do comando que inicia
+	o programa:
+	
+	\$ \textit {java -jar dist/MAC0242-Project.jar programa1 programa2 programa3 --artical -large}
+
+	\bigskip
+
+	\item E caso queira executar o programa em modo 
+	Debugger, digite:
+
+	\$ \textit {java -jar dist/MAC0242-Project.jar }
+    	  programa\_jogador\_1 programa\_jogador\_2 -v
+
+	\bigskip
 \end{itemize}
 
 

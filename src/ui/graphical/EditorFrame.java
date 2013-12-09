@@ -38,6 +38,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JFileChooser;
 
+// Libraries
+import arena.Robot;
+
 /**
  * <b>Graphical - Editor Frame</b><br>
  * Creates a general editor to the user,
@@ -51,6 +54,7 @@ import javax.swing.JFileChooser;
 class EditorFrame extends JFrame
     implements ActionListener
 {
+    Robot turn;
     JButton compile;
     JTextPane txtPane;
     
@@ -72,9 +76,9 @@ class EditorFrame extends JFrame
             menu.add(makeMenuItem("Clear"));
             menu.add(makeMenuItem("Quit" ));
             
-            compile = new JButton("Compile");
+            this.compile = new JButton("Compile");
+            this.compile.addActionListener(this);
             
-                
             JMenuBar menuBar = new JMenuBar();
             menuBar.add(menu);
             menuBar.add(compile);
@@ -91,13 +95,46 @@ class EditorFrame extends JFrame
             case "Clear": this.clearPage();       break;
             case "Save" : this.saveFile();        break;
         }
-        if(e.getSource() ==compile)
-        {
-            this.uploadAndCompile();
-        }
+        if(e.getSource() == EditorFrame.this.compile)
+            uploadAndCompile();
     }
- 
+            
+    public void uploadAndCompile()
+    {
+        System.out.println("000000000000000000000000000");
+    }
+
+    /**
+     * Auxiliar method to load a user file,
+     * storing which robot called it (to compile).
+     * @param robot      Robot that is uploading
+     * @param pathToProg Path to file to be 
+     *                   loaded in the panel
+     */
+    void loadFile(Robot robot, String pathToProg)
+    {
+        this.turn = robot;
+        this.loadFile(pathToProg);
+    }
     
+    /**
+     * Auxiliar method to load a user file.
+     * @param pathToProg Path to file to be 
+     *                   loaded in the panel
+     */
+    void loadFile(String pathToProg)
+    {
+        String line = "", prog = "";
+        try(
+            BufferedReader reader = new BufferedReader(new FileReader(pathToProg))
+        ) {  
+            while ((line = reader.readLine()) != null) 
+                prog += line + "\n";
+            
+            this.txtPane.setText(prog);
+                
+        } catch (Exception k) {}  
+    }
     
     /**
      * Auxiliar method to load a user file.
@@ -120,31 +157,6 @@ class EditorFrame extends JFrame
     }
     
     /**
-     * Auxiliar method to load a user file.
-     * @param pathToProg Path to file to be 
-     *                   loaded in the panel
-     */
-    public void loadFile(String pathToProg)
-    {
-        String line = "", prog = "";
-        try(
-            BufferedReader reader = new BufferedReader(new FileReader(pathToProg))
-        ) {  
-            while ((line = reader.readLine()) != null) 
-                prog += line + "\n";
-            
-            this.txtPane.setText(prog);
-                
-        } catch (Exception k) {}  
-    }
-    
-    
-    public void uploadAndCompile()
-    {
-        System.out.println("000000000000000000000000000");
-    }
-    
-    /**
      * Auxiliar method to save file
      * in the directory .robot-battle.
      */
@@ -163,6 +175,16 @@ class EditorFrame extends JFrame
             System.out.println("Erro ao salvar o arquivo!");
         }    
     }
+        
+    String get()
+    {
+        return this.txtPane.getText();
+    }
+    
+    void set(String tex)
+    {
+        this.txtPane.setText(tex);
+    }
     
     private void clearPage()
     {
@@ -174,15 +196,5 @@ class EditorFrame extends JFrame
         JMenuItem m = new JMenuItem(name);
         m.addActionListener(this);
         return m;
-    }
-    
-    public String get()
-    {
-        return this.txtPane.getText();
-    }
-    
-    public void set(String tex)
-    {
-        this.txtPane.setText(tex);
     }
 }

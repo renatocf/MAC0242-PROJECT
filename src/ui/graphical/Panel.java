@@ -579,7 +579,7 @@ class Panel extends JLayeredPane
                     if(e.getClickCount() >= 2)
                     {
                         String path = JRobot.this.robot.getPathToProg();
-                        Panel.this.gui.editorFrame.loadFile   (path);
+                        Panel.this.gui.editorFrame.loadFile   (JRobot.this.robot, path);
                         Panel.this.gui.editorFrame.setVisible (true);
                     }
                 }
