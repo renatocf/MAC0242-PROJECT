@@ -3,6 +3,11 @@ string sete()
     return "sete";
 }
 
+coord lookEnemyBase()
+{
+    return look("Base");
+}
+
 number dragNearCrystal()
 {
     my ret = 0;
@@ -11,7 +16,6 @@ number dragNearCrystal()
     {
         moveNextTo(c);
         ret = drag(straightWayToPoint(c));
-        say ret;
     }
     return ret;
 }

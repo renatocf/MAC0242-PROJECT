@@ -62,17 +62,19 @@ class MapFrame extends JFrame
     
     /** 
      * Default constructor.<br>
+     * @param gui    Graphical set in which the 
+     *               Panel is set
      * @param map    Object of the class map
      *               from package arena.
      * @param player Player who is visualizing the
      *               map (whith his specific view)
      */
-    MapFrame(Map map, Player player, MiniMapFrame miniMapFrame)
+    MapFrame(Graphical gui, Map map, Player player)
     {
         // Setting MapFrame attributes
-        this.map    = map;
-        this.player = player;
-        this.miniMapFrame = miniMapFrame;
+        this.map          = map;
+        this.player       = player;
+        this.miniMapFrame = gui.miniMapFrame;
         
         //* MAP FRAME INFO *******************************************//
             this.setSize                  (SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -89,7 +91,7 @@ class MapFrame extends JFrame
             int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2);
             
             this.screen = new Panel(
-                map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
+                gui, map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
             );
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);

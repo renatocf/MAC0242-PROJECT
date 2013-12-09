@@ -47,7 +47,7 @@ import static parameters.Game.*;
  * @author Vinicius Silva
  * 
  * @see Action
- * @see gui
+ * @see ui
  */
 final public class World
 {

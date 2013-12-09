@@ -27,7 +27,7 @@ class EditorFrame extends JFrame
 {
     JTextPane txtPane;
     
-    EditorFrame()
+    EditorFrame(Graphical gui)
     {
         this.setTitle("Robot's Battle - Editor");
         this.setSize(640,800);
@@ -40,11 +40,6 @@ class EditorFrame extends JFrame
         StyleConstants.setBold(red, true);
        
         this.add(new JScrollPane(txtPane), BorderLayout.CENTER);
-        
-        SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() { setVisible(true); }
-            });
     }
     
     void append(String s, AttributeSet attributes)

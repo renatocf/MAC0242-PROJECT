@@ -62,11 +62,11 @@ class Panel extends JLayeredPane
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
     
     // Local variables
-    private Map    map;
-    private Player player;
+    private Map       map;
+    private Player    player;
+    private Graphical gui;
     
     // Paint utils
-    private Insets insets;
     private int[] update  = new int[2];
     private Direction dir;
     private WeakHashMap<Robot,JRobot> robots 
@@ -87,6 +87,8 @@ class Panel extends JLayeredPane
      * @see Cell
      * @see Graphical
      *
+     * @param gui    Graphical set in which the 
+     *               Panel is set
      * @param map    Map over which the panel will
      *               create the GUI hexagons
      * @param player Player who is visualizing the
@@ -96,14 +98,16 @@ class Panel extends JLayeredPane
      * @param width  Desired width of the screen
      * @param height Desired height of the screen
      */
-    Panel(Map map, Player player, int R, int x0, int y0, int width, int height)
+    Panel(Graphical gui, Map map, Player player, 
+          int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
+        this.gui      = gui;
         this.map      = map;
         this.player   = player;
         
         // Initializes auxiliar variable
-        try { this.dir    = new Direction(""); }
+        try { this.dir = new Direction(""); }
         catch(Exception e)
         {
             System.err.println("[PANEL] This sould never happen...");
@@ -111,7 +115,6 @@ class Panel extends JLayeredPane
         }
         
         // Preferences
-        this.insets = this.getInsets ();
         this.setOpaque        (true);
         this.setLayout        (null);
         this.setBackground    (Color.black);
@@ -332,7 +335,7 @@ class Panel extends JLayeredPane
             else if(hex.scen == null) // && s is not robot
             {
                 hex.insertScenario();
-                this.add(hex.scen, Level.SCEN.get());
+                this.add(hex.scen, Level.NATURE.get());
                 this.moveToFront(hex.scen);
             }
             
@@ -484,10 +487,11 @@ class Panel extends JLayeredPane
      */
     enum Level
     {
-        FOG    (5),
-        LABEL  (4),
-        BATTLE (4),
-        SCEN   (3),
+        FOG    (7),
+        LABEL  (6),
+        BATTLE (5),
+        NATURE (4),
+        TECH   (3),
         ITEM   (2),
         BAR    (1);
         
@@ -525,7 +529,7 @@ class Panel extends JLayeredPane
         private Images scen;
         
         // Position info
-        private int x0, y0;
+        private int x, y, x0, y0;
         
         // Additional info for settings
         private int maxHP;
@@ -572,7 +576,8 @@ class Panel extends JLayeredPane
                 }
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("Open editor!");
+                    if(e.getClickCount() >= 2)
+                        Panel.this.gui.editorFrame.setVisible(true);
                 }
             });
             
@@ -596,16 +601,17 @@ class Panel extends JLayeredPane
          */
         protected void add(int x, int y)
         {
-            // Update position
-            this.x0  = x-this.scen.dx(); 
-            this.y0  = y-this.scen.dy();
+            // Original positions
+            this.x = x; this.y = y;
+            
+            // Updated positions
+            this.x0 = x-this.scen.dx(); 
+            this.y0 = y-this.scen.dy();
             
             // Painting
             this.paintRobot();
             this.paintBars();
             this.paintName();
-                
-            Rectangle rec = new Rectangle(x0,y0,32,32);
         }
         
         /**
@@ -626,7 +632,10 @@ class Panel extends JLayeredPane
         private void paintName()
         {
             if(!this.exhibitName) return;
-            this.name.setBounds   (x0, y0, 50, 20);
+            Dimension d = this.name.getPreferredSize();
+            int W = (int) d.getWidth(), H = (int) d.getHeight();
+            // TODO: Take out hardcoded constants
+            this.name.setBounds   (x-W/2, y+20, W, H);
             this.name.setLabelFor (this.jrobot);
             Panel.this.add        (this.name, Level.LABEL.get());
         }
@@ -643,7 +652,7 @@ class Panel extends JLayeredPane
             ImageIcon ico = new ImageIcon(img);
             this.jrobot.setIcon   (ico);
             this.jrobot.setBounds (x0, y0, 32, 32);
-            Panel.this.add        (jrobot, Level.SCEN.get());
+            Panel.this.add        (jrobot, Level.TECH.get());
             Panel.this.moveToFront(jrobot);
             
             // Update robot's position
@@ -661,13 +670,18 @@ class Panel extends JLayeredPane
             // Update Color Scheme
             this.updateColorScheme(this.hp, this.maxHP);
             
-            // Configure and paint hp bar
-            this.hp.setBounds    (x0, y0-15, size.width, size.height);
-            this.hp.setValue     (hp);
+            try  {
+                // Configure and paint hp bar
+                this.hp.setBounds    (x0, y0-15, size.width, size.height);
+                this.hp.setValue     (hp);
+                
+                // Configure and paint power bar
+                this.power.setBounds (x0, y0-10, size.width, size.height);
+                this.power.setValue  (power);
             
-            // Configure and paint power bar
-            this.power.setBounds (x0, y0-10, size.width, size.height);
-            this.power.setValue  (power);
+            } catch(java.lang.IllegalArgumentException e) {
+                // TODO: Nothing to do - the program still works
+            }
             
             // Add HP and Power bars
             Panel.this.add(this.hp,    Level.BAR.get());

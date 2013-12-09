@@ -36,7 +36,7 @@ import static arena.Appearence.*;
  * an specified theme, with dimensions
  * side x side and a 'Weather' style.
  * @see arena.World
- * @see gui
+ * @see ui
  *
  * @author Vinicius Silva
  */

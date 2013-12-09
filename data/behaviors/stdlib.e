@@ -5,6 +5,13 @@
 def string sete();
 
 /**
+ *  Look for a enemy base. 
+ *  @return coord of the base if finded;
+ *  @see stdlib#look
+ */
+def coord lookEnemyBase();
+
+/**
  *  Drag a near crystal.
  *  @return TRUE if drag, some drag error 
  *          if otherwise
