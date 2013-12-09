@@ -62,11 +62,11 @@ class Panel extends JLayeredPane
     private Cell[][] cell = new Cell[MAP_SIZE][MAP_SIZE];
     
     // Local variables
-    private Map    map;
-    private Player player;
+    private Map       map;
+    private Player    player;
+    private Graphical gui;
     
     // Paint utils
-    private Insets insets;
     private int[] update  = new int[2];
     private Direction dir;
     private WeakHashMap<Robot,JRobot> robots 
@@ -102,11 +102,12 @@ class Panel extends JLayeredPane
           int R, int x0, int y0, int width, int height)
     {
         // Store game attributes
+        this.gui      = gui;
         this.map      = map;
         this.player   = player;
         
         // Initializes auxiliar variable
-        try { this.dir    = new Direction(""); }
+        try { this.dir = new Direction(""); }
         catch(Exception e)
         {
             System.err.println("[PANEL] This sould never happen...");
@@ -114,7 +115,6 @@ class Panel extends JLayeredPane
         }
         
         // Preferences
-        this.insets = this.getInsets ();
         this.setOpaque        (true);
         this.setLayout        (null);
         this.setBackground    (Color.black);
@@ -576,7 +576,7 @@ class Panel extends JLayeredPane
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(e.getClickCount() >= 2)
-                        System.out.println("Open editor!");
+                        Panel.this.gui.editorFrame.setVisible(true);
                 }
             });
             
