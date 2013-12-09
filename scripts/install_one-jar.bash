@@ -30,7 +30,7 @@ BRED="\e[1;31m"
 #######################################################################
 
 echo -e "${BGREEN}Dowloading One-JAR™${RES}"
-wget https://sourceforge.net/projects/one-jar/files/one-jar/one-jar-0.97/one-jar-ant-task-0.97.jar/download \
+wget --no-check-certificate https://sourceforge.net/projects/one-jar/files/one-jar/one-jar-0.97/one-jar-ant-task-0.97.jar/download \
     -O one-jar-ant-task-0.97.jar 
 
 echo -e "${BGREEN}Creating file directory${RES}"
