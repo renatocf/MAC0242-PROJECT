@@ -24,6 +24,7 @@ import ui.UI;
 import arena.Robot;
 import arena.World;
 import parameters.*;
+import remote.NewRobotOp;
 
 /**
  * Create a general player, used to
@@ -136,11 +137,8 @@ public class Player
     public void insertArmy(String name, String pathToProg)
     {
         Debugger.say("[", this.toString(), "]", " Adding robot ", name);
-        Robot r = World.insertArmy(this, name, pathToProg);
-        this.armies.add(r);
-
-        Debugger.say("[PLAYER] Armies:");
-        for(Robot rob: this.armies) Debugger.say(rob.toString());
+        NewRobotOp op = new NewRobotOp(this, name, pathToProg);
+        World.insertArmy(op);
     }
     
     /**

@@ -79,7 +79,6 @@ public class Robot implements Scenario, Printable
     final protected int maxHP;
     final protected int maxPower;
     final protected int sight;
-    final protected int costTime;
     
     // Costs
     final protected int costMove;
@@ -89,6 +88,9 @@ public class Robot implements Scenario, Printable
     final protected int costAsk;
     final protected int costDrag;
     final protected int costDrop;
+    
+    // static time to build the robot
+    final static protected int buildTime = 60;
     
     // Robot ON/OFF
     protected int     wait = 0;
@@ -143,7 +145,6 @@ public class Robot implements Scenario, Printable
         this.maxHP       = 12;
         this.maxPower    = 32;
         this.sight       = 1;
-        this.costTime    = 5;
         
         // Costs
         this.costMove    = ENERGY_MEDIUM;
@@ -184,7 +185,7 @@ public class Robot implements Scenario, Printable
         System.out.println("maxPower    = " + this.maxPower   );
         System.out.println("costMove    = " + this.costMove   );
         System.out.println("sight       = " + this.sight      );
-        System.out.println("costTime    = " + this.costTime   );
+        System.out.println("buildTime   = " + buildTime   );
     }
     
     /** 

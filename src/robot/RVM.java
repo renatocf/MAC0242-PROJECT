@@ -153,11 +153,16 @@ public class RVM
                 while(!this.syscall) 
                 { 
                     // Above ASM_MAX_RUN, skip
-                    if(c == ASM_MAX_RUN) Syst.SKIP(this);
-                    
-                    if(this.PROG.elementAt(this.PC) == null) this.PC = 0;
-                    Debug.printPC(this.PC);
-                    exec(); this.PC++; c++; 
+                    if(c == ASM_MAX_RUN) 
+                    {
+                        Syst.SKIP(this); this.PC++;
+                    }
+                    else
+                    {
+                        if(this.PROG.elementAt(this.PC) == null) this.PC = 0;
+                        Debug.printPC(this.PC);
+                        exec(); this.PC++; c++;
+                    } 
                 }
                 break;
             

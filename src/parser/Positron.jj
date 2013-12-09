@@ -159,8 +159,6 @@ public class Positron
             // when the 'file' is finished
             main.add(null);
             
-            System.out.println(main.size());
-            
             return main;
             
         } catch(/*FileNotFound*/Exception e) {
