@@ -9,6 +9,7 @@
     [X] Add option for playing again.
     [X] Create menu.
     [X] Add buttons to put new robots.
+    [ ] Get and change button icons in the Map Frame.
     [ ] Finish documentation (LaTeX). (PHASE 4)
     
 [Renato]
@@ -91,7 +92,7 @@
     [X] Accept 'import' of other files in Positron.jj.
     [X] Fix the scroll system (add mouse if possible).
     [X] Add option to edit robot when clicking on it.
-    [ ] Get and change button icons in the Map Frame.
+    [X] Change quick-sort to merge-sort algorithm.
     [ ] Get program when inserting new robot.
     [ ] Add error tokens in the parser.
     [ ] Configure editor for writing.
