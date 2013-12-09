@@ -577,7 +577,12 @@ class Panel extends JLayeredPane
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(e.getClickCount() >= 2)
+                    {
+                    
+                        String r = JRobot.this.robot.getPathToProg();
+                        Panel.this.gui.editorFrame.set(r);
                         Panel.this.gui.editorFrame.setVisible(true);
+                    }
                 }
             });
             

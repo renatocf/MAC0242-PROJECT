@@ -62,9 +62,10 @@ class EditorFrame extends JFrame
         
         //* MENU ******************************************************/
             JMenu menu = new JMenu("File");
-            menu.add(makeMenuItem("Open"));
-            menu.add(makeMenuItem("Save"));
-            menu.add(makeMenuItem("Quit"));
+            menu.add(makeMenuItem("Open" ));
+            menu.add(makeMenuItem("Save" ));
+            menu.add(makeMenuItem("Clear"));
+            menu.add(makeMenuItem("Quit" ));
                 
             JMenuBar menuBar = new JMenuBar();
             menuBar.add(menu);
@@ -76,9 +77,10 @@ class EditorFrame extends JFrame
         String command = e.getActionCommand();
         switch(command)
         {
-            case "Quit": this.setVisible(false); break;
-            case "Open": this.loadFile();        break;
-            case "Save": this.saveFile();        break;
+            case "Quit" : this.setVisible(false); break;
+            case "Open" : this.loadFile();        break;
+            case "Clear": this.clearPage();       break;
+            case "Save" : this.saveFile();        break;
         }
     }
     
@@ -112,10 +114,26 @@ class EditorFrame extends JFrame
         chooser.showSaveDialog(this);
     }
     
+    private void clearPage()
+    {
+        this.txtPane.setText("");
+    }
+    
     private JMenuItem makeMenuItem(String name)
     {
         JMenuItem m = new JMenuItem(name);
         m.addActionListener(this);
         return m;
     }
+    
+    public String get()
+    {
+        return this.txtPane.getText();
+    }
+    
+    public void set(String text)
+    {
+        this.txtPane.setText(text);
+    }
+    
 }

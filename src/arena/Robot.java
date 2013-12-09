@@ -54,12 +54,15 @@ public class Robot implements Scenario, Printable
     protected int     i;        // Line
     protected int     j;        // Column
     protected int     leftFoot; 
-    protected int[]   phase;    //Phase of animation
+    protected int[]   phase;    // Phase of animation
     protected Terrain terrain;  
     
     // Hardware
     protected Item[] slots;
     protected RVM positronic;
+    
+    // Software
+    protected String pathToProg;
     
     // Energy
     protected int HP;
@@ -122,9 +125,12 @@ public class Robot implements Scenario, Printable
         this.slots = new Item[1];
         this.positronic = new RVM (Cortex.translates(pathToProg));
         
+        // Software
+        this.pathToProg = pathToProg;
+        
         // Energy
-        this.HP         = 12;
-        this.power      = 16;
+        this.HP          = 12;
+        this.power       = 16;
         
         // Combat
         this.damageMelee = 3;
@@ -346,6 +352,11 @@ public class Robot implements Scenario, Printable
      * @return Sight
      */
     public int getSight() { return this.sight; }
+    
+    public String getPathToProg()
+    {
+        return this.pathToProg;
+    }
     
     /**
      * Setter for the robot's phase.

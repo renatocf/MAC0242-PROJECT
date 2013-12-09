@@ -51,7 +51,10 @@ class UserInterface extends JPanel
     // Private variables
     private Player player;
     //private JTextArea tex;
-    private JFrame text;
+    //private JFrame text;
+    
+    private EditorFrame editor;
+    
     private boolean texBool;
     final private Graphical gui;
         
@@ -67,11 +70,17 @@ class UserInterface extends JPanel
         this.player  = p;
         
         // Prog Editor
-        text = new JFrame();
-        text.setSize(300, 500);
+        
+        editor = gui.editorFrame;
+        editor.setVisible(false);
+      
+        
+        //text = new JFrame();
+        //text.setSize(300, 500);
         //tex = new JTextArea("");
-        text.add(tex);
-        text.setVisible(false);
+        
+        //text.add(tex);
+        //text.setVisible(false);
         texBool = false;
         
         // Launch a new thread to deal with buttons
@@ -85,7 +94,7 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            new JGameButton(new ImageIcon("data/img/util/hex.png"), new JGameAction() {
+            new JGameButton(Images.MENU_MINMAP.ico(), new JGameAction() {
                 public void exec() { UserInterface.this.gui.miniMapFrame.toggle(); }                
             });
             
@@ -95,7 +104,7 @@ class UserInterface extends JPanel
                     String program;
                     String prog;
                     String robotName = JOptionPane.showInputDialog("What is the robot's name?");
-                    program = tex.getText();
+                    program = editor.get();
                     
                     // Saving the user program in a file.
                     File arquivo = new File("test/user.pos");
@@ -107,9 +116,16 @@ class UserInterface extends JPanel
                     }
           
                     if (program.equals(""))
+                    {
                         prog = "test/" + JOptionPane.showInputDialog("Which program controls " + robotName + "?") + ".pos";
+                    System.out.println("Aquiiii");
+                    
+                    }
                     else
+                    {
                          prog = "test/user.pos";
+                         System.out.println("Aquiiii2222");
+                    }
                     player.insertArmy(robotName, prog);
  
                 }
@@ -125,7 +141,7 @@ class UserInterface extends JPanel
         
         //* CLEAN TEXT AREA  *****************************************/
             new JGameButton("C", new JGameAction() {
-                public void exec() { tex.setText(""); }                
+                public void exec() { editor.set(""); }                
             });
             
         

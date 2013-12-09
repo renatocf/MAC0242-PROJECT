@@ -120,7 +120,8 @@ enum Images implements ROOT
     GAME_OVER    ( GEN, "GameOver.png" ,  0, 0   ),
     INVISIBLE    ( GEN, "Invisible.png", 23, 28  ),
     
-    MENU_ROBOT   ( GEN, "Menu.jpg",     615, 719 );
+    MENU_ROBOT   ( GEN, "Menu.jpg",     615, 719 ),
+    MENU_MINMAP  ( GEN, "Hex.png",        0, 0   );
         
     /* Auxiliar private variables */
     private int dx = 0, dy = 0;
