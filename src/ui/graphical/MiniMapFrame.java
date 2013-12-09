@@ -31,7 +31,7 @@ import players.Player;
 import static parameters.Game.*;
 
 /**
- * <b>Graphical - MiniMapFrame</b><br>
+ * <b>Graphical - MiniMap Frame</b><br>
  * Provides a small screen with the
  * user's view of all terrains.
  * 
