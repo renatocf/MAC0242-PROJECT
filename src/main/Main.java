@@ -57,6 +57,12 @@ public class Main
     static private Interfaces UI = Interfaces.GRAPHICAL;
     static private MENU MENU = new ui.graphical.Menu();
     
+    static private String ROOT = "test/";
+    static private String[] progs = new String[] { "Carrier.pos",
+                                                   "Carrier.pos",
+                                                   "Protector.pos" };
+    static private Player[] p;
+    
     /**
      * <b>Main method</b><br>
      * Gets options from command line, interacts
@@ -109,17 +115,34 @@ public class Main
         throws InvalidOperationException
     {
         // Generate map
-        Player[] p = World.genesis(2, 1, Game.WEATHER, UI, Game.RAND);
+        p = World.genesis(2, 1, Game.WEATHER, UI, Game.RAND);
         
         // Menu
         // TODO: automate inserction of programs
-        String ROOT = "test/";
-        if(args.length > 1 && !multi)
-        {
-            p[0].insertArmy("Caprica Six"     , ROOT + "IF.pos");
-            p[0].insertArmy("Number Seventeen", ROOT + "IF.pos");
-            p[0].insertArmy("Megatron"        , ROOT + "IF.pos");
-        }
+        /* if(args.length > 1 && !multi)<F7> */
+        /* { */
+        
+        Thread enemy = new Thread() { 
+            public void run() {
+                while(true) {
+                    try { 
+                        for(int i = 0; true; i++)
+                        {
+                            Thread.sleep(11000); 
+                            p[0].insertArmy(
+                                "Enemy" + i, Main.ROOT + progs[i%3]
+                            );
+                        }
+                    }
+                    catch (InterruptedException e) {}
+            }}
+        };
+        enemy.start();
+            
+        /* p[0].insertArmy("Caprica Six"     , ROOT + "Carrier.pos"); */
+        /* p[0].insertArmy("Number Seventeen", ROOT + "Carrier.pos"); */
+        /* p[0].insertArmy("Megatron"        , ROOT + "Protector.pos"); */
+        /* } */
         
         String[] names = { "Boomer", "Number Eighteen", "Optimus Prime" };
     
@@ -135,6 +158,7 @@ public class Main
         
         // Run ad infinitum if not debugging
         while(World.timeStep());
+        enemy.stop();
     }
     
     /**
