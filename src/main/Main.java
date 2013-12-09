@@ -111,6 +111,7 @@ public class Main
      * Create a new game.
      * @param args File names from stdin
      */    
+    @SuppressWarnings("deprecation")
     private static void newGame(String[] args)
         throws InvalidOperationException
     {
