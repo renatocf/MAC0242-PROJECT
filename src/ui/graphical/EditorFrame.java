@@ -18,6 +18,8 @@ package ui.graphical;
 
 // Default libraries
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 // Graphical Libraries (AWT)
 import java.awt.Font;
@@ -105,6 +107,25 @@ class EditorFrame extends JFrame
     }
     
     /**
+     * Auxiliar method to load a user file.
+     * @param pathToProg Path to file to be 
+     *                   loaded in the panel
+     */
+    public void loadFile(String pathToProg)
+    {
+        String line = "", prog = "";
+        try(
+            BufferedReader reader = new BufferedReader(new FileReader(pathToProg))
+        ) {  
+            while ((line = reader.readLine()) != null) 
+                prog += line + "\n";
+            
+            this.txtPane.setText(prog);
+                
+        } catch (Exception k) {}  
+    }
+    
+    /**
      * Auxiliar method to save file
      * in the directory .robot-battle.
      */
@@ -130,10 +151,4 @@ class EditorFrame extends JFrame
     {
         return this.txtPane.getText();
     }
-    
-    public void set(String text)
-    {
-        this.txtPane.setText(text);
-    }
-    
 }
