@@ -335,7 +335,7 @@ class Panel extends JLayeredPane
             else if(hex.scen == null) // && s is not robot
             {
                 hex.insertScenario();
-                this.add(hex.scen, Level.SCEN.get());
+                this.add(hex.scen, Level.NATURE.get());
                 this.moveToFront(hex.scen);
             }
             
@@ -487,10 +487,11 @@ class Panel extends JLayeredPane
      */
     enum Level
     {
-        FOG    (5),
-        LABEL  (4),
-        BATTLE (4),
-        SCEN   (3),
+        FOG    (7),
+        LABEL  (6),
+        BATTLE (5),
+        NATURE (4),
+        TECH   (3),
         ITEM   (2),
         BAR    (1);
         
@@ -651,7 +652,7 @@ class Panel extends JLayeredPane
             ImageIcon ico = new ImageIcon(img);
             this.jrobot.setIcon   (ico);
             this.jrobot.setBounds (x0, y0, 32, 32);
-            Panel.this.add        (jrobot, Level.SCEN.get());
+            Panel.this.add        (jrobot, Level.TECH.get());
             Panel.this.moveToFront(jrobot);
             
             // Update robot's position
@@ -669,13 +670,18 @@ class Panel extends JLayeredPane
             // Update Color Scheme
             this.updateColorScheme(this.hp, this.maxHP);
             
-            // Configure and paint hp bar
-            this.hp.setBounds    (x0, y0-15, size.width, size.height);
-            this.hp.setValue     (hp);
+            try  {
+                // Configure and paint hp bar
+                this.hp.setBounds    (x0, y0-15, size.width, size.height);
+                this.hp.setValue     (hp);
+                
+                // Configure and paint power bar
+                this.power.setBounds (x0, y0-10, size.width, size.height);
+                this.power.setValue  (power);
             
-            // Configure and paint power bar
-            this.power.setBounds (x0, y0-10, size.width, size.height);
-            this.power.setValue  (power);
+            } catch(java.lang.IllegalArgumentException e) {
+                // TODO: Nothing to do - the program still works
+            }
             
             // Add HP and Power bars
             Panel.this.add(this.hp,    Level.BAR.get());
