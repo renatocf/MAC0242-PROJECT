@@ -16,42 +16,106 @@
 /**********************************************************************/
 package ui.graphical;
 
+// Default libraries
+import java.io.File;
+
 // Graphical Libraries (AWT)
-import java.awt.*;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // Graphical Libraries (Swing)
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JMenu;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JTextPane;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JFileChooser;
 
+/**
+ * <b>Graphical - Editor Frame</b><br>
+ * Creates a general editor to the user,
+ * allowing it to write his own programs
+ * for the robots.
+ * 
+ * @author Karina Suemi
+ * @author Renato Cordeiro Ferreira
+ * @author Vinicius Silva
+ */
 class EditorFrame extends JFrame
+    implements ActionListener
 {
     JTextPane txtPane;
     
     EditorFrame(Graphical gui)
     {
-        this.setTitle("Robot's Battle - Editor");
+        super("Robot-Battle - Editor");
+        
         this.setSize(640,800);
         
-        txtPane = new JTextPane();
-        txtPane.setFont(new Font("Serif", Font.PLAIN, 24));
+        //* TEXT PANE *************************************************/
+            this.txtPane = new JTextPane();
+            this.txtPane.setFont(new Font("Serif", Font.PLAIN, 18));
+            this.add(new JScrollPane(txtPane), BorderLayout.CENTER);
         
-        SimpleAttributeSet red = new SimpleAttributeSet();
-        StyleConstants.setForeground(red, Color.RED);
-        StyleConstants.setBold(red, true);
-       
-        this.add(new JScrollPane(txtPane), BorderLayout.CENTER);
+        //* MENU ******************************************************/
+            JMenu menu = new JMenu("File");
+            menu.add(makeMenuItem("Open"));
+            menu.add(makeMenuItem("Save"));
+            menu.add(makeMenuItem("Quit"));
+                
+            JMenuBar menuBar = new JMenuBar();
+            menuBar.add(menu);
+            this.setJMenuBar(menuBar);
+    }
+        
+    public void actionPerformed(ActionEvent e)
+    {
+        String command = e.getActionCommand();
+        switch(command)
+        {
+            case "Quit": this.setVisible(false); break;
+            case "Open": this.loadFile();        break;
+            case "Save": this.saveFile();        break;
+        }
     }
     
-    void append(String s, AttributeSet attributes)
+    /**
+     * Auxiliar method to load a user file.
+     */
+    private void loadFile()
     {
-        Document d = txtPane.getDocument();
+        JFileChooser chooser = new JFileChooser();
+        int result = chooser.showOpenDialog(this);
         
-        try{ d.insertString(d.getLength(), s, attributes); }
-        catch(BadLocationException b){}
+        if(result == JFileChooser.CANCEL_OPTION) return;
+        
+        try {
+            File file = chooser.getSelectedFile();
+            java.net.URL url = file.toURL();
+            txtPane.setPage(url);
+            
+        } catch(Exception e) {
+            txtPane.setText("Could not load file: " + e);
+        }
     }
     
-    String getText()
+    /**
+     * Auxiliar method to save file
+     * in the directory .robot-battle.
+     */
+    private void saveFile() 
     {
-        return this.txtPane.getText();
+        JFileChooser chooser = new JFileChooser();
+        chooser.showSaveDialog(this);
+    }
+    
+    private JMenuItem makeMenuItem(String name)
+    {
+        JMenuItem m = new JMenuItem(name);
+        m.addActionListener(this);
+        return m;
     }
 }
