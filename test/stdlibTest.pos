@@ -1,114 +1,38 @@
 updateVars();
 
-my size  = &EDGE-1;
-my c     = [size-1,size];
-my EBase = size/10 - (size/10)%1;
-my eb    = [EBase, EBase];
-my er    =  0;
-my state =  0;
-my phase = -1;
-my vert  =  1;
-my evade =  0;
+my c = &BASE - [1,1];
+my er = 0;
+my state = 0;
+my dir = ->SW;
 
 while(1)
 {
     while(state == 0)
     {
-        if((er = moveTowards(c)) < 1)
+        say 1;
+        er = moveTowards(c);
+        if(er == -4)
         {
-            if(distance(c) < 2)
-            {
-                if(vert)
-                {
-                    c += [0 , size*phase];
-                    phase *= -1;
-                    vert = 0;
-                }
-                else
-                {
-                    c += [-3,0];
-                    vert = 1;
-                }
-            }
-            elsif(er == -4)
-            {
-                if(evade%4 == 3)
-                {
-                    removeObstacle(c);
-                }
-                else
-                {
-                    evade += evade(c);
-                }
-            }
+            removeObstacle(c);
         }
-        else
+        elsif(&ROBOT == c)
         {
-            er = dragNearCrystal();
-            if(er == 1)
-            {
-                state = 1;
-            }
+            state = 1;
         }
     }
     while(state == 1)
     {
-        er = moveNextTo(eb);
-        phase = -1;
+        say dir = rotAntiClockWise(dir);
+        er = move(dir);
         if(er == -4)
         {
-            if(evade%4 == 3)
-                {
-                    removeObstacle(eb);
-                }
-                else
-                {
-                    evade += evade(eb);
-                }
+            er = removeObstacle(&ROBOT + relativeCoord(dir));
+            if(er == 1)
+            {state = 0;}
         }
-        if(er == 1)
+        if(distance(&BASE) > 4)
         {
-            eb += [0,EBase*phase];
-            phase *= -1;
-            vert = 0;
-            state = 2;
-        }
-    }
-    while(state == 2)
-    {
-        er = 0;
-        my d = lookEnemyBase();
-        if(d != null)
-        {
-            er = drop(straightWayToPoint(d));
             state = 0;
-            eb = &ROBOT;
-        }
-        else
-        {
-            er = moveTowards(eb);
-            if(&ROBOT == eb)
-            {
-                if(vert)
-                {
-                    eb += [0,EBase*phase];
-                    phase *= -1;
-                    vert = 0;
-                }
-                else
-                {
-                    eb += [-2,0];
-                    vert = 1;
-                }
-            }
-            elsif(&ROBOT == [0,0])
-            {
-                eb = [EBase, EBase];
-            }
-            elsif(er == -4)
-            {
-                removeObstacle(eb);
-            }
         }
     }
 }

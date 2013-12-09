@@ -40,8 +40,8 @@ public class Base implements Scenario
      */
     public Base(int posX, int posY)
     {
-        this.posX = posX;
-        this.posY = posY;
+        this.posX = posY;
+        this.posY = posX;
     }
     
     /**
