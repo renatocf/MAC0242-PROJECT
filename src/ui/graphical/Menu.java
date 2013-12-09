@@ -36,6 +36,12 @@ import javax.swing.*;
  */
 public class Menu extends JFrame implements MENU
 {   
+    /**
+     * Default .constructor.<br>
+     * Initializes Swing system.
+     */
+    public Menu() { Swing.init(); }
+    
     // Interface MENU
     public Opts exhibit()
     {

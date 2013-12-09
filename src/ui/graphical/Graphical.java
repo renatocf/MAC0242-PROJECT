@@ -47,11 +47,15 @@ public class Graphical implements UI
     
     /**
      * Default constructor.<br>
+     * Initializes Swing system.
      * @param map    Map of the arena
      * @param player Owner of the User Interface
      */
     public Graphical(Map map, Player player)
     {
+        Swing.init();
+        
+        // Store paramaters
         this.player = player;   
 
         /* TODO: Finish editor frame */
