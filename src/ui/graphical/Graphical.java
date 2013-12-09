@@ -41,9 +41,9 @@ public class Graphical implements UI
     Player player;
     
     // Main GUI components
-    MapFrame     mapFrame;
-    EditorFrame  editorFrame;
-    MiniMapFrame miniMapFrame;
+    final MapFrame     mapFrame;
+    final EditorFrame  editorFrame;
+    final MiniMapFrame miniMapFrame;
     
     /**
      * Default constructor.<br>

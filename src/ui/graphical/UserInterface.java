@@ -50,26 +50,26 @@ class UserInterface extends JPanel
 {
     // Private variables
     private Player player;
-    private MiniMapFrame minimap;
-    private JTextArea tex;
+    //private JTextArea tex;
     private JFrame text;
     private boolean texBool;
+    final private Graphical gui;
         
     /**
      * Default Constructor.<br>
-     * @param p            Player owner of this GUI
-     * @param miniMapFrame MiniMap window to be 
-     *                     toggled
+     * @param gui Graphical set in which the 
+     *            Panel is set
+     * @param p   Player owner of this GUI
      */
-    UserInterface(Player p, MiniMapFrame miniMapFrame)
+    UserInterface(Graphical gui, Player p)
     {
-        this.minimap = miniMapFrame;
+        this.gui = gui;
         this.player  = p;
         
         // Prog Editor
         text = new JFrame();
         text.setSize(300, 500);
-        tex = new JTextArea("");
+        //tex = new JTextArea("");
         text.add(tex);
         text.setVisible(false);
         texBool = false;
@@ -85,12 +85,12 @@ class UserInterface extends JPanel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //* MINIMAP **************************************************/
-            new JGameButton("m", new JGameAction() {
-                public void exec() { minimap.toggle(); }                
+            new JGameButton(new ImageIcon("data/img/util/hex.png"), new JGameAction() {
+                public void exec() { UserInterface.this.gui.miniMapFrame.toggle(); }                
             });
             
         //* ADD BUTTON ************************************************/
-            new JGameButton("A", new JGameAction() {
+            JGameButton newRobot = new JGameButton("A", new JGameAction() {
                 public void exec() {
                     String program;
                     String prog;
@@ -116,14 +116,12 @@ class UserInterface extends JPanel
             });
         
         //* PROG  ****************************************************/
-            // new JGameButton("E", new JGameAction() {
-            //     public void exec() 
-            //     {
-            //         texBool = !texBool;
-            //         text.setVisible(texBool);
-            //         System.out.println(tex.getText());        
-            //     }
-            // }); 
+             new JGameButton("E", new JGameAction() {
+                 public void exec() 
+                 {
+                     UserInterface.this.gui.editorFrame.setVisible(true);
+                 }
+             }); 
         
         //* CLEAN TEXT AREA  *****************************************/
             new JGameButton("C", new JGameAction() {

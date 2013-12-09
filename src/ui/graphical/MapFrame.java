@@ -56,7 +56,6 @@ class MapFrame extends JFrame
     private Panel        screen;
     private JTextArea    log;
     private JScrollPane  arena;
-    private MiniMapFrame miniMapFrame;
     
     private boolean pressed = false;
     
@@ -74,7 +73,6 @@ class MapFrame extends JFrame
         // Setting MapFrame attributes
         this.map          = map;
         this.player       = player;
-        this.miniMapFrame = gui.miniMapFrame;
         
         //* MAP FRAME INFO *******************************************//
             this.setSize                  (SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -130,7 +128,7 @@ class MapFrame extends JFrame
             int BASE_Y = (int) (player.getBase().getPosX(player) * RADIUS * 1.5);
             this.centralizeView(BASE_X, BASE_Y);
             
-            UserInterface ui = new UserInterface(player, miniMapFrame);
+            UserInterface ui = new UserInterface(gui, player);
                         
         //* ARENA + MENU *********************************************//
             ui.setLayout(new BoxLayout(ui, BoxLayout.PAGE_AXIS));
