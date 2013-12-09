@@ -55,6 +55,8 @@ class EditorFrame extends JFrame
     implements ActionListener
 {
     Robot turn;
+    String editing;
+    
     JButton compile;
     JTextPane txtPane;
     
@@ -101,7 +103,15 @@ class EditorFrame extends JFrame
             
     public void uploadAndCompile()
     {
-        System.out.println("000000000000000000000000000");
+        System.out.println("[" + turn + "] uploading new program");
+        File file = new File(this.editing);
+        try( FileWriter fw = new FileWriter(file) ){
+            fw.write(this.get());
+            fw.flush();
+        } catch(Exception e) {
+            System.out.println("Erro ao salvar o arquivo!");
+        }
+        this.turn.upload(this.editing);
     }
 
     /**
@@ -113,7 +123,8 @@ class EditorFrame extends JFrame
      */
     void loadFile(Robot robot, String pathToProg)
     {
-        this.turn = robot;
+        this.turn    = robot;
+        this.editing = pathToProg;
         this.loadFile(pathToProg);
     }
     
