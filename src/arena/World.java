@@ -18,6 +18,7 @@ package arena;
 
 // Default libraries
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 // Graphical Libraries (Internal)
 import ui.*;
@@ -69,6 +70,8 @@ final public class World
     private static RobotList armies;
     private static Player[] players;
     
+    private static ConcurrentHashMap<NewRobotOp,Integer> waitList;
+    
     // No instances of this class allowed
     private World() {}
     
@@ -90,6 +93,7 @@ final public class World
         map      = new Map(w);
         armies   = new RobotList(nPlayers);
         players  = new Player[nPlayers];
+        waitList = new ConcurrentHashMap<NewRobotOp,Integer>();
         
         // Create map
         bases = map.genesis(nPlayers, rand);
@@ -135,6 +139,23 @@ final public class World
     public static boolean timeStep()
     {
         time++; // On each time step, increments time
+        
+        // Try to add a waiting robot
+        for(NewRobotOp op: waitList.keySet())
+        {
+            int wait = waitList.get(op);
+            if(wait == 0)
+            {
+                insertArmy(op.player, op.name, op.path);
+                waitList.remove(op);
+            }
+            else 
+            {
+                waitList.put(op, wait-1);
+                if(wait%3 == 0)
+                    System.out.println("[" + op.name + "]" + "I will be ready in " + wait/3);
+            }
+        }
         
         // Debug
         String pre = "[WORLD] ========================";
@@ -235,6 +256,32 @@ final public class World
         return null;
     }
     
+     /**
+     * Create a new robot in the map.
+     * Make a new robot to the player 'player',
+     * with name 'name', putting it in the 
+     * position (i,j) of the map, programmed 
+     * with the assembly program defined by 
+     * the file in 'pathToProg'.
+     * 
+     * @param  player     Robot owner
+     * @param  name       Name of the new robot
+     * @param  pathToProg Robot's assembly program
+     * @return Inserted robot
+     */
+    public static void
+    insertArmy(NewRobotOp op)
+    {
+        int minWait=0;
+        for(NewRobotOp o : waitList.keySet())
+        {
+            if(op.player == o.player)
+                if(minWait < waitList.get(o))
+                    minWait = waitList.get(o);
+        }
+        waitList.put(op, Robot.buildTime + minWait);
+    }
+    
     /**
      * Create a new robot in the map.
      * Make a new robot to the player 'player',
@@ -248,7 +295,7 @@ final public class World
      * @param  pathToProg Robot's assembly program
      * @return Inserted robot
      */
-    public static Robot
+    public static void
     insertArmy(Player player, String name, String pathToProg)
     {
         try {
@@ -256,13 +303,12 @@ final public class World
             Robot r = map.insertArmy(
                 name, player, id++, pathToProg
             );
+            player.armies.add(r);
             armies.add(r);
-            return r;    
             
         } catch(SegmentationFaultException e) {
             System.err.println("Invalid position");
             e.printStackTrace();
-            return null;
         }
     }
     
