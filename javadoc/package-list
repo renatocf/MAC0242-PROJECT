@@ -1,8 +1,5 @@
 arena
 exception
-gui
-gui.graphical
-gui.textual
 main
 parameters
 parser
@@ -13,3 +10,6 @@ robot
 scenario
 stackable
 stackable.item
+ui
+ui.graphical
+ui.textual

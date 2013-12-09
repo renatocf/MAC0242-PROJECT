@@ -17,9 +17,57 @@
 | "\r"
 | "\r\n"
 | "\t"
+| &lt;"//" (~["\n"])* "\n"&gt;
+| &lt;"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/"&gt;
 }
 
    </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Magic Variables
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;MAGIC: "&amp;" ("ROBOT" | "BASE" | "EDGE")&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Pre-proc (One of these days)
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;IMPORT: "import"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Dividers
+</PRE>
   </TD>
  </TR>
  <!-- Token -->
@@ -66,12 +114,20 @@
    </PRE>
   </TD>
  </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Types
+</PRE>
+  </TD>
+ </TR>
  <!-- Token -->
  <TR>
   <TD>
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
-&lt;TYPE: "number" | "string" | "void"&gt;
+&lt;TYPE: "way" | "number" | "string" | "void" | "coord" | "item"&gt;
 }
 
    </PRE>
@@ -86,6 +142,222 @@
 }
 
    </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;NULL: "null"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Syscalls
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;ASK: "ask"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;HIT: "hit"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;MOVE: "_move"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;FIRE: "fire"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;LOOK: "look"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;DRAG: "drag"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;DROP: "drop"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Auxiliar Methods
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;TOCOORD: "toCoord"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;TONUM_I: "toNumberI"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;TONUM_J: "toNumberJ"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// IO
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;SAY: "say"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;PRINT: "print"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Loops
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;WHILE: "while"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;BREAK: "break"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;CONTINUE: "continue"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Conditional
+</PRE>
   </TD>
  </TR>
  <!-- Token -->
@@ -121,6 +393,14 @@
    </PRE>
   </TD>
  </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Functions
+</PRE>
+  </TD>
+ </TR>
  <!-- Token -->
  <TR>
   <TD>
@@ -138,6 +418,36 @@
    <PRE>
 &lt;DEFAULT&gt; TOKEN : {
 &lt;RET: "return"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Primitive types
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;ITEM: "%" (["A"-"Z"] | ["a"-"z"])+&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;WAY: "-&gt;" (("N" | "S")? ("W" | "E"))?&gt;
 }
 
    </PRE>
@@ -163,6 +473,14 @@
 }
 
    </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Operations
+</PRE>
   </TD>
  </TR>
  <!-- Token -->
@@ -220,6 +538,14 @@
    </PRE>
   </TD>
  </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// Variables
+</PRE>
+  </TD>
+ </TR>
  <!-- Token -->
  <TR>
   <TD>
@@ -229,6 +555,14 @@
 }
 
    </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+// End of Line
+</PRE>
   </TD>
  </TR>
  <!-- Token -->
@@ -263,7 +597,12 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod1">Start</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod2">command</A> | <A HREF="#prod3">prototype</A> | <A HREF="#prod4">function</A> | &lt;EOL&gt; ) )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">Import</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod3">command</A> | <A HREF="#prod4">prototype</A> | <A HREF="#prod5">function</A> | &lt;EOL&gt; ) )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -279,9 +618,48 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">command</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">command</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod5">conditional</A> ) | ( <A HREF="#prod6">expression</A> &lt;EOL&gt; ) )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod6">print</A> &lt;EOL&gt; ) | ( <A HREF="#prod7">println</A> &lt;EOL&gt; ) | <A HREF="#prod8">loop</A> | <A HREF="#prod9">conditional</A> | ( <A HREF="#prod10">expression</A> &lt;EOL&gt; ) )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* PRINT *************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">print</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;PRINT&gt; ( ( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> ( "," <A HREF="#prod10">expression</A> )* &lt;RBRACE&gt; ) | <A HREF="#prod10">expression</A> ( "," <A HREF="#prod10">expression</A> )* )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* SAY ***************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">println</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;SAY&gt; ( ( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> ( "," <A HREF="#prod10">expression</A> )* &lt;RBRACE&gt; ) | <A HREF="#prod10">expression</A> ( "," <A HREF="#prod10">expression</A> )* )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* WHILE *************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">loop</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHILE&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> ( &lt;LOGICAL&gt; <A HREF="#prod10">expression</A> )* &lt;RBRACE&gt; ( ( <A HREF="#prod11">block</A> ) | &lt;EOL&gt; )</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -292,9 +670,110 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">conditional</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">conditional</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;LBRACE&gt; <A HREF="#prod6">expression</A> ( &lt;LOGICAL&gt; <A HREF="#prod6">expression</A> )* &lt;RBRACE&gt; <A HREF="#prod7">block</A> ( &lt;ELSIF&gt; &lt;LBRACE&gt; <A HREF="#prod6">expression</A> ( &lt;LOGICAL&gt; <A HREF="#prod6">expression</A> )* &lt;RBRACE&gt; <A HREF="#prod7">block</A> )* ( &lt;ELSE&gt; <A HREF="#prod7">block</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> ( &lt;LOGICAL&gt; <A HREF="#prod10">expression</A> )* &lt;RBRACE&gt; <A HREF="#prod11">block</A> ( &lt;ELSIF&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> ( &lt;LOGICAL&gt; <A HREF="#prod10">expression</A> )* &lt;RBRACE&gt; <A HREF="#prod11">block</A> )* ( &lt;ELSE&gt; <A HREF="#prod11">block</A> )?</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                              SYSCALLS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">syscall</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod13">drag</A> | <A HREF="#prod14">drop</A> | <A HREF="#prod15">look</A> | <A HREF="#prod16">ask</A> | <A HREF="#prod17">fire</A> | <A HREF="#prod18">hit</A> | <A HREF="#prod19">move</A> )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* DRAG **************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">drag</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DRAG&gt; ( ( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt; ) | <A HREF="#prod10">expression</A> )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* DROP **************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">drop</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DROP&gt; ( ( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt; ) | <A HREF="#prod10">expression</A> )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* LOOK **************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">look</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LOOK&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* ASK ***************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">ask</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;ASK&gt; ( ( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt; ) | <A HREF="#prod10">expression</A> )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* ATTACKS ***********************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">hit</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;HIT&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">fire</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FIRE&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//* MOVE **************************************************************/
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">move</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;MOVE&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -310,24 +789,57 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">header</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">header</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;TYPE&gt; &lt;WORD&gt; &lt;LBRACE&gt; ( &lt;TYPE&gt; ( &lt;WORD&gt; )? ( "," &lt;TYPE&gt; ( &lt;WORD&gt; )? )* )? &lt;RBRACE&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">prototype</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">prototype</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DEF&gt; <A HREF="#prod8">header</A> &lt;EOL&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DEF&gt; <A HREF="#prod20">header</A> &lt;EOL&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">function</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">function</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod8">header</A> <A HREF="#prod7">block</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod20">header</A> <A HREF="#prod11">block</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">block</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">block</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LCURLY&gt; ( ( <A HREF="#prod6">expression</A> &lt;EOL&gt; ) | ( &lt;RET&gt; <A HREF="#prod6">expression</A> &lt;EOL&gt; ) )* &lt;RCURLY&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LCURLY&gt; ( ( &lt;RET&gt; <A HREF="#prod10">expression</A> &lt;EOL&gt; ) | ( <A HREF="#prod3">command</A> ) )* &lt;RCURLY&gt;</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                          AUXILIAR METHODS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">auxMethods</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod22">toCoord</A> | <A HREF="#prod23">toNumI</A> | <A HREF="#prod24">toNumJ</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">toCoord</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;TOCOORD&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">toNumI</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;TONUM_I&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">toNumJ</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;TONUM_J&gt; &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt;</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -347,9 +859,9 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">expression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">expression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod9">arit</A> ( &lt;CMP&gt; <A HREF="#prod9">arit</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod25">arit</A> ( &lt;CMP&gt; <A HREF="#prod25">arit</A> )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -361,9 +873,9 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">arit</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">arit</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod10">term</A> ( &lt;SIGN&gt; <A HREF="#prod10">term</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod26">term</A> ( &lt;SIGN&gt; <A HREF="#prod26">term</A> )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -375,9 +887,9 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">term</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">term</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod11">element</A> ( &lt;OP&gt; <A HREF="#prod11">element</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod27">element</A> ( &lt;OP&gt; <A HREF="#prod27">element</A> )*</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -389,14 +901,14 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">element</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">element</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod12">factor</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod28">factor</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SIGN&gt; <A HREF="#prod12">factor</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SIGN&gt; <A HREF="#prod28">factor</A> )</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -409,19 +921,49 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">factor</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">factor</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;SCOPE&gt; )? &lt;WORD&gt; &lt;ATTR&gt; <A HREF="#prod6">expression</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( &lt;SCOPE&gt; )? &lt;WORD&gt; ( &lt;ATTR&gt; <A HREF="#prod10">expression</A> ) ) | ( &lt;MAGIC&gt; ( &lt;ATTR&gt; <A HREF="#prod10">expression</A> ) ) )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;WORD&gt; &lt;LBRACE&gt; ( <A HREF="#prod6">expression</A> ( "," <A HREF="#prod6">expression</A> )* )? &lt;RBRACE&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;WORD&gt; &lt;LBRACE&gt; ( <A HREF="#prod10">expression</A> ( "," <A HREF="#prod10">expression</A> )* )? &lt;RBRACE&gt; )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;MAGIC&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;WORD&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod29">coord</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod12">syscall</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod21">auxMethods</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;ITEM&gt; )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;WAY&gt; )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE></TD>
@@ -436,7 +978,17 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;LBRACE&gt; <A HREF="#prod6">expression</A> &lt;RBRACE&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;NULL&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;LBRACE&gt; <A HREF="#prod10">expression</A> &lt;RBRACE&gt; )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">coord</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>"[" <A HREF="#prod10">expression</A> "," <A HREF="#prod10">expression</A> "]"</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -450,7 +1002,39 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">pushString</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">pushString</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Auxiliar function for pushing 
+ * items in the assembly.
+ * @param s Pushed item
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">pushItem</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Auxiliar function for pushing 
+ * directions in the assembly.
+ * @param s Pushed direction
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">pushWay</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -466,7 +1050,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">pushNumber</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">pushNumber</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -482,22 +1066,59 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">insert</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">insert</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">insertArg</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod35">insertArg</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">insertCmd</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod36">insertCmd</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">insertLabel</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod37">insertLabel</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod38">call</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Insert a attribution of a variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod39">attr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Insert a attribution of a magic variable.
+ * @param var  Token of the variable
+ * @param attr Token of the attribution  
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod40">attrMagic</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -506,23 +1127,20 @@
   <TD>
 <PRE>
 /*
-void insert(Object ... obj) :
-{
-    String s;
-}
-{{
-    for(Object o: obj)
-    {
-        s = (o == null)? "null" : o.toString();
-        System.out.print(s);
-    }
-    System.out.println();
-}}
-*/</PRE>
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                  AUXILIAR FUNCTIONS - ERROR VARS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/**
+ * Auxiliar function to alloc error variables.
+ */</PRE>
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">call</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod41">allocError</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -531,19 +1149,12 @@ void insert(Object ... obj) :
   <TD>
 <PRE>
 /**
- * Insert a attribution of a double variable.
- * @param var  Token of the variable
- * @param attr Token of the attribution  
+ * Auxiliar function to free the magic variables.
  */</PRE>
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">attr</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE></TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">free</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod42">freeError</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -551,6 +1162,80 @@ void insert(Object ... obj) :
  <TR>
   <TD>
 <PRE>
+/**
+ * Insert a GET for an error variable.
+ * @param var String with the name of the variable
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod43">getError</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                  AUXILIAR FUNCTIONS - MAGIC VARS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/**
+ * Auxiliar function to alloc magic variables.
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod44">allocMagic</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Auxiliar function to free the magic variables.
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod45">freeMagic</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Insert a GET for a magic variable.
+ * @param var String with the name of the variable
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod46">getMagic</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                   AUXILIAR FUNCTIONS - VARIABLES
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
 /**
  * Insert a GET for a variable.
  * @param var  Token of the variable
@@ -558,17 +1243,22 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">get</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod47">get</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">declared</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod48">free</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">typeof</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod49">declared</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod50">typeof</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -576,6 +1266,14 @@ void insert(Object ... obj) :
  <TR>
   <TD>
 <PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                   AUXILIAR FUNCTIONS - ARITHMETIC
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
 /**
  * Auxiliar function - sign.
  * @param  t Token with the sign
@@ -584,7 +1282,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">logical</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod51">logical</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -601,7 +1299,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">cmp</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod52">cmp</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -617,7 +1315,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">sign</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod53">sign</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -633,7 +1331,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">op</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod54">op</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -648,7 +1346,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">unarySign</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod55">unarySign</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -664,7 +1362,7 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">atof</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod56">atof</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
@@ -672,6 +1370,14 @@ void insert(Object ... obj) :
  <TR>
   <TD>
 <PRE>
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                     AUXILIAR FUNCTIONS - DEBUG
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
 /**
  * Auxiliar function - say.<br>
  * Abbreviation of "System.out.println" 
@@ -681,12 +1387,12 @@ void insert(Object ... obj) :
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">say</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod57">say</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">checkTypeError</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod58">checkTypeError</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE></TD>
 </TR>
