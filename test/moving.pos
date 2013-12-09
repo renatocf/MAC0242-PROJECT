@@ -1,1 +1,8 @@
 _move(->W);
+_move(->W);
+_move(->W);
+_move(->NE);
+hit(->W);
+hit(->W);
+hit(->W);
+hit(->W);
