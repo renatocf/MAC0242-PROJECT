@@ -89,7 +89,8 @@ class MapFrame extends JFrame
             int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2);
             
             this.screen = new Panel(
-                gui, map, player, RADIUS, x0, y0, MAP_WIDTH, MAP_HEIGHT
+                gui, map, player, RADIUS, x0, y0, 
+                MAP_WIDTH, MAP_HEIGHT, false
             );
                 
             this.screen.setSize      (SCREEN_WIDTH, SCREEN_HEIGHT*9/10);

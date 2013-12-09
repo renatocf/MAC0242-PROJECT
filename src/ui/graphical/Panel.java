@@ -99,7 +99,7 @@ class Panel extends JLayeredPane
      * @param height Desired height of the screen
      */
     Panel(Graphical gui, Map map, Player player, 
-          int R, int x0, int y0, int width, int height)
+          int R, int x0, int y0, int width, int height, boolean hide)
     {
         // Store game attributes
         this.gui      = gui;
@@ -142,8 +142,8 @@ class Panel extends JLayeredPane
                 Δ = (Δ == 0) ? Dx/2 : 0;
                 
                 // Add statical events
-                this.add(cell[i][j].invs, Level.FOG.get());
-                this.add(cell[i][j].hit,  Level.BATTLE.get());
+                if(!hide) this.add(cell[i][j].invs, Level.FOG.get());
+                if(!hide) this.add(cell[i][j].hit,  Level.BATTLE.get());
             }
         
         // Visibility around player's bases

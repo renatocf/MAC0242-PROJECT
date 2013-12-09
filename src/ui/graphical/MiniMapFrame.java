@@ -72,7 +72,8 @@ public class MiniMapFrame extends JFrame
             int MAP_HEIGHT = 2*y0 + (int)(RADIUS * 3 * MAP_SIZE/2 * 1.05);
                 
             this.miniMap = new Panel(
-                gui, map, player, RADIUS, 0, 0, MAP_WIDTH, MAP_HEIGHT 
+                gui, map, player, RADIUS, 0, 0, 
+                MAP_WIDTH, MAP_HEIGHT, true
             );
             this.setPreferredSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
             this.miniMap.hide(true); // No scenarios/items
