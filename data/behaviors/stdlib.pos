@@ -3,6 +3,29 @@ string sete()
     return "sete";
 }
 
+number seekAndDestroy()
+{
+    my ret = 0;
+    my c = [0,0];
+    c = lookEnemyRobot();
+    if((c) != null)
+    {
+        moveNextTo(c);
+        ret = removeObstacle(c);
+    }
+    return ret;
+}
+
+coord lookEnemyRobot()
+{
+    return look("Robot1");
+}
+
+coord lookAllyRobot()
+{
+    return look("Robot2");
+}
+
 coord lookEnemyBase()
 {
     return look("Base");

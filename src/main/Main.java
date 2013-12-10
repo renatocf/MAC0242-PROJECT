@@ -29,6 +29,7 @@ import players.*;
 import exception.*;
 import stackable.*;
 import parameters.*;
+import parameters.Game.*;
 import robot.Command;
 
 // Configs interfaces
@@ -57,10 +58,10 @@ public class Main
     static private Interfaces UI = Interfaces.GRAPHICAL;
     static private MENU MENU = new ui.graphical.Menu();
     
-    static private String ROOT = "test/";
-    static private String[] progs = new String[] { "Carrier.pos",
+    static private String ROOT = "/behaviors/";
+    static private String[] progs = new String[] { "Protector.pos",
                                                    "Carrier.pos",
-                                                   "Protector.pos" };
+                                                   "Carrier.pos"};
     static private Player[] p;
     
     /**
@@ -129,7 +130,7 @@ public class Main
                     try { 
                         for(int i = 0; true; i++)
                         {
-                            Thread.sleep(11000); 
+                            Thread.sleep(120*Game.SPEED); 
                             p[0].insertArmy(
                                 "Enemy" + i, Main.ROOT + progs[i%3]
                             );

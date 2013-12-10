@@ -140,8 +140,15 @@ public class Positron
             
             if(main == null) System.out.println("ERROR: Impossible to open" + "/behaviors/stdlib.e");
             
-            // Main program
-            Positron.ReInit(new FileInputStream(path));
+            // Main program            
+            if(path.startsWith("/behaviors/"))
+            {
+                is = parser.getClass().getResourceAsStream(path);
+                file = new InputStreamReader(is);
+                txtReader = new BufferedReader(file);
+                Positron.ReInit(txtReader);
+            }
+            else Positron.ReInit(new FileInputStream(path));
             main.addAll(Positron.Start());
             
             if(main == null) System.err.println("ERROR: Impossible to open" + path);

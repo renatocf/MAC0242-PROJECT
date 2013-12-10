@@ -152,7 +152,7 @@ final public class World
             else 
             {
                 waitList.put(op, wait-1);
-                if(wait%3 == 0)
+                if(wait%3 == 0 && !op.name.startsWith("Enemy"))
                     System.out.println("[" + op.name + "]" + "I will be ready in " + wait/3);
             }
         }

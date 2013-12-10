@@ -4,6 +4,10 @@
  */
 def string sete();
 
+def number seekAndDestroy();
+def coord  lookEnemyRobot();
+def coord  lookAllyRobot();
+
 /**
  *  Look for a enemy base. 
  *  @return coord of the base if finded;

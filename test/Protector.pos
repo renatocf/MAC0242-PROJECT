@@ -1,8 +1,6 @@
-def number seekAndDestroyEvil();
-
 updateVars();
 
-my c = &BASE + [1,1];
+my c = &BASE - [1,1];
 my er = 0;
 my state = 0;
 my dir = ->SW;
@@ -11,6 +9,7 @@ while(1)
 {
     while(state == 0)
     {
+        say 1;
         er = moveTowards(c);
         if(er == -4)
         {
@@ -23,9 +22,7 @@ while(1)
     }
     while(state == 1)
     {
-        dir = rotAntiClockWise(dir);
-        seekAndDestroyEvil();
-        seekAndDestroyEvil();
+        say dir = rotAntiClockWise(dir);
         er = move(dir);
         if(er == -4)
         {
@@ -38,16 +35,4 @@ while(1)
             state = 0;
         }
     }
-}
-
-number seekAndDestroyEvil()
-{
-    my ret = 0;
-    my c = [0,0];
-    if((c = lookAllyRobot()) != null)
-    {
-        moveNextTo(c);
-        ret = removeObstacle(c);
-    }
-    return ret;
 }

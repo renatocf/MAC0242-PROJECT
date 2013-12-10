@@ -9,7 +9,6 @@ while(1)
 {
     while(state == 0)
     {
-        say 1;
         er = moveTowards(c);
         if(er == -4)
         {
@@ -22,7 +21,13 @@ while(1)
     }
     while(state == 1)
     {
-        say dir = rotAntiClockWise(dir);
+        dir = rotAntiClockWise(dir);
+        my j = seekAndDestroy();
+        if (j==1) 
+        {say "foi";}
+        j = seekAndDestroy();
+        if (j==1) 
+        {say "foi";}
         er = move(dir);
         if(er == -4)
         {
@@ -30,7 +35,7 @@ while(1)
             if(er == 1)
             {state = 0;}
         }
-        if(distance(&BASE) > 4)
+        elsif(distance(&BASE) > 4)
         {
             state = 0;
         }
