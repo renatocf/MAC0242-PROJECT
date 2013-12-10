@@ -69,8 +69,10 @@ while(1)
         if(er == 1)
         {
             eb += [0,EBase*phase];
+            if(toNumberI(eb) < 0 || toNumberJ(eb) < 0)
+            {eb = [0,0];}
             phase *= -1;
-            vert = 0;
+            vert = 1;
             state = 2;
         }
     }
@@ -92,12 +94,16 @@ while(1)
                 if(vert)
                 {
                     eb += [0,EBase*phase];
+                    if(toNumberI(eb) < 0 || toNumberJ(eb) < 0)
+                    {eb = [0,0];}
                     phase *= -1;
                     vert = 0;
                 }
                 else
                 {
                     eb += [-2,0];
+                    if(toNumberI(eb) < 0 || toNumberJ(eb) < 0)
+                    {eb = [0,0];}
                     vert = 1;
                 }
             }

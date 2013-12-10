@@ -59,7 +59,7 @@ public final class Game
      * Number of miliseconds before painting
      * a new screen.
      */
-    public static int SPEED = 300;
+    public static int SPEED = 150;
     
     // /////////////////////////////////////////////////////////////////
     // ----------------------------------------------------------------

@@ -94,11 +94,15 @@ while(1)
                 {
                     eb += [0,EBaseMod*phase-2];
                     phase *= -1;
+                    if(toNumberI(eb) > size || toNumberJ(eb) > size)
+                    {eb = [size,size];}
                     vert = 0;
                 }
                 else
                 {
                     eb += [2,0];
+                    if(toNumberI(eb) > size || toNumberJ(eb) > size)
+                    {eb = [size,size];}
                     vert = 1;
                 }
             }
