@@ -39,11 +39,11 @@ public class NewRobotOp implements Request
     
     /**
      * Class constructor.
-     * @param action Action to be executed
-     * @param arg    Required arguments
-     * 
-     * @throws WrongTypeException
-     * @throws InvalidOperationException
+     * @param player     Player who is asking for
+     *                   a new robot
+     * @param name       Name of the new robot
+     * @param pathToProg Path to the program to be 
+     *                   uploaded in the robot
      */
     public NewRobotOp(Player player, String name, String pathToProg)
     {

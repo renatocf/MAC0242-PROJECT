@@ -264,10 +264,7 @@ final public class World
      * with the assembly program defined by 
      * the file in 'pathToProg'.
      * 
-     * @param  player     Robot owner
-     * @param  name       Name of the new robot
-     * @param  pathToProg Robot's assembly program
-     * @return Inserted robot
+     * @param op New robot system remote operation
      */
     public static void
     insertArmy(NewRobotOp op)
@@ -293,7 +290,6 @@ final public class World
      * @param  player     Robot owner
      * @param  name       Name of the new robot
      * @param  pathToProg Robot's assembly program
-     * @return Inserted robot
      */
     public static void
     insertArmy(Player player, String name, String pathToProg)
