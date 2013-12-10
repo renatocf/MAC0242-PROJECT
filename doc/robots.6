@@ -83,24 +83,35 @@ Untill when this will be just a calm field?
 .SS INPUT
 ."------------------------
 
-To start running the program, first of all it's 
-necessary to upload your programs. Some examples
-are avaiable in the directory test/. No special 
-extension is required, but we recommend using .asm 
-as default.
+To start running the program, just use 
+    
+    $ java -jar dist/MAC0242-Project.jar
+
+The programs to be developed to work in the robot's
+Virtual Machines may be written in a special pseudo-
+language Positron, which will be parsed to a special
+assembly called Quark. The robots can be initialized
+inside the program as needed.
+
+Some examples are avaiable in the directory test/. 
+No special extension is required, but we recommend 
+using .pos for Positron programs and .asm for 
+Quark as default.
 
 The complete behaviors used by the AI are stored
 in the directory behaviors/, and also can be used
 by the player as a base to program its robots.
 
-To upload a program, run:
+To upload a program made in Quark, run:
 
     $ sh reload.sh path/to/your/prog.asm
 
-Finally, to execute, run:
+The programs made in Positron can be creted along
+the game, and uploaded with the text editor. To 
+run a test robot in a blank map, with no enemys, 
+just run:
 
-    $ java -jar dist/MAC0242-Project.jar \\
-      prog1.asm prog2.asm prog3.asm
+    $ java -jar dist/MAC0242-Project.jar prog1.pos
 
 .B IMPORTANT: 
 If the program is not a stand-alone compiled 
@@ -121,7 +132,10 @@ The human team has color read, and IA's color
 is black.
 
 In order to debug, just run with the flag 
-.B '-d'.
+.B '-d' 
+to generate only the log file or 
+.B '-v'
+to make the same with also the user interface.
 
 .SH FILES
 ."---------------------------------------------------------------------
@@ -129,11 +143,6 @@ In order to debug, just run with the flag
 A brief description of the directory structure and files.
 For more info about the source code, see the online javadoc.
 For general explanations about the program, see the LaTeX doc.
-
-.TP 
-.I behaviors/
-Main programs written in assembly, with the best behaviors
-specially programmed to the robots.
 
 .TP 
 .I bin/parser.pl
@@ -156,10 +165,15 @@ Used by Apache™ Ant to define all the properties
 .I build.xml
 Used by Apache™ Ant in order to compile the program. 
 
-.tp 
-.i data/
+.TP 
+.I data/
 All kinds of data needed by the program (as images 
 used to print the GUI).
+
+.TP 
+.I data/behaviors/
+Main programs written in assembly, with the best behaviors
+specially programmed to the robots.
 
 .tp 
 .i doc/
@@ -252,15 +266,17 @@ still to be done.
 .SH AUTHOR
 ."---------------------------------------------------------------------
 Karina Suemi Awoki, IME-USP.
+
 Renato Cordeiro Ferreira, IME-USP.
+
 Vinícius Nascimento Silva, IME-USP.
 
 .SH SEE ALSO
 ."---------------------------------------------------------------------
-.P
+.TP
 .B Project webpage
 .I http://renatocf.github.io/MAC0242-PROJECT/
 
-.P 
+.TP 
 .B IME-USP
 .I http://www.ime.usp.br/
