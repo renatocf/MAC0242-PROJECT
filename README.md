@@ -66,17 +66,19 @@ Para  tanto,  os robôs devem  ter suas ações
 programadas. Eles irão executá-las até que o 
 jogo acabe ou sejam destruídos.
 
-Nesta fase do desenvolvimento, a programação 
-deve  ser  feita   em  linguagem  *Assembly*,
-desenvolvida  especialmente  para  a máquina 
-virtual  em *Java*. 
+Os robôs devem ser  programados numa pseudo-
+linguagem de alto nível chamada __Positron__,
+desenvolvida e compilada para a linguagem de
+alto nível  legível pelas  máquinas virtuais 
+dos robôs (chamada __Quark__).
 
 Os programas devem  ser criados com extensão 
-*.asm*.   Exemplos   estão   disponíveis  no 
+*.pos*.   Exemplos   estão   disponíveis  no 
 diretório `test/` junto ao código-fonte. 
 
-Para  utilizá-los  como  programas  para  os 
-robôs, compile-os com:
+Opcionalmente,  programas podem ser escritos
+diretamente em Assembly, com extensão *.asm*.
+Para  utilizá-los, compile-os com:
 
     $ sh scripts/reload.sh path/para/o/arquivo.asm
 
@@ -86,13 +88,14 @@ pasta `behaviors/`.
                                             
 Para iniciar o jogo: 
                                             
-    $ java -jar dist/MAC0242-Project.jar \
-      prog1.asm prog2.asm prog3.asm 
+    $ java -jar dist/MAC0242-Project.jar
 
-Sendo cada um dos programas um arquivo com o
-código  *Assembly*  para  os  três  robôs do 
-jogador.  Eles serão  usados para o  jogador
-competir contra os três robôs da máquina.
+O Jogador e  a IA criam  seus robôs  segundo
+um  temporizador.  Um  novo  robô  pode  ser 
+carregado com base  em um dos comportamentos 
+pré-definidos (*Carrier*, *Protector*, etc.)
+ou  com  o código inicialmente  definido  no 
+editor de textos.
 
 Vence  o jogador  que  conseguir  coletar  5 
 cristais e depositá-los na base inimiga.
