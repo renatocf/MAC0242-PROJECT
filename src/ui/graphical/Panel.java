@@ -264,7 +264,7 @@ class Panel extends JLayeredPane
         // But let the base's around be visible
         int X = this.player.getBase().getPosX(this.player);
         int Y = this.player.getBase().getPosY(this.player);
-        this.setVisible(Y,X,7);
+        this.setVisible(X,Y,7);
         
         // And the player's robots
         for(Robot r: this.player.armies)
