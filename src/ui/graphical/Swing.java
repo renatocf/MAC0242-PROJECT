@@ -20,6 +20,9 @@ package ui.graphical;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+// Libraries
+import java.io.File;
+
 /**
  * <b>Swing</b>
  * Initialize global setting related 
@@ -29,6 +32,8 @@ public class Swing
 {
     // Singleton object Swing
     private static Swing swing = null;
+    
+    static String myGame;
     
     // No instances of this class allowed
     /**
@@ -61,6 +66,19 @@ public class Swing
             System.err.println("[SWING] Illegal access");
             e.printStackTrace();
         }
+        
+        System.out.println("On swing");
+        String home = System.getProperty("user.home");
+        myGame = home + "/.robot-battle";
+        File directory = new File(myGame);
+        
+        if (!directory.exists()) 
+        {
+            System.err.println("Creating dir");
+            System.err.println(myGame);
+            boolean result = directory.mkdir();
+            if(result == false) System.err.println("Impossible create");
+        }
     }
     
     /**
@@ -68,7 +86,7 @@ public class Swing
      */
     static void init()
     {
-        if(Swing.swing != null) return;
-        Swing.swing = new Swing();
+        if(Swing.swing == null)
+            Swing.swing = new Swing();
     }
 }

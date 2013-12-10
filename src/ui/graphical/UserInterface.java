@@ -117,7 +117,7 @@ class UserInterface extends JPanel
                     program = editor.get();
                     
                     // Saving the user program in a file.
-                    File arquivo = new File("user/" + countHash + "_" + robotName + ".pos");
+                    File arquivo = new File(Swing.myGame + countHash + "_" + robotName + ".pos");
                     try( FileWriter fw = new FileWriter(arquivo) ){
                         fw.write(program);
                         fw.flush();
@@ -125,7 +125,7 @@ class UserInterface extends JPanel
                         System.out.println("Erro ao salvar o arquivo!");
                     }
                     
-                    player.insertArmy(robotName, "user/" + countHash + "_" + robotName + ".pos");
+                    player.insertArmy(robotName, Swing.myGame + countHash + "_" + robotName + ".pos");
                 }
             });
         
